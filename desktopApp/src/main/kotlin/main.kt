@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.rememberWindowState
 import dev.nucleusframework.application.nucleusApplication
 import dev.nucleusframework.core.runtime.Platform
@@ -80,10 +81,14 @@ fun main(args: Array<String>) {
         MaterialTheme(colorScheme = colors) {
             MaterialDecoratedWindow(
                 onCloseRequest = quit,
-                state = rememberWindowState(width = 1440.dp, height = 900.dp),
+                state = rememberWindowState(
+                    position = WindowPosition(Alignment.Center),
+                    width = 1440.dp,
+                    height = 900.dp,
+                ),
                 title = "Edge Translator",
                 icon = if (Platform.Current == Platform.Windows) windowIconPainter() else null,
-                minimumSize = DpSize(350.dp, 640.dp),
+                minimumSize = DpSize(500.dp, 450.dp),
             ) {
                 val windowScope = this
                 // The colour behind everything Compose does not paint (live
