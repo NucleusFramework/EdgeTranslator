@@ -550,6 +550,60 @@ class AppViewModelTest {
         assertEquals(TranslationStatus.Ready, vm.state.value.translation.status)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun typingDuringDebounceTranslatesOnce() = runTest {
+        val seen = mutableListOf<String>()
+        val translator = Translator { req ->
+            seen += req.text
+            TranslationResult.Ok("t:${req.text}")
+        }
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val vm = vm(translator = translator, dispatcher = dispatcher, translateDelayMs = 350)
+        vm.onIntent(AppIntent.SetSourceText("B"))
+        testScheduler.advanceTimeBy(100)
+        vm.onIntent(AppIntent.SetSourceText("Bo"))
+        testScheduler.advanceTimeBy(100)
+        vm.onIntent(AppIntent.SetSourceText("Bon"))
+        testScheduler.advanceTimeBy(350)
+        testScheduler.runCurrent()
+        assertEquals(listOf("Bon"), seen)
+        assertEquals("t:Bon", vm.state.value.translation.targetText)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun typingDoesNotRestartInFlightTranslation() = runTest {
+        val gate = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val seen = mutableListOf<String>()
+        val translator = Translator { req ->
+            seen += req.text
+            gate.await()
+            TranslationResult.Ok("t:${req.text}")
+        }
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val vm = vm(translator = translator, dispatcher = dispatcher, translateDelayMs = 350)
+        vm.onIntent(AppIntent.SetSourceText("Bon"))
+        testScheduler.advanceTimeBy(350)
+        testScheduler.runCurrent()
+        assertEquals(listOf("Bon"), seen)
+
+        vm.onIntent(AppIntent.SetSourceText("Bonjour"))
+        testScheduler.advanceTimeBy(10_000)
+        testScheduler.runCurrent()
+        assertEquals(listOf("Bon"), seen)
+
+        gate.complete(Unit)
+        testScheduler.runCurrent()
+        assertEquals(TranslationStatus.WaitingEngine, vm.state.value.translation.status)
+
+        testScheduler.advanceTimeBy(350)
+        testScheduler.runCurrent()
+        assertEquals(listOf("Bon", "Bonjour"), seen)
+        assertEquals("t:Bonjour", vm.state.value.translation.targetText)
+        assertEquals(TranslationStatus.Ready, vm.state.value.translation.status)
+    }
+
     @Test
     fun newTranslationClearsDraft() {
         val vm = vm()
