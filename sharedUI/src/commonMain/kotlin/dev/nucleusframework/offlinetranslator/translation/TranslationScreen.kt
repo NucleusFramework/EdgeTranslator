@@ -11,12 +11,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.SwapHoriz
-import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -49,8 +49,8 @@ import dev.nucleusframework.offlinetranslator.app.AppIntent
 import dev.nucleusframework.offlinetranslator.app.AppState
 import dev.nucleusframework.offlinetranslator.domain.LangRole
 import dev.nucleusframework.offlinetranslator.domain.Languages
-import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.domain.formatLatency
+import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.translation.MicPhase
 import dev.nucleusframework.offlinetranslator.translation.TranslationStatus
 import dev.nucleusframework.offlinetranslator.ui.Chip
@@ -59,29 +59,29 @@ import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
 import dev.nucleusframework.offlinetranslator.ui.languageLabel
 import offlinetranslator.sharedui.generated.resources.Res
-import offlinetranslator.sharedui.generated.resources.action_copy
+import offlinetranslator.sharedui.generated.resources.action_cancel
 import offlinetranslator.sharedui.generated.resources.action_copied
+import offlinetranslator.sharedui.generated.resources.action_copy
 import offlinetranslator.sharedui.generated.resources.action_save
 import offlinetranslator.sharedui.generated.resources.action_saved
 import offlinetranslator.sharedui.generated.resources.alternatives_header
-import offlinetranslator.sharedui.generated.resources.action_cancel
 import offlinetranslator.sharedui.generated.resources.cd_dictate
 import offlinetranslator.sharedui.generated.resources.cd_speak
 import offlinetranslator.sharedui.generated.resources.cd_speak_loading
 import offlinetranslator.sharedui.generated.resources.cd_speak_stop
 import offlinetranslator.sharedui.generated.resources.cd_swap_languages
+import offlinetranslator.sharedui.generated.resources.char_count
+import offlinetranslator.sharedui.generated.resources.latency_local
 import offlinetranslator.sharedui.generated.resources.mic_speak_now
 import offlinetranslator.sharedui.generated.resources.mic_tap_stop
 import offlinetranslator.sharedui.generated.resources.mic_time
 import offlinetranslator.sharedui.generated.resources.mic_transcribing
-import offlinetranslator.sharedui.generated.resources.char_count
 import offlinetranslator.sharedui.generated.resources.paragraph_count
 import offlinetranslator.sharedui.generated.resources.source_header
 import offlinetranslator.sharedui.generated.resources.source_placeholder
 import offlinetranslator.sharedui.generated.resources.target_header
 import offlinetranslator.sharedui.generated.resources.target_install_model
 import offlinetranslator.sharedui.generated.resources.target_placeholder
-import offlinetranslator.sharedui.generated.resources.latency_local
 import offlinetranslator.sharedui.generated.resources.translation_error
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
@@ -91,11 +91,7 @@ import org.jetbrains.compose.resources.stringResource
  * two panels whose headers double as language pickers, swap button between them.
  */
 @Composable
-fun TranslationContent(
-    app: AppState,
-    onIntent: (AppIntent) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun TranslationContent(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
     Row(
         modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 16.dp),
@@ -105,8 +101,10 @@ fun TranslationContent(
         SourcePanel(app, onIntent, Modifier.weight(1f))
         Surface(
             onClick = { onIntent(AppIntent.SwapLanguages) },
-            color = c.primaryContainer, contentColor = c.onPrimaryContainer,
-            shape = CircleShape, modifier = Modifier.size(40.dp),
+            color = c.primaryContainer,
+            contentColor = c.onPrimaryContainer,
+            shape = CircleShape,
+            modifier = Modifier.size(40.dp),
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Icon(Icons.Outlined.SwapHoriz, stringResource(Res.string.cd_swap_languages), Modifier.size(20.dp))
@@ -133,7 +131,7 @@ private fun LanguageHeader(app: AppState, role: LangRole, onIntent: (AppIntent) 
                 stringResource(
                     if (source) Res.string.source_header else Res.string.target_header,
                     languageLabel(code, settings.langNames),
-                )
+                ),
             )
             Icon(Icons.Outlined.ArrowDropDown, null, Modifier.size(18.dp), tint = c.onSurfaceVariant)
         }
@@ -167,7 +165,7 @@ private fun LanguageHeader(app: AppState, role: LangRole, onIntent: (AppIntent) 
 }
 
 @Composable
-private fun SourcePanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier) {
+private fun SourcePanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
     val state = app.translation
     val ui = app.data.settings.uiLanguage
@@ -195,7 +193,12 @@ private fun SourcePanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
                 decorationBox = { inner ->
                     Box {
                         if (state.sourceText.isEmpty()) {
-                            Text(stringResource(Res.string.source_placeholder), color = c.onSurfaceVariant, fontSize = 18.sp, lineHeight = 28.sp)
+                            Text(
+                                stringResource(Res.string.source_placeholder),
+                                color = c.onSurfaceVariant,
+                                fontSize = 18.sp,
+                                lineHeight = 28.sp,
+                            )
                         }
                         inner()
                     }
@@ -205,11 +208,20 @@ private fun SourcePanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
         HorizontalDivider(color = c.surfaceContainerHighest)
         Row(
             Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             if (state.micPhase == MicPhase.Idle) {
-                Text(pluralStringResource(Res.plurals.char_count, state.sourceChars, state.sourceChars), color = c.onSurfaceVariant, fontSize = 12.sp)
-                Text(pluralStringResource(Res.plurals.paragraph_count, state.sourceParagraphs, state.sourceParagraphs), color = c.onSurfaceVariant, fontSize = 12.sp)
+                Text(
+                    pluralStringResource(Res.plurals.char_count, state.sourceChars, state.sourceChars),
+                    color = c.onSurfaceVariant,
+                    fontSize = 12.sp,
+                )
+                Text(
+                    pluralStringResource(Res.plurals.paragraph_count, state.sourceParagraphs, state.sourceParagraphs),
+                    color = c.onSurfaceVariant,
+                    fontSize = 12.sp,
+                )
             } else {
                 val sec = (state.micElapsedMs / 1000).toInt()
                 val clock = "${sec / 60}:${(sec % 60).toString().padStart(2, '0')}"
@@ -236,7 +248,7 @@ private fun SourcePanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
 private val GoogleMicRed = Color(0xFFEA4335)
 
 @Composable
-private fun ListeningPane(state: TranslationState, onIntent: (AppIntent) -> Unit, modifier: Modifier) {
+private fun ListeningPane(state: TranslationState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
     val listening = state.micPhase == MicPhase.Listening
     Column(
@@ -293,7 +305,7 @@ private fun ListeningPane(state: TranslationState, onIntent: (AppIntent) -> Unit
 }
 
 @Composable
-private fun TargetPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier) {
+private fun TargetPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
     val state = app.translation
     val ui = app.data.settings.uiLanguage
@@ -303,7 +315,12 @@ private fun TargetPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
             Spacer(Modifier.weight(1f))
             val latency = formatLatency(state.latencyMs, ui)
             if (latency.isNotEmpty()) {
-                Text(stringResource(Res.string.latency_local, latency), Modifier.padding(end = 6.dp), color = c.onSurfaceVariant, fontSize = 12.sp)
+                Text(
+                    stringResource(Res.string.latency_local, latency),
+                    Modifier.padding(end = 6.dp),
+                    color = c.onSurfaceVariant,
+                    fontSize = 12.sp,
+                )
             }
         }
         HorizontalDivider(color = c.surfaceContainerHighest)
@@ -325,7 +342,9 @@ private fun TargetPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
             Text(
                 highlighted(shown, state.highlightTerm, c.primaryContainer),
                 Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(20.dp),
-                color = c.onSurface, fontSize = 18.sp, lineHeight = 28.sp,
+                color = c.onSurface,
+                fontSize = 18.sp,
+                lineHeight = 28.sp,
             )
         }
 
@@ -351,13 +370,15 @@ private fun TargetPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
         ) {
             FilledPill(
                 stringResource(if (state.copied) Res.string.action_copied else Res.string.action_copy),
+                onClick = { onIntent(AppIntent.CopyTranslation) },
                 icon = Icons.Outlined.ContentCopy,
                 enabled = !state.copied,
-            ) { onIntent(AppIntent.CopyTranslation) }
+            )
             OutlinedPill(
                 stringResource(if (state.saved) Res.string.action_saved else Res.string.action_save),
+                onClick = { onIntent(AppIntent.SaveToHistory) },
                 enabled = !state.saved,
-            ) { onIntent(AppIntent.SaveToHistory) }
+            )
             Spacer(Modifier.weight(1f))
             SpeakIcon(app, target = true, onIntent = onIntent)
         }
@@ -375,45 +396,46 @@ private fun SpeakIcon(app: AppState, target: Boolean, onIntent: (AppIntent) -> U
     val downloading = app.voiceDownload.running && PiperVoices.covers(app.voiceDownload.lang, lang)
     val loading = (state.speakBusy && active) || downloading
     val c = MaterialTheme.colorScheme
-    if (loading) {
-        val indicator = Modifier.size(22.dp)
-        if (downloading) {
-            CircularProgressIndicator(
-                progress = { app.voiceDownload.fraction.coerceIn(0f, 1f) },
-                modifier = indicator,
-                strokeWidth = 2.dp,
-                color = c.primary,
-                trackColor = c.outlineVariant,
-            )
-        } else {
-            CircularProgressIndicator(
-                modifier = indicator.clickable(
-                    onClickLabel = stringResource(Res.string.cd_speak_loading),
-                ) { onIntent(AppIntent.ToggleSpeak(target)) },
-                strokeWidth = 2.dp,
-                color = c.primary,
-            )
-        }
-        return
+    val indicator = Modifier.size(22.dp)
+    when {
+        loading && downloading -> CircularProgressIndicator(
+            progress = { app.voiceDownload.fraction.coerceIn(0f, 1f) },
+            modifier = indicator,
+            strokeWidth = 2.dp,
+            color = c.primary,
+            trackColor = c.outlineVariant,
+        )
+
+        loading -> CircularProgressIndicator(
+            modifier = indicator.clickable(
+                onClickLabel = stringResource(Res.string.cd_speak_loading),
+            ) { onIntent(AppIntent.ToggleSpeak(target)) },
+            strokeWidth = 2.dp,
+            color = c.primary,
+        )
+
+        else -> Icon(
+            Icons.AutoMirrored.Outlined.VolumeUp,
+            stringResource(if (active) Res.string.cd_speak_stop else Res.string.cd_speak),
+            Modifier.size(22.dp).clip(CircleShape).clickable(enabled = !installed || text.isNotBlank() || active) {
+                onIntent(AppIntent.ToggleSpeak(target))
+            },
+            tint = when {
+                !installed -> c.outline
+                active -> c.primary
+                text.isBlank() -> c.outline
+                else -> c.onSurfaceVariant
+            },
+        )
     }
-    Icon(
-        Icons.AutoMirrored.Outlined.VolumeUp,
-        stringResource(if (active) Res.string.cd_speak_stop else Res.string.cd_speak),
-        Modifier.size(22.dp).clip(CircleShape).clickable(enabled = !installed || text.isNotBlank() || active) {
-            onIntent(AppIntent.ToggleSpeak(target))
-        },
-        tint = when {
-            !installed -> c.outline
-            active -> c.primary
-            text.isBlank() -> c.outline
-            else -> c.onSurfaceVariant
-        },
-    )
 }
 
 private fun highlighted(text: String, term: String, bg: Color) = buildAnnotatedString {
     val i = text.indexOf(term)
-    if (i < 0) { append(text); return@buildAnnotatedString }
+    if (i < 0) {
+        append(text)
+        return@buildAnnotatedString
+    }
     append(text.substring(0, i))
     withStyle(SpanStyle(background = bg)) { append(term) }
     append(text.substring(i + term.length))

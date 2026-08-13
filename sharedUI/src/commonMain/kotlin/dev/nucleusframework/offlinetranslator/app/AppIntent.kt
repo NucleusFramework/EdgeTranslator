@@ -23,6 +23,9 @@ sealed interface AppIntent {
     data object CopyTranslation : AppIntent
     data object SaveToHistory : AppIntent
     data class SetSourceText(val text: String) : AppIntent
+    data class SetProofreadText(val text: String) : AppIntent
+    data object CopyProofread : AppIntent
+    data object ApplyProofread : AppIntent
     data object ToggleMic : AppIntent
     data object CancelMic : AppIntent
     data class ToggleSpeak(val target: Boolean) : AppIntent
@@ -35,6 +38,7 @@ sealed interface AppIntent {
     data class DeleteVoice(val lang: String) : AppIntent
     data class SelectVoice(val id: String) : AppIntent
     data class ChooseLanguage(val code: String, val role: LangRole) : AppIntent
+
     /** `null` follows the OS language. */
     data class SetUiLanguage(val language: UiLanguage?) : AppIntent
     data class SetLangNameStyle(val style: LangNameStyle) : AppIntent
@@ -44,12 +48,7 @@ sealed interface AppIntent {
     data object CancelDownload : AppIntent
     data object RetryDownload : AppIntent
     data object CompleteDownload : AppIntent
-    data class DownloadTick(
-        val bytes: Long,
-        val speedBps: Long,
-        val log: DownloadLog? = null,
-        val totalBytes: Long = 0,
-    ) : AppIntent
+    data class DownloadTick(val bytes: Long, val speedBps: Long, val log: DownloadLog? = null, val totalBytes: Long = 0) : AppIntent
     data class DownloadPhase(val phase: dev.nucleusframework.offlinetranslator.domain.DownloadPhase) : AppIntent
 
     data class SetHistoryQuery(val query: String) : AppIntent

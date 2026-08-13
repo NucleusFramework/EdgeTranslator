@@ -3,13 +3,13 @@ package dev.nucleusframework.offlinetranslator.engine
 import io.github.jvoiceproject.piperjni.PiperJNI
 import io.github.jvoiceproject.piperjni.PiperVoice
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.nio.file.Path
 import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.DataLine
 import javax.sound.sampled.SourceDataLine
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 
 actual fun createTtsSpeaker(http: HttpClient): TtsSpeaker = PiperTts()
 
@@ -18,8 +18,11 @@ private class PiperTts : TtsSpeaker {
     private var piper: PiperJNI? = null
     private var voice: PiperVoice? = null
     private var voiceLang: String? = null
+
     @Volatile private var line: SourceDataLine? = null
+
     @Volatile private var playing = false
+
     @Volatile private var closed = false
 
     override val available: Boolean = true

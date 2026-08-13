@@ -5,5 +5,4 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import dev.nucleusframework.offlinetranslator.db.AppDatabase
 import dev.nucleusframework.offlinetranslator.platform.androidContext
 
-internal actual fun createSqlDriver(): SqlDriver =
-    AndroidSqliteDriver(AppDatabase.Schema, androidContext(), "history.db")
+internal actual fun createSqlDriver(): SqlDriver = AndroidSqliteDriver(AppDatabase.Schema, androidContext(), "history.db")

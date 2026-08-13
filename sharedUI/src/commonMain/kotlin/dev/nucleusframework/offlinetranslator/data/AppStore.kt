@@ -22,9 +22,7 @@ class MemoryStore(initial: AppData = AppData()) : AppStore {
 
 @ContributesBinding(AppScope::class)
 @Inject
-class FileStore(
-    private val dir: () -> String = { Platform.appDir() },
-) : AppStore {
+class FileStore(private val dir: () -> String = { Platform.appDir() }) : AppStore {
     private val file get() = joinPath(dir(), "state.txt")
 
     override fun load(): AppData {

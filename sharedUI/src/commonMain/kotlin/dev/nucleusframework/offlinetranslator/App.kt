@@ -18,14 +18,13 @@ import dev.nucleusframework.offlinetranslator.domain.ThemeMode
 import dev.nucleusframework.offlinetranslator.platform.Platform
 import dev.nucleusframework.offlinetranslator.theme.EdgeTheme
 
-@Preview
 @Composable
 fun App(
     graph: AppGraph? = null,
     provided: AppViewModel? = null,
-    onThemeChanged: @Composable (isDark: Boolean) -> Unit = {},
-    /** Same deal as [onThemeChanged]: window chrome lives outside this composable and needs it too. */
-    onLayoutDirectionChanged: @Composable (isRtl: Boolean) -> Unit = {},
+    onThemeChange: @Composable (isDark: Boolean) -> Unit = {},
+    /** Window chrome lives outside this composable and needs the resolved direction too. */
+    onLayoutDirectionChange: @Composable (isRtl: Boolean) -> Unit = {},
     onQuit: () -> Unit = {},
     forceOnboarding: Boolean = false,
 ) {
@@ -38,14 +37,23 @@ fun App(
         ThemeMode.Light -> false
         ThemeMode.Dark -> true
     }
-    onThemeChanged(isDark)
+    onThemeChange(isDark)
     val ui = state.data.settings.uiLanguage
-    remember(ui) { Platform.applyLocale(ui.code); ui }
-    onLayoutDirectionChanged(ui.rtl)
+    remember(ui) {
+        Platform.applyLocale(ui.code)
+        ui
+    }
+    onLayoutDirectionChange(ui.rtl)
     val dir = if (ui.rtl) LayoutDirection.Rtl else LayoutDirection.Ltr
-    EdgeTheme(isDark) {
+    EdgeTheme(isDark = isDark) {
         CompositionLocalProvider(LocalLayoutDirection provides dir) {
             RootScreen(state = state, backStack = vm.backStack, onIntent = vm::onIntent)
         }
     }
+}
+
+@Preview
+@Composable
+private fun AppPreview() {
+    App()
 }

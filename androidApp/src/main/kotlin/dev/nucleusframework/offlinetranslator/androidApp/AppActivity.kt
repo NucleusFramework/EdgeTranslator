@@ -22,7 +22,7 @@ class AppActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             App(
-                onThemeChanged = { ThemeChanged(it) },
+                onThemeChange = { ThemeChanged(it) },
                 onQuit = { finish() },
                 forceOnboarding = intent.getBooleanExtra("onboarding", false),
             )

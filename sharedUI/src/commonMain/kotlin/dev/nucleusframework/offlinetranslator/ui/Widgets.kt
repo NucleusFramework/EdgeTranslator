@@ -33,7 +33,7 @@ fun SectionLabel(text: String, modifier: Modifier = Modifier, color: Color = Mat
 
 /** Filled (primary) pill button. */
 @Composable
-fun FilledPill(label: String, icon: ImageVector? = null, enabled: Boolean = true, onClick: () -> Unit) {
+fun FilledPill(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, icon: ImageVector? = null, enabled: Boolean = true) {
     val c = MaterialTheme.colorScheme
     Surface(
         onClick = onClick,
@@ -41,9 +41,13 @@ fun FilledPill(label: String, icon: ImageVector? = null, enabled: Boolean = true
         color = if (enabled) c.primary else c.surfaceContainerHighest,
         contentColor = if (enabled) c.onPrimary else c.onSurfaceVariant.copy(alpha = 0.6f),
         shape = RoundedCornerShape(20.dp),
-        modifier = Modifier.height(40.dp),
+        modifier = modifier.height(40.dp),
     ) {
-        Row(Modifier.padding(horizontal = 20.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(
+            Modifier.padding(horizontal = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             if (icon != null) Icon(icon, null, Modifier.size(18.dp))
             Text(label, fontSize = 14.sp, fontWeight = FontWeight.Medium)
         }
@@ -52,12 +56,12 @@ fun FilledPill(label: String, icon: ImageVector? = null, enabled: Boolean = true
 
 /** Outlined (text-on-surface) pill button. */
 @Composable
-fun OutlinedPill(label: String, icon: ImageVector? = null, enabled: Boolean = true, onClick: () -> Unit) {
+fun OutlinedPill(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, icon: ImageVector? = null, enabled: Boolean = true) {
     val c = MaterialTheme.colorScheme
     val fg = if (enabled) c.primary else c.onSurfaceVariant.copy(alpha = 0.55f)
     val stroke = if (enabled) c.outline else c.outlineVariant
     Row(
-        Modifier.height(40.dp).clip(RoundedCornerShape(20.dp)).border(1.dp, stroke, RoundedCornerShape(20.dp))
+        modifier.height(40.dp).clip(RoundedCornerShape(20.dp)).border(1.dp, stroke, RoundedCornerShape(20.dp))
             .clickable(enabled = enabled, onClick = onClick).padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -69,20 +73,36 @@ fun OutlinedPill(label: String, icon: ImageVector? = null, enabled: Boolean = tr
 
 /** Small 32dp filter/choice chip (rounded 8). */
 @Composable
-fun Chip(label: String, selected: Boolean, onClick: () -> Unit) {
+fun Chip(label: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
-    val base = Modifier.height(32.dp).clip(RoundedCornerShape(8.dp)).clickable(onClick = onClick)
+    val base = modifier.height(32.dp).clip(RoundedCornerShape(8.dp)).clickable(onClick = onClick)
     val shaped = if (selected) base.background(c.primaryContainer) else base.border(1.dp, c.outlineVariant, RoundedCornerShape(8.dp))
     val fg = if (selected) c.onPrimaryContainer else c.onSurfaceVariant
-    Row(shaped.padding(horizontal = 12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+    Row(
+        shaped.padding(horizontal = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
         Text(label, fontSize = 14.sp, color = fg, fontWeight = if (selected) FontWeight.Medium else FontWeight.Normal)
     }
 }
 
 /** Circular icon-only button. */
 @Composable
-fun IconGlyphButton(icon: ImageVector, contentDescription: String?, onClick: () -> Unit, tint: Color = MaterialTheme.colorScheme.onSurfaceVariant) {
-    Surface(onClick = onClick, color = MaterialTheme.colorScheme.surface, contentColor = tint, shape = CircleShape, modifier = Modifier.size(40.dp)) {
+fun IconGlyphButton(
+    icon: ImageVector,
+    contentDescription: String?,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    tint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+) {
+    Surface(
+        onClick = onClick,
+        color = MaterialTheme.colorScheme.surface,
+        contentColor = tint,
+        shape = CircleShape,
+        modifier = modifier.size(40.dp),
+    ) {
         Box(contentAlignment = Alignment.Center) { Icon(icon, contentDescription, Modifier.size(22.dp)) }
     }
 }

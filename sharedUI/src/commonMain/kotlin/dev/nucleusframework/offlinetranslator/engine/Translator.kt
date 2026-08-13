@@ -7,12 +7,16 @@ fun interface Translator {
     suspend fun translate(request: TranslationRequest): TranslationResult
 }
 
+enum class TranslationMode { Translate, Proofread }
+
 data class TranslationRequest(
     val text: String,
     val sourceLang: String,
     val targetLang: String,
     val modelPath: String = "",
     val audioWav: ByteArray? = null,
+    // ponytail: même moteur, autre prompt — un second Translator dupliquerait mutex + chargement du modèle.
+    val mode: TranslationMode = TranslationMode.Translate,
     val onPartial: (String) -> Unit = {},
 )
 
@@ -31,6 +35,5 @@ sealed interface TranslationResult {
 }
 
 object UnavailableTranslator : Translator {
-    override suspend fun translate(request: TranslationRequest): TranslationResult =
-        TranslationResult.Unavailable
+    override suspend fun translate(request: TranslationRequest): TranslationResult = TranslationResult.Unavailable
 }

@@ -20,8 +20,7 @@ data class PiperVoiceSpec(
         part.replaceFirstChar { it.uppercase() }
     }
 
-    fun url(file: String): String =
-        "https://huggingface.co/rhasspy/piper-voices/resolve/main/$relDir/$file"
+    fun url(file: String): String = "https://huggingface.co/rhasspy/piper-voices/resolve/main/$relDir/$file"
 
     fun destDir(): String = PiperVoices.dir()
     fun destOnnx(): String = joinPath(destDir(), fileName)
@@ -29,8 +28,7 @@ data class PiperVoiceSpec(
     fun partialOnnx(): String = destOnnx() + ".partial"
     fun partialJson(): String = destJson() + ".partial"
 
-    fun isOnDisk(): Boolean =
-        Platform.fileSize(destOnnx()) >= 1_000_000L && Platform.fileSize(destJson()) >= 100L
+    fun isOnDisk(): Boolean = Platform.fileSize(destOnnx()) >= 1_000_000L && Platform.fileSize(destJson()) >= 100L
 
     fun removeFromDisk() {
         Platform.delete(destOnnx())

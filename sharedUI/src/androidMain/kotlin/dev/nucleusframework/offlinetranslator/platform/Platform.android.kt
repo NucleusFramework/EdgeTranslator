@@ -8,12 +8,12 @@ import androidx.activity.ComponentActivity
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.isRegularFile
 import io.github.vinceglb.filekit.source
+import kotlinx.coroutines.ensureActive
+import kotlinx.io.buffered
 import java.io.File
 import java.lang.ref.WeakReference
 import java.security.MessageDigest
 import kotlin.coroutines.coroutineContext
-import kotlinx.coroutines.ensureActive
-import kotlinx.io.buffered
 
 @SuppressLint("StaticFieldLeak")
 private var appContext: Context? = null
@@ -24,8 +24,7 @@ fun bindAndroidContext(context: Context) {
     if (context is ComponentActivity) activityRef = WeakReference(context)
 }
 
-private fun ctx(): Context =
-    requireNotNull(appContext) { "bindAndroidContext() must be called from AppActivity.onCreate" }
+private fun ctx(): Context = requireNotNull(appContext) { "bindAndroidContext() must be called from AppActivity.onCreate" }
 
 internal fun androidContext(): Context = ctx()
 
@@ -67,8 +66,7 @@ internal actual object Platform {
 
     actual fun rename(from: String, to: String): Boolean = filekitRename(from, to)
 
-    actual fun writeAppend(path: String, bytes: ByteArray, offset: Int, length: Int) =
-        filekitWriteAppend(path, bytes, offset, length)
+    actual fun writeAppend(path: String, bytes: ByteArray, offset: Int, length: Int) = filekitWriteAppend(path, bytes, offset, length)
 
     actual fun truncate(path: String) = filekitTruncate(path)
 
@@ -79,8 +77,7 @@ internal actual object Platform {
 
     // System resources, not Locale.getDefault() — applyLocale() overwrites the latter, and the user
     // can change the device language without the process being killed.
-    actual fun systemLanguage(): String =
-        android.content.res.Resources.getSystem().configuration.locales[0].language
+    actual fun systemLanguage(): String = android.content.res.Resources.getSystem().configuration.locales[0].language
 }
 
 internal suspend fun filekitSha256(path: String): String? {

@@ -33,19 +33,19 @@ import dev.nucleusframework.offlinetranslator.app.AppState
 import dev.nucleusframework.offlinetranslator.app.visibleHistory
 import dev.nucleusframework.offlinetranslator.domain.HistoryFilter
 import dev.nucleusframework.offlinetranslator.domain.HistoryItem
-import dev.nucleusframework.offlinetranslator.ui.formatHistoryStampUi
 import dev.nucleusframework.offlinetranslator.ui.Chip
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
+import dev.nucleusframework.offlinetranslator.ui.formatHistoryStampUi
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.cd_delete
 import offlinetranslator.sharedui.generated.resources.cd_pin
 import offlinetranslator.sharedui.generated.resources.cd_unpin
+import offlinetranslator.sharedui.generated.resources.history_clear
 import offlinetranslator.sharedui.generated.resources.history_col_date
 import offlinetranslator.sharedui.generated.resources.history_col_pair
 import offlinetranslator.sharedui.generated.resources.history_col_source
 import offlinetranslator.sharedui.generated.resources.history_col_target
-import offlinetranslator.sharedui.generated.resources.history_clear
 import offlinetranslator.sharedui.generated.resources.history_empty
 import offlinetranslator.sharedui.generated.resources.history_filter_all
 import offlinetranslator.sharedui.generated.resources.history_filter_last_7
@@ -56,15 +56,15 @@ import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit) {
+fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
     val rows = state.visibleHistory()
-    Column(Modifier.fillMaxSize().padding(horizontal = 32.dp, vertical = 24.dp)) {
+    Column(modifier.fillMaxSize().padding(horizontal = 32.dp, vertical = 24.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             HistoryFilters(state, onIntent)
             Spacer(Modifier.weight(1f))
             if (state.data.history.isNotEmpty()) {
-                OutlinedPill(stringResource(Res.string.history_clear)) { onIntent(AppIntent.ClearHistory) }
+                OutlinedPill(stringResource(Res.string.history_clear), onClick = { onIntent(AppIntent.ClearHistory) })
             }
             Row(
                 Modifier.width(420.dp).height(40.dp).clip(RoundedCornerShape(20.dp))
@@ -84,7 +84,13 @@ fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit) {
                     decorationBox = { inner ->
                         Box(contentAlignment = Alignment.CenterStart) {
                             if (state.historyQuery.isEmpty()) {
-                                Text(placeholder, color = c.onSurfaceVariant, fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(
+                                    placeholder,
+                                    color = c.onSurfaceVariant,
+                                    fontSize = 14.sp,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
                             }
                             inner()
                         }
@@ -93,8 +99,13 @@ fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit) {
             }
         }
         Spacer(Modifier.height(20.dp))
-        Column(Modifier.weight(1f).fillMaxWidth().clip(RoundedCornerShape(20.dp)).border(1.dp, c.outlineVariant, RoundedCornerShape(20.dp))) {
-            Row(Modifier.fillMaxWidth().height(48.dp).background(c.surfaceContainer).padding(horizontal = 20.dp), verticalAlignment = Alignment.CenterVertically) {
+        Column(
+            Modifier.weight(1f).fillMaxWidth().clip(RoundedCornerShape(20.dp)).border(1.dp, c.outlineVariant, RoundedCornerShape(20.dp)),
+        ) {
+            Row(
+                Modifier.fillMaxWidth().height(48.dp).background(c.surfaceContainer).padding(horizontal = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 SectionLabel(stringResource(Res.string.history_col_date), Modifier.width(120.dp))
                 SectionLabel(stringResource(Res.string.history_col_pair), Modifier.width(120.dp))
                 SectionLabel(stringResource(Res.string.history_col_source), Modifier.weight(1f))
@@ -115,7 +126,11 @@ fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit) {
             }
         }
         Spacer(Modifier.height(16.dp))
-        Text(pluralStringResource(Res.plurals.history_stored, state.data.history.size, state.data.history.size), color = c.onSurfaceVariant, fontSize = 12.sp)
+        Text(
+            pluralStringResource(Res.plurals.history_stored, state.data.history.size, state.data.history.size),
+            color = c.onSurfaceVariant,
+            fontSize = 12.sp,
+        )
     }
 }
 
@@ -128,7 +143,7 @@ private fun HistoryFilters(state: AppState, onIntent: (AppIntent) -> Unit) {
     )
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
         filters.forEach { (f, label) ->
-            Chip(label, f == state.historyFilter, { onIntent(AppIntent.SetHistoryFilter(f)) })
+            Chip(label, f == state.historyFilter, onClick = { onIntent(AppIntent.SetHistoryFilter(f)) })
         }
     }
 }
@@ -156,7 +171,14 @@ private fun HistoryRow(e: HistoryItem, onIntent: (AppIntent) -> Unit) {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        Text(e.targetText, Modifier.weight(1f).padding(end = 16.dp), color = c.onSurfaceVariant, fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(
+            e.targetText,
+            Modifier.weight(1f).padding(end = 16.dp),
+            color = c.onSurfaceVariant,
+            fontSize = 14.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
         Box(Modifier.width(40.dp).clickable { onIntent(AppIntent.ToggleHistoryPin(e.id)) }, Alignment.Center) {
             Icon(
                 if (e.pinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,

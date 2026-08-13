@@ -45,7 +45,7 @@ internal actual class NativeLlm actual constructor() {
                 thinkingConfig = ThinkingConfig(enableThinking = false),
                 channels = emptyList(),
                 maxOutputToken = 1024,
-            )
+            ),
         ).use { conversation ->
             val acc = StringBuilder()
             val contents = if (audioWav == null || audioWav.isEmpty()) {
@@ -83,7 +83,7 @@ private fun openEngine(modelPath: String, cacheDir: String, backend: Backend): E
             audioBackend = Backend.CPU(),
             cacheDir = cacheDir,
             maxNumTokens = GemmaModel.MAX_NUM_TOKENS,
-        )
+        ),
     )
     try {
         created.initialize()
@@ -94,8 +94,7 @@ private fun openEngine(modelPath: String, cacheDir: String, backend: Backend): E
     }
 }
 
-private fun cacheSubdir(cacheDir: String, name: String): String =
-    java.io.File(cacheDir, name).apply { mkdirs() }.absolutePath
+private fun cacheSubdir(cacheDir: String, name: String): String = java.io.File(cacheDir, name).apply { mkdirs() }.absolutePath
 
 internal actual fun createHttpClient(): HttpClient = HttpClient(OkHttp) {
     followRedirects = true

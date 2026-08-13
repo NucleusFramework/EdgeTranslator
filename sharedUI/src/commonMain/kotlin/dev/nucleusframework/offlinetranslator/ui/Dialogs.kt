@@ -37,8 +37,8 @@ import dev.nucleusframework.offlinetranslator.app.AppState
 import dev.nucleusframework.offlinetranslator.app.ConfirmAction
 import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
-import dev.nucleusframework.offlinetranslator.ui.formatBytesUi
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
+import dev.nucleusframework.offlinetranslator.ui.formatBytesUi
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.action_cancel
 import offlinetranslator.sharedui.generated.resources.action_confirm
@@ -88,14 +88,17 @@ private fun SpeakLoadingDialog(target: Boolean, onIntent: (AppIntent) -> Unit) {
 private fun ConfirmDialog(d: AppDialog.Confirm, onIntent: (AppIntent) -> Unit) {
     val message = when (val action = d.action) {
         ConfirmAction.PurgeHistory -> stringResource(Res.string.confirm_purge_history)
+
         is ConfirmAction.DeleteModel -> stringResource(
             Res.string.confirm_delete_model,
             stringResource(if (action.id == LlmModel.Precise) Res.string.model_precise_title else Res.string.model_fast_title),
         )
+
         is ConfirmAction.DeleteVoice -> stringResource(
             Res.string.confirm_delete_voice,
             PiperVoices.of(action.lang)?.displayName ?: Languages.get(action.lang)?.native ?: action.lang,
         )
+
         ConfirmAction.ResetApp -> stringResource(Res.string.confirm_reset_app)
     }
     Sheet(onDismiss = { onIntent(AppIntent.DismissDialog) }, title = stringResource(Res.string.dialog_confirm)) {
@@ -103,8 +106,8 @@ private fun ConfirmDialog(d: AppDialog.Confirm, onIntent: (AppIntent) -> Unit) {
         Spacer(Modifier.height(16.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Spacer(Modifier.weight(1f))
-            OutlinedPill(stringResource(Res.string.action_cancel)) { onIntent(AppIntent.DismissDialog) }
-            FilledPill(stringResource(Res.string.action_confirm)) { onIntent(AppIntent.ConfirmDialog) }
+            OutlinedPill(stringResource(Res.string.action_cancel), onClick = { onIntent(AppIntent.DismissDialog) })
+            FilledPill(stringResource(Res.string.action_confirm), onClick = { onIntent(AppIntent.ConfirmDialog) })
         }
     }
 }
@@ -123,10 +126,11 @@ private fun InstallVoiceDialog(state: AppState, d: AppDialog.InstallVoice, onInt
         Spacer(Modifier.height(16.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Spacer(Modifier.weight(1f))
-            OutlinedPill(stringResource(Res.string.action_cancel)) { onIntent(AppIntent.DismissDialog) }
-            FilledPill(stringResource(Res.string.action_download)) {
-                onIntent(AppIntent.DownloadVoices(listOf(d.lang)))
-            }
+            OutlinedPill(stringResource(Res.string.action_cancel), onClick = { onIntent(AppIntent.DismissDialog) })
+            FilledPill(
+                stringResource(Res.string.action_download),
+                onClick = { onIntent(AppIntent.DownloadVoices(listOf(d.lang))) },
+            )
         }
     }
 }
@@ -161,7 +165,7 @@ private fun Sheet(onDismiss: () -> Unit, title: String, content: @Composable () 
 }
 
 @Composable
-fun MessageBar(message: AppMessage?, modifier: Modifier = Modifier, onDismiss: () -> Unit) {
+fun MessageBar(message: AppMessage?, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
     if (message == null) return
     val c = MaterialTheme.colorScheme
     Row(

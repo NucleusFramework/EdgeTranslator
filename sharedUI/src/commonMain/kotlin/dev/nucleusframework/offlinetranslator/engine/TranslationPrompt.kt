@@ -3,11 +3,7 @@ package dev.nucleusframework.offlinetranslator.engine
 import dev.nucleusframework.offlinetranslator.domain.Languages
 import offlinetranslator.sharedui.generated.resources.Res
 
-data class TranslationPrompt(
-    val system: String,
-    val user: String,
-    val extras: List<String> = emptyList(),
-) {
+data class TranslationPrompt(val system: String, val user: String, val extras: List<String> = emptyList()) {
     fun restore(output: String): String = restoreBmpSafe(output, extras)
 }
 
@@ -49,19 +45,29 @@ fun parseSpeechOutput(raw: String, targetName: String): Pair<String, String> {
 }
 
 suspend fun buildTranslationPrompt(request: TranslationRequest): TranslationPrompt {
+    if (request.mode == TranslationMode.Proofread) return buildProofreadPrompt(request)
     val source = if (Languages.isAuto(request.sourceLang)) "any language" else languageName(request.sourceLang)
     val target = languageName(request.targetLang)
     val safe = toBmpSafe(request.text)
-    val placeholderRule =
-        if (safe.extras.isEmpty()) ""
-        else "\n- Copy tokens like [[#0]] unchanged; they mark original symbols."
-    val system = Res.readBytes("files/system_prompt.txt").decodeToString()
+    val system = Res.readBytes("files/translate_prompt.txt").decodeToString()
         .replace("{source}", source)
         .replace("{target}", target)
-        .replace("{placeholder_rule}", placeholderRule)
+        .replace("{placeholder_rule}", placeholderRule(safe))
         .trim()
     return TranslationPrompt(system = system, user = safe.text, extras = safe.extras)
 }
+
+// ponytail: pas de sélecteur de langue — le modèle corrige dans la langue du texte qu'on lui donne.
+suspend fun buildProofreadPrompt(request: TranslationRequest): TranslationPrompt {
+    val safe = toBmpSafe(request.text)
+    val system = Res.readBytes("files/proofread_prompt.txt").decodeToString()
+        .replace("{placeholder_rule}", placeholderRule(safe))
+        .trim()
+    return TranslationPrompt(system = system, user = safe.text, extras = safe.extras)
+}
+
+private fun placeholderRule(safe: BmpSafeText): String =
+    if (safe.extras.isEmpty()) "" else "\n- Copy tokens like [[#0]] unchanged; they mark original symbols."
 
 fun cleanModelOutput(raw: String): String {
     var text = raw.trim()
@@ -84,7 +90,9 @@ internal fun toBmpSafe(text: String): BmpSafeText {
         val c = text[i]
         val end = when {
             c.isHighSurrogate() && i + 1 < text.length && text[i + 1].isLowSurrogate() -> i + 2
+
             c.isSurrogate() -> i + 1
+
             else -> {
                 out.append(c)
                 i++

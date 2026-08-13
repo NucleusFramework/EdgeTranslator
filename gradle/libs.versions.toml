@@ -23,6 +23,10 @@ litertlm = "0.16.0"
 filekit = "0.15.0"
 structured-coroutines = "1.1.0"
 piper-jni = "1.4.2"
+detekt = "2.0.0-alpha.6"
+ktlint-gradle = "14.2.0"
+ktlint-cli = "1.8.0"
+compose-rules = "0.6.4"
 
 [libraries]
 
@@ -75,6 +79,8 @@ filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "file
 filekit-dialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
 piper-jni = { module = "io.github.jvoice-project:piper-jni", version.ref = "piper-jni" }
 structured-coroutines-annotations = { module = "io.github.santimattius:structured-coroutines-annotations", version.ref = "structured-coroutines" }
+detekt-compose-rules = { module = "io.nlopez.compose.rules:detekt", version.ref = "compose-rules" }
+ktlint-compose-rules = { module = "io.nlopez.compose.rules:ktlint", version.ref = "compose-rules" }
 
 [plugins]
 
@@ -88,3 +94,5 @@ metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
 nucleus = { id = "dev.nucleusframework", version.ref = "nucleus" }
 structured-coroutines = { id = "io.github.santimattius.structured-coroutines", version.ref = "structured-coroutines" }
+detekt = { id = "dev.detekt", version.ref = "detekt" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }

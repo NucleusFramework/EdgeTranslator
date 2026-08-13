@@ -1,13 +1,42 @@
 package dev.nucleusframework.offlinetranslator.domain
 
 enum class UiLanguage(val code: String, val rtl: Boolean = false) {
-    Fr("fr"), En("en"), Ar("ar", rtl = true), Bn("bn"), Zh("zh"),
-    Hr("hr"), Cs("cs"), Da("da"), Nl("nl"), Fil("fil"),
-    Fi("fi"), De("de"), El("el"), He("he", rtl = true), Hi("hi"),
-    Hu("hu"), Id("id"), It("it"), Ja("ja"), Ko("ko"),
-    Mi("mi"), No("no"), Fa("fa", rtl = true), Pl("pl"), Pt("pt"),
-    Ro("ro"), Ru("ru"), Es("es"), Sw("sw"), Sv("sv"),
-    Te("te"), Th("th"), Tr("tr"), Uk("uk"), Vi("vi");
+    Fr("fr"),
+    En("en"),
+    Ar("ar", rtl = true),
+    Bn("bn"),
+    Zh("zh"),
+    Hr("hr"),
+    Cs("cs"),
+    Da("da"),
+    Nl("nl"),
+    Fil("fil"),
+    Fi("fi"),
+    De("de"),
+    El("el"),
+    He("he", rtl = true),
+    Hi("hi"),
+    Hu("hu"),
+    Id("id"),
+    It("it"),
+    Ja("ja"),
+    Ko("ko"),
+    Mi("mi"),
+    No("no"),
+    Fa("fa", rtl = true),
+    Pl("pl"),
+    Pt("pt"),
+    Ro("ro"),
+    Ru("ru"),
+    Es("es"),
+    Sw("sw"),
+    Sv("sv"),
+    Te("te"),
+    Th("th"),
+    Tr("tr"),
+    Uk("uk"),
+    Vi("vi"),
+    ;
 
     val commaDecimal: Boolean
         get() = code in COMMA_DECIMAL
@@ -89,7 +118,15 @@ data class ModelInfo(
 )
 
 enum class DownloadPhase {
-    DiskCheck, Connect, Transfer, Verify, Index, Done, Cancelled, Failed;
+    DiskCheck,
+    Connect,
+    Transfer,
+    Verify,
+    Index,
+    Done,
+    Cancelled,
+    Failed,
+    ;
 
     fun progressedPast(other: DownloadPhase): Boolean {
         if (this == Cancelled || this == Failed) return false

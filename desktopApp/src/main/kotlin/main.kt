@@ -109,8 +109,8 @@ fun main(args: Array<String>) {
                         App(
                             // SideEffect: App reports the resolved theme during
                             // composition, so the write has to land after it.
-                            onThemeChanged = { isDark -> SideEffect { dark = isDark } },
-                            onLayoutDirectionChanged = { isRtl -> SideEffect { rtl = isRtl } },
+                            onThemeChange = { isDark -> SideEffect { dark = isDark } },
+                            onLayoutDirectionChange = { isRtl -> SideEffect { rtl = isRtl } },
                             onQuit = ::exitApplication,
                             forceOnboarding = forceOnboarding,
                         )

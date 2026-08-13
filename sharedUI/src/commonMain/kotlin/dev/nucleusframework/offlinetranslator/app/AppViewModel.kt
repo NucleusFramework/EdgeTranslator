@@ -5,19 +5,20 @@ import androidx.navigation3.runtime.NavBackStack
 import dev.nucleusframework.offlinetranslator.data.AppStore
 import dev.nucleusframework.offlinetranslator.data.HistoryStore
 import dev.nucleusframework.offlinetranslator.data.seedData
+import dev.nucleusframework.offlinetranslator.di.Io
 import dev.nucleusframework.offlinetranslator.domain.DownloadError
 import dev.nucleusframework.offlinetranslator.domain.DownloadFailedException
 import dev.nucleusframework.offlinetranslator.domain.DownloadLog
 import dev.nucleusframework.offlinetranslator.domain.DownloadPhase
 import dev.nucleusframework.offlinetranslator.domain.DownloadState
-import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
 import dev.nucleusframework.offlinetranslator.domain.HistoryItem
-import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LangRole
+import dev.nucleusframework.offlinetranslator.domain.Languages
+import dev.nucleusframework.offlinetranslator.domain.LlmModel
+import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
 import dev.nucleusframework.offlinetranslator.domain.filterHistory
 import dev.nucleusframework.offlinetranslator.domain.newId
 import dev.nucleusframework.offlinetranslator.domain.replaceTerm
-import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
 import dev.nucleusframework.offlinetranslator.engine.DownloadedModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModel
@@ -30,11 +31,11 @@ import dev.nucleusframework.offlinetranslator.engine.PiperVoiceSpec
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.engine.SilentMic
 import dev.nucleusframework.offlinetranslator.engine.SilentTts
-import dev.nucleusframework.offlinetranslator.engine.TtsSpeaker
+import dev.nucleusframework.offlinetranslator.engine.TranslationMode
 import dev.nucleusframework.offlinetranslator.engine.TranslationRequest
 import dev.nucleusframework.offlinetranslator.engine.TranslationResult
 import dev.nucleusframework.offlinetranslator.engine.Translator
-import dev.nucleusframework.offlinetranslator.di.Io
+import dev.nucleusframework.offlinetranslator.engine.TtsSpeaker
 import dev.nucleusframework.offlinetranslator.platform.Platform
 import dev.nucleusframework.offlinetranslator.platform.systemUiLanguage
 import dev.nucleusframework.offlinetranslator.translation.MicPhase
@@ -90,6 +91,7 @@ class AppViewModel(
     }
 
     private val job = SupervisorJob()
+
     @StructuredScope
     private val scope = CoroutineScope(job + dispatcher)
 
@@ -104,6 +106,7 @@ class AppViewModel(
     private var saveJob: Job? = null
     private var downloadJob: Job? = null
     private var translateJob: Job? = null
+    private var proofreadJob: Job? = null
     private var recordJob: Job? = null
     private var speakJob: Job? = null
     private var voiceJob: Job? = null
@@ -137,15 +140,24 @@ class AppViewModel(
                 tts.close()
                 onQuit()
             }
+
             AppIntent.CopyTranslation -> copyTranslation()
+
+            AppIntent.CopyProofread -> copyProofread()
+
             AppIntent.PauseDownload -> pauseDownload()
+
             AppIntent.ResumeDownload -> startDownload()
+
             AppIntent.CancelDownload -> cancelDownload()
+
             AppIntent.RetryDownload -> {
                 mutate { it.copy(download = DownloadState()) }
                 startDownload()
             }
+
             AppIntent.CompleteDownload -> completeDownload()
+
             AppIntent.ConfirmDialog -> {
                 when (val action = (_state.value.dialog as? AppDialog.Confirm)?.action) {
                     is ConfirmAction.DeleteModel -> deleteModel(action.id)
@@ -154,12 +166,19 @@ class AppViewModel(
                     else -> mutate { confirmAction(it) }
                 }
             }
+
             AppIntent.ToggleMic -> toggleMic()
+
             AppIntent.CancelMic -> cancelMic()
+
             is AppIntent.ToggleSpeak -> toggleSpeak(intent.target)
+
             is AppIntent.DownloadVoices -> startVoiceDownload(intent.langs)
+
             AppIntent.CancelVoiceDownload -> cancelVoiceDownload()
+
             AppIntent.RetryVoiceDownload -> startVoiceDownload(null)
+
             else -> {
                 applyNavigation(intent)
                 mutate { reduce(it, intent) }
@@ -176,7 +195,9 @@ class AppViewModel(
                     startDownload()
                 }
             }
+
             AppIntent.OpenApp -> persist(now = true)
+
             is AppIntent.SelectModel -> {
                 persist(now = true)
                 val catalog = GemmaModels.of(intent.id)
@@ -189,15 +210,25 @@ class AppViewModel(
                     startDownload()
                 }
             }
+
             is AppIntent.SetSourceText -> scheduleTranslate()
+
+            is AppIntent.SetProofreadText -> scheduleProofread()
+
+            AppIntent.ApplyProofread -> Unit
+
             AppIntent.NewTranslation -> cancelMic()
+
             AppIntent.SwapLanguages, is AppIntent.ChooseLanguage -> {
                 scheduleTranslate()
                 persist(now = true)
             }
+
             is AppIntent.SetHistoryQuery,
             AppIntent.DismissMessage, AppIntent.DismissDialog,
-            is AppIntent.DownloadTick, is AppIntent.DownloadPhase -> Unit
+            is AppIntent.DownloadTick, is AppIntent.DownloadPhase,
+            -> Unit
+
             else -> persist(now = true)
         }
     }
@@ -213,7 +244,9 @@ class AppViewModel(
                 installStep = InstallStep.Download.name,
                 model = loaded.model.copy(installed = false, installedAt = null, sha256 = "", path = ""),
             )
-        } else loaded
+        } else {
+            loaded
+        }
         // Re-resolve on every launch: the OS language can change between runs.
         if (data.settings.uiLanguageAuto) {
             data = data.copy(settings = data.settings.copy(uiLanguage = systemUiLanguage()))
@@ -239,7 +272,9 @@ class AppViewModel(
         }
         val voicePicks = if (parseInstallStep(data.installStep) == InstallStep.Voices && tts.available) {
             PiperVoices.defaultPicks(data.settings.uiLanguage)
-        } else emptySet()
+        } else {
+            emptySet()
+        }
         val catalog = GemmaModels.of(data.settings.selectedModel)
         val download = if (modelOnDisk(catalog)) {
             DownloadState(phase = DownloadPhase.Done, bytesDownloaded = catalog.bytes, totalBytes = catalog.bytes)
@@ -281,18 +316,24 @@ class AppViewModel(
 
     private fun reduce(s: AppState, intent: AppIntent): AppState = when (intent) {
         AppIntent.StartInstall -> s.gotoInstall(InstallStep.Download)
+
         AppIntent.InstallBack -> s.gotoInstall(s.installStep().previous())
+
         AppIntent.OpenApp -> s.copy(
             data = s.data.copy(installed = true, installStep = InstallStep.Download.name),
         )
+
         is AppIntent.GoToStep -> {
             val next = s.gotoInstall(intent.step)
             if (intent.step == InstallStep.Voices && next.voicePicks.isEmpty()) {
                 next.copy(voicePicks = PiperVoices.defaultPicks(next.data.settings.uiLanguage))
-            } else next
+            } else {
+                next
+            }
         }
 
         is AppIntent.Navigate -> s.copy(message = null)
+
         AppIntent.NewTranslation -> s.copy(
             translation = s.translation.copy(
                 sourceText = "",
@@ -315,9 +356,12 @@ class AppViewModel(
             val source = t.targetLang
             val target = if (Languages.isAuto(t.sourceLang)) {
                 if (t.targetLang == "en") "fr" else "en"
-            } else t.sourceLang
+            } else {
+                t.sourceLang
+            }
             s.withLangs(source, target)
         }
+
         is AppIntent.SelectAlternative -> {
             val from = s.translation.highlightTerm.ifBlank { s.translation.selectedAlternative }
             val replaced = replaceTerm(s.translation.targetText, from, intent.term)
@@ -327,20 +371,38 @@ class AppViewModel(
                     selectedAlternative = intent.term,
                     highlightTerm = intent.term,
                     alternativesFor = intent.term,
-                )
+                ),
             )
         }
+
         AppIntent.SaveToHistory -> saveToHistory(s)
+
         is AppIntent.SetSourceText -> s.copy(
             translation = s.translation.copy(
                 sourceText = intent.text,
                 status = if (intent.text.isBlank()) TranslationStatus.Idle else TranslationStatus.WaitingEngine,
-            )
+            ),
         )
+
+        is AppIntent.SetProofreadText -> s.copy(
+            proofread = s.proofread.copy(
+                text = intent.text,
+                status = if (intent.text.isBlank()) TranslationStatus.Idle else TranslationStatus.WaitingEngine,
+            ),
+        )
+
+        AppIntent.ApplyProofread -> if (s.proofread.result.isBlank()) {
+            s
+        } else {
+            s.copy(proofread = s.proofread.copy(text = s.proofread.result))
+        }
+
         is AppIntent.ChooseLanguage -> chooseLanguage(s, intent.code, intent.role)
+
         is AppIntent.SetUiLanguage -> s.updateSettings {
             it.copy(uiLanguage = intent.language ?: systemUiLanguage(), uiLanguageAuto = intent.language == null)
         }
+
         is AppIntent.SetLangNameStyle -> s.updateSettings { it.copy(langNames = intent.style) }
 
         is AppIntent.DownloadTick -> s.copy(
@@ -350,63 +412,93 @@ class AppViewModel(
                 totalBytes = if (intent.totalBytes > 0) intent.totalBytes else s.download.totalBytes,
                 speedBps = intent.speedBps,
                 logs = intent.log?.let { (s.download.logs + it).takeLast(12) } ?: s.download.logs,
-            )
+            ),
         )
+
         is AppIntent.DownloadPhase -> s.copy(download = s.download.copy(phase = intent.phase))
 
         is AppIntent.SetHistoryQuery -> s.copy(historyQuery = intent.query)
+
         is AppIntent.SetHistoryFilter -> s.copy(historyFilter = intent.filter)
+
         is AppIntent.OpenHistory -> openHistory(s, intent.id)
+
         is AppIntent.ToggleHistoryPin -> {
             historyStore.togglePin(intent.id)
             s.copy(data = s.data.copy(history = historyStore.all()))
         }
+
         is AppIntent.DeleteHistory -> {
             historyStore.delete(intent.id)
             s.copy(data = s.data.copy(history = historyStore.all()))
         }
+
         AppIntent.ClearHistory -> s.copy(dialog = AppDialog.Confirm(ConfirmAction.PurgeHistory))
 
         is AppIntent.SelectModel -> selectModel(s, intent.id)
+
         is AppIntent.DeleteModel -> s.copy(dialog = AppDialog.Confirm(ConfirmAction.DeleteModel(intent.id)))
+
         is AppIntent.DeleteVoice -> s.copy(dialog = AppDialog.Confirm(ConfirmAction.DeleteVoice(intent.lang)))
+
         AppIntent.ResetApp -> s.copy(dialog = AppDialog.Confirm(ConfirmAction.ResetApp))
+
         is AppIntent.SelectVoice -> {
             val spec = PiperVoices.of(intent.id) ?: return s
             s.updateSettings { it.copy(selectedVoices = it.selectedVoices + (spec.lang to spec.id)) }
         }
+
         is AppIntent.ToggleVoicePick -> {
             val id = PiperVoices.of(intent.code)?.id ?: return s
             val next = if (id in s.voicePicks) s.voicePicks - id else s.voicePicks + id
             s.copy(voicePicks = next)
         }
+
         is AppIntent.SelectAllVoices -> {
-            val add = if (intent.lang != null) PiperVoices.forLang(intent.lang).map { it.id }.toSet()
-            else PiperVoices.defaultIds()
+            val add = if (intent.lang != null) {
+                PiperVoices.forLang(intent.lang).map { it.id }.toSet()
+            } else {
+                PiperVoices.defaultIds()
+            }
             s.copy(voicePicks = s.voicePicks + add)
         }
+
         is AppIntent.ClearVoicePicks -> {
-            if (intent.lang == null) s.copy(voicePicks = emptySet())
-            else s.copy(voicePicks = s.voicePicks.filter { PiperVoices.of(it)?.lang != intent.lang }.toSet())
+            if (intent.lang == null) {
+                s.copy(voicePicks = emptySet())
+            } else {
+                s.copy(voicePicks = s.voicePicks.filter { PiperVoices.of(it)?.lang != intent.lang }.toSet())
+            }
         }
+
         is AppIntent.SetTheme -> s.updateSettings { it.copy(theme = intent.mode) }
+
         is AppIntent.SetAirplane -> s.updateSettings { it.copy(airplane = intent.on) }
+
         is AppIntent.SetKeepHistory -> s.updateSettings { it.copy(keepHistory = intent.on) }
+
         is AppIntent.SetAutoPurge -> {
             val next = s.updateSettings { it.copy(autoPurge = intent.on) }
             if (intent.on) {
                 val cut = clock() - next.data.settings.purgeAfterDays.toLong() * 24 * 60 * 60 * 1000
                 historyStore.purgeOlderThan(cut)
                 next.copy(data = next.data.copy(history = historyStore.all()))
-            } else next
+            } else {
+                next
+            }
         }
+
         is AppIntent.SetLaunchAtLogin -> s.updateSettings { it.copy(launchAtLogin = intent.on) }
+
         AppIntent.ConfirmDialog -> confirmAction(s)
+
         AppIntent.DismissDialog -> s.copy(dialog = AppDialog.Hidden)
+
         AppIntent.DismissMessage -> s.copy(message = null)
 
         AppIntent.Quit,
         AppIntent.CopyTranslation,
+        AppIntent.CopyProofread,
         AppIntent.PauseDownload,
         AppIntent.ResumeDownload,
         AppIntent.CancelDownload,
@@ -417,7 +509,8 @@ class AppViewModel(
         is AppIntent.ToggleSpeak,
         is AppIntent.DownloadVoices,
         AppIntent.CancelVoiceDownload,
-        AppIntent.RetryVoiceDownload -> s
+        AppIntent.RetryVoiceDownload,
+        -> s
     }
 
     private fun selectModel(s: AppState, id: LlmModel): AppState {
@@ -499,8 +592,11 @@ class AppViewModel(
                     data = s.data.copy(history = historyStore.all()),
                 )
             }
+
             is ConfirmAction.DeleteModel -> s.copy(dialog = AppDialog.Hidden)
+
             is ConfirmAction.DeleteVoice -> s.copy(dialog = AppDialog.Hidden)
+
             ConfirmAction.ResetApp -> s.copy(dialog = AppDialog.Hidden)
         }
     }
@@ -554,10 +650,14 @@ class AppViewModel(
             }
             val nextSettings = if (nextModel.installed && nextModel.id != current.data.settings.selectedModel) {
                 current.data.settings.copy(selectedModel = nextModel.id)
-            } else current.data.settings
+            } else {
+                current.data.settings
+            }
             val nextDownload = if (current.data.settings.selectedModel == id) {
                 DownloadState(totalBytes = catalog.bytes)
-            } else current.download
+            } else {
+                current.download
+            }
             current.copy(
                 dialog = AppDialog.Hidden,
                 data = current.data.copy(settings = nextSettings, model = nextModel),
@@ -572,6 +672,8 @@ class AppViewModel(
     private fun unloadEngine() {
         translateJob?.cancel()
         translateJob = null
+        proofreadJob?.cancel()
+        proofreadJob = null
         (translator as? GemmaTranslator)?.close()
     }
 
@@ -580,6 +682,13 @@ class AppViewModel(
         if (text.isBlank()) return
         Platform.copyToClipboard(text)
         mutate { it.copy(translation = it.translation.copy(copiedTarget = text.trim())) }
+    }
+
+    private fun copyProofread() {
+        val text = _state.value.proofread.result
+        if (text.isBlank()) return
+        Platform.copyToClipboard(text)
+        mutate { it.copy(proofread = it.proofread.copy(copiedResult = text.trim())) }
     }
 
     private fun startDownload() {
@@ -593,7 +702,7 @@ class AppViewModel(
                         error = null,
                         phase = DownloadPhase.DiskCheck,
                         totalBytes = catalog.bytes,
-                    )
+                    ),
                 )
             }
             val (dest, already, free) = withContext(ioDispatcher) {
@@ -610,7 +719,7 @@ class AppViewModel(
                         download = it.download.copy(
                             phase = DownloadPhase.Failed,
                             error = DownloadError.DiskFull(free),
-                        )
+                        ),
                     )
                 }
                 return@launch
@@ -659,7 +768,7 @@ class AppViewModel(
                             phase = DownloadPhase.Failed,
                             error = error,
                             paused = false,
-                        )
+                        ),
                     )
                 }
             }
@@ -795,9 +904,13 @@ class AppViewModel(
         if (requested.isEmpty()) return
         if (voiceJob?.isActive == true) {
             mutate {
-                it.copy(voiceDownload = it.voiceDownload.copy(queue = it.voiceDownload.queue + requested.filter { id ->
-                    id != it.voiceDownload.lang && id !in it.voiceDownload.queue
-                }))
+                it.copy(
+                    voiceDownload = it.voiceDownload.copy(
+                        queue = it.voiceDownload.queue + requested.filter { id ->
+                            id != it.voiceDownload.lang && id !in it.voiceDownload.queue
+                        },
+                    ),
+                )
             }
             return
         }
@@ -966,7 +1079,9 @@ class AppViewModel(
                 recordJob = null
                 scope.launch { finishRecording(transcribe = true) }
             }
+
             MicPhase.Processing -> Unit
+
             MicPhase.Idle -> startRecording()
         }
     }
@@ -1073,10 +1188,12 @@ class AppViewModel(
                 TranslationResult.Unavailable -> current.copy(
                     translation = t.copy(status = TranslationStatus.WaitingEngine, targetText = ""),
                 )
+
                 is TranslationResult.Error -> current.copy(
                     translation = t.copy(status = TranslationStatus.Error, error = result.message),
                     message = AppMessage.MicFailed,
                 )
+
                 is TranslationResult.Ok -> current.copy(
                     translation = t.copy(
                         sourceText = result.transcription.ifBlank { result.text },
@@ -1101,7 +1218,7 @@ class AppViewModel(
                         alternatives = emptyList(),
                         status = TranslationStatus.Idle,
                         error = null,
-                    )
+                    ),
                 )
             }
             return
@@ -1125,7 +1242,7 @@ class AppViewModel(
                     status = TranslationStatus.WaitingEngine,
                     error = null,
                     latencyMs = null,
-                )
+                ),
             )
         }
         val result = translator.translate(
@@ -1141,11 +1258,11 @@ class AppViewModel(
                                 targetText = partial,
                                 status = TranslationStatus.WaitingEngine,
                                 error = null,
-                            )
+                            ),
                         )
                     }
                 },
-            )
+            ),
         )
         mutate { current ->
             val t = current.translation
@@ -1157,10 +1274,12 @@ class AppViewModel(
                     error = null,
                     latencyMs = null,
                 )
+
                 is TranslationResult.Error -> t.copy(
                     status = TranslationStatus.Error,
                     error = result.message,
                 )
+
                 is TranslationResult.Ok -> t.copy(
                     targetText = result.text,
                     alternatives = result.alternatives,
@@ -1172,6 +1291,59 @@ class AppViewModel(
                     error = null,
                 )
             }.let { current.copy(translation = it) }
+        }
+    }
+
+    private fun scheduleProofread() {
+        proofreadJob?.cancel()
+        if (_state.value.proofread.text.isBlank()) {
+            mutate { it.copy(proofread = it.proofread.copy(result = "", status = TranslationStatus.Idle, error = null, latencyMs = null)) }
+            return
+        }
+        proofreadJob = scope.launch {
+            if (translateDelayMs > 0) delay(translateDelayMs)
+            runProofread()
+        }
+    }
+
+    private suspend fun runProofread() {
+        val s = _state.value
+        mutate {
+            it.copy(proofread = it.proofread.copy(result = "", status = TranslationStatus.WaitingEngine, error = null, latencyMs = null))
+        }
+        val result = translator.translate(
+            TranslationRequest(
+                text = s.proofread.text,
+                sourceLang = s.translation.sourceLang,
+                targetLang = s.translation.sourceLang,
+                modelPath = s.data.model.path,
+                mode = TranslationMode.Proofread,
+                onPartial = { partial ->
+                    mutate {
+                        it.copy(proofread = it.proofread.copy(result = partial, status = TranslationStatus.WaitingEngine, error = null))
+                    }
+                },
+            ),
+        )
+        mutate { current ->
+            val p = current.proofread
+            when (result) {
+                TranslationResult.Unavailable -> p.copy(
+                    status = TranslationStatus.WaitingEngine,
+                    result = "",
+                    error = null,
+                    latencyMs = null,
+                )
+
+                is TranslationResult.Error -> p.copy(status = TranslationStatus.Error, error = result.message)
+
+                is TranslationResult.Ok -> p.copy(
+                    result = result.text,
+                    status = TranslationStatus.Ready,
+                    latencyMs = result.latencyMs,
+                    error = null,
+                )
+            }.let { current.copy(proofread = it) }
         }
     }
 
@@ -1199,12 +1371,11 @@ class AppViewModel(
         data = data.copy(lastSourceLang = source, lastTargetLang = target),
     )
 
-    private fun AppState.updateSettings(block: (dev.nucleusframework.offlinetranslator.domain.UserSettings) -> dev.nucleusframework.offlinetranslator.domain.UserSettings): AppState =
-        copy(data = data.copy(settings = block(data.settings)))
+    private fun AppState.updateSettings(
+        block: (dev.nucleusframework.offlinetranslator.domain.UserSettings) -> dev.nucleusframework.offlinetranslator.domain.UserSettings,
+    ): AppState = copy(data = data.copy(settings = block(data.settings)))
 }
 
-private fun InstallStep.previous(): InstallStep =
-    InstallStep.entries.getOrElse(ordinal - 1) { this }
+private fun InstallStep.previous(): InstallStep = InstallStep.entries.getOrElse(ordinal - 1) { this }
 
-fun AppState.visibleHistory(): List<HistoryItem> =
-    filterHistory(data.history, historyQuery, historyFilter, Platform.now())
+fun AppState.visibleHistory(): List<HistoryItem> = filterHistory(data.history, historyQuery, historyFilter, Platform.now())

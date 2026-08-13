@@ -52,9 +52,9 @@ import offlinetranslator.sharedui.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SettingsScreen(state: AppState, onIntent: (AppIntent) -> Unit) {
+fun SettingsScreen(state: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 32.dp, vertical = 24.dp),
+        modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 32.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(Modifier.widthIn(max = 920.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(28.dp)) {
@@ -97,12 +97,16 @@ private fun DisplaySection(state: AppState, onIntent: (AppIntent) -> Unit) {
         }
         Divider()
         ChipsRow(stringResource(Res.string.settings_lang_names)) {
-            Chip(stringResource(Res.string.lang_names_system), settings.langNames == LangNameStyle.System) {
-                onIntent(AppIntent.SetLangNameStyle(LangNameStyle.System))
-            }
-            Chip(stringResource(Res.string.lang_names_native), settings.langNames == LangNameStyle.Native) {
-                onIntent(AppIntent.SetLangNameStyle(LangNameStyle.Native))
-            }
+            Chip(
+                stringResource(Res.string.lang_names_system),
+                selected = settings.langNames == LangNameStyle.System,
+                onClick = { onIntent(AppIntent.SetLangNameStyle(LangNameStyle.System)) },
+            )
+            Chip(
+                stringResource(Res.string.lang_names_native),
+                selected = settings.langNames == LangNameStyle.Native,
+                onClick = { onIntent(AppIntent.SetLangNameStyle(LangNameStyle.Native)) },
+            )
         }
     }
 }
@@ -171,8 +175,11 @@ private fun VoicesSection(state: AppState, onIntent: (AppIntent) -> Unit) {
                     },
                     error = if (downloading) state.voiceDownload.error?.text(ui) else null,
                     onClick = {
-                        if (installed) onIntent(AppIntent.SelectVoice(spec.id))
-                        else onIntent(AppIntent.DownloadVoices(listOf(spec.id)))
+                        if (installed) {
+                            onIntent(AppIntent.SelectVoice(spec.id))
+                        } else {
+                            onIntent(AppIntent.DownloadVoices(listOf(spec.id)))
+                        }
                     },
                     onDelete = if (installed && !downloading) {
                         { onIntent(AppIntent.DeleteVoice(spec.id)) }

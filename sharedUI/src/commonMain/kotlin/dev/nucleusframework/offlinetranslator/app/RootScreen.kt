@@ -12,17 +12,14 @@ import dev.nucleusframework.offlinetranslator.install.InstallScreen
 import dev.nucleusframework.offlinetranslator.main.HistoryScreen
 import dev.nucleusframework.offlinetranslator.main.MainShell
 import dev.nucleusframework.offlinetranslator.main.SettingsScreen
+import dev.nucleusframework.offlinetranslator.translation.ProofreadContent
 import dev.nucleusframework.offlinetranslator.translation.TranslationContent
 import dev.nucleusframework.offlinetranslator.ui.AppDialogHost
 import dev.nucleusframework.offlinetranslator.ui.MessageBar
 
 @Composable
-fun RootScreen(
-    state: AppState,
-    backStack: NavBackStack<AppKey>,
-    onIntent: (AppIntent) -> Unit,
-) {
-    Box(Modifier.fillMaxSize()) {
+fun RootScreen(state: AppState, backStack: NavBackStack<AppKey>, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+    Box(modifier.fillMaxSize()) {
         val current = backStack.last()
         if (current.isMain()) {
             MainShell(current, state, onIntent) {
@@ -31,19 +28,17 @@ fun RootScreen(
         } else {
             AppNavDisplay(backStack, state, onIntent)
         }
-        MessageBar(state.message, Modifier.align(Alignment.BottomCenter)) {
-            onIntent(AppIntent.DismissMessage)
-        }
+        MessageBar(
+            message = state.message,
+            onDismiss = { onIntent(AppIntent.DismissMessage) },
+            modifier = Modifier.align(Alignment.BottomCenter),
+        )
         AppDialogHost(state, onIntent)
     }
 }
 
 @Composable
-private fun AppNavDisplay(
-    backStack: NavBackStack<AppKey>,
-    state: AppState,
-    onIntent: (AppIntent) -> Unit,
-) {
+private fun AppNavDisplay(backStack: NavBackStack<AppKey>, state: AppState, onIntent: (AppIntent) -> Unit) {
     NavDisplay(
         backStack = backStack,
         onBack = {
@@ -57,6 +52,7 @@ private fun AppNavDisplay(
             entry<AppKey.Download> { InstallScreen(InstallStep.Download, state, onIntent) }
             entry<AppKey.Voices> { InstallScreen(InstallStep.Voices, state, onIntent) }
             entry<AppKey.Translate> { TranslationContent(state, onIntent) }
+            entry<AppKey.Proofread> { ProofreadContent(state, onIntent) }
             entry<AppKey.History> { HistoryScreen(state, onIntent) }
             entry<AppKey.Settings> { SettingsScreen(state, onIntent) }
         },

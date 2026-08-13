@@ -85,33 +85,60 @@ internal fun decodeSnapshot(text: String): AppData {
         if (line.isEmpty() || line == VERSION) return@forEach
         when {
             line.startsWith("installed=") -> installed = line.substringAfter("=").toBoolean()
+
             line.startsWith("installStep=") -> installStep = line.substringAfter("=")
+
             line.startsWith("ui=") -> ui = runCatching { UiLanguage.valueOf(line.substringAfter("=")) }.getOrDefault(UiLanguage.Fr)
+
             line.startsWith("uiAuto=") -> uiAuto = line.substringAfter("=").toBoolean()
+
             line.startsWith("theme=") -> theme = runCatching { ThemeMode.valueOf(line.substringAfter("=")) }.getOrDefault(ThemeMode.System)
+
             line.startsWith("airplane=") -> airplane = line.substringAfter("=").toBoolean()
+
             line.startsWith("keepHistory=") -> keepHistory = line.substringAfter("=").toBoolean()
+
             line.startsWith("autoPurge=") -> autoPurge = line.substringAfter("=").toBoolean()
+
             line.startsWith("purgeDays=") -> purgeDays = line.substringAfter("=").toIntOrNull() ?: 90
+
             line.startsWith("launchAtLogin=") -> launchAtLogin = line.substringAfter("=").toBoolean()
+
             line.startsWith("threads=") -> threads = line.substringAfter("=").toIntOrNull() ?: 8
+
             line.startsWith("shortcut=") -> shortcut = unb64(line.substringAfter("="))
+
             line.startsWith("modelDir=") -> modelDir = unb64(line.substringAfter("="))
-            line.startsWith("selectedModel=") -> selectedModel = runCatching { LlmModel.valueOf(line.substringAfter("=")) }.getOrDefault(LlmModel.Fast)
-            line.startsWith("langNames=") -> langNames = runCatching { LangNameStyle.valueOf(line.substringAfter("=")) }.getOrDefault(LangNameStyle.System)
+
+            line.startsWith("selectedModel=") ->
+                selectedModel =
+                    runCatching { LlmModel.valueOf(line.substringAfter("=")) }.getOrDefault(LlmModel.Fast)
+
+            line.startsWith("langNames=") ->
+                langNames =
+                    runCatching { LangNameStyle.valueOf(line.substringAfter("=")) }.getOrDefault(LangNameStyle.System)
+
             line.startsWith("selectedVoices=") -> selectedVoices = line.substringAfter("=").split(",")
                 .mapNotNull { pair ->
                     val parts = pair.split("=", limit = 2)
                     if (parts.size == 2 && parts[0].isNotBlank() && parts[1].isNotBlank()) parts[0] to parts[1] else null
                 }
                 .toMap()
+
             line.startsWith("model.id=") -> modelId = runCatching { LlmModel.valueOf(line.substringAfter("=")) }.getOrDefault(LlmModel.Fast)
+
             line.startsWith("model.installed=") -> modelInstalled = line.substringAfter("=").toBoolean()
+
             line.startsWith("model.at=") -> modelAt = line.substringAfter("=").toLongOrNull() ?: 0L
+
             line.startsWith("model.sha=") -> modelSha = line.substringAfter("=")
+
             line.startsWith("model.path=") -> modelPath = unb64(line.substringAfter("="))
+
             line.startsWith("model.checked=") -> modelChecked = line.substringAfter("=").toLongOrNull() ?: 0L
+
             line.startsWith("sourceLang=") -> lastSourceLang = line.substringAfter("=").ifBlank { AUTO_LANG }
+
             line.startsWith("targetLang=") -> lastTargetLang = line.substringAfter("=").ifBlank { "en" }
         }
     }

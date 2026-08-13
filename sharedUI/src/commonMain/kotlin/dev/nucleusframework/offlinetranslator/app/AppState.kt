@@ -5,6 +5,7 @@ import dev.nucleusframework.offlinetranslator.domain.DownloadState
 import dev.nucleusframework.offlinetranslator.domain.HistoryFilter
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
+import dev.nucleusframework.offlinetranslator.translation.ProofreadState
 import dev.nucleusframework.offlinetranslator.translation.TranslationState
 
 enum class InstallStep { Welcome, Download, Voices }
@@ -25,6 +26,7 @@ sealed interface ConfirmAction {
 data class AppState(
     val data: AppData = AppData(),
     val translation: TranslationState = TranslationState.Empty,
+    val proofread: ProofreadState = ProofreadState(),
     val download: DownloadState = DownloadState(),
     val voicePicks: Set<String> = emptySet(),
     val voiceDownload: VoiceDownloadState = VoiceDownloadState(),

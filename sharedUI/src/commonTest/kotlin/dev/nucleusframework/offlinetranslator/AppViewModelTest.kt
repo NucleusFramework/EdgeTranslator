@@ -12,6 +12,8 @@ import dev.nucleusframework.offlinetranslator.data.decodeSnapshot
 import dev.nucleusframework.offlinetranslator.data.encodeSnapshot
 import dev.nucleusframework.offlinetranslator.data.seedData
 import dev.nucleusframework.offlinetranslator.domain.AUTO_LANG
+import dev.nucleusframework.offlinetranslator.domain.DownloadLog
+import dev.nucleusframework.offlinetranslator.domain.DownloadPhase
 import dev.nucleusframework.offlinetranslator.domain.HistoryFilter
 import dev.nucleusframework.offlinetranslator.domain.HistoryItem
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
@@ -20,19 +22,18 @@ import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.paragraphCount
-import dev.nucleusframework.offlinetranslator.domain.DownloadLog
-import dev.nucleusframework.offlinetranslator.domain.DownloadPhase
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
 import dev.nucleusframework.offlinetranslator.engine.DownloadedModel
 import dev.nucleusframework.offlinetranslator.engine.IdleDownloader
-import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.engine.MicRecorder
 import dev.nucleusframework.offlinetranslator.engine.ModelDownloader
+import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.engine.SilentMic
 import dev.nucleusframework.offlinetranslator.engine.SilentTts
-import dev.nucleusframework.offlinetranslator.engine.TtsSpeaker
+import dev.nucleusframework.offlinetranslator.engine.TranslationMode
 import dev.nucleusframework.offlinetranslator.engine.TranslationResult
 import dev.nucleusframework.offlinetranslator.engine.Translator
+import dev.nucleusframework.offlinetranslator.engine.TtsSpeaker
 import dev.nucleusframework.offlinetranslator.engine.UnavailableTranslator
 import dev.nucleusframework.offlinetranslator.engine.buildTranslationPrompt
 import dev.nucleusframework.offlinetranslator.engine.cleanModelOutput
@@ -73,26 +74,25 @@ class AppViewModelTest {
         deleteVoiceFiles: (String) -> Unit = {},
         wipeDownloadDirs: () -> Unit = {},
         migrateVoices: () -> Unit = {},
-    ): AppViewModel =
-        AppViewModel(
-            store = store,
-            historyStore = history,
-            translator = translator,
-            downloader = downloader,
-            dispatcher = dispatcher,
-            ioDispatcher = dispatcher,
-            clock = { now },
-            translateDelayMs = translateDelayMs,
-            mic = mic,
-            tts = tts,
-            modelOnDisk = modelOnDisk,
-            deleteModelFiles = deleteModelFiles,
-            voicesOnDisk = voicesOnDisk,
-            voiceOnDisk = voiceOnDisk,
-            deleteVoiceFiles = deleteVoiceFiles,
-            wipeDownloadDirs = wipeDownloadDirs,
-            migrateVoices = migrateVoices,
-        )
+    ): AppViewModel = AppViewModel(
+        store = store,
+        historyStore = history,
+        translator = translator,
+        downloader = downloader,
+        dispatcher = dispatcher,
+        ioDispatcher = dispatcher,
+        clock = { now },
+        translateDelayMs = translateDelayMs,
+        mic = mic,
+        tts = tts,
+        modelOnDisk = modelOnDisk,
+        deleteModelFiles = deleteModelFiles,
+        voicesOnDisk = voicesOnDisk,
+        voiceOnDisk = voiceOnDisk,
+        deleteVoiceFiles = deleteVoiceFiles,
+        wipeDownloadDirs = wipeDownloadDirs,
+        migrateVoices = migrateVoices,
+    )
 
     @Test
     fun swapExchangesLanguages() {
@@ -187,6 +187,25 @@ class AppViewModelTest {
     }
 
     @Test
+    fun proofreadUsesProofreadModeAndApplyReplacesInput() {
+        val translator = Translator { req ->
+            assertEquals(TranslationMode.Proofread, req.mode)
+            TranslationResult.Ok("corrigé:${req.text}")
+        }
+        val vm = vm(translator = translator, dispatcher = Dispatchers.Unconfined, now = 1L, translateDelayMs = 0)
+        vm.onIntent(AppIntent.SetProofreadText("bonjour"))
+        assertEquals("corrigé:bonjour", vm.state.value.proofread.result)
+        assertEquals(TranslationStatus.Ready, vm.state.value.proofread.status)
+        vm.onIntent(AppIntent.ApplyProofread)
+        assertEquals("corrigé:bonjour", vm.state.value.proofread.text)
+        vm.onIntent(AppIntent.CopyProofread)
+        assertTrue(vm.state.value.proofread.copied)
+        vm.onIntent(AppIntent.SetProofreadText(""))
+        assertEquals("", vm.state.value.proofread.result)
+        assertEquals(TranslationStatus.Idle, vm.state.value.proofread.status)
+    }
+
+    @Test
     fun copyTranslationMarksCopiedUntilTargetChanges() {
         val translator = Translator { req -> TranslationResult.Ok("t:${req.text}") }
         val vm = vm(translator = translator, dispatcher = Dispatchers.Unconfined, now = 1L, translateDelayMs = 0)
@@ -209,7 +228,7 @@ class AppViewModelTest {
             listOf(
                 HistoryItem("1", 10, "fr", "en", "contrat secret", "secret contract", pinned = false),
                 HistoryItem("2", 20, "en", "fr", "hello", "bonjour", pinned = false),
-            )
+            ),
         )
         val vm = vm(history = history, now = 30)
         vm.onIntent(AppIntent.SetHistoryQuery("contrat"))
@@ -227,7 +246,7 @@ class AppViewModelTest {
             listOf(
                 HistoryItem("1", 10, "fr", "en", "a", "b", pinned = true),
                 HistoryItem("2", 20, "en", "fr", "c", "d", pinned = false),
-            )
+            ),
         )
         val vm = vm(history = history, now = 30)
         vm.onIntent(AppIntent.DeleteHistory("2"))
@@ -304,7 +323,7 @@ class AppViewModelTest {
                 seedData().copy(
                     installed = true,
                     model = seedData().model.copy(installed = true, id = LlmModel.Fast),
-                )
+                ),
             ),
         )
         vm.onIntent(AppIntent.SelectModel(LlmModel.Precise))
@@ -323,7 +342,7 @@ class AppViewModelTest {
                     installed = true,
                     model = seedData().model.copy(installed = true, id = LlmModel.Precise),
                     settings = seedData().settings.copy(selectedModel = LlmModel.Precise),
-                )
+                ),
             ),
             modelOnDisk = { it.id == LlmModel.Precise },
         )
@@ -391,7 +410,7 @@ class AppViewModelTest {
             seedData().copy(
                 installed = true,
                 model = seedData().model.copy(installed = true),
-            )
+            ),
         )
         val vm = AppViewModel(
             store = store,
@@ -449,7 +468,7 @@ class AppViewModelTest {
             listOf(
                 HistoryItem("1", 10, "fr", "en", "a", "b", pinned = true),
                 HistoryItem("2", 20, "fr", "en", "c", "d", pinned = false),
-            )
+            ),
         )
         val vm = vm(history = history, now = 30)
         vm.onIntent(AppIntent.SetHistoryFilter(HistoryFilter.Pinned))
@@ -463,7 +482,7 @@ class AppViewModelTest {
                 text = "tacite reconduction",
                 sourceLang = "fr",
                 targetLang = "en",
-            )
+            ),
         )
         assertTrue(prompt.system.contains("French"))
         assertTrue(prompt.system.contains("English"))
@@ -477,7 +496,7 @@ class AppViewModelTest {
                 text = "hola",
                 sourceLang = AUTO_LANG,
                 targetLang = "en",
-            )
+            ),
         )
         assertTrue(prompt.system.contains("professional translator"))
         assertTrue(prompt.system.contains("from any language to English"))
@@ -507,7 +526,7 @@ class AppViewModelTest {
                 text = "🌟 Hello",
                 sourceLang = "en",
                 targetLang = "fr",
-            )
+            ),
         )
         assertFalse(prompt.user.any { it.isSurrogate() })
         assertTrue(prompt.system.contains("[[#0]]"))

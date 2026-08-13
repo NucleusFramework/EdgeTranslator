@@ -22,9 +22,9 @@ import offlinetranslator.sharedui.generated.resources.download_log_ready
 import offlinetranslator.sharedui.generated.resources.download_log_received
 import offlinetranslator.sharedui.generated.resources.download_log_transfer
 import offlinetranslator.sharedui.generated.resources.msg_history_disabled
-import offlinetranslator.sharedui.generated.resources.msg_nothing_to_save
 import offlinetranslator.sharedui.generated.resources.msg_mic_failed
 import offlinetranslator.sharedui.generated.resources.msg_mic_unavailable
+import offlinetranslator.sharedui.generated.resources.msg_nothing_to_save
 import offlinetranslator.sharedui.generated.resources.msg_tts_failed
 import offlinetranslator.sharedui.generated.resources.msg_tts_unavailable
 import org.jetbrains.compose.resources.stringResource

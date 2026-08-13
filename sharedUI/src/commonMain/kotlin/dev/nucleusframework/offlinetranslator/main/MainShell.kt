@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Spellcheck
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.outlined.WifiOff
 import androidx.compose.material3.HorizontalDivider
@@ -15,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,13 +45,19 @@ fun MainShell(
     destination: AppKey,
     state: AppState,
     onIntent: (AppIntent) -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    Column(Modifier.fillMaxSize()) {
+    // ponytail: compose-resources only re-reads a string when its call site recomposes, and the
+    // chrome's args don't change with the language — so key the chrome on it. Overriding
+    // LocalComposeEnvironment would be the general fix, but it's internal to the library.
+    // Not applied to content(): that would reset each screen's scroll position.
+    val lang = state.data.settings.uiLanguage
+    Column(modifier.fillMaxSize()) {
         // On desktop the brand + screen chrome live in the window title bar.
-        if (!LocalHostHasTitleBar.current) OfflineBar(state.offline)
+        if (!LocalHostHasTitleBar.current) key(lang) { OfflineBar(state.offline) }
         Row(Modifier.fillMaxSize()) {
-            NavRail(destination, state, onIntent)
+            key(lang) { NavRail(destination, state, onIntent) }
             Box(Modifier.weight(1f).fillMaxHeight()) { content() }
         }
     }
@@ -62,11 +70,19 @@ private fun OfflineBar(offline: Boolean) {
         Modifier.fillMaxWidth().height(48.dp).background(c.surfaceContainer).padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(stringResource(Res.string.app_name), Modifier.weight(1f), color = c.onSurfaceVariant, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+        Text(
+            stringResource(Res.string.app_name),
+            Modifier.weight(1f),
+            color = c.onSurfaceVariant,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+        )
         LlmAcceleratorBadge(Modifier.padding(end = 12.dp))
-        if (offline) Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            Icon(Icons.Outlined.WifiOff, null, Modifier.size(16.dp), tint = c.onSurfaceVariant)
-            Text(stringResource(Res.string.offline), color = c.onSurfaceVariant, fontSize = 12.sp)
+        if (offline) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Icon(Icons.Outlined.WifiOff, null, Modifier.size(16.dp), tint = c.onSurfaceVariant)
+                Text(stringResource(Res.string.offline), color = c.onSurfaceVariant, fontSize = 12.sp)
+            }
         }
     }
 }
@@ -96,11 +112,14 @@ private fun NavRail(selected: AppKey, state: AppState, onIntent: (AppIntent) -> 
             LocalSystemMeters.current?.invoke(Modifier)
             Text(
                 stringResource(Res.string.nav_backend, acceleratorLabel()),
-                color = c.onSurfaceVariant, fontSize = 11.sp,
+                color = c.onSurfaceVariant,
+                fontSize = 11.sp,
             )
             Text(
                 GemmaModels.of(state.data.model.id).name,
-                color = c.onSurfaceVariant, fontSize = 11.sp, lineHeight = 15.sp,
+                color = c.onSurfaceVariant,
+                fontSize = 11.sp,
+                lineHeight = 15.sp,
             )
         }
     }
@@ -124,6 +143,7 @@ private fun NavRailItem(dest: AppKey, selected: Boolean, onClick: () -> Unit) {
 
 private fun AppKey.icon(): ImageVector = when (this) {
     AppKey.Translate -> Icons.Outlined.Translate
+    AppKey.Proofread -> Icons.Outlined.Spellcheck
     AppKey.History -> Icons.Outlined.History
     AppKey.Settings -> Icons.Outlined.Settings
     else -> Icons.Outlined.Translate

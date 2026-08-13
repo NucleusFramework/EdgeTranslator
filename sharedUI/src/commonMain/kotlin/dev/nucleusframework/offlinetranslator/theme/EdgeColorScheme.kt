@@ -5,6 +5,7 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.materialkolor.rememberDynamicColorScheme
 
@@ -23,8 +24,8 @@ fun rememberEdgeColorScheme(isDark: Boolean = isSystemInDarkTheme()): ColorSchem
 }
 
 @Composable
-fun EdgeTheme(isDark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun EdgeTheme(modifier: Modifier = Modifier, isDark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     MaterialTheme(colorScheme = rememberEdgeColorScheme(isDark)) {
-        Surface(content = content)
+        Surface(modifier = modifier, content = content)
     }
 }

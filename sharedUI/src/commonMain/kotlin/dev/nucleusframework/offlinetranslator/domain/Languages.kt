@@ -59,30 +59,25 @@ object Languages {
 
     fun hasTts(code: String): Boolean = get(code)?.tts == true
 
-    fun label(
-        code: String,
-        ui: UiLanguage,
-        style: LangNameStyle = LangNameStyle.System,
-    ): String = if (isAuto(code)) "Auto" else byCode[code]?.label(ui, style) ?: code.uppercase()
+    fun label(code: String, ui: UiLanguage, style: LangNameStyle = LangNameStyle.System): String =
+        if (isAuto(code)) "Auto" else byCode[code]?.label(ui, style) ?: code.uppercase()
 
-    fun label(code: String, settings: UserSettings): String =
-        label(code, settings.uiLanguage, settings.langNames)
+    fun label(code: String, settings: UserSettings): String = label(code, settings.uiLanguage, settings.langNames)
 
-    fun search(
-        query: String,
-        ui: UiLanguage,
-        includeAuto: Boolean = false,
-        style: LangNameStyle = LangNameStyle.System,
-    ): List<Language> {
+    fun search(query: String, ui: UiLanguage, includeAuto: Boolean = false, style: LangNameStyle = LangNameStyle.System): List<Language> {
         val q = query.trim().lowercase()
-        val found = if (q.isEmpty()) all else all.filter {
-            it.code.contains(q) ||
-                it.nameFr.lowercase().contains(q) ||
-                it.nameEn.lowercase().contains(q) ||
-                it.native.lowercase().contains(q) ||
-                it.label(ui, style).lowercase().contains(q) ||
-                (it.audio && q in AUDIO_QUERY) ||
-                (it.tts && q in TTS_QUERY)
+        val found = if (q.isEmpty()) {
+            all
+        } else {
+            all.filter {
+                it.code.contains(q) ||
+                    it.nameFr.lowercase().contains(q) ||
+                    it.nameEn.lowercase().contains(q) ||
+                    it.native.lowercase().contains(q) ||
+                    it.label(ui, style).lowercase().contains(q) ||
+                    (it.audio && q in AUDIO_QUERY) ||
+                    (it.tts && q in TTS_QUERY)
+            }
         }
         if (!includeAuto) return found
         val auto = Language(AUTO_LANG, "Auto", "Auto", "Auto", audio = true)

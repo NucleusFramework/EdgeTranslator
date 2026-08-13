@@ -40,8 +40,9 @@ internal fun filekitWriteText(path: String, content: String) {
 
 internal fun filekitDelete(path: String): Boolean = try {
     val file = PlatformFile(path)
-    if (!file.exists()) true
-    else {
+    if (!file.exists()) {
+        true
+    } else {
         SystemFileSystem.delete(file.toKotlinxIoPath(), mustExist = false)
         true
     }
@@ -50,8 +51,9 @@ internal fun filekitDelete(path: String): Boolean = try {
 }
 
 internal fun filekitDeleteRecursively(path: String): Boolean = try {
-    if (path.isBlank()) false
-    else {
+    if (path.isBlank()) {
+        false
+    } else {
         deletePathRecursively(PlatformFile(path).toKotlinxIoPath())
         true
     }

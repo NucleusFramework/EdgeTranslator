@@ -77,9 +77,7 @@ kotlin {
             implementation(libs.litertlm.jvm)
             implementation(libs.piper.jni)
         }
-
     }
-
 }
 
 dependencies {

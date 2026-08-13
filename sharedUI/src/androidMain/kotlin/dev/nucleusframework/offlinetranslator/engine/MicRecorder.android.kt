@@ -10,8 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import dev.nucleusframework.offlinetranslator.platform.androidActivity
 import dev.nucleusframework.offlinetranslator.platform.androidContext
-import java.io.ByteArrayOutputStream
-import kotlin.coroutines.resume
 import io.github.santimattius.structured.annotations.StructuredScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +21,8 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import kotlin.coroutines.resume
 
 actual fun createMicRecorder(): MicRecorder = AndroidMic()
 

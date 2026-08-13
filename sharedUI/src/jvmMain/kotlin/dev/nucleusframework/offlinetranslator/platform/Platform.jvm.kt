@@ -4,13 +4,13 @@ import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.isRegularFile
 import io.github.vinceglb.filekit.source
+import kotlinx.coroutines.ensureActive
+import kotlinx.io.buffered
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 import java.io.File
 import java.security.MessageDigest
 import kotlin.coroutines.coroutineContext
-import kotlinx.coroutines.ensureActive
-import kotlinx.io.buffered
 
 private const val FILEKIT_APP_ID = "EdgeTranslator"
 
@@ -70,8 +70,7 @@ internal actual object Platform {
 
     actual fun rename(from: String, to: String): Boolean = filekitRename(from, to)
 
-    actual fun writeAppend(path: String, bytes: ByteArray, offset: Int, length: Int) =
-        filekitWriteAppend(path, bytes, offset, length)
+    actual fun writeAppend(path: String, bytes: ByteArray, offset: Int, length: Int) = filekitWriteAppend(path, bytes, offset, length)
 
     actual fun truncate(path: String) = filekitTruncate(path)
 

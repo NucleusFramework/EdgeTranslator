@@ -21,9 +21,7 @@ import kotlinx.coroutines.withContext
 
 @ContributesBinding(AppScope::class)
 @Inject
-class HuggingFaceModelDownloader(
-    private val httpClient: HttpClient,
-) : ModelDownloader {
+class HuggingFaceModelDownloader(private val httpClient: HttpClient) : ModelDownloader {
 
     override suspend fun download(
         destPath: String,
@@ -91,7 +89,9 @@ class HuggingFaceModelDownloader(
                         val log = if (now - lastLogAt >= 1500) {
                             lastLogAt = now
                             DownloadLog.ReceivedMb((downloaded / 1_000_000).toInt(), (total / 1_000_000).toInt())
-                        } else null
+                        } else {
+                            null
+                        }
                         onProgress(downloaded, total, speed, log)
                         lastTick = now
                         windowBytes = 0

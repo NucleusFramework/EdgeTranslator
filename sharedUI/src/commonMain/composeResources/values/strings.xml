@@ -5,6 +5,7 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Translate</string>
+    <string name="nav_proofread">Proofreading</string>
     <string name="nav_history">History</string>
     <string name="nav_settings">Settings</string>
     <string name="offline">Offline</string>
@@ -248,4 +249,9 @@
     <string name="month_oct">Oct</string>
     <string name="month_nov">Nov</string>
     <string name="month_dec">Dec</string>
+    <string name="proofread_header">Text</string>
+    <string name="proofread_result_header">Correction</string>
+    <string name="proofread_placeholder">Enter the text to proofread…</string>
+    <string name="proofread_result_placeholder">The corrected text will appear here.</string>
+    <string name="action_apply">Apply</string>
 </resources>

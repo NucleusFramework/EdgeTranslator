@@ -4,8 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -99,8 +99,7 @@ private fun sample(): MeterSnapshot {
 private fun pct(value: Float) = "${value.toInt().coerceIn(0, 100)} %"
 
 /** Machine RAM taken over installed, so the remainder is what is available. */
-private fun ramLabel(used: Long, total: Long): String =
-    if (total <= 0L) "—" else "${gib(used)} / ${gib(total)} GB"
+private fun ramLabel(used: Long, total: Long): String = if (total <= 0L) "—" else "${gib(used)} / ${gib(total)} GB"
 
 /** This app's resident memory, in MB with the unit spelled out. */
 private fun appLabel(bytes: Long): String = if (bytes <= 0L) "—" else "${bytes / 1_048_576} MB"
@@ -111,9 +110,8 @@ private fun gib(bytes: Long): String {
     return if (tenths == tenths.toLong().toDouble()) tenths.toLong().toString() else tenths.toString()
 }
 
-private fun loadColor(fraction: Float, low: Color, mid: Color, high: Color): Color =
-    when {
-        fraction < 0.7f -> low
-        fraction < 0.9f -> mid
-        else -> high
-    }
+private fun loadColor(fraction: Float, low: Color, mid: Color, high: Color): Color = when {
+    fraction < 0.7f -> low
+    fraction < 0.9f -> mid
+    else -> high
+}

@@ -1,8 +1,8 @@
 package dev.nucleusframework.offlinetranslator.domain
 
-import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 fun paragraphCount(text: String): Int {
     if (text.isBlank()) return 0
@@ -48,11 +48,7 @@ fun formatEta(remainingBytes: Long, speedBps: Long): String {
     return "${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}"
 }
 
-fun formatHistoryStamp(
-    epochMs: Long,
-    months: List<String>,
-    timeZone: TimeZone = TimeZone.currentSystemDefault(),
-): String {
+fun formatHistoryStamp(epochMs: Long, months: List<String>, timeZone: TimeZone = TimeZone.currentSystemDefault()): String {
     val local = Instant.fromEpochMilliseconds(epochMs).toLocalDateTime(timeZone)
     val month = months.getOrElse(local.month.ordinal) { "?" }
     val hh = local.hour.toString().padStart(2, '0')
@@ -62,12 +58,7 @@ fun formatHistoryStamp(
 
 fun newId(now: Long, salt: Int = kotlin.random.Random.nextInt(100_000)): String = "$now-$salt"
 
-fun filterHistory(
-    items: List<HistoryItem>,
-    query: String,
-    filter: HistoryFilter,
-    now: Long,
-): List<HistoryItem> {
+fun filterHistory(items: List<HistoryItem>, query: String, filter: HistoryFilter, now: Long): List<HistoryItem> {
     val q = query.trim().lowercase()
     return items.asSequence()
         .filter { item ->

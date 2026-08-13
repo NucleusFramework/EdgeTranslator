@@ -5,6 +5,7 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Traduction</string>
+    <string name="nav_proofread">Correction</string>
     <string name="nav_history">Historique</string>
     <string name="nav_settings">Réglages</string>
     <string name="offline">Hors-ligne</string>
@@ -248,4 +249,9 @@
     <string name="month_oct">oct.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">déc.</string>
+    <string name="proofread_header">Texte</string>
+    <string name="proofread_result_header">Correction</string>
+    <string name="proofread_placeholder">Saisissez le texte à corriger…</string>
+    <string name="proofread_result_placeholder">Le texte corrigé apparaîtra ici.</string>
+    <string name="action_apply">Appliquer</string>
 </resources>

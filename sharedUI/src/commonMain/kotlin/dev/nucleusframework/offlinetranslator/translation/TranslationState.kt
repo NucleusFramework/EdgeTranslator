@@ -9,6 +9,20 @@ enum class TranslationStatus { Idle, WaitingEngine, Ready, Error }
 
 enum class MicPhase { Idle, Listening, Processing }
 
+/** Correcteur d'orthographe : même moteur que la traduction, un seul texte. */
+data class ProofreadState(
+    val text: String = "",
+    val result: String = "",
+    val status: TranslationStatus = TranslationStatus.Idle,
+    val latencyMs: Long? = null,
+    val error: String? = null,
+    val copiedResult: String? = null,
+) {
+    val chars: Int get() = text.length
+    val paragraphs: Int get() = paragraphCount(text)
+    val copied: Boolean get() = copiedResult != null && result.trim() == copiedResult
+}
+
 data class TranslationState(
     val sourceLang: String = AUTO_LANG,
     val targetLang: String = "en",
