@@ -723,6 +723,30 @@ private fun dev.nucleusframework.offlinetranslator.ui.SpeakLoadingDialog(target:
     - onIntent: STABLE (function type)
 
 @Composable
+private fun dev.nucleusframework.offlinetranslator.ui.ThemedScrollbar(adapter: androidx.compose.foundation.v2.ScrollbarAdapter, modifier: androidx.compose.ui.Modifier): kotlin.Unit
+  skippable: false
+  restartable: true
+  params:
+    - adapter: UNKNOWN (interface or non-final class; concrete implementation unknown)
+    - modifier: STABLE (marked @Stable or @Immutable)
+
+@Composable
+internal fun dev.nucleusframework.offlinetranslator.ui.VerticalContentScrollbar(state: androidx.compose.foundation.ScrollState, modifier: androidx.compose.ui.Modifier): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - state: STABLE (marked @Stable or @Immutable)
+    - modifier: STABLE (marked @Stable or @Immutable)
+
+@Composable
+internal fun dev.nucleusframework.offlinetranslator.ui.VerticalListScrollbar(state: androidx.compose.foundation.lazy.LazyListState, modifier: androidx.compose.ui.Modifier): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - state: STABLE (marked @Stable or @Immutable)
+    - modifier: STABLE (marked @Stable or @Immutable)
+
+@Composable
 public fun dev.nucleusframework.offlinetranslator.ui.formatBytesUi(bytes: kotlin.Long, ui: dev.nucleusframework.offlinetranslator.domain.UiLanguage): kotlin.String
   skippable: false
   restartable: false

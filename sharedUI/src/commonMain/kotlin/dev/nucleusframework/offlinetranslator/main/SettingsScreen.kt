@@ -49,6 +49,7 @@ import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.platform.systemUiLanguage
 import dev.nucleusframework.offlinetranslator.ui.Chip
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
+import dev.nucleusframework.offlinetranslator.ui.VerticalContentScrollbar
 import dev.nucleusframework.offlinetranslator.ui.formatBytesUi
 import dev.nucleusframework.offlinetranslator.ui.languageLabel
 import dev.nucleusframework.offlinetranslator.ui.text
@@ -68,17 +69,21 @@ fun SettingsScreen(
     onIntent: (AppIntent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 32.dp, vertical = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Column(Modifier.widthIn(max = 920.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(28.dp)) {
-            DisplaySection(settings, onIntent)
-            ModelSection(settings, model, download, onIntent)
-            if (ttsReady) VoicesSection(settings, voiceDownload, sourceLang, targetLang, onIntent)
-            StorageSection(ttsReady)
-            ResetSection(onIntent)
+    val scroll = rememberScrollState()
+    Box(modifier.fillMaxSize()) {
+        Column(
+            Modifier.fillMaxSize().verticalScroll(scroll).padding(horizontal = 32.dp, vertical = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Column(Modifier.widthIn(max = 920.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(28.dp)) {
+                DisplaySection(settings, onIntent)
+                ModelSection(settings, model, download, onIntent)
+                if (ttsReady) VoicesSection(settings, voiceDownload, sourceLang, targetLang, onIntent)
+                StorageSection(ttsReady)
+                ResetSection(onIntent)
+            }
         }
+        VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
     }
 }
 

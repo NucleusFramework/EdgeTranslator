@@ -38,6 +38,7 @@ import dev.nucleusframework.offlinetranslator.platform.Platform
 import dev.nucleusframework.offlinetranslator.ui.Chip
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
+import dev.nucleusframework.offlinetranslator.ui.VerticalContentScrollbar
 import dev.nucleusframework.offlinetranslator.ui.formatHistoryStampUi
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.cd_delete
@@ -120,11 +121,15 @@ fun HistoryScreen(data: AppData, query: String, filter: HistoryFilter, onIntent:
                     Text(stringResource(Res.string.history_empty), color = c.onSurfaceVariant, fontSize = 14.sp)
                 }
             } else {
-                Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
-                    rows.forEach { e ->
-                        HistoryRow(e, onIntent)
-                        HorizontalDivider(color = c.surfaceContainerHighest)
+                val scroll = rememberScrollState()
+                Box(Modifier.weight(1f).fillMaxWidth()) {
+                    Column(Modifier.fillMaxSize().verticalScroll(scroll)) {
+                        rows.forEach { e ->
+                            HistoryRow(e, onIntent)
+                            HorizontalDivider(color = c.surfaceContainerHighest)
+                        }
                     }
+                    VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
                 }
             }
         }

@@ -59,6 +59,7 @@ import dev.nucleusframework.offlinetranslator.ui.Chip
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
+import dev.nucleusframework.offlinetranslator.ui.VerticalContentScrollbar
 import dev.nucleusframework.offlinetranslator.ui.languageLabel
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.action_cancel
@@ -191,32 +192,35 @@ private fun SourcePanel(
             ListeningPane(state, onIntent, Modifier.weight(1f).fillMaxWidth())
         } else {
             val focusRequester = remember { FocusRequester() }
+            val scroll = rememberScrollState()
             LaunchedEffect(Unit) { focusRequester.requestFocus() }
-            BasicTextField(
-                value = state.sourceText,
-                onValueChange = { onIntent(AppIntent.SetSourceText(it)) },
-                textStyle = TextStyle(color = c.onSurface, fontSize = 18.sp, lineHeight = 28.sp),
-                cursorBrush = SolidColor(c.primary),
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(20.dp)
-                    .focusRequester(focusRequester),
-                decorationBox = { inner ->
-                    Box {
-                        if (state.sourceText.isEmpty()) {
-                            Text(
-                                stringResource(Res.string.source_placeholder),
-                                color = c.onSurfaceVariant,
-                                fontSize = 18.sp,
-                                lineHeight = 28.sp,
-                            )
+            Box(Modifier.weight(1f).fillMaxWidth()) {
+                BasicTextField(
+                    value = state.sourceText,
+                    onValueChange = { onIntent(AppIntent.SetSourceText(it)) },
+                    textStyle = TextStyle(color = c.onSurface, fontSize = 18.sp, lineHeight = 28.sp),
+                    cursorBrush = SolidColor(c.primary),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(scroll)
+                        .padding(20.dp)
+                        .focusRequester(focusRequester),
+                    decorationBox = { inner ->
+                        Box {
+                            if (state.sourceText.isEmpty()) {
+                                Text(
+                                    stringResource(Res.string.source_placeholder),
+                                    color = c.onSurfaceVariant,
+                                    fontSize = 18.sp,
+                                    lineHeight = 28.sp,
+                                )
+                            }
+                            inner()
                         }
-                        inner()
-                    }
-                },
-            )
+                    },
+                )
+                VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
+            }
         }
         HorizontalDivider(color = c.surfaceContainerHighest)
         Row(
@@ -367,13 +371,16 @@ private fun TargetPanel(
             val scroll = rememberScrollState()
             val shown = if (streaming) state.targetText + "▍" else state.targetText
             LaunchedEffect(shown) { scroll.animateScrollTo(scroll.maxValue) }
-            Text(
-                highlighted(shown, state.highlightTerm, c.primaryContainer),
-                Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(20.dp),
-                color = c.onSurface,
-                fontSize = 18.sp,
-                lineHeight = 28.sp,
-            )
+            Box(Modifier.weight(1f).fillMaxWidth()) {
+                Text(
+                    highlighted(shown, state.highlightTerm, c.primaryContainer),
+                    Modifier.fillMaxSize().verticalScroll(scroll).padding(20.dp),
+                    color = c.onSurface,
+                    fontSize = 18.sp,
+                    lineHeight = 28.sp,
+                )
+                VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
+            }
         }
 
         if (state.alternatives.isNotEmpty()) {

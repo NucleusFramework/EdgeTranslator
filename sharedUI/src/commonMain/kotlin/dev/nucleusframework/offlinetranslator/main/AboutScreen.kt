@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -44,6 +46,8 @@ import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.platform.Platform
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
+import dev.nucleusframework.offlinetranslator.ui.VerticalContentScrollbar
+import dev.nucleusframework.offlinetranslator.ui.VerticalListScrollbar
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.about_author
 import offlinetranslator.sharedui.generated.resources.about_libraries
@@ -64,11 +68,13 @@ fun AboutScreen(modifier: Modifier = Modifier) {
         Res.readBytes("files/aboutlibraries.json").decodeToString()
     }
     var showLicense by remember { mutableStateOf(false) }
+    val listState = rememberLazyListState()
 
-    Box(modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+    Box(modifier.fillMaxSize()) {
         LibrariesContainer(
             libraries = libraries,
-            modifier = Modifier.widthIn(max = 920.dp).fillMaxSize(),
+            modifier = Modifier.widthIn(max = 920.dp).fillMaxSize().align(Alignment.TopCenter),
+            lazyListState = listState,
             contentPadding = PaddingValues(horizontal = 32.dp, vertical = 24.dp),
             licenseDialogConfirmText = stringResource(Res.string.action_ok),
             header = {
@@ -76,6 +82,10 @@ fun AboutScreen(modifier: Modifier = Modifier) {
                     AboutHeader(onLicenseClick = { showLicense = true })
                 }
             },
+        )
+        VerticalListScrollbar(
+            listState,
+            Modifier.align(Alignment.CenterEnd).fillMaxHeight(),
         )
     }
 
@@ -142,14 +152,18 @@ private fun LicenseSheet(onDismiss: () -> Unit) {
             Column(Modifier.widthIn(max = 640.dp).fillMaxWidth().padding(24.dp).heightIn(max = 560.dp)) {
                 Text(LICENSE_NAME, fontSize = 20.sp, color = c.onSurface)
                 Spacer(Modifier.height(16.dp))
-                Text(
-                    text,
-                    Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState()),
-                    color = c.onSurfaceVariant,
-                    fontSize = 12.sp,
-                    fontFamily = FontFamily.Monospace,
-                    lineHeight = 16.sp,
-                )
+                val scroll = rememberScrollState()
+                Box(Modifier.weight(1f, fill = false).fillMaxWidth()) {
+                    Text(
+                        text,
+                        Modifier.fillMaxWidth().verticalScroll(scroll).padding(end = 12.dp),
+                        color = c.onSurfaceVariant,
+                        fontSize = 12.sp,
+                        fontFamily = FontFamily.Monospace,
+                        lineHeight = 16.sp,
+                    )
+                    VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
+                }
                 Spacer(Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     FilledPill(stringResource(Res.string.action_ok), onClick = onDismiss)

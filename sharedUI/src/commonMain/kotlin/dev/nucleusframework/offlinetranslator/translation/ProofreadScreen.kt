@@ -31,6 +31,7 @@ import dev.nucleusframework.offlinetranslator.domain.formatLatency
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
+import dev.nucleusframework.offlinetranslator.ui.VerticalContentScrollbar
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.action_apply
 import offlinetranslator.sharedui.generated.resources.action_copied
@@ -79,32 +80,35 @@ private fun InputPanel(state: ProofreadState, onIntent: (AppIntent) -> Unit, mod
         }
         HorizontalDivider(color = c.surfaceContainerHighest)
         val focusRequester = remember { FocusRequester() }
+        val scroll = rememberScrollState()
         LaunchedEffect(Unit) { focusRequester.requestFocus() }
-        BasicTextField(
-            value = state.text,
-            onValueChange = { onIntent(AppIntent.SetProofreadText(it)) },
-            textStyle = TextStyle(color = c.onSurface, fontSize = 18.sp, lineHeight = 28.sp),
-            cursorBrush = SolidColor(c.primary),
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(20.dp)
-                .focusRequester(focusRequester),
-            decorationBox = { inner ->
-                Box {
-                    if (state.text.isEmpty()) {
-                        Text(
-                            stringResource(Res.string.proofread_placeholder),
-                            color = c.onSurfaceVariant,
-                            fontSize = 18.sp,
-                            lineHeight = 28.sp,
-                        )
+        Box(Modifier.weight(1f).fillMaxWidth()) {
+            BasicTextField(
+                value = state.text,
+                onValueChange = { onIntent(AppIntent.SetProofreadText(it)) },
+                textStyle = TextStyle(color = c.onSurface, fontSize = 18.sp, lineHeight = 28.sp),
+                cursorBrush = SolidColor(c.primary),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scroll)
+                    .padding(20.dp)
+                    .focusRequester(focusRequester),
+                decorationBox = { inner ->
+                    Box {
+                        if (state.text.isEmpty()) {
+                            Text(
+                                stringResource(Res.string.proofread_placeholder),
+                                color = c.onSurfaceVariant,
+                                fontSize = 18.sp,
+                                lineHeight = 28.sp,
+                            )
+                        }
+                        inner()
                     }
-                    inner()
-                }
-            },
-        )
+                },
+            )
+            VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
+        }
         HorizontalDivider(color = c.surfaceContainerHighest)
         Row(
             Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 20.dp),
@@ -154,13 +158,16 @@ private fun ResultPanel(
             val scroll = rememberScrollState()
             val shown = if (streaming) state.result + "▍" else state.result
             LaunchedEffect(shown) { scroll.animateScrollTo(scroll.maxValue) }
-            Text(
-                shown,
-                Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(20.dp),
-                color = c.onSurface,
-                fontSize = 18.sp,
-                lineHeight = 28.sp,
-            )
+            Box(Modifier.weight(1f).fillMaxWidth()) {
+                Text(
+                    shown,
+                    Modifier.fillMaxSize().verticalScroll(scroll).padding(20.dp),
+                    color = c.onSurface,
+                    fontSize = 18.sp,
+                    lineHeight = 28.sp,
+                )
+                VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
+            }
         }
         Row(
             Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 20.dp),
