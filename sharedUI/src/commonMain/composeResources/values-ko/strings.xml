@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">언어 바꾸기</string>
     <string name="cd_dictate">받아쓰기</string>
     <string name="cd_pick_image">이미지 번역</string>
+    <string name="drop_text_or_image">번역할 텍스트나 이미지를 놓으세요</string>
     <string name="cd_speak">소리 내어 읽기</string>
     <string name="cd_speak_stop">읽기 중지</string>
     <string name="msg_tts_unavailable">설정에서 이 음성을 다운로드하세요.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">사용할 수 있는 마이크가 없습니다.</string>
     <string name="msg_mic_failed">오디오를 녹음하지 못했습니다.</string>
+    <string name="msg_drop_unsupported">이 파일 형식은 번역할 수 없습니다.</string>
     <string name="cd_pin">고정</string>
     <string name="cd_unpin">고정 해제</string>
     <string name="cd_delete">삭제</string>

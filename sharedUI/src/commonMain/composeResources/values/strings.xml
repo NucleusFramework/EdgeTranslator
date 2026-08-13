@@ -39,6 +39,7 @@
     <string name="cd_swap_languages">Swap languages</string>
     <string name="cd_dictate">Dictate</string>
     <string name="cd_pick_image">Translate an image</string>
+    <string name="drop_text_or_image">Drop text or an image to translate</string>
     <string name="cd_speak">Read aloud</string>
     <string name="cd_speak_stop">Stop reading</string>
     <string name="msg_tts_unavailable">Download this voice in Settings.</string>
@@ -52,6 +53,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">No microphone available.</string>
     <string name="msg_mic_failed">Could not record audio.</string>
+    <string name="msg_drop_unsupported">This file type can't be translated.</string>
     <string name="cd_pin">Pin</string>
     <string name="cd_unpin">Unpin</string>
     <string name="cd_delete">Delete</string>

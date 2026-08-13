@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Palitan ang mga wika</string>
     <string name="cd_dictate">Idikta</string>
     <string name="cd_pick_image">Isalin ang larawan</string>
+    <string name="drop_text_or_image">I-drop ang teksto o larawan upang isalin</string>
     <string name="cd_speak">Basahin nang malakas</string>
     <string name="cd_speak_stop">Ihinto ang pagbasa</string>
     <string name="msg_tts_unavailable">I-download ang boses na ito sa Mga setting.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Walang available na mikropono.</string>
     <string name="msg_mic_failed">Hindi marekord ang audio.</string>
+    <string name="msg_drop_unsupported">Hindi maisalin ang uri ng file na ito.</string>
     <string name="cd_pin">I-pin</string>
     <string name="cd_unpin">I-unpin</string>
     <string name="cd_delete">Tanggalin</string>

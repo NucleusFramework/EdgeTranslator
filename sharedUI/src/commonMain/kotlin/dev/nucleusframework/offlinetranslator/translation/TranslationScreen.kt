@@ -1,9 +1,12 @@
 package dev.nucleusframework.offlinetranslator.translation
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -39,6 +42,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draganddrop.DragAndDropEvent
+import androidx.compose.ui.draganddrop.DragAndDropTarget
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -61,6 +66,7 @@ import dev.nucleusframework.offlinetranslator.domain.formatLatency
 import dev.nucleusframework.offlinetranslator.domain.paragraphCount
 import dev.nucleusframework.offlinetranslator.engine.MIC_BARS
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
+import dev.nucleusframework.offlinetranslator.platform.readDropPayload
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -80,6 +86,7 @@ import offlinetranslator.sharedui.generated.resources.action_saved
 import offlinetranslator.sharedui.generated.resources.alternatives_header
 import offlinetranslator.sharedui.generated.resources.cd_dictate
 import offlinetranslator.sharedui.generated.resources.cd_pick_image
+import offlinetranslator.sharedui.generated.resources.drop_text_or_image
 import offlinetranslator.sharedui.generated.resources.image_reading
 import offlinetranslator.sharedui.generated.resources.cd_speak
 import offlinetranslator.sharedui.generated.resources.cd_speak_loading
@@ -193,6 +200,7 @@ private fun LanguageHeader(settings: UserSettings, code: String, role: LangRole,
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SourcePanel(
     state: SourcePanelState,
@@ -204,7 +212,55 @@ private fun SourcePanel(
     val c = MaterialTheme.colorScheme
     val chars = state.text.length
     val paragraphs = paragraphCount(state.text)
-    Column(modifier.fillMaxSize().clip(RoundedCornerShape(20.dp)).border(1.dp, c.outlineVariant, RoundedCornerShape(20.dp))) {
+    val shape = RoundedCornerShape(20.dp)
+    var hovering by remember { mutableStateOf(false) }
+    val acceptDrop = !state.imageBusy && state.micPhase == MicPhase.Idle
+    val dropTarget = remember(onIntent) {
+        object : DragAndDropTarget {
+            override fun onEntered(event: DragAndDropEvent) {
+                hovering = true
+            }
+
+            override fun onExited(event: DragAndDropEvent) {
+                hovering = false
+            }
+
+            override fun onEnded(event: DragAndDropEvent) {
+                hovering = false
+            }
+
+            override fun onDrop(event: DragAndDropEvent): Boolean {
+                hovering = false
+                val payload = readDropPayload(event)
+                val image = payload.image
+                val text = payload.text
+                return when {
+                    payload.unsupported -> {
+                        onIntent(AppIntent.DropUnsupported)
+                        true
+                    }
+                    image != null && image.isNotEmpty() -> {
+                        onIntent(AppIntent.TranslateDroppedImage(image))
+                        true
+                    }
+                    !text.isNullOrBlank() -> {
+                        onIntent(AppIntent.SetSourceText(text))
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+    }
+    val stroke by animateColorAsState(if (hovering) c.primary else c.outlineVariant)
+    Box(
+        modifier
+            .fillMaxSize()
+            .clip(shape)
+            .border(if (hovering) 2.dp else 1.dp, stroke, shape)
+            .dragAndDropTarget(shouldStartDragAndDrop = { acceptDrop }, target = dropTarget),
+    ) {
+        Column(Modifier.fillMaxSize()) {
         Box(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 14.dp), Alignment.CenterStart) {
             LanguageHeader(settings, state.lang, LangRole.Source, onIntent)
         }
@@ -294,6 +350,20 @@ private fun SourcePanel(
                     else -> c.outline
                 },
             )
+        }
+        }
+        if (hovering) {
+            Box(
+                Modifier.fillMaxSize().background(c.primary.copy(alpha = 0.10f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    stringResource(Res.string.drop_text_or_image),
+                    color = c.primary,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
         }
     }
 }

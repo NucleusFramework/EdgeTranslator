@@ -39,6 +39,7 @@
     <string name="cd_swap_languages">Sprachen tauschen</string>
     <string name="cd_dictate">Diktieren</string>
     <string name="cd_pick_image">Bild übersetzen</string>
+    <string name="drop_text_or_image">Text oder Bild zum Übersetzen ablegen</string>
     <string name="cd_speak">Vorlesen</string>
     <string name="cd_speak_stop">Vorlesen beenden</string>
     <string name="msg_tts_unavailable">Laden Sie diese Stimme in den Einstellungen herunter.</string>
@@ -52,6 +53,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Kein Mikrofon verfügbar.</string>
     <string name="msg_mic_failed">Aufnahme nicht möglich.</string>
+    <string name="msg_drop_unsupported">Dieser Dateityp kann nicht übersetzt werden.</string>
     <string name="cd_pin">Anheften</string>
     <string name="cd_unpin">Lösen</string>
     <string name="cd_delete">Löschen</string>

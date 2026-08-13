@@ -25,6 +25,7 @@ import offlinetranslator.sharedui.generated.resources.msg_history_disabled
 import offlinetranslator.sharedui.generated.resources.msg_mic_failed
 import offlinetranslator.sharedui.generated.resources.msg_mic_unavailable
 import offlinetranslator.sharedui.generated.resources.msg_nothing_to_save
+import offlinetranslator.sharedui.generated.resources.msg_drop_unsupported
 import offlinetranslator.sharedui.generated.resources.msg_tts_failed
 import offlinetranslator.sharedui.generated.resources.msg_tts_unavailable
 import org.jetbrains.compose.resources.stringResource
@@ -37,6 +38,7 @@ fun AppMessage.text(): String = when (this) {
     AppMessage.MicFailed -> stringResource(Res.string.msg_mic_failed)
     AppMessage.TtsUnavailable -> stringResource(Res.string.msg_tts_unavailable)
     AppMessage.TtsFailed -> stringResource(Res.string.msg_tts_failed)
+    AppMessage.DropUnsupported -> stringResource(Res.string.msg_drop_unsupported)
 }
 
 @Composable

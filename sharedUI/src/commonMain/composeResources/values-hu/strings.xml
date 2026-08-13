@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Nyelvek cseréje</string>
     <string name="cd_dictate">Diktálás</string>
     <string name="cd_pick_image">Kép fordítása</string>
+    <string name="drop_text_or_image">Húzzon ide szöveget vagy képet a fordításhoz</string>
     <string name="cd_speak">Felolvasás</string>
     <string name="cd_speak_stop">Felolvasás leállítása</string>
     <string name="msg_tts_unavailable">Töltse le ezt a hangot a Beállításokban.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Nincs elérhető mikrofon.</string>
     <string name="msg_mic_failed">A hangot nem sikerült rögzíteni.</string>
+    <string name="msg_drop_unsupported">Ez a fájltípus nem fordítható.</string>
     <string name="cd_pin">Rögzítés</string>
     <string name="cd_unpin">Rögzítés feloldása</string>
     <string name="cd_delete">Törlés</string>

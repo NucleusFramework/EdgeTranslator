@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Byt sprog</string>
     <string name="cd_dictate">Dikter</string>
     <string name="cd_pick_image">Oversæt et billede</string>
+    <string name="drop_text_or_image">Slip tekst eller et billede for at oversætte</string>
     <string name="cd_speak">Læs højt</string>
     <string name="cd_speak_stop">Stop oplæsning</string>
     <string name="msg_tts_unavailable">Download denne stemme i Indstillinger.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Ingen mikrofon tilgængelig.</string>
     <string name="msg_mic_failed">Lyden kunne ikke optages.</string>
+    <string name="msg_drop_unsupported">Denne filtype kan ikke oversættes.</string>
     <string name="cd_pin">Fastgør</string>
     <string name="cd_unpin">Frigør</string>
     <string name="cd_delete">Slet</string>

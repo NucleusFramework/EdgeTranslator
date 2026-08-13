@@ -39,6 +39,7 @@
     <string name="cd_swap_languages">交换语言</string>
     <string name="cd_dictate">口述</string>
     <string name="cd_pick_image">翻译图片</string>
+    <string name="drop_text_or_image">拖放文本或图片进行翻译</string>
     <string name="cd_speak">朗读</string>
     <string name="cd_speak_stop">停止朗读</string>
     <string name="msg_tts_unavailable">请在设置中下载此语音。</string>
@@ -52,6 +53,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">没有可用的麦克风。</string>
     <string name="msg_mic_failed">无法录制音频。</string>
+    <string name="msg_drop_unsupported">无法翻译此类型的文件。</string>
     <string name="cd_pin">固定</string>
     <string name="cd_unpin">取消固定</string>
     <string name="cd_delete">删除</string>

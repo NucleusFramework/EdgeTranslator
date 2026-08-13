@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">החלפת שפות</string>
     <string name="cd_dictate">הכתבה</string>
     <string name="cd_pick_image">תרגום תמונה</string>
+    <string name="drop_text_or_image">שחררו טקסט או תמונה לתרגום</string>
     <string name="cd_speak">הקראה</string>
     <string name="cd_speak_stop">עצירת הקראה</string>
     <string name="msg_tts_unavailable">הורידו את הקול הזה בהגדרות.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">אין מיקרופון זמין.</string>
     <string name="msg_mic_failed">לא ניתן היה להקליט שמע.</string>
+    <string name="msg_drop_unsupported">לא ניתן לתרגם סוג קובץ זה.</string>
     <string name="cd_pin">נעיצה</string>
     <string name="cd_unpin">ביטול נעיצה</string>
     <string name="cd_delete">מחיקה</string>

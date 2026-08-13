@@ -179,6 +179,8 @@ class AppViewModel(
 
             AppIntent.TranslateImage -> translateImage()
 
+            is AppIntent.TranslateDroppedImage -> translateImage(intent.bytes)
+
             is AppIntent.ToggleSpeak -> toggleSpeak(intent.target)
 
             is AppIntent.DownloadVoices -> startVoiceDownload(intent.langs)
@@ -439,6 +441,8 @@ class AppViewModel(
 
         is AppIntent.SetLangNameStyle -> s.updateSettings { it.copy(langNames = intent.style) }
 
+        AppIntent.DropUnsupported -> s.copy(message = AppMessage.DropUnsupported)
+
         is AppIntent.SetLlmBackend -> s.updateSettings { it.copy(backend = intent.backend) }
 
         is AppIntent.DownloadTick -> s.copy(
@@ -546,6 +550,7 @@ class AppViewModel(
         AppIntent.ToggleMic,
         AppIntent.CancelMic,
         AppIntent.TranslateImage,
+        is AppIntent.TranslateDroppedImage,
         is AppIntent.ToggleSpeak,
         is AppIntent.DownloadVoices,
         AppIntent.PauseVoiceDownload,
@@ -1252,17 +1257,21 @@ class AppViewModel(
         applyReadResult(result, failMessage = AppMessage.MicFailed)
     }
 
-    private fun translateImage() {
+    private fun translateImage(bytes: ByteArray? = null) {
         val s = _state.value
         if (!s.data.model.installed || s.translation.micPhase != MicPhase.Idle || s.translation.imageBusy) return
         recordJob?.cancel()
         recordJob = scope.launch {
-            val image: ByteArray? = try {
-                imagePicker.pick()
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                throw e
-            } catch (_: Exception) {
-                null
+            val image: ByteArray? = if (bytes != null) {
+                bytes.takeIf { it.isNotEmpty() }
+            } else {
+                try {
+                    imagePicker.pick()
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (_: Exception) {
+                    null
+                }
             }
             if (image == null || image.isEmpty()) return@launch
             mutate {

@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Prohodit jazyky</string>
     <string name="cd_dictate">Diktovat</string>
     <string name="cd_pick_image">Přeložit obrázek</string>
+    <string name="drop_text_or_image">Přetáhněte text nebo obrázek k překladu</string>
     <string name="cd_speak">Číst nahlas</string>
     <string name="cd_speak_stop">Zastavit čtení</string>
     <string name="msg_tts_unavailable">Tento hlas stáhněte v Nastavení.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Není k dispozici žádný mikrofon.</string>
     <string name="msg_mic_failed">Zvuk se nepodařilo nahrát.</string>
+    <string name="msg_drop_unsupported">Tento typ souboru nelze přeložit.</string>
     <string name="cd_pin">Připnout</string>
     <string name="cd_unpin">Odepnout</string>
     <string name="cd_delete">Smazat</string>

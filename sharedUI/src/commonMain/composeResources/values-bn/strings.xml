@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">ভাষা অদলবদল</string>
     <string name="cd_dictate">বলা</string>
     <string name="cd_pick_image">ছবি অনুবাদ করুন</string>
+    <string name="drop_text_or_image">অনুবাদের জন্য লেখা বা ছবি ছেড়ে দিন</string>
     <string name="cd_speak">জোরে পড়ুন</string>
     <string name="cd_speak_stop">পড়া বন্ধ করুন</string>
     <string name="msg_tts_unavailable">সেটিংসে এই কণ্ঠ ডাউনলোড করুন।</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">কোনো মাইক্রোফোন নেই।</string>
     <string name="msg_mic_failed">অডিও রেকর্ড হয়নি।</string>
+    <string name="msg_drop_unsupported">এই ধরনের ফাইল অনুবাদ করা যায় না।</string>
     <string name="cd_pin">পিন</string>
     <string name="cd_unpin">পিন খুলুন</string>
     <string name="cd_delete">মুছুন</string>

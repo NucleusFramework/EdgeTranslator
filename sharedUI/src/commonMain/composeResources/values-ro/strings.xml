@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Inversează limbile</string>
     <string name="cd_dictate">Dictează</string>
     <string name="cd_pick_image">Tradu o imagine</string>
+    <string name="drop_text_or_image">Plasați text sau o imagine de tradus</string>
     <string name="cd_speak">Citește cu voce tare</string>
     <string name="cd_speak_stop">Oprește citirea</string>
     <string name="msg_tts_unavailable">Descărcați această voce din Setări.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Niciun microfon disponibil.</string>
     <string name="msg_mic_failed">Audio-ul nu a putut fi înregistrat.</string>
+    <string name="msg_drop_unsupported">Acest tip de fișier nu poate fi tradus.</string>
     <string name="cd_pin">Fixează</string>
     <string name="cd_unpin">Anulează fixarea</string>
     <string name="cd_delete">Șterge</string>

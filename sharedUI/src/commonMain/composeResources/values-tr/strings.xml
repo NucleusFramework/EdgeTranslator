@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Dilleri değiştir</string>
     <string name="cd_dictate">Dikte et</string>
     <string name="cd_pick_image">Görseli çevir</string>
+    <string name="drop_text_or_image">Çevirmek için metin veya görüntü bırakın</string>
     <string name="cd_speak">Sesli oku</string>
     <string name="cd_speak_stop">Okumayı durdur</string>
     <string name="msg_tts_unavailable">Bu sesi Ayarlar’dan indirin.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Kullanılabilir mikrofon yok.</string>
     <string name="msg_mic_failed">Ses kaydedilemedi.</string>
+    <string name="msg_drop_unsupported">Bu dosya türü çevrilemez.</string>
     <string name="cd_pin">Sabitle</string>
     <string name="cd_unpin">Sabitlemeyi kaldır</string>
     <string name="cd_delete">Sil</string>

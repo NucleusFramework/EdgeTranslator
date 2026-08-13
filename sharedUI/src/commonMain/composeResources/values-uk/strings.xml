@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Поміняти мови</string>
     <string name="cd_dictate">Диктувати</string>
     <string name="cd_pick_image">Перекласти зображення</string>
+    <string name="drop_text_or_image">Перетягніть текст або зображення для перекладу</string>
     <string name="cd_speak">Читати вголос</string>
     <string name="cd_speak_stop">Зупинити читання</string>
     <string name="msg_tts_unavailable">Завантажте цей голос у Налаштуваннях.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Немає доступного мікрофона.</string>
     <string name="msg_mic_failed">Не вдалося записати звук.</string>
+    <string name="msg_drop_unsupported">Цей тип файлу не можна перекласти.</string>
     <string name="cd_pin">Закріпити</string>
     <string name="cd_unpin">Відкріпити</string>
     <string name="cd_delete">Видалити</string>

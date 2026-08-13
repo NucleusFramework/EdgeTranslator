@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Whakawhiti reo</string>
     <string name="cd_dictate">Kī</string>
     <string name="cd_pick_image">Whakamāoritia he whakaahua</string>
+    <string name="drop_text_or_image">Whakataka he kuputuhi, he whakaahua rānei kia whakamāoritia</string>
     <string name="cd_speak">Pānui nui</string>
     <string name="cd_speak_stop">Aukati pānui</string>
     <string name="msg_tts_unavailable">Tikiake tēnei reo i ngā Tautuhinga.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Kāore he hopuoro.</string>
     <string name="msg_mic_failed">Kāore i taea te hopu ororongo.</string>
+    <string name="msg_drop_unsupported">Kāore e taea te whakamāori i tēnei momo kōnae.</string>
     <string name="cd_pin">Titi</string>
     <string name="cd_unpin">Wetewete</string>
     <string name="cd_delete">Muku</string>

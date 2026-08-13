@@ -10,4 +10,5 @@ sealed interface AppMessage {
     data object MicFailed : AppMessage
     data object TtsUnavailable : AppMessage
     data object TtsFailed : AppMessage
+    data object DropUnsupported : AppMessage
 }

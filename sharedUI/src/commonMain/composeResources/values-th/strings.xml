@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">สลับภาษา</string>
     <string name="cd_dictate">พูดตาม</string>
     <string name="cd_pick_image">แปลรูปภาพ</string>
+    <string name="drop_text_or_image">วางข้อความหรือรูปภาพเพื่อแปล</string>
     <string name="cd_speak">อ่านออกเสียง</string>
     <string name="cd_speak_stop">หยุดอ่าน</string>
     <string name="msg_tts_unavailable">ดาวน์โหลดเสียงนี้ในการตั้งค่า</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">ไม่มีไมโครโฟน</string>
     <string name="msg_mic_failed">บันทึกเสียงไม่ได้</string>
+    <string name="msg_drop_unsupported">แปลไฟล์ประเภทนี้ไม่ได้</string>
     <string name="cd_pin">ปักหมุด</string>
     <string name="cd_unpin">เลิกปักหมุด</string>
     <string name="cd_delete">ลบ</string>

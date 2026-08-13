@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">भाषाएँ बदलें</string>
     <string name="cd_dictate">बोलकर लिखें</string>
     <string name="cd_pick_image">छवि का अनुवाद करें</string>
+    <string name="drop_text_or_image">अनुवाद के लिए पाठ या चित्र छोड़ें</string>
     <string name="cd_speak">ज़ोर से पढ़ें</string>
     <string name="cd_speak_stop">पढ़ना बंद करें</string>
     <string name="msg_tts_unavailable">सेटिंग्स में यह आवाज़ डाउनलोड करें।</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">कोई माइक्रोफ़ोन नहीं है।</string>
     <string name="msg_mic_failed">ऑडियो रिकॉर्ड नहीं हो सका।</string>
+    <string name="msg_drop_unsupported">इस प्रकार की फ़ाइल का अनुवाद नहीं हो सकता.</string>
     <string name="cd_pin">पिन करें</string>
     <string name="cd_unpin">पिन हटाएँ</string>
     <string name="cd_delete">हटाएँ</string>

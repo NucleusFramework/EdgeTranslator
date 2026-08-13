@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Vaihda kielet</string>
     <string name="cd_dictate">Diktoi</string>
     <string name="cd_pick_image">Käännä kuva</string>
+    <string name="drop_text_or_image">Pudota teksti tai kuva käännettäväksi</string>
     <string name="cd_speak">Lue ääneen</string>
     <string name="cd_speak_stop">Lopeta lukeminen</string>
     <string name="msg_tts_unavailable">Lataa tämä ääni Asetuksista.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Mikrofoni ei ole käytettävissä.</string>
     <string name="msg_mic_failed">Ääntä ei voitu tallentaa.</string>
+    <string name="msg_drop_unsupported">Tätä tiedostotyyppiä ei voi kääntää.</string>
     <string name="cd_pin">Kiinnitä</string>
     <string name="cd_unpin">Irrota</string>
     <string name="cd_delete">Poista</string>

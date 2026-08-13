@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">భాషలు మార్చు</string>
     <string name="cd_dictate">చెప్పి రాయించు</string>
     <string name="cd_pick_image">చిత్రాన్ని అనువదించండి</string>
+    <string name="drop_text_or_image">అనువదించడానికి టెక్స్ట్ లేదా చిత్రాన్ని వదలండి</string>
     <string name="cd_speak">బిగ్గరగా చదువు</string>
     <string name="cd_speak_stop">చదవడం ఆపు</string>
     <string name="msg_tts_unavailable">సెట్టింగ్‌లలో ఈ వాయిస్‌ను డౌన్‌లోడ్ చేయండి.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">మైక్రోఫోన్ లేదు.</string>
     <string name="msg_mic_failed">ఆడియో రికార్డ్ కాలేదు.</string>
+    <string name="msg_drop_unsupported">ఈ రకం ఫైల్‌ను అనువదించలేం.</string>
     <string name="cd_pin">పిన్</string>
     <string name="cd_unpin">పిన్ తీయి</string>
     <string name="cd_delete">తొలగించు</string>

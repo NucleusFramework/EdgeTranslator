@@ -39,6 +39,7 @@
     <string name="cd_swap_languages">言語を入れ替え</string>
     <string name="cd_dictate">音声入力</string>
     <string name="cd_pick_image">画像を翻訳</string>
+    <string name="drop_text_or_image">テキストまたは画像をドロップして翻訳</string>
     <string name="cd_speak">読み上げ</string>
     <string name="cd_speak_stop">読み上げを停止</string>
     <string name="msg_tts_unavailable">設定からこの音声をダウンロードしてください。</string>
@@ -52,6 +53,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">マイクがありません。</string>
     <string name="msg_mic_failed">録音できませんでした。</string>
+    <string name="msg_drop_unsupported">この種類のファイルは翻訳できません。</string>
     <string name="cd_pin">ピン留め</string>
     <string name="cd_unpin">ピンを外す</string>
     <string name="cd_delete">削除</string>

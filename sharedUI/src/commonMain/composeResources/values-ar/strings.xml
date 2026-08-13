@@ -39,6 +39,7 @@
     <string name="cd_swap_languages">تبديل اللغتين</string>
     <string name="cd_dictate">إملاء</string>
     <string name="cd_pick_image">ترجمة صورة</string>
+    <string name="drop_text_or_image">أفلت نصاً أو صورة للترجمة</string>
     <string name="cd_speak">قراءة بصوت عالٍ</string>
     <string name="cd_speak_stop">إيقاف القراءة</string>
     <string name="msg_tts_unavailable">نزّل هذا الصوت من الإعدادات.</string>
@@ -52,6 +53,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">لا يوجد ميكروفون متاح.</string>
     <string name="msg_mic_failed">تعذّر تسجيل الصوت.</string>
+    <string name="msg_drop_unsupported">لا يمكن ترجمة هذا النوع من الملفات.</string>
     <string name="cd_pin">تثبيت</string>
     <string name="cd_unpin">إلغاء التثبيت</string>
     <string name="cd_delete">حذف</string>

@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Đổi ngôn ngữ</string>
     <string name="cd_dictate">Đọc chính tả</string>
     <string name="cd_pick_image">Dịch hình ảnh</string>
+    <string name="drop_text_or_image">Thả văn bản hoặc hình ảnh để dịch</string>
     <string name="cd_speak">Đọc to</string>
     <string name="cd_speak_stop">Dừng đọc</string>
     <string name="msg_tts_unavailable">Tải giọng này trong Cài đặt.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Không có micrô.</string>
     <string name="msg_mic_failed">Không thể ghi âm.</string>
+    <string name="msg_drop_unsupported">Không thể dịch loại tệp này.</string>
     <string name="cd_pin">Ghim</string>
     <string name="cd_unpin">Bỏ ghim</string>
     <string name="cd_delete">Xóa</string>

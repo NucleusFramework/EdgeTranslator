@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">جابه‌جایی زبان‌ها</string>
     <string name="cd_dictate">دیکته</string>
     <string name="cd_pick_image">ترجمهٔ تصویر</string>
+    <string name="drop_text_or_image">متن یا تصویر را برای ترجمه رها کنید</string>
     <string name="cd_speak">بلندخوانی</string>
     <string name="cd_speak_stop">توقف خواندن</string>
     <string name="msg_tts_unavailable">این صدا را در تنظیمات دانلود کنید.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">میکروفونی در دسترس نیست.</string>
     <string name="msg_mic_failed">صدا ضبط نشد.</string>
+    <string name="msg_drop_unsupported">این نوع پرونده قابل ترجمه نیست.</string>
     <string name="cd_pin">سنجاق</string>
     <string name="cd_unpin">برداشتن سنجاق</string>
     <string name="cd_delete">حذف</string>

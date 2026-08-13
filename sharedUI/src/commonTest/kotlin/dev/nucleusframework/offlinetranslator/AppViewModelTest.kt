@@ -679,6 +679,33 @@ class AppViewModelTest {
 
     @Test
     @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun droppedImageSkipsThePicker() = runTest {
+        var seen: ByteArray? = null
+        val translator = Translator { request ->
+            seen = request.image
+            TranslationResult.Ok(text = "Stop", transcription = "Arrêt")
+        }
+        val vm = vm(
+            store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
+            translator = translator,
+            dispatcher = UnconfinedTestDispatcher(testScheduler),
+            translateDelayMs = 0,
+            pickImage = { error("picker must not run") },
+        )
+        vm.onIntent(AppIntent.DropUnsupported)
+        assertIs<dev.nucleusframework.offlinetranslator.app.AppMessage.DropUnsupported>(vm.state.value.message)
+        vm.onIntent(AppIntent.DismissMessage)
+
+        vm.onIntent(AppIntent.TranslateDroppedImage(byteArrayOf(9, 8, 7)))
+        testScheduler.advanceUntilIdle()
+        assertEquals(listOf<Byte>(9, 8, 7), seen?.toList())
+        assertEquals("Arrêt", vm.state.value.translation.sourceText)
+        assertEquals("Stop", vm.state.value.translation.targetText)
+        assertFalse(vm.state.value.translation.imageBusy)
+    }
+
+    @Test
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     fun cancelledImagePickerLeavesTheTextAlone() = runTest {
         val vm = vm(
             store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),

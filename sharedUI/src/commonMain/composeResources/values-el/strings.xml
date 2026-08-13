@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Εναλλαγή γλωσσών</string>
     <string name="cd_dictate">Υπαγόρευση</string>
     <string name="cd_pick_image">Μετάφραση εικόνας</string>
+    <string name="drop_text_or_image">Αφήστε κείμενο ή εικόνα για μετάφραση</string>
     <string name="cd_speak">Ανάγνωση</string>
     <string name="cd_speak_stop">Διακοπή ανάγνωσης</string>
     <string name="msg_tts_unavailable">Κατεβάστε αυτή τη φωνή στις Ρυθμίσεις.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Δεν υπάρχει διαθέσιμο μικρόφωνο.</string>
     <string name="msg_mic_failed">Δεν ήταν δυνατή η εγγραφή ήχου.</string>
+    <string name="msg_drop_unsupported">Αυτός ο τύπος αρχείου δεν μπορεί να μεταφραστεί.</string>
     <string name="cd_pin">Καρφίτσωμα</string>
     <string name="cd_unpin">Ξεκαρφίτσωμα</string>
     <string name="cd_delete">Διαγραφή</string>

@@ -39,6 +39,7 @@
     <string name="cd_swap_languages">Talen wisselen</string>
     <string name="cd_dictate">Dicteren</string>
     <string name="cd_pick_image">Afbeelding vertalen</string>
+    <string name="drop_text_or_image">Sleep tekst of een afbeelding om te vertalen</string>
     <string name="cd_speak">Voorlezen</string>
     <string name="cd_speak_stop">Voorlezen stoppen</string>
     <string name="msg_tts_unavailable">Download deze stem in Instellingen.</string>
@@ -52,6 +53,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Geen microfoon beschikbaar.</string>
     <string name="msg_mic_failed">Audio kon niet worden opgenomen.</string>
+    <string name="msg_drop_unsupported">Dit bestandstype kan niet worden vertaald.</string>
     <string name="cd_pin">Vastzetten</string>
     <string name="cd_unpin">Losmaken</string>
     <string name="cd_delete">Verwijderen</string>

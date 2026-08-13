@@ -37,6 +37,7 @@
     <string name="cd_swap_languages">Zamijeni jezike</string>
     <string name="cd_dictate">Diktiraj</string>
     <string name="cd_pick_image">Prevedi sliku</string>
+    <string name="drop_text_or_image">Ispustite tekst ili sliku za prijevod</string>
     <string name="cd_speak">Pročitaj naglas</string>
     <string name="cd_speak_stop">Zaustavi čitanje</string>
     <string name="msg_tts_unavailable">Preuzmite ovaj glas u Postavkama.</string>
@@ -50,6 +51,7 @@
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Nema dostupnog mikrofona.</string>
     <string name="msg_mic_failed">Zvuk se nije mogao snimiti.</string>
+    <string name="msg_drop_unsupported">Ovu vrstu datoteke nije moguće prevesti.</string>
     <string name="cd_pin">Prikvači</string>
     <string name="cd_unpin">Otkvači</string>
     <string name="cd_delete">Izbriši</string>
