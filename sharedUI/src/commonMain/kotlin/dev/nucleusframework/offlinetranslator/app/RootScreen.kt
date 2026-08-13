@@ -51,7 +51,7 @@ fun RootScreen(state: AppState, backStack: NavBackStack<AppKey>, onIntent: (AppI
         }
         MessageBar(
             message = state.message,
-            onDismiss = { onIntent(AppIntent.DismissMessage) },
+            onDismiss = remember(onIntent) { { onIntent(AppIntent.DismissMessage) } },
             modifier = Modifier.align(Alignment.BottomCenter),
         )
         AppDialogHost(

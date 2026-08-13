@@ -101,6 +101,7 @@ class AppViewModel(
     }
     private val _state = MutableStateFlow(restored.state)
     val state: StateFlow<AppState> = _state.asStateFlow()
+    val micLevels: StateFlow<List<Float>> get() = mic.levels
     val backStack: NavBackStack<AppKey> = NavBackStack(*restored.keys.toTypedArray())
 
     private var saveJob: Job? = null
@@ -346,8 +347,6 @@ class AppViewModel(
                 latencyMs = null,
                 error = null,
                 micPhase = MicPhase.Idle,
-                micLevels = emptyList(),
-                micElapsedMs = 0,
             ),
         )
 
@@ -1097,8 +1096,6 @@ class AppViewModel(
             it.copy(
                 translation = it.translation.copy(
                     micPhase = MicPhase.Idle,
-                    micLevels = emptyList(),
-                    micElapsedMs = 0,
                 ),
             )
         }
@@ -1113,7 +1110,7 @@ class AppViewModel(
         recordJob?.cancel()
         // The pane goes up before mic.start(): opening the line is slow cold (OS permission
         // prompt, device wake-up), and a button that does nothing for a second reads as broken.
-        mutate { it.copy(translation = it.translation.copy(micPhase = MicPhase.Starting, micLevels = emptyList(), micElapsedMs = 0)) }
+        mutate { it.copy(translation = it.translation.copy(micPhase = MicPhase.Starting)) }
         recordJob = scope.launch {
             try {
                 mic.start()
@@ -1121,31 +1118,19 @@ class AppViewModel(
                 mutate { it.copy(message = AppMessage.MicFailed, translation = it.translation.copy(micPhase = MicPhase.Idle)) }
                 return@launch
             }
-            mutate {
-                it.copy(
-                    translation = it.translation.copy(
-                        micPhase = MicPhase.Listening,
-                        micLevels = mic.levels.value,
-                        micElapsedMs = 0,
-                    ),
-                )
-            }
+            mutate { it.copy(translation = it.translation.copy(micPhase = MicPhase.Listening)) }
             var elapsed = 0L
             var heard = false
             var quietMs = 0L
             while (isActive && elapsed < MIC_MAX_MS) {
                 delay(50)
                 elapsed += 50
-                val levels = mic.levels.value
-                val peak = levels.lastOrNull() ?: 0f
+                val peak = mic.levels.value.lastOrNull() ?: 0f
                 if (peak > 0.12f) {
                     heard = true
                     quietMs = 0
                 } else if (heard) {
                     quietMs += 50
-                }
-                mutate { s ->
-                    s.copy(translation = s.translation.copy(micLevels = levels, micElapsedMs = elapsed))
                 }
                 if (heard && quietMs >= 1400 && elapsed >= 1200) break
             }
@@ -1164,7 +1149,7 @@ class AppViewModel(
             return
         }
         if (!transcribe || wav.isEmpty()) {
-            mutate { it.copy(translation = it.translation.copy(micPhase = MicPhase.Idle, micLevels = emptyList(), micElapsedMs = 0)) }
+            mutate { it.copy(translation = it.translation.copy(micPhase = MicPhase.Idle)) }
             return
         }
         mutate {
@@ -1189,7 +1174,7 @@ class AppViewModel(
             ),
         )
         mutate { current ->
-            val t = current.translation.copy(micPhase = MicPhase.Idle, micLevels = emptyList(), micElapsedMs = 0)
+            val t = current.translation.copy(micPhase = MicPhase.Idle)
             when (result) {
                 TranslationResult.Unavailable -> current.copy(
                     translation = t.copy(status = TranslationStatus.WaitingEngine, targetText = ""),

@@ -53,6 +53,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class AppViewModelTest {
@@ -603,6 +604,22 @@ class AppViewModelTest {
         vm.onIntent(AppIntent.ToggleMic)
         // Nothing has run on the VM scope yet: the pane must already be up.
         assertEquals(MicPhase.Starting, vm.state.value.translation.micPhase)
+    }
+
+    @Test
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun listeningDoesNotRewriteAppState() = runTest {
+        val vm = vm(
+            store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
+            dispatcher = UnconfinedTestDispatcher(testScheduler),
+            mic = FakeMic(ByteArray(4000)),
+        )
+        vm.onIntent(AppIntent.ToggleMic)
+        testScheduler.advanceTimeBy(100)
+        val snap = vm.state.value
+        assertEquals(MicPhase.Listening, snap.translation.micPhase)
+        testScheduler.advanceTimeBy(1_000)
+        assertSame(snap, vm.state.value)
     }
 
     @Test

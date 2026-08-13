@@ -21,6 +21,7 @@ import dev.nucleusframework.offlinetranslator.domain.ThemeMode
 import dev.nucleusframework.offlinetranslator.platform.Platform
 import dev.nucleusframework.offlinetranslator.platform.isDebugBuild
 import dev.nucleusframework.offlinetranslator.theme.EdgeTheme
+import dev.nucleusframework.offlinetranslator.translation.LocalMicLevels
 
 @TraceRecomposition(tag = "app")
 @Composable
@@ -52,7 +53,10 @@ fun App(
     onLayoutDirectionChange(ui.rtl)
     val dir = if (ui.rtl) LayoutDirection.Rtl else LayoutDirection.Ltr
     EdgeTheme(isDark = isDark) {
-        CompositionLocalProvider(LocalLayoutDirection provides dir) {
+        CompositionLocalProvider(
+            LocalLayoutDirection provides dir,
+            LocalMicLevels provides vm.micLevels,
+        ) {
             RootScreen(state = state, backStack = vm.backStack, onIntent = vm::onIntent)
         }
     }

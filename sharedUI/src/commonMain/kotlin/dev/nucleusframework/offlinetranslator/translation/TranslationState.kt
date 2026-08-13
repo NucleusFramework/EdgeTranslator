@@ -41,8 +41,6 @@ data class TranslationState(
     val latencyMs: Long? = null,
     val error: String? = null,
     val micPhase: MicPhase = MicPhase.Idle,
-    val micLevels: List<Float> = emptyList(),
-    val micElapsedMs: Long = 0,
     val speakTarget: Boolean? = null,
     val speakBusy: Boolean = false,
     /** Busy *before* audio starts: voice model load + synthesis. Drives the loader popup. */
@@ -65,3 +63,63 @@ data class TranslationState(
         val Default = Empty
     }
 }
+
+@Immutable
+data class SourcePanelState(
+    val lang: String,
+    val text: String,
+    val micPhase: MicPhase,
+    val ttsReady: Boolean,
+    val voiceInstalled: Boolean,
+    val speakActive: Boolean,
+    val speakBusy: Boolean,
+)
+
+@Immutable
+data class TargetPanelState(
+    val lang: String,
+    val text: String,
+    val status: TranslationStatus,
+    val latencyMs: Long?,
+    val highlightTerm: String,
+    val alternatives: List<Alternative>,
+    val alternativesFor: String,
+    val selectedAlternative: String,
+    val copied: Boolean,
+    val saved: Boolean,
+    val error: String?,
+    val sourceBlank: Boolean,
+    val ttsReady: Boolean,
+    val voiceInstalled: Boolean,
+    val speakActive: Boolean,
+    val speakBusy: Boolean,
+)
+
+fun TranslationState.toSourcePanel() = SourcePanelState(
+    lang = sourceLang,
+    text = sourceText,
+    micPhase = micPhase,
+    ttsReady = ttsReady,
+    voiceInstalled = sourceLang in installedVoices,
+    speakActive = speakTarget == false,
+    speakBusy = speakBusy && speakTarget == false,
+)
+
+fun TranslationState.toTargetPanel() = TargetPanelState(
+    lang = targetLang,
+    text = targetText,
+    status = status,
+    latencyMs = latencyMs,
+    highlightTerm = highlightTerm,
+    alternatives = alternatives,
+    alternativesFor = alternativesFor,
+    selectedAlternative = selectedAlternative,
+    copied = copied,
+    saved = saved,
+    error = error,
+    sourceBlank = sourceText.isBlank(),
+    ttsReady = ttsReady,
+    voiceInstalled = targetLang in installedVoices,
+    speakActive = speakTarget == true,
+    speakBusy = speakBusy && speakTarget == true,
+)

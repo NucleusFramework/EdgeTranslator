@@ -17,6 +17,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.SwapHoriz
+import androidx.compose.material.icons.outlined.SwapVert
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -27,10 +28,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,13 +56,17 @@ import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.UserSettings
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
 import dev.nucleusframework.offlinetranslator.domain.formatLatency
+import dev.nucleusframework.offlinetranslator.domain.paragraphCount
+import dev.nucleusframework.offlinetranslator.engine.MIC_BARS
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
-import dev.nucleusframework.offlinetranslator.translation.MicPhase
-import dev.nucleusframework.offlinetranslator.translation.TranslationStatus
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import dev.nucleusframework.offlinetranslator.ui.Chip
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
+import dev.nucleusframework.offlinetranslator.ui.TwoPane
 import dev.nucleusframework.offlinetranslator.ui.VerticalContentScrollbar
 import dev.nucleusframework.offlinetranslator.ui.languageLabel
 import offlinetranslator.sharedui.generated.resources.Res
@@ -90,6 +98,10 @@ import offlinetranslator.sharedui.generated.resources.translation_error
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
+val LocalMicLevels = staticCompositionLocalOf<StateFlow<List<Float>>> { MutableStateFlow(emptyList()) }
+
+private val IdleMicBars = List(MIC_BARS) { 0.06f }
+
 /**
  * Content of design B1 — "Traduction" (expanded). Rendered inside the app shell:
  * two panels whose headers double as language pickers, swap button between them.
@@ -105,25 +117,28 @@ fun TranslationContent(
     modifier: Modifier = Modifier,
 ) {
     val c = MaterialTheme.colorScheme
-    Row(
-        modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        SourcePanel(translation, settings, voiceDownload, onIntent, Modifier.weight(1f))
-        Surface(
-            onClick = { onIntent(AppIntent.SwapLanguages) },
-            color = c.primaryContainer,
-            contentColor = c.onPrimaryContainer,
-            shape = CircleShape,
-            modifier = Modifier.size(40.dp),
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(Icons.Outlined.SwapHoriz, stringResource(Res.string.cd_swap_languages), Modifier.size(20.dp))
+    TwoPane(
+        first = { SourcePanel(translation.toSourcePanel(), settings, voiceDownload, onIntent, it) },
+        second = { TargetPanel(translation.toTargetPanel(), settings, modelInstalled, voiceDownload, onIntent, it) },
+        modifier = modifier,
+        between = { stacked ->
+            Surface(
+                onClick = { onIntent(AppIntent.SwapLanguages) },
+                color = c.primaryContainer,
+                contentColor = c.onPrimaryContainer,
+                shape = CircleShape,
+                modifier = Modifier.size(40.dp),
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        if (stacked) Icons.Outlined.SwapVert else Icons.Outlined.SwapHoriz,
+                        stringResource(Res.string.cd_swap_languages),
+                        Modifier.size(20.dp),
+                    )
+                }
             }
-        }
-        TargetPanel(translation, settings, modelInstalled, voiceDownload, onIntent, Modifier.weight(1f))
-    }
+        },
+    )
 }
 
 /** Panel header: the language name itself is the dropdown that picks it. */
@@ -176,27 +191,29 @@ private fun LanguageHeader(settings: UserSettings, code: String, role: LangRole,
 
 @Composable
 private fun SourcePanel(
-    state: TranslationState,
+    state: SourcePanelState,
     settings: UserSettings,
     voiceDownload: VoiceDownloadState,
     onIntent: (AppIntent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val c = MaterialTheme.colorScheme
-    Column(modifier.fillMaxHeight().clip(RoundedCornerShape(20.dp)).border(1.dp, c.outlineVariant, RoundedCornerShape(20.dp))) {
+    val chars = state.text.length
+    val paragraphs = paragraphCount(state.text)
+    Column(modifier.fillMaxSize().clip(RoundedCornerShape(20.dp)).border(1.dp, c.outlineVariant, RoundedCornerShape(20.dp))) {
         Box(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 14.dp), Alignment.CenterStart) {
-            LanguageHeader(settings, state.sourceLang, LangRole.Source, onIntent)
+            LanguageHeader(settings, state.lang, LangRole.Source, onIntent)
         }
         HorizontalDivider(color = c.surfaceContainerHighest)
         if (state.micPhase != MicPhase.Idle) {
-            ListeningPane(state, onIntent, Modifier.weight(1f).fillMaxWidth())
+            ListeningPane(state.micPhase, onIntent, Modifier.weight(1f).fillMaxWidth())
         } else {
             val focusRequester = remember { FocusRequester() }
             val scroll = rememberScrollState()
             LaunchedEffect(Unit) { focusRequester.requestFocus() }
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 BasicTextField(
-                    value = state.sourceText,
+                    value = state.text,
                     onValueChange = { onIntent(AppIntent.SetSourceText(it)) },
                     textStyle = TextStyle(color = c.onSurface, fontSize = 18.sp, lineHeight = 28.sp),
                     cursorBrush = SolidColor(c.primary),
@@ -207,7 +224,7 @@ private fun SourcePanel(
                         .focusRequester(focusRequester),
                     decorationBox = { inner ->
                         Box {
-                            if (state.sourceText.isEmpty()) {
+                            if (state.text.isEmpty()) {
                                 Text(
                                     stringResource(Res.string.source_placeholder),
                                     color = c.onSurfaceVariant,
@@ -230,31 +247,38 @@ private fun SourcePanel(
         ) {
             if (state.micPhase == MicPhase.Idle) {
                 Text(
-                    pluralStringResource(Res.plurals.char_count, state.sourceChars, state.sourceChars),
+                    pluralStringResource(Res.plurals.char_count, chars, chars),
                     color = c.onSurfaceVariant,
                     fontSize = 12.sp,
                 )
                 Text(
-                    pluralStringResource(Res.plurals.paragraph_count, state.sourceParagraphs, state.sourceParagraphs),
+                    pluralStringResource(Res.plurals.paragraph_count, paragraphs, paragraphs),
                     color = c.onSurfaceVariant,
                     fontSize = 12.sp,
                 )
             } else {
-                val sec = (state.micElapsedMs / 1000).toInt()
-                val clock = "${sec / 60}:${(sec % 60).toString().padStart(2, '0')}"
-                Text(stringResource(Res.string.mic_time, clock), color = c.onSurfaceVariant, fontSize = 12.sp)
+                MicClock()
             }
             Spacer(Modifier.weight(1f))
-            SpeakIcon(state, voiceDownload, target = false, onIntent = onIntent)
+            SpeakIcon(
+                lang = state.lang,
+                textBlank = state.text.isBlank(),
+                ttsReady = state.ttsReady,
+                installed = state.voiceInstalled,
+                active = state.speakActive,
+                busy = state.speakBusy,
+                voiceDownload = voiceDownload,
+                target = false,
+                onIntent = onIntent,
+            )
             val listening = state.micPhase == MicPhase.Listening
-            val googleRed = Color(0xFFEA4335)
             Icon(
                 Icons.Outlined.Mic,
                 stringResource(Res.string.cd_dictate),
                 Modifier.size(22.dp).clip(CircleShape).clickable { onIntent(AppIntent.ToggleMic) },
                 tint = when {
-                    listening -> googleRed
-                    Languages.hasAudio(state.sourceLang) -> c.primary
+                    listening -> GoogleMicRed
+                    Languages.hasAudio(state.lang) -> c.primary
                     else -> c.outline
                 },
             )
@@ -265,29 +289,32 @@ private fun SourcePanel(
 private val GoogleMicRed = Color(0xFFEA4335)
 
 @Composable
-private fun ListeningPane(state: TranslationState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+private fun MicClock() {
+    var sec by remember { mutableIntStateOf(0) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(1_000)
+            sec++
+        }
+    }
+    val clock = "${sec / 60}:${(sec % 60).toString().padStart(2, '0')}"
+    Text(stringResource(Res.string.mic_time, clock), color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
+}
+
+@Composable
+private fun ListeningPane(phase: MicPhase, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
-    val listening = state.micPhase == MicPhase.Listening
+    val listening = phase == MicPhase.Listening
     Column(
         modifier.padding(horizontal = 24.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Row(Modifier.fillMaxWidth().height(48.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
-            val bars = state.micLevels.ifEmpty { List(24) { 0.06f } }
-            bars.forEach { level ->
-                val h = animateFloatAsState(4f + level * 40f, label = "bar").value
-                Box(
-                    Modifier.padding(horizontal = 1.5.dp).width(3.dp).height(h.dp)
-                        .clip(RoundedCornerShape(2.dp))
-                        .background(if (listening) GoogleMicRed else c.outline),
-                )
-            }
-        }
+        MicLevelBars(listening)
         Spacer(Modifier.height(28.dp))
         Text(
             stringResource(
-                when (state.micPhase) {
+                when (phase) {
                     MicPhase.Listening -> Res.string.mic_speak_now
                     MicPhase.Starting -> Res.string.mic_listening
                     else -> Res.string.mic_transcribing
@@ -298,24 +325,7 @@ private fun ListeningPane(state: TranslationState, onIntent: (AppIntent) -> Unit
             fontWeight = FontWeight.Medium,
         )
         Spacer(Modifier.height(20.dp))
-        val pulse = animateFloatAsState(if (listening) 1f + (state.micLevels.lastOrNull() ?: 0f) * 0.25f else 1f, label = "pulse").value
-        Box(contentAlignment = Alignment.Center) {
-            Box(Modifier.size((88 * pulse).dp).clip(CircleShape).background(GoogleMicRed.copy(alpha = 0.16f)))
-            Surface(
-                onClick = { onIntent(AppIntent.ToggleMic) },
-                color = if (listening) GoogleMicRed else c.surfaceContainerHighest,
-                contentColor = Color.White,
-                shape = CircleShape,
-                modifier = Modifier.size(72.dp),
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(Icons.Outlined.Mic, stringResource(Res.string.cd_dictate), Modifier.size(32.dp))
-                    if (state.micPhase == MicPhase.Starting) {
-                        CircularProgressIndicator(Modifier.size(52.dp), strokeWidth = 2.dp, color = c.primary)
-                    }
-                }
-            }
-        }
+        MicPulseButton(phase, onIntent)
         Spacer(Modifier.height(12.dp))
         if (listening) {
             Text(stringResource(Res.string.mic_tap_stop), color = c.onSurfaceVariant, fontSize = 13.sp)
@@ -331,8 +341,50 @@ private fun ListeningPane(state: TranslationState, onIntent: (AppIntent) -> Unit
 }
 
 @Composable
+private fun MicLevelBars(listening: Boolean) {
+    val levels by LocalMicLevels.current.collectAsState()
+    val bars = levels.ifEmpty { IdleMicBars }
+    val c = MaterialTheme.colorScheme
+    Row(Modifier.fillMaxWidth().height(48.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
+        bars.forEach { level ->
+            val h = animateFloatAsState(4f + level * 40f, label = "bar").value
+            Box(
+                Modifier.padding(horizontal = 1.5.dp).width(3.dp).height(h.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(if (listening) GoogleMicRed else c.outline),
+            )
+        }
+    }
+}
+
+@Composable
+private fun MicPulseButton(phase: MicPhase, onIntent: (AppIntent) -> Unit) {
+    val listening = phase == MicPhase.Listening
+    val levels by LocalMicLevels.current.collectAsState()
+    val pulse = animateFloatAsState(if (listening) 1f + (levels.lastOrNull() ?: 0f) * 0.25f else 1f, label = "pulse").value
+    val c = MaterialTheme.colorScheme
+    Box(contentAlignment = Alignment.Center) {
+        Box(Modifier.size((88 * pulse).dp).clip(CircleShape).background(GoogleMicRed.copy(alpha = 0.16f)))
+        Surface(
+            onClick = { onIntent(AppIntent.ToggleMic) },
+            color = if (listening) GoogleMicRed else c.surfaceContainerHighest,
+            contentColor = Color.White,
+            shape = CircleShape,
+            modifier = Modifier.size(72.dp),
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(Icons.Outlined.Mic, stringResource(Res.string.cd_dictate), Modifier.size(32.dp))
+                if (phase == MicPhase.Starting) {
+                    CircularProgressIndicator(Modifier.size(52.dp), strokeWidth = 2.dp, color = c.primary)
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun TargetPanel(
-    state: TranslationState,
+    state: TargetPanelState,
     settings: UserSettings,
     modelInstalled: Boolean,
     voiceDownload: VoiceDownloadState,
@@ -341,9 +393,11 @@ private fun TargetPanel(
 ) {
     val c = MaterialTheme.colorScheme
     val ui = settings.uiLanguage
-    Column(modifier.fillMaxHeight().clip(RoundedCornerShape(20.dp)).background(c.surfaceContainer)) {
+    val copy = remember(onIntent) { { onIntent(AppIntent.CopyTranslation) } }
+    val save = remember(onIntent) { { onIntent(AppIntent.SaveToHistory) } }
+    Column(modifier.fillMaxSize().clip(RoundedCornerShape(20.dp)).background(c.surfaceContainer)) {
         Row(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-            LanguageHeader(settings, state.targetLang, LangRole.Target, onIntent)
+            LanguageHeader(settings, state.lang, LangRole.Target, onIntent)
             Spacer(Modifier.weight(1f))
             val latency = formatLatency(state.latencyMs, ui)
             if (latency.isNotEmpty()) {
@@ -360,16 +414,16 @@ private fun TargetPanel(
         val streaming = state.status == TranslationStatus.WaitingEngine && modelInstalled
         val installModel = stringResource(Res.string.target_install_model)
         val body = when {
-            state.sourceText.isBlank() -> stringResource(Res.string.target_placeholder)
+            state.sourceBlank -> stringResource(Res.string.target_placeholder)
             state.status == TranslationStatus.Error -> state.error ?: stringResource(Res.string.translation_error)
-            !modelInstalled && state.targetText.isBlank() -> installModel
+            !modelInstalled && state.text.isBlank() -> installModel
             else -> null
         }
         if (body != null) {
             Text(body, Modifier.weight(1f).fillMaxWidth().padding(20.dp), color = c.onSurfaceVariant, fontSize = 18.sp, lineHeight = 28.sp)
         } else {
             val scroll = rememberScrollState()
-            val shown = if (streaming) state.targetText + "▍" else state.targetText
+            val shown = if (streaming) state.text + "▍" else state.text
             LaunchedEffect(shown) { scroll.animateScrollTo(scroll.maxValue) }
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 Text(
@@ -405,30 +459,46 @@ private fun TargetPanel(
         ) {
             FilledPill(
                 stringResource(if (state.copied) Res.string.action_copied else Res.string.action_copy),
-                onClick = { onIntent(AppIntent.CopyTranslation) },
+                onClick = copy,
                 icon = Icons.Outlined.ContentCopy,
                 enabled = !state.copied,
             )
             OutlinedPill(
                 stringResource(if (state.saved) Res.string.action_saved else Res.string.action_save),
-                onClick = { onIntent(AppIntent.SaveToHistory) },
+                onClick = save,
                 enabled = !state.saved,
             )
             Spacer(Modifier.weight(1f))
-            SpeakIcon(state, voiceDownload, target = true, onIntent = onIntent)
+            SpeakIcon(
+                lang = state.lang,
+                textBlank = state.text.isBlank(),
+                ttsReady = state.ttsReady,
+                installed = state.voiceInstalled,
+                active = state.speakActive,
+                busy = state.speakBusy,
+                voiceDownload = voiceDownload,
+                target = true,
+                onIntent = onIntent,
+            )
         }
     }
 }
 
 @Composable
-private fun SpeakIcon(state: TranslationState, voiceDownload: VoiceDownloadState, target: Boolean, onIntent: (AppIntent) -> Unit) {
-    val lang = if (target) state.targetLang else state.sourceLang
-    if (!state.ttsReady || !Languages.hasTts(lang)) return
-    val installed = lang in state.installedVoices
-    val text = if (target) state.targetText else state.sourceText
-    val active = state.speakTarget == target
+private fun SpeakIcon(
+    lang: String,
+    textBlank: Boolean,
+    ttsReady: Boolean,
+    installed: Boolean,
+    active: Boolean,
+    busy: Boolean,
+    voiceDownload: VoiceDownloadState,
+    target: Boolean,
+    onIntent: (AppIntent) -> Unit,
+) {
+    if (!ttsReady || !Languages.hasTts(lang)) return
     val downloading = voiceDownload.running && PiperVoices.covers(voiceDownload.lang, lang)
-    val loading = (state.speakBusy && active) || downloading
+    val loading = busy || downloading
     val c = MaterialTheme.colorScheme
     val indicator = Modifier.size(22.dp)
     when {
@@ -451,13 +521,13 @@ private fun SpeakIcon(state: TranslationState, voiceDownload: VoiceDownloadState
         else -> Icon(
             Icons.AutoMirrored.Outlined.VolumeUp,
             stringResource(if (active) Res.string.cd_speak_stop else Res.string.cd_speak),
-            Modifier.size(22.dp).clip(CircleShape).clickable(enabled = !installed || text.isNotBlank() || active) {
+            Modifier.size(22.dp).clip(CircleShape).clickable(enabled = !installed || !textBlank || active) {
                 onIntent(AppIntent.ToggleSpeak(target))
             },
             tint = when {
                 !installed -> c.outline
                 active -> c.primary
-                text.isBlank() -> c.outline
+                textBlank -> c.outline
                 else -> c.onSurfaceVariant
             },
         )
