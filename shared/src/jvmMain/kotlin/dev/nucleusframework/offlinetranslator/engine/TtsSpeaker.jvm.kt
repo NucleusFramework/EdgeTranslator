@@ -6,10 +6,12 @@ import io.ktor.client.HttpClient
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.nio.file.Path
+import java.util.concurrent.locks.ReentrantLock
 import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.DataLine
 import javax.sound.sampled.SourceDataLine
+import kotlin.concurrent.withLock
 
 actual fun createTtsSpeaker(http: HttpClient): TtsSpeaker = PiperTts()
 
@@ -23,7 +25,12 @@ private class PiperTts : TtsSpeaker {
 
     @Volatile private var playing = false
 
+    @Volatile private var paused = false
+
     @Volatile private var closed = false
+
+    private val gate = ReentrantLock()
+    private val unpaused = gate.newCondition()
 
     override val available: Boolean = true
 
@@ -51,8 +58,27 @@ private class PiperTts : TtsSpeaker {
         }
     }
 
+    override fun pause() {
+        paused = true
+        try {
+            line?.stop()
+        } catch (_: Exception) {
+        }
+    }
+
+    override fun resume() {
+        paused = false
+        try {
+            line?.start()
+        } catch (_: Exception) {
+        }
+        gate.withLock { unpaused.signalAll() }
+    }
+
     override fun stop() {
         playing = false
+        paused = false
+        gate.withLock { unpaused.signalAll() }
         try {
             line?.stop()
             line?.flush()
@@ -115,6 +141,17 @@ private class PiperTts : TtsSpeaker {
         val buf = ByteArray(4096)
         var i = 0
         while (playing && i < samples.size) {
+            gate.withLock {
+                while (paused && playing) {
+                    try {
+                        unpaused.await()
+                    } catch (_: InterruptedException) {
+                        Thread.currentThread().interrupt()
+                        return
+                    }
+                }
+            }
+            if (!playing) break
             var b = 0
             while (b + 1 < buf.size && i < samples.size) {
                 val s = samples[i].toInt()

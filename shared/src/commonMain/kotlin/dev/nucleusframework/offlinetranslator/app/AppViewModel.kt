@@ -184,6 +184,8 @@ class AppViewModel(
 
             is AppIntent.ToggleSpeak -> toggleSpeak(intent.target)
 
+            AppIntent.StopSpeak -> stopSpeak()
+
             is AppIntent.DownloadVoices -> startVoiceDownload(intent.langs)
 
             AppIntent.PauseVoiceDownload -> pauseVoiceDownload()
@@ -568,6 +570,7 @@ class AppViewModel(
         AppIntent.TranslateImage,
         is AppIntent.TranslateDroppedImage,
         is AppIntent.ToggleSpeak,
+        AppIntent.StopSpeak,
         is AppIntent.DownloadVoices,
         AppIntent.PauseVoiceDownload,
         AppIntent.ResumeVoiceDownload,
@@ -946,12 +949,27 @@ class AppViewModel(
         }
     }
 
+    private fun stopSpeak() {
+        speakJob?.cancel()
+        speakJob = null
+        tts.stop()
+        mutate { it.copy(translation = it.translation.idleSpeak()) }
+    }
+
     private fun toggleSpeak(target: Boolean) {
         val t = _state.value.translation
         if (t.speakTarget == target) {
-            speakJob?.cancel()
-            tts.stop()
-            mutate { it.copy(translation = it.translation.copy(speakTarget = null, speakBusy = false, speakLoading = false)) }
+            when {
+                t.speakPlaying && !t.speakPaused -> {
+                    tts.pause()
+                    mutate { it.copy(translation = it.translation.copy(speakPaused = true)) }
+                }
+                t.speakPaused -> {
+                    tts.resume()
+                    mutate { it.copy(translation = it.translation.copy(speakPaused = false)) }
+                }
+                else -> stopSpeak()
+            }
             return
         }
         val lang = if (target) t.targetLang else t.sourceLang
@@ -971,7 +989,17 @@ class AppViewModel(
         tts.stop()
         val voiceId = _state.value.data.settings.selectedVoices[lang]
         speakJob = scope.launch {
-            mutate { it.copy(translation = it.translation.copy(speakTarget = target, speakBusy = true)) }
+            mutate {
+                it.copy(
+                    translation = it.translation.copy(
+                        speakTarget = target,
+                        speakBusy = true,
+                        speakLoading = false,
+                        speakPlaying = false,
+                        speakPaused = false,
+                    ),
+                )
+            }
             // A cold voice model takes seconds to load and synthesise before a sound comes out.
             // ponytail: 250 ms de sursis avant d'afficher le loader — modèle déjà chargé, pas de clignotement.
             val loader = launch {
@@ -983,17 +1011,29 @@ class AppViewModel(
                 mutate { it.copy(translation = it.translation.copy(speakLoading = false)) }
             }
             try {
-                withContext(ioDispatcher) { tts.speak(text.trim(), lang, voiceId) { hideLoader() } }
-            } catch (_: kotlinx.coroutines.CancellationException) {
+                withContext(ioDispatcher) {
+                    tts.speak(text.trim(), lang, voiceId) {
+                        loader.cancel()
+                        mutate {
+                            it.copy(
+                                translation = it.translation.copy(
+                                    speakLoading = false,
+                                    speakPlaying = true,
+                                ),
+                            )
+                        }
+                    }
+                }
+            } catch (e: kotlinx.coroutines.CancellationException) {
                 hideLoader()
-                return@launch
+                throw e
             } catch (_: Exception) {
                 hideLoader()
-                mutate { it.copy(message = AppMessage.TtsFailed, translation = it.translation.copy(speakTarget = null, speakBusy = false)) }
+                mutate { it.copy(message = AppMessage.TtsFailed, translation = it.translation.idleSpeak()) }
                 return@launch
             }
             hideLoader()
-            mutate { it.copy(translation = it.translation.copy(speakTarget = null, speakBusy = false)) }
+            mutate { it.copy(translation = it.translation.idleSpeak()) }
         }
     }
 

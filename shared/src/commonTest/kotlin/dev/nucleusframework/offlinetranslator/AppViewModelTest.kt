@@ -63,6 +63,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertNull
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
@@ -921,6 +922,64 @@ class AppViewModelTest {
     }
 
     @Test
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun toggleSpeakPausesAndResumesPlayback() = runTest {
+        val speaker = FakeTts().apply { holdUntilStop = true }
+        val vm = vm(
+            store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
+            translator = Translator { TranslationResult.Ok("Hello") },
+            dispatcher = UnconfinedTestDispatcher(testScheduler),
+            translateDelayMs = 0,
+            tts = speaker,
+            voicesOnDisk = { setOf("en") },
+        )
+        vm.onIntent(AppIntent.SetSourceText("Bonjour"))
+        testScheduler.advanceUntilIdle()
+        vm.onIntent(AppIntent.ToggleSpeak(target = true))
+        testScheduler.runCurrent()
+        assertTrue(vm.state.value.translation.speakPlaying)
+        assertFalse(vm.state.value.translation.speakPaused)
+
+        vm.onIntent(AppIntent.ToggleSpeak(target = true))
+        assertTrue(speaker.paused)
+        assertTrue(vm.state.value.translation.speakPaused)
+
+        vm.onIntent(AppIntent.ToggleSpeak(target = true))
+        assertFalse(speaker.paused)
+        assertFalse(vm.state.value.translation.speakPaused)
+        assertTrue(vm.state.value.translation.speakPlaying)
+    }
+
+    @Test
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun stopSpeakEndsPlayback() = runTest {
+        val speaker = FakeTts().apply { holdUntilStop = true }
+        val vm = vm(
+            store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
+            translator = Translator { TranslationResult.Ok("Hello") },
+            dispatcher = UnconfinedTestDispatcher(testScheduler),
+            translateDelayMs = 0,
+            tts = speaker,
+            voicesOnDisk = { setOf("en") },
+        )
+        vm.onIntent(AppIntent.SetSourceText("Bonjour"))
+        testScheduler.advanceUntilIdle()
+        vm.onIntent(AppIntent.ToggleSpeak(target = true))
+        testScheduler.runCurrent()
+        assertTrue(vm.state.value.translation.speakPlaying)
+        val stops = speaker.stops
+
+        vm.onIntent(AppIntent.StopSpeak)
+        testScheduler.runCurrent()
+        assertEquals(stops + 1, speaker.stops)
+        assertNull(vm.state.value.translation.speakTarget)
+        assertFalse(vm.state.value.translation.speakBusy)
+        assertFalse(vm.state.value.translation.speakPlaying)
+        assertFalse(vm.state.value.translation.speakPaused)
+        assertFalse(vm.state.value.translation.speakLoading)
+    }
+
+    @Test
     fun toggleSpeakWithoutVoiceShowsUnavailable() {
         val vm = vm(
             store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
@@ -1114,14 +1173,30 @@ private class FakeTts : TtsSpeaker {
     var lastText: String = ""
     var lastLang: String = ""
     var loadMs: Long = 0
+    var holdUntilStop: Boolean = false
+    var paused: Boolean = false
+    var stops: Int = 0
+    private var hold = kotlinx.coroutines.CompletableDeferred<Unit>()
     override fun canSpeak(lang: String): Boolean = Languages.hasTts(lang)
     override suspend fun speak(text: String, lang: String, voiceId: String?, onReady: () -> Unit) {
+        hold = kotlinx.coroutines.CompletableDeferred()
         lastText = text
         lastLang = lang
         kotlinx.coroutines.delay(loadMs)
         onReady()
+        if (holdUntilStop) hold.await()
     }
-    override fun stop() {}
+    override fun pause() {
+        paused = true
+    }
+    override fun resume() {
+        paused = false
+    }
+    override fun stop() {
+        stops++
+        paused = false
+        hold.complete(Unit)
+    }
 }
 
 private class FakeMic(private val wav: ByteArray) : MicRecorder {

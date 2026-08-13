@@ -12,6 +12,8 @@ interface TtsSpeaker : AutoCloseable {
      * loader on.
      */
     suspend fun speak(text: String, lang: String, voiceId: String? = null, onReady: () -> Unit = {})
+    fun pause() {}
+    fun resume() {}
     fun stop()
     fun unload() {}
     override fun close() {}

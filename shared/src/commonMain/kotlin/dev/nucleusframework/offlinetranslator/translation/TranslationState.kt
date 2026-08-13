@@ -44,8 +44,10 @@ data class TranslationState(
     val imageBusy: Boolean = false,
     val speakTarget: Boolean? = null,
     val speakBusy: Boolean = false,
-    /** Busy *before* audio starts: voice model load + synthesis. Drives the loader popup. */
+    /** Voice model load + synthesis. Drives the inline loader on the speak button. */
     val speakLoading: Boolean = false,
+    val speakPlaying: Boolean = false,
+    val speakPaused: Boolean = false,
     val ttsReady: Boolean = false,
     val installedVoices: Set<String> = emptySet(),
     val savedSource: String? = null,
@@ -58,6 +60,14 @@ data class TranslationState(
         sourceText.trim() == savedSource &&
         targetText.trim() == savedTarget
     val copied: Boolean get() = copiedTarget != null && targetText.trim() == copiedTarget
+
+    fun idleSpeak() = copy(
+        speakTarget = null,
+        speakBusy = false,
+        speakLoading = false,
+        speakPlaying = false,
+        speakPaused = false,
+    )
 
     companion object {
         val Empty = TranslationState()
@@ -74,7 +84,9 @@ data class SourcePanelState(
     val ttsReady: Boolean,
     val voiceInstalled: Boolean,
     val speakActive: Boolean,
-    val speakBusy: Boolean,
+    val speakLoading: Boolean,
+    val speakPlaying: Boolean,
+    val speakPaused: Boolean,
 )
 
 @Immutable
@@ -94,7 +106,9 @@ data class TargetPanelState(
     val ttsReady: Boolean,
     val voiceInstalled: Boolean,
     val speakActive: Boolean,
-    val speakBusy: Boolean,
+    val speakLoading: Boolean,
+    val speakPlaying: Boolean,
+    val speakPaused: Boolean,
 )
 
 fun TranslationState.toSourcePanel() = SourcePanelState(
@@ -105,7 +119,9 @@ fun TranslationState.toSourcePanel() = SourcePanelState(
     ttsReady = ttsReady,
     voiceInstalled = sourceLang in installedVoices,
     speakActive = speakTarget == false,
-    speakBusy = speakBusy && speakTarget == false,
+    speakLoading = speakLoading && speakTarget == false,
+    speakPlaying = speakPlaying && speakTarget == false,
+    speakPaused = speakPaused && speakTarget == false,
 )
 
 fun TranslationState.toTargetPanel() = TargetPanelState(
@@ -124,5 +140,7 @@ fun TranslationState.toTargetPanel() = TargetPanelState(
     ttsReady = ttsReady,
     voiceInstalled = targetLang in installedVoices,
     speakActive = speakTarget == true,
-    speakBusy = speakBusy && speakTarget == true,
+    speakLoading = speakLoading && speakTarget == true,
+    speakPlaying = speakPlaying && speakTarget == true,
+    speakPaused = speakPaused && speakTarget == true,
 )

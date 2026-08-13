@@ -34,6 +34,7 @@ sealed interface AppIntent {
     class TranslateDroppedImage(val bytes: ByteArray) : AppIntent
     data object DropUnsupported : AppIntent
     data class ToggleSpeak(val target: Boolean) : AppIntent
+    data object StopSpeak : AppIntent
     data class ToggleVoicePick(val code: String) : AppIntent
     data class SelectAllVoices(val lang: String? = null) : AppIntent
     data class ClearVoicePicks(val lang: String? = null) : AppIntent

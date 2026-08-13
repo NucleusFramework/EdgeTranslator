@@ -21,6 +21,9 @@ import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Mic
+import androidx.compose.material.icons.outlined.Pause
+import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material.icons.outlined.SwapVert
 import androidx.compose.material3.CircularProgressIndicator
@@ -82,6 +85,8 @@ import offlinetranslator.shared.generated.resources.Res
 import offlinetranslator.shared.generated.resources.action_cancel
 import offlinetranslator.shared.generated.resources.action_copied
 import offlinetranslator.shared.generated.resources.action_copy
+import offlinetranslator.shared.generated.resources.action_pause
+import offlinetranslator.shared.generated.resources.action_resume
 import offlinetranslator.shared.generated.resources.action_save
 import offlinetranslator.shared.generated.resources.action_saved
 import offlinetranslator.shared.generated.resources.alternatives_header
@@ -323,13 +328,15 @@ private fun SourcePanel(
                 MicClock()
             }
             Spacer(Modifier.weight(1f))
-            SpeakIcon(
+            SpeakControls(
                 lang = state.lang,
                 textBlank = state.text.isBlank(),
                 ttsReady = state.ttsReady,
                 installed = state.voiceInstalled,
                 active = state.speakActive,
-                busy = state.speakBusy,
+                loading = state.speakLoading,
+                playing = state.speakPlaying,
+                paused = state.speakPaused,
                 voiceDownload = voiceDownload,
                 target = false,
                 onIntent = onIntent,
@@ -574,13 +581,15 @@ private fun TargetPanel(
                 enabled = !state.saved,
             )
             Spacer(Modifier.weight(1f))
-            SpeakIcon(
+            SpeakControls(
                 lang = state.lang,
                 textBlank = state.text.isBlank(),
                 ttsReady = state.ttsReady,
                 installed = state.voiceInstalled,
                 active = state.speakActive,
-                busy = state.speakBusy,
+                loading = state.speakLoading,
+                playing = state.speakPlaying,
+                paused = state.speakPaused,
                 voiceDownload = voiceDownload,
                 target = true,
                 onIntent = onIntent,
@@ -590,52 +599,82 @@ private fun TargetPanel(
 }
 
 @Composable
-private fun SpeakIcon(
+private fun SpeakControls(
     lang: String,
     textBlank: Boolean,
     ttsReady: Boolean,
     installed: Boolean,
     active: Boolean,
-    busy: Boolean,
+    loading: Boolean,
+    playing: Boolean,
+    paused: Boolean,
     voiceDownload: VoiceDownloadState,
     target: Boolean,
     onIntent: (AppIntent) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     if (!ttsReady || !Languages.hasTts(lang)) return
     val downloading = voiceDownload.busy && PiperVoices.covers(voiceDownload.lang, lang)
-    val loading = busy || downloading
+    val preparing = loading || downloading
     val c = MaterialTheme.colorScheme
-    val indicator = Modifier.size(22.dp)
-    when {
-        loading && downloading -> CircularProgressIndicator(
-            progress = { voiceDownload.fraction.coerceIn(0f, 1f) },
-            modifier = indicator,
-            strokeWidth = 2.dp,
-            color = c.primary,
-            trackColor = c.outlineVariant,
-        )
+    val iconMod = Modifier.size(22.dp).clip(CircleShape)
+    Row(
+        modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        when {
+            preparing && downloading -> CircularProgressIndicator(
+                progress = { voiceDownload.fraction.coerceIn(0f, 1f) },
+                modifier = Modifier.size(22.dp),
+                strokeWidth = 2.dp,
+                color = c.primary,
+                trackColor = c.outlineVariant,
+            )
 
-        loading -> CircularProgressIndicator(
-            modifier = indicator.clickable(
-                onClickLabel = stringResource(Res.string.cd_speak_loading),
-            ) { onIntent(AppIntent.ToggleSpeak(target)) },
-            strokeWidth = 2.dp,
-            color = c.primary,
-        )
+            preparing -> CircularProgressIndicator(
+                modifier = Modifier.size(22.dp).clickable(
+                    onClickLabel = stringResource(Res.string.cd_speak_loading),
+                ) { onIntent(AppIntent.StopSpeak) },
+                strokeWidth = 2.dp,
+                color = c.primary,
+            )
 
-        else -> Icon(
-            Icons.AutoMirrored.Outlined.VolumeUp,
-            stringResource(if (active) Res.string.cd_speak_stop else Res.string.cd_speak),
-            Modifier.size(22.dp).clip(CircleShape).clickable(enabled = !installed || !textBlank || active) {
-                onIntent(AppIntent.ToggleSpeak(target))
-            },
-            tint = when {
-                !installed -> c.outline
-                active -> c.primary
-                textBlank -> c.outline
-                else -> c.onSurfaceVariant
-            },
-        )
+            else -> {
+                val live = playing && !paused
+                Icon(
+                    imageVector = when {
+                        live -> Icons.Outlined.Pause
+                        paused -> Icons.Outlined.PlayArrow
+                        else -> Icons.AutoMirrored.Outlined.VolumeUp
+                    },
+                    contentDescription = stringResource(
+                        when {
+                            live -> Res.string.action_pause
+                            paused -> Res.string.action_resume
+                            else -> Res.string.cd_speak
+                        },
+                    ),
+                    modifier = iconMod.clickable(enabled = !installed || !textBlank || active) {
+                        onIntent(AppIntent.ToggleSpeak(target))
+                    },
+                    tint = when {
+                        !installed -> c.outline
+                        active -> c.primary
+                        textBlank -> c.outline
+                        else -> c.onSurfaceVariant
+                    },
+                )
+            }
+        }
+        if (active) {
+            Icon(
+                Icons.Outlined.Stop,
+                stringResource(Res.string.cd_speak_stop),
+                iconMod.clickable { onIntent(AppIntent.StopSpeak) },
+                tint = c.primary,
+            )
+        }
     }
 }
 

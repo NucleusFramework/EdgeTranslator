@@ -13,11 +13,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -45,7 +43,6 @@ import offlinetranslator.shared.generated.resources.action_cancel
 import offlinetranslator.shared.generated.resources.action_confirm
 import offlinetranslator.shared.generated.resources.action_download
 import offlinetranslator.shared.generated.resources.action_ok
-import offlinetranslator.shared.generated.resources.cd_speak_loading
 import offlinetranslator.shared.generated.resources.confirm_delete_model
 import offlinetranslator.shared.generated.resources.confirm_delete_voice
 import offlinetranslator.shared.generated.resources.confirm_purge_history
@@ -59,29 +56,11 @@ import offlinetranslator.shared.generated.resources.model_precise_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun AppDialogHost(dialog: AppDialog, speakLoading: Boolean, speakTarget: Boolean?, settings: UserSettings, onIntent: (AppIntent) -> Unit) {
+fun AppDialogHost(dialog: AppDialog, settings: UserSettings, onIntent: (AppIntent) -> Unit) {
     when (val d = dialog) {
         AppDialog.Hidden -> Unit
         is AppDialog.Confirm -> ConfirmDialog(d, onIntent)
         is AppDialog.InstallVoice -> InstallVoiceDialog(settings, d, onIntent)
-    }
-    if (speakLoading) speakTarget?.let { SpeakLoadingDialog(it, onIntent) }
-}
-
-/** Cold voice model: seconds of load + synthesis before any sound. Cancel = the speak toggle. */
-@Composable
-private fun SpeakLoadingDialog(target: Boolean, onIntent: (AppIntent) -> Unit) {
-    val cancel = { onIntent(AppIntent.ToggleSpeak(target)) }
-    Sheet(onDismiss = cancel, title = stringResource(Res.string.cd_speak_loading)) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            CircularProgressIndicator(
-                Modifier.size(22.dp),
-                strokeWidth = 2.dp,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Spacer(Modifier.weight(1f))
-            OutlinedPill(stringResource(Res.string.action_cancel), onClick = cancel)
-        }
     }
 }
 

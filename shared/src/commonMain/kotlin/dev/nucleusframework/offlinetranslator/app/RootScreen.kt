@@ -57,8 +57,6 @@ fun RootScreen(state: AppState, backStack: NavBackStack<AppKey>, onIntent: (AppI
         )
         AppDialogHost(
             dialog = state.dialog,
-            speakLoading = state.translation.speakLoading,
-            speakTarget = state.translation.speakTarget,
             settings = state.data.settings,
             onIntent = onIntent,
         )
