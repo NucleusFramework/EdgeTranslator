@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="256dp"
+    android:height="256dp"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+    <!-- Rounded square, same radius as the desktop launcher (~22.4%). -->
+    <path
+        android:fillColor="#FF485F84"
+        android:pathData="M57.27,0 H198.73 A57.27,57.27 0 0 1 256,57.27 V198.73 A57.27,57.27 0 0 1 198.73,256 H57.27 A57.27,57.27 0 0 1 0,198.73 V57.27 A57.27,57.27 0 0 1 57.27,0 Z" />
+    <!-- Icons.Outlined.Translate, 90% of the tile — same glyph as BrandLabel. -->
+    <group
+        android:translateX="12.8"
+        android:translateY="12.8"
+        android:scaleX="9.6"
+        android:scaleY="9.6">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M12.87,15.07l-2.54,-2.51 0.03,-0.03c1.74,-1.94 2.98,-4.17 3.71,-6.53L17,6L17,4h-7L10,2L8,2v2L1,4v1.99h11.17C11.5,7.92 10.44,9.75 9,11.35C8.07,10.32 7.3,9.19 6.69,8h-2c0.73,1.63 1.73,3.17 2.98,4.56l-5.09,5.02L4,19l5,-5 3.11,3.11 0.76,-2.04zM18.5,10h-2L12,22h2l1.12,-3h4.75L21,22h2l-4.5,-12zM15.88,17l1.62,-4.33L19.12,17h-3.24z" />
+    </group>
+</vector>

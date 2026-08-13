@@ -59,6 +59,7 @@ sealed interface AppIntent {
     data object ClearHistory : AppIntent
 
     data class SelectModel(val id: LlmModel) : AppIntent
+    data class DownloadModel(val id: LlmModel) : AppIntent
     data class DeleteModel(val id: LlmModel) : AppIntent
     data class SetTheme(val mode: ThemeMode) : AppIntent
     data class SetAirplane(val on: Boolean) : AppIntent

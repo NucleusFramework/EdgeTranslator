@@ -74,10 +74,12 @@ Hot reload:
 
 Force the install screen: pass `--onboarding` as a launch argument.
 
-Native packages (DMG / NSIS / Deb):
+Native packages (GraalVM — DMG / NSIS / Deb):
 
 ```bash
-./gradlew :desktopApp:packageDistributionForCurrentOS
+./gradlew :desktopApp:packageGraalvmDmg    # macOS
+./gradlew :desktopApp:packageGraalvmNsis   # Windows
+./gradlew :desktopApp:packageGraalvmDeb    # Linux
 ```
 
 ## Layout

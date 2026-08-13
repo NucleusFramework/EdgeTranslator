@@ -318,7 +318,7 @@ class AppViewModelTest {
     }
 
     @Test
-    fun selectingMissingModelAfterInstallStartsDownload() {
+    fun selectingMissingModelAfterInstallDoesNotStartDownload() {
         val vm = vm(
             store = MemoryStore(
                 seedData().copy(
@@ -329,10 +329,52 @@ class AppViewModelTest {
         )
         vm.onIntent(AppIntent.SelectModel(LlmModel.Precise))
         val state = vm.state.value
+        assertEquals(LlmModel.Fast, state.data.settings.selectedModel)
+        assertEquals(LlmModel.Fast, state.data.model.id)
+        assertTrue(state.data.model.installed)
+        assertFalse(state.download.running)
+    }
+
+    @Test
+    fun downloadModelStartsDownload() {
+        val vm = vm(
+            store = MemoryStore(
+                seedData().copy(
+                    installed = true,
+                    model = seedData().model.copy(installed = true, id = LlmModel.Fast),
+                ),
+            ),
+        )
+        vm.onIntent(AppIntent.DownloadModel(LlmModel.Precise))
+        val state = vm.state.value
         assertEquals(LlmModel.Precise, state.data.settings.selectedModel)
         assertEquals(LlmModel.Fast, state.data.model.id)
         assertTrue(state.data.model.installed)
         assertTrue(state.download.running)
+    }
+
+    @Test
+    fun pauseAndCancelDownloadFromSettings() {
+        val vm = vm(
+            store = MemoryStore(
+                seedData().copy(
+                    installed = true,
+                    model = seedData().model.copy(installed = true, id = LlmModel.Fast),
+                ),
+            ),
+            dispatcher = UnconfinedTestDispatcher(),
+        )
+        vm.onIntent(AppIntent.DownloadModel(LlmModel.Precise))
+        assertTrue(vm.state.value.download.running)
+        vm.onIntent(AppIntent.PauseDownload)
+        assertTrue(vm.state.value.download.paused)
+        assertFalse(vm.state.value.download.running)
+        vm.onIntent(AppIntent.ResumeDownload)
+        assertTrue(vm.state.value.download.running)
+        vm.onIntent(AppIntent.CancelDownload)
+        assertEquals(DownloadPhase.Cancelled, vm.state.value.download.phase)
+        assertFalse(vm.state.value.download.running)
+        assertEquals(LlmModel.Fast, vm.state.value.data.model.id)
     }
 
     @Test

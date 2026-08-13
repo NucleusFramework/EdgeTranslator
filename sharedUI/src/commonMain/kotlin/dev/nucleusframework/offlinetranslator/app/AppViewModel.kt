@@ -202,10 +202,17 @@ class AppViewModel(
             is AppIntent.SelectModel -> {
                 persist(now = true)
                 val catalog = GemmaModels.of(intent.id)
+                if (modelOnDisk(catalog) && translator is GemmaTranslator) {
+                    preloadModel(catalog.destPath())
+                }
+            }
+
+            is AppIntent.DownloadModel -> {
+                persist(now = true)
+                val catalog = GemmaModels.of(intent.id)
                 if (modelOnDisk(catalog)) {
-                    val path = catalog.destPath()
-                    if (translator is GemmaTranslator) preloadModel(path)
-                } else if (_state.value.data.installed) {
+                    if (translator is GemmaTranslator) preloadModel(catalog.destPath())
+                } else {
                     downloadJob?.cancel()
                     downloadJob = null
                     startDownload()
@@ -436,6 +443,8 @@ class AppViewModel(
 
         is AppIntent.SelectModel -> selectModel(s, intent.id)
 
+        is AppIntent.DownloadModel -> downloadModel(s, intent.id)
+
         is AppIntent.DeleteModel -> s.copy(dialog = AppDialog.Confirm(ConfirmAction.DeleteModel(intent.id)))
 
         is AppIntent.DeleteVoice -> s.copy(dialog = AppDialog.Confirm(ConfirmAction.DeleteVoice(intent.lang)))
@@ -515,6 +524,7 @@ class AppViewModel(
     private fun selectModel(s: AppState, id: LlmModel): AppState {
         val catalog = GemmaModels.of(id)
         val onDisk = modelOnDisk(catalog)
+        if (!onDisk && s.data.installed) return s
         if (s.data.settings.selectedModel == id && (onDisk || s.download.running || !s.data.installed)) {
             return s
         }
@@ -527,6 +537,14 @@ class AppViewModel(
         } else {
             next.copy(download = DownloadState(totalBytes = catalog.bytes))
         }
+    }
+
+    private fun downloadModel(s: AppState, id: LlmModel): AppState {
+        val catalog = GemmaModels.of(id)
+        if (modelOnDisk(catalog)) return selectModel(s, id)
+        if (s.data.settings.selectedModel == id && (s.download.running || s.download.paused)) return s
+        return s.updateSettings { it.copy(selectedModel = id) }
+            .copy(download = DownloadState(totalBytes = catalog.bytes))
     }
 
     private fun chooseLanguage(s: AppState, code: String, role: LangRole): AppState {

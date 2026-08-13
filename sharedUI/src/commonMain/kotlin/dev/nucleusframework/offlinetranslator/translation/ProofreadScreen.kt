@@ -31,6 +31,7 @@ import dev.nucleusframework.offlinetranslator.domain.formatLatency
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
+import dev.nucleusframework.offlinetranslator.ui.TwoPane
 import dev.nucleusframework.offlinetranslator.ui.VerticalContentScrollbar
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.action_apply
@@ -61,20 +62,17 @@ fun ProofreadContent(
     onIntent: (AppIntent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        InputPanel(proofread, onIntent, Modifier.weight(1f))
-        ResultPanel(proofread, uiLanguage, modelInstalled, onIntent, Modifier.weight(1f))
-    }
+    TwoPane(
+        first = { InputPanel(proofread, onIntent, it) },
+        second = { ResultPanel(proofread, uiLanguage, modelInstalled, onIntent, it) },
+        modifier = modifier,
+    )
 }
 
 @Composable
 private fun InputPanel(state: ProofreadState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
-    Column(modifier.fillMaxHeight().clip(RoundedCornerShape(20.dp)).border(1.dp, c.outlineVariant, RoundedCornerShape(20.dp))) {
+    Column(modifier.fillMaxSize().clip(RoundedCornerShape(20.dp)).border(1.dp, c.outlineVariant, RoundedCornerShape(20.dp))) {
         Box(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 20.dp), Alignment.CenterStart) {
             SectionLabel(stringResource(Res.string.proofread_header))
         }
@@ -134,7 +132,7 @@ private fun ResultPanel(
     modifier: Modifier = Modifier,
 ) {
     val c = MaterialTheme.colorScheme
-    Column(modifier.fillMaxHeight().clip(RoundedCornerShape(20.dp)).background(c.surfaceContainer)) {
+    Column(modifier.fillMaxSize().clip(RoundedCornerShape(20.dp)).background(c.surfaceContainer)) {
         Row(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 20.dp), verticalAlignment = Alignment.CenterVertically) {
             SectionLabel(stringResource(Res.string.proofread_result_header))
             Spacer(Modifier.weight(1f))

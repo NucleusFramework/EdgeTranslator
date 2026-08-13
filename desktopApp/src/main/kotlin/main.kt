@@ -39,6 +39,7 @@ import dev.nucleusframework.offlinetranslator.main.SystemMeters
 import dev.nucleusframework.offlinetranslator.main.UpdateButton
 import dev.nucleusframework.offlinetranslator.main.UpdateRestartDialog
 import dev.nucleusframework.offlinetranslator.main.rememberDesktopUpdate
+import dev.nucleusframework.offlinetranslator.main.windowIconPainter
 import dev.nucleusframework.offlinetranslator.theme.rememberEdgeColorScheme
 import dev.nucleusframework.window.ControlButtonsDirection
 import dev.nucleusframework.window.DecoratedWindowScope
@@ -81,7 +82,8 @@ fun main(args: Array<String>) {
                 onCloseRequest = quit,
                 state = rememberWindowState(width = 1440.dp, height = 900.dp),
                 title = "Edge Translator",
-                minimumSize = DpSize(240.dp, 300.dp),
+                icon = if (Platform.Current == Platform.Windows) windowIconPainter() else null,
+                minimumSize = DpSize(350.dp, 640.dp),
             ) {
                 val windowScope = this
                 // The colour behind everything Compose does not paint (live

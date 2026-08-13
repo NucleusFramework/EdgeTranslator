@@ -1,7 +1,10 @@
 import dev.nucleusframework.desktop.application.dsl.CompressionLevel
+import dev.nucleusframework.desktop.application.dsl.GraalvmDistribution
+import dev.nucleusframework.desktop.application.dsl.NativeImageOptimization
 import dev.nucleusframework.desktop.application.dsl.ReleaseChannel
 import dev.nucleusframework.desktop.application.dsl.ReleaseType
 import dev.nucleusframework.desktop.application.dsl.TargetFormat
+import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -11,13 +14,12 @@ plugins {
     alias(libs.plugins.nucleus)
 }
 
-// GraalVM CE 25 native-image cannot load class file 70 (JDK 26). Pin to 17 with the rest of the project.
 kotlin {
     compilerOptions { jvmTarget.set(JvmTarget.JVM_25) }
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
 }
 
@@ -40,7 +42,19 @@ val nativePackageVersion = releaseVersion.substringBefore("-")
 nucleus.application {
     mainClass = "MainKt"
 
-    graalvm.isEnabled.set(true)
+    graalvm {
+        isEnabled = true
+        javaLanguageVersion = 25
+        jvmVendor = JvmVendorSpec.ORACLE
+        imageName = "OfflineTranslator"
+        // -O3 and PGO only exist on Oracle GraalVM. Community would silently stay on -O2.
+        toolchain {
+            distribution = GraalvmDistribution.ORACLE
+        }
+        optimization = NativeImageOptimization.LEVEL_3
+        // PGO: `runWithPgoInstrument` records graalvm/pgo/default.iprof, applied
+        // automatically by every later build. Opt out with -Pnucleus.graalvm.pgo=off.
+    }
 
     nativeDistributions {
         // Zip is the silent macOS updater payload; DMG stays the first-install image.

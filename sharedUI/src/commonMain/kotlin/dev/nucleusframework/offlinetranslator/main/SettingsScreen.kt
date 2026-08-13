@@ -12,7 +12,11 @@ import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.Pause
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -29,11 +33,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.app.AppIntent
+import dev.nucleusframework.offlinetranslator.domain.DownloadPhase
 import dev.nucleusframework.offlinetranslator.domain.DownloadState
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.Languages
@@ -42,6 +49,7 @@ import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.UserSettings
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
+import dev.nucleusframework.offlinetranslator.domain.formatEta
 import dev.nucleusframework.offlinetranslator.domain.formatPercent
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
@@ -134,25 +142,66 @@ private fun DisplaySection(settings: UserSettings, onIntent: (AppIntent) -> Unit
 private fun ModelSection(settings: UserSettings, model: ModelInfo, download: DownloadState, onIntent: (AppIntent) -> Unit) {
     val ui = settings.uiLanguage
     val selected = settings.selectedModel
+    val dash = stringResource(Res.string.em_dash)
     SettingsSection(stringResource(Res.string.settings_model)) {
         Divided(GemmaModels.all) { catalog ->
             val installed = catalog.isOnDisk() || (model.installed && model.id == catalog.id)
-            val downloading = catalog.id == selected && download.running
+            val mine = catalog.id == selected
+            val failed = mine && download.phase == DownloadPhase.Failed
+            val paused = mine && download.paused
+            val running = mine && download.running
+            val inFlight = running || paused || failed
+            val speed = if (download.speedBps > 0) {
+                stringResource(Res.string.download_speed_per_s, formatBytesUi(download.speedBps, ui))
+            } else {
+                dash
+            }
+            val stats = listOf(
+                formatPercent(download.fraction, ui),
+                "${formatBytesUi(download.bytesDownloaded, ui)} / ${formatBytesUi(download.totalBytes, ui)}",
+                speed,
+                formatEta((download.totalBytes - download.bytesDownloaded).coerceAtLeast(0), download.speedBps),
+            ).joinToString(" · ")
             ChoiceRow(
                 title = catalog.title(),
                 body = catalog.body(formatBytesUi(catalog.bytes, ui)),
                 installed = installed,
                 selected = installed && model.installed && model.id == catalog.id,
-                progress = if (downloading) download.fraction else null,
-                progressLabel = if (downloading) {
-                    stringResource(Res.string.settings_model_downloading, formatPercent(download.fraction, ui))
+                muted = !installed && !inFlight,
+                progress = if (inFlight) download.fraction else null,
+                progressLabel = if (running || paused) stats else null,
+                error = if (failed) download.error?.text(ui) else null,
+                onClick = if (installed) {
+                    { onIntent(AppIntent.SelectModel(catalog.id)) }
                 } else {
                     null
                 },
-                error = if (catalog.id == selected) download.error?.text(ui) else null,
-                onClick = { onIntent(AppIntent.SelectModel(catalog.id)) },
-                onDelete = if (installed && !downloading) {
+                onDelete = if (installed && !inFlight) {
                     { onIntent(AppIntent.DeleteModel(catalog.id)) }
+                } else {
+                    null
+                },
+                onDownload = if (!installed && !inFlight) {
+                    { onIntent(AppIntent.DownloadModel(catalog.id)) }
+                } else {
+                    null
+                },
+                onPause = if (running) {
+                    { onIntent(AppIntent.PauseDownload) }
+                } else {
+                    null
+                },
+                onResume = if (paused || failed) {
+                    {
+                        onIntent(
+                            if (failed) AppIntent.DownloadModel(catalog.id) else AppIntent.ResumeDownload,
+                        )
+                    }
+                } else {
+                    null
+                },
+                onCancel = if (running || paused) {
+                    { onIntent(AppIntent.CancelDownload) }
                 } else {
                     null
                 },
@@ -306,32 +355,53 @@ private fun ChoiceRow(
     progress: Float?,
     progressLabel: String?,
     error: String?,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
     onDelete: (() -> Unit)? = null,
+    muted: Boolean = false,
+    onDownload: (() -> Unit)? = null,
+    onPause: (() -> Unit)? = null,
+    onResume: (() -> Unit)? = null,
+    onCancel: (() -> Unit)? = null,
 ) {
     val c = MaterialTheme.colorScheme
     val status = error ?: progressLabel
-    Column(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 20.dp, vertical = 14.dp)) {
+    val titleColor = if (muted) c.onSurface.copy(alpha = 0.45f) else c.onSurface
+    val bodyColor = when {
+        error != null -> c.error
+        muted -> c.onSurfaceVariant.copy(alpha = 0.45f)
+        else -> c.onSurfaceVariant
+    }
+    val row = Modifier.fillMaxWidth().then(
+        if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier,
+    )
+    Column(row.padding(horizontal = 20.dp, vertical = 14.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Column(Modifier.weight(1f)) {
-                Text(title, fontSize = 15.sp, fontWeight = FontWeight.Medium, color = c.onSurface)
+                Text(title, fontSize = 15.sp, fontWeight = FontWeight.Medium, color = titleColor)
                 Text(
                     if (status != null) "$body · $status" else body,
                     fontSize = 13.sp,
-                    color = if (error != null) c.error else c.onSurfaceVariant,
+                    color = bodyColor,
                 )
             }
+            if (onDownload != null) {
+                RowAction(Icons.Outlined.Download, stringResource(Res.string.action_download), onDownload, c.primary)
+            }
+            if (onPause != null) {
+                RowAction(Icons.Outlined.Pause, stringResource(Res.string.action_pause), onPause, c.onSurfaceVariant)
+            }
+            if (onResume != null) {
+                RowAction(Icons.Outlined.PlayArrow, stringResource(Res.string.action_resume), onResume, c.primary)
+            }
+            if (onCancel != null) {
+                RowAction(Icons.Outlined.Close, stringResource(Res.string.action_cancel), onCancel, c.onSurfaceVariant)
+            }
             if (onDelete != null) {
-                Icon(
-                    Icons.Outlined.Delete,
-                    stringResource(Res.string.settings_model_delete),
-                    Modifier.size(20.dp).clip(RoundedCornerShape(10.dp)).clickable(onClick = onDelete),
-                    tint = c.onSurfaceVariant,
-                )
+                RowAction(Icons.Outlined.Delete, stringResource(Res.string.settings_model_delete), onDelete, c.onSurfaceVariant)
             }
             if (selected) {
                 Icon(Icons.Outlined.Check, null, Modifier.size(20.dp), tint = c.primary)
-            } else if (!installed) {
+            } else if (!installed && onDownload == null && progress == null) {
                 Text(stringResource(Res.string.settings_model_missing), fontSize = 12.sp, color = c.onSurfaceVariant)
             }
         }
@@ -342,6 +412,16 @@ private fun ChoiceRow(
             )
         }
     }
+}
+
+@Composable
+private fun RowAction(icon: ImageVector, label: String, onClick: () -> Unit, tint: Color) {
+    Icon(
+        icon,
+        label,
+        Modifier.size(20.dp).clip(RoundedCornerShape(10.dp)).clickable(onClick = onClick),
+        tint = tint,
+    )
 }
 
 /** Drill-in row: taps through to a sub-list. */

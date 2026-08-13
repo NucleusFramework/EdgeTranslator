@@ -22,6 +22,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.app_name
 import offlinetranslator.sharedui.generated.resources.ic_github
+import offlinetranslator.sharedui.generated.resources.ic_window
 import offlinetranslator.sharedui.generated.resources.tooltip_github
 import offlinetranslator.sharedui.generated.resources.tooltip_sponsor
 import org.jetbrains.compose.resources.painterResource
@@ -57,6 +59,10 @@ val LocalWindowDrag = staticCompositionLocalOf<Modifier> { Modifier }
  * elsewhere, so the navigation rail simply omits the block.
  */
 val LocalSystemMeters = staticCompositionLocalOf<(@Composable (Modifier) -> Unit)?> { null }
+
+/** Launcher mark. Used as `MaterialDecoratedWindow.icon` on Windows. */
+@Composable
+fun windowIconPainter(): Painter = painterResource(Res.drawable.ic_window)
 
 /** App identity: translate glyph + name. Used in the desktop window chrome. */
 @Composable
