@@ -989,7 +989,9 @@ class AppViewModelTest {
         vm.onIntent(AppIntent.SetSourceText("Bonjour"))
         testScheduler.advanceUntilIdle()
         vm.onIntent(AppIntent.ToggleSpeak(target = true))
-        testScheduler.runCurrent()
+        testScheduler.advanceTimeBy(100)
+        assertFalse(vm.state.value.translation.speakLoading, "no loader before the grace delay")
+        testScheduler.advanceTimeBy(400)
         assertTrue(vm.state.value.translation.speakLoading, "loader while the model loads")
         testScheduler.advanceUntilIdle()
         assertFalse(vm.state.value.translation.speakLoading, "loader gone once audio starts")
@@ -1050,35 +1052,6 @@ class AppViewModelTest {
         assertFalse(vm.state.value.translation.speakBusy)
         assertFalse(vm.state.value.translation.speakPlaying)
         assertFalse(vm.state.value.translation.speakPaused)
-        assertFalse(vm.state.value.translation.speakLoading)
-    }
-
-    @Test
-    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
-    fun toggleSpeakWhileLoadingDoesNotCancel() = runTest {
-        val speaker = FakeTts().apply { loadMs = 2_000; holdUntilStop = true }
-        val vm = vm(
-            store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
-            translator = Translator { TranslationResult.Ok("Hello") },
-            dispatcher = UnconfinedTestDispatcher(testScheduler),
-            translateDelayMs = 0,
-            tts = speaker,
-            voicesOnDisk = { setOf("en") },
-        )
-        vm.onIntent(AppIntent.SetSourceText("Bonjour"))
-        testScheduler.advanceUntilIdle()
-        vm.onIntent(AppIntent.ToggleSpeak(target = true))
-        testScheduler.advanceTimeBy(400)
-        assertTrue(vm.state.value.translation.speakLoading)
-        assertFalse(vm.state.value.translation.speakPlaying)
-
-        vm.onIntent(AppIntent.ToggleSpeak(target = true))
-        assertTrue(vm.state.value.translation.speakLoading)
-        assertEquals(true, vm.state.value.translation.speakTarget)
-
-        testScheduler.advanceTimeBy(2_000)
-        testScheduler.runCurrent()
-        assertTrue(vm.state.value.translation.speakPlaying)
         assertFalse(vm.state.value.translation.speakLoading)
     }
 

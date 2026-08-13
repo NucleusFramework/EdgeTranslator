@@ -1017,7 +1017,7 @@ class AppViewModel(
                     tts.resume()
                     mutate { it.copy(translation = it.translation.copy(speakPaused = false)) }
                 }
-                else -> Unit
+                else -> stopSpeak()
             }
             return
         }
@@ -1043,15 +1043,26 @@ class AppViewModel(
                     translation = it.translation.copy(
                         speakTarget = target,
                         speakBusy = true,
-                        speakLoading = true,
+                        speakLoading = false,
                         speakPlaying = false,
                         speakPaused = false,
                     ),
                 )
             }
+            // A cold voice model takes seconds to load and synthesise before a sound comes out.
+            // ponytail: 250 ms de sursis avant d'afficher le loader — modèle déjà chargé, pas de clignotement.
+            val loader = launch {
+                delay(250)
+                mutate { it.copy(translation = it.translation.copy(speakLoading = true)) }
+            }
+            fun hideLoader() {
+                loader.cancel()
+                mutate { it.copy(translation = it.translation.copy(speakLoading = false)) }
+            }
             try {
                 withContext(ioDispatcher) {
                     tts.speak(text.trim(), lang, voiceId) {
+                        loader.cancel()
                         mutate {
                             it.copy(
                                 translation = it.translation.copy(
@@ -1063,11 +1074,14 @@ class AppViewModel(
                     }
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
+                hideLoader()
                 throw e
             } catch (_: Exception) {
+                hideLoader()
                 mutate { it.copy(message = AppMessage.TtsFailed, translation = it.translation.idleSpeak()) }
                 return@launch
             }
+            hideLoader()
             mutate { it.copy(translation = it.translation.idleSpeak()) }
         }
     }
