@@ -37,3 +37,7 @@ internal fun pickBackend(
     if (gpuKnown != false && gpuWorks()) return BackendPick(LlmAccelerator.Gpu, true)
     return BackendPick(LlmAccelerator.Cpu, false)
 }
+
+/** NVIDIA WebGPU teardown SIGILL after a GPU turn — keep the conversation alive. */
+internal fun linuxGpuTeardownUnsafe(osName: String): Boolean =
+    osName.contains("linux", ignoreCase = true)

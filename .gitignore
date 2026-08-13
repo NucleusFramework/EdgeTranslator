@@ -18,3 +18,4 @@ Pods/
 /com/
 shared/src/commonMain/composeResources/files/aboutlibraries.json
 /desktopApp/resources/windows-x64/*.dll
+/desktopApp/resources/linux-x64/*.so

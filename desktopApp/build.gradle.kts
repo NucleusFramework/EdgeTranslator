@@ -22,7 +22,6 @@ kotlin {
 }
 
 java {
-    // Also makes `run` launch on a JDK 25, instead of whatever JVM runs Gradle.
     toolchain { languageVersion.set(JavaLanguageVersion.of(25)) }
 }
 
@@ -44,6 +43,13 @@ val nativePackageVersion = releaseVersion.substringBefore("-")
 
 nucleus.application {
     mainClass = "MainKt"
+    // Nucleus `run` forks `javaHome`, not the Java plugin toolchain. Point it at JDK 25
+    // so a JBR 21 Gradle daemon (typical from IDEA) does not launch class-file 69 bytecode.
+    javaHome =
+        javaToolchains
+            .launcherFor(java.toolchain)
+            .get()
+            .metadata.installationPath.asFile.absolutePath
 
     graalvm {
         isEnabled = true
@@ -112,6 +118,7 @@ nucleus.application {
 // LiteRT-LM pins this DXC drop for Windows GPU (WORKSPACE @directx_shader_compiler).
 val dxcUrl = "https://github.com/microsoft/DirectXShaderCompiler/releases/download/v1.9.2602/dxc_2026_02_20.zip"
 val windowsAppResources = project.layout.projectDirectory.dir("resources/windows-x64")
+val linuxAppResources = project.layout.projectDirectory.dir("resources/linux-x64")
 
 val resolveWindowsDxc = tasks.register("resolveWindowsDxc") {
     val url = dxcUrl
@@ -144,6 +151,50 @@ val resolveWindowsDxc = tasks.register("resolveWindowsDxc") {
     }
 }
 
+val linuxSamplerStub = project.layout.projectDirectory.file("src/nativeLinux/litert_webgpu_sampler_stub.c")
+
+val resolveLinuxGpuLibs = tasks.register("resolveLinuxGpuLibs") {
+    val dest = linuxAppResources
+    val stub = linuxSamplerStub
+    inputs.file(stub)
+    outputs.dir(dest)
+    onlyIf { org.gradle.internal.os.OperatingSystem.current().isLinux }
+    doLast {
+        val out = dest.asFile
+        out.mkdirs()
+        // LiteRT dlopens the unversioned name. Distros only ship libOpenCL.so.1.
+        val openclSrc = listOf(
+            "/usr/lib/x86_64-linux-gnu/libOpenCL.so.1",
+            "/usr/lib/libOpenCL.so.1",
+        ).map(::File).firstOrNull { it.isFile }
+        checkNotNull(openclSrc) { "libOpenCL.so.1 not found (ocl-icd-libopencl1)" }
+        val opencl = out.resolve("libOpenCL.so")
+        if (!opencl.isFile || opencl.length() < 1_024) {
+            openclSrc.copyTo(opencl, overwrite = true)
+        }
+        fun patchelf(vararg args: String) {
+            val code = ProcessBuilder("patchelf", *args).inheritIO().start().waitFor()
+            check(code == 0) { "patchelf ${args.joinToString(" ")} failed ($code)" }
+        }
+        patchelf("--set-soname", "libOpenCL.so", opencl.absolutePath)
+        patchelf("--set-rpath", "\$ORIGIN", opencl.absolutePath)
+
+        // Real prebuilt sampler pulls a second Dawn. Stub Create returns
+        // UNAVAILABLE so sampler_factory skips the static WebGPU sampler
+        // (nvidia-gpucomp SIGILL) and uses CPU sampling on a GPU engine.
+        val sampler = out.resolve("libLiteRtTopKWebGpuSampler.so")
+        val gcc = ProcessBuilder(
+            "gcc", "-shared", "-fPIC",
+            "-Wl,-soname,libLiteRtTopKWebGpuSampler.so",
+            "-o", sampler.absolutePath,
+            stub.asFile.absolutePath,
+        ).inheritIO().start().waitFor()
+        check(gcc == 0 && sampler.isFile) { "gcc failed to build WebGPU sampler stub" }
+
+        listOf("libwebgpu_dawn.so", "libLiteRt.so").forEach { out.resolve(it).delete() }
+    }
+}
+
 tasks.matching { it.name == "prepareAppResources" }.configureEach {
-    dependsOn(resolveWindowsDxc)
+    dependsOn(resolveWindowsDxc, resolveLinuxGpuLibs)
 }
