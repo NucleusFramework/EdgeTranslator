@@ -4,6 +4,7 @@ import dev.nucleusframework.offlinetranslator.engine.WorkerEvent
 import dev.nucleusframework.offlinetranslator.engine.decodeWorkerField
 import dev.nucleusframework.offlinetranslator.engine.encodeWorkerField
 import dev.nucleusframework.offlinetranslator.engine.LinuxGpuWorkerProcess
+import dev.nucleusframework.offlinetranslator.engine.hasMultimodalPayload
 import dev.nucleusframework.offlinetranslator.engine.linuxGpuCompanionLibs
 import dev.nucleusframework.offlinetranslator.engine.linuxGpuTeardownUnsafe
 import dev.nucleusframework.offlinetranslator.engine.parseWorkerLine
@@ -43,6 +44,14 @@ class LinuxGpuPolicyTest {
             assertTrue("dev.nucleusframework.offlinetranslator.engine.LinuxGpuWorkerKt" in args)
             assertTrue("-cp" in args)
         }
+    }
+
+    @Test
+    fun imageAndAudioSkipTheGpuWorker() {
+        assertFalse(hasMultimodalPayload(null, null))
+        assertFalse(hasMultimodalPayload(byteArrayOf(), byteArrayOf()))
+        assertTrue(hasMultimodalPayload(byteArrayOf(1), null))
+        assertTrue(hasMultimodalPayload(null, byteArrayOf(1)))
     }
 
     @Test

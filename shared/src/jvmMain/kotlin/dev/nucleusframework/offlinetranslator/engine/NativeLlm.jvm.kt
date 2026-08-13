@@ -85,7 +85,8 @@ internal actual class NativeLlm actual constructor() {
         onPartial: (String) -> Unit,
     ): String {
         val child = worker
-        if (child != null && (audioWav == null || audioWav.isEmpty()) && (image == null || image.isEmpty())) {
+        val media = hasMultimodalPayload(audioWav, image)
+        if (child != null && !media) {
             try {
                 return child.generate(systemInstruction, userMessage, onPartial)
             } catch (e: kotlinx.coroutines.CancellationException) {
@@ -96,6 +97,9 @@ internal actual class NativeLlm actual constructor() {
                 ensureCpuEngine()
             }
         }
+        // GPU lives in the child JVM (NVIDIA SIGILL in-process). Vision / audio
+        // stay in this process on a CPU engine — the worker protocol is text-only.
+        if (engine == null) ensureCpuEngine()
         return generateInProcess(systemInstruction, userMessage, audioWav, image, onPartial)
     }
 
@@ -245,6 +249,9 @@ internal fun linuxGpuCompanionLibs(): List<String> = listOf(
 internal fun inGpuWorkerProcess(): Boolean =
     System.getProperty("edgetranslator.gpu.worker") == "1" ||
         System.getenv("EDGE_TRANSLATOR_GPU_WORKER") == "1"
+
+internal fun hasMultimodalPayload(audioWav: ByteArray?, image: ByteArray?): Boolean =
+    (audioWav != null && audioWav.isNotEmpty()) || (image != null && image.isNotEmpty())
 
 private fun appResourcesDir(): java.io.File? =
     System.getProperty("compose.application.resources.dir")?.let { java.io.File(it) }

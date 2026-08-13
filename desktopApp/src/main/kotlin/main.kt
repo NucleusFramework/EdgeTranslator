@@ -54,6 +54,7 @@ import dev.nucleusframework.window.macOSLargeCornerRadius
 import dev.nucleusframework.window.material.MaterialDecoratedWindow
 import dev.nucleusframework.window.windowDragArea
 import dev.nucleusframework.offlinetranslator.engine.runGpuWorker
+import dev.nucleusframework.offlinetranslator.platform.InstallDesktopFilePicker
 import io.github.vinceglb.filekit.FileKit
 
 private const val DESKTOP_DENSITY_SCALE = 0.75f
@@ -132,6 +133,7 @@ fun main(args: Array<String>) {
                             // Host-only: the meters read this machine via system-info.
                             LocalSystemMeters provides { modifier -> SystemMeters(modifier) },
                         ) {
+                            InstallDesktopFilePicker(windowScope.nucleusWindow)
                             App(
                                 // SideEffect: App reports the resolved theme during
                                 // composition, so the write has to land after it.

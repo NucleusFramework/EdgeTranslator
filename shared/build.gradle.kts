@@ -75,6 +75,8 @@ kotlin {
             implementation(libs.sqlDelight.driver.sqlite)
             implementation(libs.sqlite.jdbc)
             implementation(libs.nucleus.core.runtime)
+            implementation(libs.nucleus.application)
+            implementation(libs.nucleus.decorated.window.tao)
             implementation(libs.nucleus.system.color)
             implementation(libs.nucleus.system.info)
             implementation(libs.nucleus.native.http.ktor)
