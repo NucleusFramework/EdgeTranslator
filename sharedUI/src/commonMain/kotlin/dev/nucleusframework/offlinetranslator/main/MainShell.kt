@@ -105,11 +105,13 @@ private fun NavRail(selected: AppKey, modelId: LlmModel, onIntent: (AppIntent) -
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         // The app identity lives in the window chrome, not here.
-        MainDestinations.forEach { dest ->
+        MainDestinations.filter { it != AppKey.Settings && it != AppKey.About }.forEach { dest ->
             NavRailItem(dest, dest == selected) { onIntent(AppIntent.Navigate(dest)) }
         }
 
         Spacer(Modifier.weight(1f))
+        NavRailItem(AppKey.Settings, AppKey.Settings == selected) { onIntent(AppIntent.Navigate(AppKey.Settings)) }
+        NavRailItem(AppKey.About, AppKey.About == selected) { onIntent(AppIntent.Navigate(AppKey.About)) }
         HorizontalDivider(color = c.outlineVariant)
         Column(
             Modifier.padding(start = 4.dp, end = 4.dp, top = 14.dp),
