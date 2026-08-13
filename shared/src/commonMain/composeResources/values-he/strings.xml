@@ -144,6 +144,11 @@
     <string name="lang_names_native">שמות מקוריים</string>
     <string name="settings_model">מודל</string>
     <string name="settings_backend">מנוע</string>
+    <string name="settings_model_keep_alive">מודל בזיכרון</string>
+    <string name="settings_model_on_demand">לפי דרישה</string>
+    <string name="settings_model_always_on">תמיד מוכן</string>
+    <string name="settings_model_on_demand_body">נטען בתרגום הראשון ומשתחרר אחרי 5 דקות ללא פעילות.</string>
+    <string name="settings_model_always_on_body">נשאר טעון כדי שהתרגומים יתחילו מיד.</string>
     <string name="settings_model_installed">מותקן</string>
     <string name="settings_model_missing">לא מותקן</string>
     <string name="settings_model_downloading">מוריד… %1$s</string>

@@ -150,6 +150,11 @@
     <string name="lang_names_native">本地名称</string>
     <string name="settings_model">模型</string>
     <string name="settings_backend">后端</string>
+    <string name="settings_model_keep_alive">内存中的模型</string>
+    <string name="settings_model_on_demand">按需</string>
+    <string name="settings_model_always_on">始终就绪</string>
+    <string name="settings_model_on_demand_body">首次翻译时加载，空闲 5 分钟后卸载。</string>
+    <string name="settings_model_always_on_body">保持加载以便立即开始翻译。</string>
     <string name="settings_model_installed">已安装</string>
     <string name="settings_model_missing">未安装</string>
     <string name="settings_model_downloading">正在下载… %1$s</string>

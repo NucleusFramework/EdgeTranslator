@@ -150,6 +150,11 @@
     <string name="lang_names_native">Родные названия</string>
     <string name="settings_model">Модель</string>
     <string name="settings_backend">Бэкенд</string>
+    <string name="settings_model_keep_alive">Модель в памяти</string>
+    <string name="settings_model_on_demand">По запросу</string>
+    <string name="settings_model_always_on">Всегда готов</string>
+    <string name="settings_model_on_demand_body">Загружается при первом переводе и выгружается после 5 минут простоя.</string>
+    <string name="settings_model_always_on_body">Остаётся загруженной, чтобы переводы начинались сразу.</string>
     <string name="settings_model_installed">Установлена</string>
     <string name="settings_model_missing">Не установлена</string>
     <string name="settings_model_downloading">Загрузка… %1$s</string>

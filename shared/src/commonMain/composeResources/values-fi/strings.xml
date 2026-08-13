@@ -144,6 +144,11 @@
     <string name="lang_names_native">Omat nimet</string>
     <string name="settings_model">Malli</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Malli muistissa</string>
+    <string name="settings_model_on_demand">Tarvittaessa</string>
+    <string name="settings_model_always_on">Aina valmiina</string>
+    <string name="settings_model_on_demand_body">Ladataan ensimmäisessä käännöksessä ja vapautetaan 5 minuutin käyttämättömyyden jälkeen.</string>
+    <string name="settings_model_always_on_body">Pysyy ladattuna, jotta käännökset alkavat heti.</string>
     <string name="settings_model_installed">Asennettu</string>
     <string name="settings_model_missing">Ei asennettu</string>
     <string name="settings_model_downloading">Ladataan… %1$s</string>

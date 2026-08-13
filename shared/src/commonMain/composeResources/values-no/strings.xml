@@ -144,6 +144,11 @@
     <string name="lang_names_native">Innfødte navn</string>
     <string name="settings_model">Modell</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Modell i minnet</string>
+    <string name="settings_model_on_demand">Ved behov</string>
+    <string name="settings_model_always_on">Alltid klar</string>
+    <string name="settings_model_on_demand_body">Lastes ved første oversettelse og frigjøres etter 5 minutter inaktivitet.</string>
+    <string name="settings_model_always_on_body">Forblir lastet slik at oversettelser starter med en gang.</string>
     <string name="settings_model_installed">Installert</string>
     <string name="settings_model_missing">Ikke installert</string>
     <string name="settings_model_downloading">Laster ned… %1$s</string>

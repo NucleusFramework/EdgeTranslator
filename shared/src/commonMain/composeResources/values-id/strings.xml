@@ -144,6 +144,11 @@
     <string name="lang_names_native">Nama asli</string>
     <string name="settings_model">Model</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Model di memori</string>
+    <string name="settings_model_on_demand">Sesuai kebutuhan</string>
+    <string name="settings_model_always_on">Selalu siap</string>
+    <string name="settings_model_on_demand_body">Dimuat pada terjemahan pertama dan dilepas setelah 5 menit tidak aktif.</string>
+    <string name="settings_model_always_on_body">Tetap dimuat agar terjemahan langsung dimulai.</string>
     <string name="settings_model_installed">Terpasang</string>
     <string name="settings_model_missing">Belum terpasang</string>
     <string name="settings_model_downloading">Mengunduh… %1$s</string>

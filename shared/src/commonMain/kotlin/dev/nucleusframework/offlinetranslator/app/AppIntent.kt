@@ -5,6 +5,7 @@ import dev.nucleusframework.offlinetranslator.domain.HistoryFilter
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.LangRole
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
+import dev.nucleusframework.offlinetranslator.domain.LlmKeepAlive
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.ThemeMode
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
@@ -49,6 +50,7 @@ sealed interface AppIntent {
     data class SetUiLanguage(val language: UiLanguage?) : AppIntent
     data class SetLangNameStyle(val style: LangNameStyle) : AppIntent
     data class SetLlmBackend(val backend: LlmBackend) : AppIntent
+    data class SetLlmKeepAlive(val mode: LlmKeepAlive) : AppIntent
 
     data object PauseDownload : AppIntent
     data object ResumeDownload : AppIntent

@@ -144,6 +144,11 @@
     <string name="lang_names_native">Natív nevek</string>
     <string name="settings_model">Modell</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Modell a memóriában</string>
+    <string name="settings_model_on_demand">Igény szerint</string>
+    <string name="settings_model_always_on">Mindig kész</string>
+    <string name="settings_model_on_demand_body">Az első fordításkor töltődik be, és 5 perc tétlenség után felszabadul.</string>
+    <string name="settings_model_always_on_body">Betöltve marad, hogy a fordítások azonnal induljanak.</string>
     <string name="settings_model_installed">Telepítve</string>
     <string name="settings_model_missing">Nincs telepítve</string>
     <string name="settings_model_downloading">Letöltés… %1$s</string>

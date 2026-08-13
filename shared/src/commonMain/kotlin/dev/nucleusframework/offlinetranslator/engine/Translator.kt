@@ -5,6 +5,12 @@ import dev.nucleusframework.offlinetranslator.translation.Alternative
 /** On-device translation engine. Production uses Gemma 4 E2B via LiteRT-LM. */
 fun interface Translator {
     suspend fun translate(request: TranslationRequest): TranslationResult
+
+    suspend fun preload(path: String) {}
+
+    suspend fun release() {}
+
+    fun close() {}
 }
 
 enum class TranslationMode { Translate, Proofread }

@@ -150,6 +150,11 @@
     <string name="lang_names_native">Inheemse namen</string>
     <string name="settings_model">Model</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Model in geheugen</string>
+    <string name="settings_model_on_demand">Op aanvraag</string>
+    <string name="settings_model_always_on">Altijd klaar</string>
+    <string name="settings_model_on_demand_body">Laadt bij de eerste vertaling en ontlaadt na 5 minuten inactiviteit.</string>
+    <string name="settings_model_always_on_body">Blijft geladen zodat vertalingen meteen starten.</string>
     <string name="settings_model_installed">Geïnstalleerd</string>
     <string name="settings_model_missing">Niet geïnstalleerd</string>
     <string name="settings_model_downloading">Downloaden… %1$s</string>

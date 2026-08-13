@@ -150,6 +150,11 @@
     <string name="lang_names_native">Einheimische Namen</string>
     <string name="settings_model">Modell</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Modell im Speicher</string>
+    <string name="settings_model_on_demand">Bei Bedarf</string>
+    <string name="settings_model_always_on">Immer bereit</string>
+    <string name="settings_model_on_demand_body">Wird bei der ersten Übersetzung geladen und nach 5 Minuten Inaktivität entladen.</string>
+    <string name="settings_model_always_on_body">Bleibt geladen, damit Übersetzungen sofort starten.</string>
     <string name="settings_model_installed">Installiert</string>
     <string name="settings_model_missing">Nicht installiert</string>
     <string name="settings_model_downloading">Wird heruntergeladen… %1$s</string>

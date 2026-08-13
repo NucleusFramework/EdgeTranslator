@@ -144,6 +144,11 @@
     <string name="lang_names_native">मूल नाम</string>
     <string name="settings_model">मॉडल</string>
     <string name="settings_backend">बैकएंड</string>
+    <string name="settings_model_keep_alive">मेमोरी में मॉडल</string>
+    <string name="settings_model_on_demand">ज़रूरत पर</string>
+    <string name="settings_model_always_on">हमेशा तैयार</string>
+    <string name="settings_model_on_demand_body">पहली बार अनुवाद पर लोड होता है और 5 मिनट निष्क्रिय रहने पर मुक्त होता है।</string>
+    <string name="settings_model_always_on_body">तुरंत अनुवाद शुरू करने के लिए लोड रहता है।</string>
     <string name="settings_model_installed">इंस्टॉल है</string>
     <string name="settings_model_missing">इंस्टॉल नहीं</string>
     <string name="settings_model_downloading">डाउनलोड हो रहा है… %1$s</string>

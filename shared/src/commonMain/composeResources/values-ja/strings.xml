@@ -150,6 +150,11 @@
     <string name="lang_names_native">現地名</string>
     <string name="settings_model">モデル</string>
     <string name="settings_backend">バックエンド</string>
+    <string name="settings_model_keep_alive">メモリ上のモデル</string>
+    <string name="settings_model_on_demand">オンデマンド</string>
+    <string name="settings_model_always_on">常時準備</string>
+    <string name="settings_model_on_demand_body">最初の翻訳で読み込み、5分間操作がなければ解放します。</string>
+    <string name="settings_model_always_on_body">読み込んだままにして翻訳をすぐ開始します。</string>
     <string name="settings_model_installed">インストール済み</string>
     <string name="settings_model_missing">未インストール</string>
     <string name="settings_model_downloading">ダウンロード中… %1$s</string>

@@ -144,6 +144,11 @@
     <string name="lang_names_native">Tên bản địa</string>
     <string name="settings_model">Mô hình</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Mô hình trong bộ nhớ</string>
+    <string name="settings_model_on_demand">Khi cần</string>
+    <string name="settings_model_always_on">Luôn sẵn sàng</string>
+    <string name="settings_model_on_demand_body">Tải khi dịch lần đầu và giải phóng sau 5 phút không dùng.</string>
+    <string name="settings_model_always_on_body">Giữ tải sẵn để bản dịch bắt đầu ngay.</string>
     <string name="settings_model_installed">Đã cài</string>
     <string name="settings_model_missing">Chưa cài</string>
     <string name="settings_model_downloading">Đang tải… %1$s</string>

@@ -144,6 +144,11 @@
     <string name="lang_names_native">نام‌های بومی</string>
     <string name="settings_model">مدل</string>
     <string name="settings_backend">موتور</string>
+    <string name="settings_model_keep_alive">مدل در حافظه</string>
+    <string name="settings_model_on_demand">در صورت نیاز</string>
+    <string name="settings_model_always_on">همیشه آماده</string>
+    <string name="settings_model_on_demand_body">در نخستین ترجمه بارگذاری می‌شود و پس از ۵ دقیقه بی‌فعالیتی آزاد می‌گردد.</string>
+    <string name="settings_model_always_on_body">بارگذاری‌شده می‌ماند تا ترجمه فوری آغاز شود.</string>
     <string name="settings_model_installed">نصب‌شده</string>
     <string name="settings_model_missing">نصب نشده</string>
     <string name="settings_model_downloading">در حال دانلود… %1$s</string>

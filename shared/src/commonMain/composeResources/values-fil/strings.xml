@@ -144,6 +144,11 @@
     <string name="lang_names_native">Mga katutubong pangalan</string>
     <string name="settings_model">Modelo</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Modelo sa memorya</string>
+    <string name="settings_model_on_demand">Kapag kailangan</string>
+    <string name="settings_model_always_on">Laging handa</string>
+    <string name="settings_model_on_demand_body">Naglo-load sa unang pagsasalin at nagre-release pagkatapos ng 5 minutong walang galaw.</string>
+    <string name="settings_model_always_on_body">Nanatiling naka-load para agad magsimula ang pagsasalin.</string>
     <string name="settings_model_installed">Naka-install</string>
     <string name="settings_model_missing">Hindi naka-install</string>
     <string name="settings_model_downloading">Dina-download… %1$s</string>

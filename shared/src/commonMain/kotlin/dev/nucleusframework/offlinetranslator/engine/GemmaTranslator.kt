@@ -73,7 +73,7 @@ class GemmaTranslator(
         }
     }
 
-    suspend fun preload(path: String) {
+    override suspend fun preload(path: String) {
         if (path.isBlank()) return
         withContext(IoDispatcher) {
             if (!exists(path)) return@withContext
@@ -81,7 +81,15 @@ class GemmaTranslator(
         }
     }
 
-    fun close() {
+    override suspend fun release() {
+        mutex.withLock { clearSession() }
+    }
+
+    override fun close() {
+        clearSession()
+    }
+
+    private fun clearSession() {
         session?.close()
         session = null
         loadedPath = null

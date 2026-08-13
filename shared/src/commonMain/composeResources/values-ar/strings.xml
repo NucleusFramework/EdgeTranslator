@@ -150,6 +150,11 @@
     <string name="lang_names_native">الأسماء الأصلية</string>
     <string name="settings_model">النموذج</string>
     <string name="settings_backend">المحرك</string>
+    <string name="settings_model_keep_alive">النموذج في الذاكرة</string>
+    <string name="settings_model_on_demand">عند الطلب</string>
+    <string name="settings_model_always_on">جاهز دائمًا</string>
+    <string name="settings_model_on_demand_body">يُحمَّل عند أول ترجمة ويُفرَّغ بعد 5 دقائق من الخمول.</string>
+    <string name="settings_model_always_on_body">يبقى محمّلًا لتبدأ الترجمات فورًا.</string>
     <string name="settings_model_installed">مثبّت</string>
     <string name="settings_model_missing">غير مثبّت</string>
     <string name="settings_model_downloading">جارٍ التنزيل… %1$s</string>

@@ -57,6 +57,11 @@ enum class ThemeMode { System, Light, Dark }
 
 enum class LlmBackend { Auto, Gpu, Cpu }
 
+/** When the LLM stays in RAM. OnDemand loads on first use and unloads after idle. */
+enum class LlmKeepAlive { OnDemand, AlwaysOn }
+
+const val MODEL_IDLE_RELEASE_MS = 5 * 60 * 1000L
+
 enum class LlmModel { Fast, Precise }
 
 enum class HistoryFilter { All, Pinned, Last7Days }
@@ -108,6 +113,7 @@ data class UserSettings(
     val modelDir: String = "",
     val selectedModel: LlmModel = LlmModel.Fast,
     val backend: LlmBackend = LlmBackend.Auto,
+    val keepAlive: LlmKeepAlive = LlmKeepAlive.OnDemand,
     val langNames: LangNameStyle = LangNameStyle.System,
     val selectedVoices: Map<String, String> = emptyMap(),
 )

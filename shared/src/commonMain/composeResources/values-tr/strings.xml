@@ -144,6 +144,11 @@
     <string name="lang_names_native">Yerel adlar</string>
     <string name="settings_model">Model</string>
     <string name="settings_backend">Arka uç</string>
+    <string name="settings_model_keep_alive">Bellekteki model</string>
+    <string name="settings_model_on_demand">İsteğe bağlı</string>
+    <string name="settings_model_always_on">Her zaman hazır</string>
+    <string name="settings_model_on_demand_body">İlk çeviride yüklenir ve 5 dakika hareketsizlikten sonra bellekten çıkar.</string>
+    <string name="settings_model_always_on_body">Çevirilerin anında başlaması için yüklü kalır.</string>
     <string name="settings_model_installed">Kurulu</string>
     <string name="settings_model_missing">Kurulu değil</string>
     <string name="settings_model_downloading">İndiriliyor… %1$s</string>

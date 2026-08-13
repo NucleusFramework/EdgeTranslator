@@ -46,6 +46,7 @@ import dev.nucleusframework.offlinetranslator.domain.DownloadState
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
+import dev.nucleusframework.offlinetranslator.domain.LlmKeepAlive
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
@@ -165,6 +166,31 @@ private fun ModelSection(settings: UserSettings, model: ModelInfo, download: Dow
                 onClick = { onIntent(AppIntent.SetLlmBackend(LlmBackend.Cpu)) },
             )
         }
+        Divider()
+        ChipsRow(stringResource(Res.string.settings_model_keep_alive)) {
+            Chip(
+                stringResource(Res.string.settings_model_on_demand),
+                selected = settings.keepAlive == LlmKeepAlive.OnDemand,
+                onClick = { onIntent(AppIntent.SetLlmKeepAlive(LlmKeepAlive.OnDemand)) },
+            )
+            Chip(
+                stringResource(Res.string.settings_model_always_on),
+                selected = settings.keepAlive == LlmKeepAlive.AlwaysOn,
+                onClick = { onIntent(AppIntent.SetLlmKeepAlive(LlmKeepAlive.AlwaysOn)) },
+            )
+        }
+        Text(
+            stringResource(
+                if (settings.keepAlive == LlmKeepAlive.AlwaysOn) {
+                    Res.string.settings_model_always_on_body
+                } else {
+                    Res.string.settings_model_on_demand_body
+                },
+            ),
+            fontSize = 13.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 14.dp),
+        )
         Divider()
         Divided(GemmaModels.all) { catalog ->
             val installed = catalog.isOnDisk() || (model.installed && model.id == catalog.id)

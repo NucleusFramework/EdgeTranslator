@@ -15,7 +15,9 @@ import dev.nucleusframework.offlinetranslator.domain.HistoryItem
 import dev.nucleusframework.offlinetranslator.domain.LangRole
 import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
+import dev.nucleusframework.offlinetranslator.domain.LlmKeepAlive
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
+import dev.nucleusframework.offlinetranslator.domain.MODEL_IDLE_RELEASE_MS
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
 import dev.nucleusframework.offlinetranslator.domain.filterHistory
 import dev.nucleusframework.offlinetranslator.domain.newId
@@ -25,7 +27,6 @@ import dev.nucleusframework.offlinetranslator.engine.DownloadedModel
 import dev.nucleusframework.offlinetranslator.engine.FileImagePicker
 import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
-import dev.nucleusframework.offlinetranslator.engine.GemmaTranslator
 import dev.nucleusframework.offlinetranslator.engine.ImagePicker
 import dev.nucleusframework.offlinetranslator.engine.LlmRuntime
 import dev.nucleusframework.offlinetranslator.engine.MIC_MAX_MS
@@ -75,6 +76,7 @@ class AppViewModel(
     @Assisted private val onQuit: () -> Unit = {},
     @Assisted private val forceOnboarding: Boolean = false,
     private val translateDelayMs: Long = 350,
+    private val idleReleaseMs: Long = MODEL_IDLE_RELEASE_MS,
     private val mic: MicRecorder = SilentMic,
     private val imagePicker: ImagePicker = FileImagePicker,
     private val tts: TtsSpeaker = SilentTts,
@@ -116,26 +118,25 @@ class AppViewModel(
     private var recordJob: Job? = null
     private var speakJob: Job? = null
     private var voiceJob: Job? = null
+    private var idleReleaseJob: Job? = null
 
     init {
         val s = _state.value
         if (backStack.last() == AppKey.Download && !s.download.done) {
             startDownload()
         }
-        val path = s.data.model.path
-        if (translator is GemmaTranslator && s.data.model.installed && path.isNotBlank()) {
-            preloadModel(path)
-        }
+        preloadIfKeptReady(s.data.model.path)
     }
 
     override fun onCleared() {
         recordJob?.cancel()
         speakJob?.cancel()
         voiceJob?.cancel()
+        cancelIdleRelease()
         tts.stop()
         tts.close()
         scope.launch { runCatching { mic.stop() } }
-        (translator as? GemmaTranslator)?.close()
+        translator.close()
         job.cancel()
         super.onCleared()
     }
@@ -213,23 +214,30 @@ class AppViewModel(
             is AppIntent.SelectModel -> {
                 persist(now = true)
                 val catalog = GemmaModels.of(intent.id)
-                if (modelOnDisk(catalog) && translator is GemmaTranslator) {
-                    preloadModel(catalog.destPath())
-                }
+                if (modelOnDisk(catalog)) preloadIfKeptReady(catalog.destPath())
             }
 
             is AppIntent.SetLlmBackend -> {
                 LlmRuntime.preference = intent.backend
                 persist(now = true)
-                val path = _state.value.data.model.path
-                if (path.isNotBlank() && translator is GemmaTranslator) preloadModel(path)
+                preloadIfKeptReady(_state.value.data.model.path)
+            }
+
+            is AppIntent.SetLlmKeepAlive -> {
+                persist(now = true)
+                if (intent.mode == LlmKeepAlive.AlwaysOn) {
+                    preloadIfKeptReady(_state.value.data.model.path)
+                } else {
+                    cancelIdleRelease()
+                    scope.launch { translator.release() }
+                }
             }
 
             is AppIntent.DownloadModel -> {
                 persist(now = true)
                 val catalog = GemmaModels.of(intent.id)
                 if (modelOnDisk(catalog)) {
-                    if (translator is GemmaTranslator) preloadModel(catalog.destPath())
+                    preloadIfKeptReady(catalog.destPath())
                 } else {
                     downloadJob?.cancel()
                     downloadJob = null
@@ -450,6 +458,8 @@ class AppViewModel(
         AppIntent.DropUnsupported -> s.copy(message = AppMessage.DropUnsupported)
 
         is AppIntent.SetLlmBackend -> s.updateSettings { it.copy(backend = intent.backend) }
+
+        is AppIntent.SetLlmKeepAlive -> s.updateSettings { it.copy(keepAlive = intent.mode) }
 
         is AppIntent.DownloadTick -> s.copy(
             download = s.download.copy(
@@ -729,7 +739,7 @@ class AppViewModel(
         }
         persist(now = true)
         val next = _state.value.data.model
-        if (next.installed) preloadModel(next.path)
+        if (next.installed) preloadIfKeptReady(next.path)
     }
 
     private fun unloadEngine() {
@@ -737,7 +747,8 @@ class AppViewModel(
         translateJob = null
         proofreadJob?.cancel()
         proofreadJob = null
-        (translator as? GemmaTranslator)?.close()
+        cancelIdleRelease()
+        translator.close()
     }
 
     private fun copyTranslation() {
@@ -810,7 +821,7 @@ class AppViewModel(
                 )
                 if (!isActive) return@launch
                 onIntent(AppIntent.DownloadPhase(DownloadPhase.Index))
-                if (translator is GemmaTranslator) {
+                if (keepModelReady()) {
                     try {
                         translator.preload(downloaded.path)
                     } catch (e: kotlinx.coroutines.CancellationException) {
@@ -895,8 +906,16 @@ class AppViewModel(
         persist(now = true)
     }
 
+    private fun keepModelReady(): Boolean = _state.value.data.settings.keepAlive == LlmKeepAlive.AlwaysOn
+
+    private fun preloadIfKeptReady(path: String) {
+        if (path.isBlank() || !keepModelReady()) return
+        preloadModel(path)
+    }
+
     private fun preloadModel(path: String) {
-        if (translator !is GemmaTranslator) return
+        if (path.isBlank()) return
+        cancelIdleRelease()
         scope.launch {
             try {
                 translator.preload(path)
@@ -904,6 +923,20 @@ class AppViewModel(
                 throw e
             } catch (_: Exception) {
             }
+        }
+    }
+
+    private fun cancelIdleRelease() {
+        idleReleaseJob?.cancel()
+        idleReleaseJob = null
+    }
+
+    private fun scheduleIdleRelease() {
+        cancelIdleRelease()
+        if (keepModelReady()) return
+        idleReleaseJob = scope.launch {
+            delay(idleReleaseMs)
+            translator.release()
         }
     }
 
@@ -1251,6 +1284,7 @@ class AppViewModel(
             )
         }
         val s = _state.value
+        cancelIdleRelease()
         val result = translator.translate(
             TranslationRequest(
                 text = "",
@@ -1261,6 +1295,7 @@ class AppViewModel(
             ),
         )
         applyReadResult(result, failMessage = AppMessage.MicFailed)
+        scheduleIdleRelease()
     }
 
     private fun translateImage(bytes: ByteArray? = null) {
@@ -1293,6 +1328,7 @@ class AppViewModel(
                 )
             }
             val current = _state.value
+            cancelIdleRelease()
             val result = translator.translate(
                 TranslationRequest(
                     text = "",
@@ -1304,6 +1340,7 @@ class AppViewModel(
             )
             // The target panel already shows the failure; a toast about the mic would be a lie.
             applyReadResult(result, failMessage = null)
+            scheduleIdleRelease()
         }
     }
 
@@ -1350,6 +1387,7 @@ class AppViewModel(
             }
             return
         }
+        cancelIdleRelease()
         translateJob = scope.launch {
             if (translateDelayMs > 0) delay(translateDelayMs)
             runTranslation()
@@ -1419,6 +1457,7 @@ class AppViewModel(
                 )
             }.let { current.copy(translation = it) }
         }
+        scheduleIdleRelease()
     }
 
     private fun scheduleProofread() {
@@ -1427,6 +1466,7 @@ class AppViewModel(
             mutate { it.copy(proofread = it.proofread.copy(result = "", status = TranslationStatus.Idle, error = null, latencyMs = null)) }
             return
         }
+        cancelIdleRelease()
         proofreadJob = scope.launch {
             if (translateDelayMs > 0) delay(translateDelayMs)
             runProofread()
@@ -1472,6 +1512,7 @@ class AppViewModel(
                 )
             }.let { current.copy(proofread = it) }
         }
+        scheduleIdleRelease()
     }
 
     private fun persist(now: Boolean = false) {

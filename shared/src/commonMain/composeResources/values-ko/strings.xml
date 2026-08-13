@@ -144,6 +144,11 @@
     <string name="lang_names_native">고유 이름</string>
     <string name="settings_model">모델</string>
     <string name="settings_backend">백엔드</string>
+    <string name="settings_model_keep_alive">메모리의 모델</string>
+    <string name="settings_model_on_demand">필요할 때</string>
+    <string name="settings_model_always_on">항상 준비</string>
+    <string name="settings_model_on_demand_body">첫 번역 때 로드되고 5분 동안 사용하지 않으면 해제됩니다.</string>
+    <string name="settings_model_always_on_body">즉시 번역되도록 로드된 상태를 유지합니다.</string>
     <string name="settings_model_installed">설치됨</string>
     <string name="settings_model_missing">설치되지 않음</string>
     <string name="settings_model_downloading">다운로드 중… %1$s</string>

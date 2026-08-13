@@ -4,6 +4,7 @@ import dev.nucleusframework.offlinetranslator.domain.AUTO_LANG
 import dev.nucleusframework.offlinetranslator.domain.AppData
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
+import dev.nucleusframework.offlinetranslator.domain.LlmKeepAlive
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.domain.ThemeMode
@@ -35,6 +36,7 @@ internal fun encodeSnapshot(data: AppData): String = buildString {
     appendLine("modelDir=${b64(s.modelDir)}")
     appendLine("selectedModel=${s.selectedModel.name}")
     appendLine("backend=${s.backend.name}")
+    appendLine("keepAlive=${s.keepAlive.name}")
     appendLine("langNames=${s.langNames.name}")
     appendLine("selectedVoices=${s.selectedVoices.entries.joinToString(",") { "${it.key}=${it.value}" }}")
     val m = data.model
@@ -72,6 +74,7 @@ internal fun decodeSnapshot(text: String): AppData {
     var modelDir = ""
     var selectedModel = LlmModel.Fast
     var backend = LlmBackend.Auto
+    var keepAlive = LlmKeepAlive.OnDemand
     var langNames = LangNameStyle.System
     var selectedVoices = emptyMap<String, String>()
     var modelId = LlmModel.Fast
@@ -121,6 +124,10 @@ internal fun decodeSnapshot(text: String): AppData {
                 backend =
                     runCatching { LlmBackend.valueOf(line.substringAfter("=")) }.getOrDefault(LlmBackend.Auto)
 
+            line.startsWith("keepAlive=") ->
+                keepAlive =
+                    runCatching { LlmKeepAlive.valueOf(line.substringAfter("=")) }.getOrDefault(LlmKeepAlive.OnDemand)
+
             line.startsWith("langNames=") ->
                 langNames =
                     runCatching { LangNameStyle.valueOf(line.substringAfter("=")) }.getOrDefault(LangNameStyle.System)
@@ -167,6 +174,7 @@ internal fun decodeSnapshot(text: String): AppData {
             modelDir = modelDir,
             selectedModel = selectedModel,
             backend = backend,
+            keepAlive = keepAlive,
             langNames = langNames,
             selectedVoices = selectedVoices,
         ),

@@ -144,6 +144,11 @@
     <string name="lang_names_native">Рідні назви</string>
     <string name="settings_model">Модель</string>
     <string name="settings_backend">Бекенд</string>
+    <string name="settings_model_keep_alive">Модель у пам’яті</string>
+    <string name="settings_model_on_demand">На вимогу</string>
+    <string name="settings_model_always_on">Завжди готовий</string>
+    <string name="settings_model_on_demand_body">Завантажується під час першого перекладу і вивантажується після 5 хвилин простою.</string>
+    <string name="settings_model_always_on_body">Залишається завантаженою, щоб переклади починалися одразу.</string>
     <string name="settings_model_installed">Встановлено</string>
     <string name="settings_model_missing">Не встановлено</string>
     <string name="settings_model_downloading">Завантаження… %1$s</string>

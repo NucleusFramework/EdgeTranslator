@@ -20,7 +20,10 @@ import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.LangRole
 import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
+import dev.nucleusframework.offlinetranslator.domain.LlmKeepAlive
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
+import dev.nucleusframework.offlinetranslator.domain.MODEL_IDLE_RELEASE_MS
+import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.paragraphCount
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
@@ -34,6 +37,7 @@ import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.engine.SilentMic
 import dev.nucleusframework.offlinetranslator.engine.SilentTts
 import dev.nucleusframework.offlinetranslator.engine.TranslationMode
+import dev.nucleusframework.offlinetranslator.engine.TranslationRequest
 import dev.nucleusframework.offlinetranslator.engine.TranslationResult
 import dev.nucleusframework.offlinetranslator.engine.Translator
 import dev.nucleusframework.offlinetranslator.engine.TtsSpeaker
@@ -49,8 +53,10 @@ import dev.nucleusframework.offlinetranslator.translation.MicPhase
 import dev.nucleusframework.offlinetranslator.translation.TranslationStatus
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -70,6 +76,7 @@ class AppViewModelTest {
         downloader: ModelDownloader = IdleDownloader,
         dispatcher: CoroutineDispatcher = Dispatchers.Default,
         translateDelayMs: Long = 350,
+        idleReleaseMs: Long = MODEL_IDLE_RELEASE_MS,
         mic: MicRecorder = SilentMic,
         pickImage: ImagePicker = ImagePicker { null },
         tts: TtsSpeaker = SilentTts,
@@ -89,6 +96,7 @@ class AppViewModelTest {
         ioDispatcher = dispatcher,
         clock = { now },
         translateDelayMs = translateDelayMs,
+        idleReleaseMs = idleReleaseMs,
         mic = mic,
         imagePicker = pickImage,
         tts = tts,
@@ -281,11 +289,13 @@ class AppViewModelTest {
         vm.onIntent(AppIntent.SetUiLanguage(UiLanguage.En))
         vm.onIntent(AppIntent.SetLangNameStyle(LangNameStyle.Native))
         vm.onIntent(AppIntent.SetLlmBackend(LlmBackend.Cpu))
+        vm.onIntent(AppIntent.SetLlmKeepAlive(LlmKeepAlive.AlwaysOn))
         val loaded = store.load()
         assertEquals(LlmModel.Precise, loaded.settings.selectedModel)
         assertEquals(UiLanguage.En, loaded.settings.uiLanguage)
         assertEquals(LangNameStyle.Native, loaded.settings.langNames)
         assertEquals(LlmBackend.Cpu, loaded.settings.backend)
+        assertEquals(LlmKeepAlive.AlwaysOn, loaded.settings.keepAlive)
     }
 
     @Test
@@ -518,6 +528,7 @@ class AppViewModelTest {
                 selectedModel = LlmModel.Precise,
                 langNames = LangNameStyle.Native,
                 backend = LlmBackend.Gpu,
+                keepAlive = LlmKeepAlive.AlwaysOn,
             ),
             model = seedData().model.copy(id = LlmModel.Precise, installed = true),
         )
@@ -526,6 +537,7 @@ class AppViewModelTest {
         assertEquals(LlmModel.Precise, restored.settings.selectedModel)
         assertEquals(LangNameStyle.Native, restored.settings.langNames)
         assertEquals(LlmBackend.Gpu, restored.settings.backend)
+        assertEquals(LlmKeepAlive.AlwaysOn, restored.settings.keepAlive)
         assertEquals(original.lastSourceLang, restored.lastSourceLang)
         assertEquals(original.lastTargetLang, restored.lastTargetLang)
         assertEquals(LlmModel.Precise, restored.model.id)
@@ -558,6 +570,90 @@ class AppViewModelTest {
 
         val legacy = encodeSnapshot(gpu).lineSequence().filterNot { it.startsWith("backend=") }.joinToString("\n")
         assertEquals(LlmBackend.Auto, decodeSnapshot(legacy).settings.backend)
+    }
+
+    @Test
+    fun keepAliveSurvivesRoundTripAndDefaultsToOnDemandForOlderSnapshots() {
+        val always = seedData().let { it.copy(settings = it.settings.copy(keepAlive = LlmKeepAlive.AlwaysOn)) }
+        assertEquals(LlmKeepAlive.AlwaysOn, decodeSnapshot(encodeSnapshot(always)).settings.keepAlive)
+
+        val legacy = encodeSnapshot(always).lineSequence().filterNot { it.startsWith("keepAlive=") }.joinToString("\n")
+        assertEquals(LlmKeepAlive.OnDemand, decodeSnapshot(legacy).settings.keepAlive)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun onDemandDoesNotPreloadAtStartupAndReleasesAfterIdle() = runTest {
+        val translator = TrackingTranslator()
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val vm = vm(
+            store = MemoryStore(installedModel()),
+            translator = translator,
+            dispatcher = dispatcher,
+            translateDelayMs = 0,
+            idleReleaseMs = 5_000,
+        )
+        testScheduler.runCurrent()
+        assertEquals(0, translator.preloads)
+
+        vm.onIntent(AppIntent.SetSourceText("bonjour"))
+        testScheduler.runCurrent()
+        assertEquals(1, translator.translates)
+        assertEquals(0, translator.releases)
+
+        testScheduler.advanceTimeBy(4_999)
+        testScheduler.runCurrent()
+        assertEquals(0, translator.releases)
+        testScheduler.advanceTimeBy(1)
+        testScheduler.runCurrent()
+        assertEquals(1, translator.releases)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun alwaysOnPreloadsAtStartupAndKeepsModelAfterIdle() = runTest {
+        val translator = TrackingTranslator()
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val vm = vm(
+            store = MemoryStore(installedModel(LlmKeepAlive.AlwaysOn)),
+            translator = translator,
+            dispatcher = dispatcher,
+            translateDelayMs = 0,
+            idleReleaseMs = 5_000,
+        )
+        testScheduler.runCurrent()
+        assertEquals(1, translator.preloads)
+
+        vm.onIntent(AppIntent.SetSourceText("bonjour"))
+        testScheduler.runCurrent()
+        testScheduler.advanceTimeBy(5_000)
+        testScheduler.runCurrent()
+        assertEquals(0, translator.releases)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun switchingToAlwaysOnPreloadsAndSwitchingBackSchedulesRelease() = runTest {
+        val translator = TrackingTranslator()
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val vm = vm(
+            store = MemoryStore(installedModel()),
+            translator = translator,
+            dispatcher = dispatcher,
+            translateDelayMs = 0,
+            idleReleaseMs = 5_000,
+        )
+        testScheduler.runCurrent()
+        assertEquals(0, translator.preloads)
+
+        vm.onIntent(AppIntent.SetLlmKeepAlive(LlmKeepAlive.AlwaysOn))
+        testScheduler.runCurrent()
+        assertEquals(1, translator.preloads)
+        assertEquals(0, translator.releases)
+
+        vm.onIntent(AppIntent.SetLlmKeepAlive(LlmKeepAlive.OnDemand))
+        testScheduler.runCurrent()
+        assertEquals(1, translator.releases)
     }
 
     @Test
@@ -985,6 +1081,31 @@ class AppViewModelTest {
         assertEquals(PiperVoices.all().map { it.id }.toSet(), removedVoices.toSet())
         assertTrue(wipedDirs)
         assertTrue(state.translation.ttsReady)
+    }
+}
+
+private fun installedModel(keepAlive: LlmKeepAlive = LlmKeepAlive.OnDemand) = seedData().copy(
+    installed = true,
+    settings = seedData().settings.copy(keepAlive = keepAlive),
+    model = ModelInfo(installed = true, path = "."),
+)
+
+private class TrackingTranslator : Translator {
+    var preloads = 0
+    var releases = 0
+    var translates = 0
+
+    override suspend fun translate(request: TranslationRequest): TranslationResult {
+        translates++
+        return TranslationResult.Ok("ok")
+    }
+
+    override suspend fun preload(path: String) {
+        preloads++
+    }
+
+    override suspend fun release() {
+        releases++
     }
 }
 

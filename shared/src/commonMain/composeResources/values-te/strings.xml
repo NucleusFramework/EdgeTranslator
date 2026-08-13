@@ -144,6 +144,11 @@
     <string name="lang_names_native">స్థానిక పేర్లు</string>
     <string name="settings_model">మోడల్</string>
     <string name="settings_backend">బ్యాకెండ్</string>
+    <string name="settings_model_keep_alive">మెమరీలో మోడల్</string>
+    <string name="settings_model_on_demand">అవసరమైనప్పుడు</string>
+    <string name="settings_model_always_on">ఎప్పుడూ సిద్ధం</string>
+    <string name="settings_model_on_demand_body">మొదటి అనువాదంలో లోడ్ అవుతుంది, 5 నిమిషాల నిష్క్రియం తర్వాత విడుదలవుతుంది.</string>
+    <string name="settings_model_always_on_body">అనువాదాలు వెంటనే మొదలయ్యేలా లోడ్‌లో ఉంటుంది.</string>
     <string name="settings_model_installed">ఇన్‌స్టాల్ అయింది</string>
     <string name="settings_model_missing">ఇన్‌స్టాల్ లేదు</string>
     <string name="settings_model_downloading">డౌన్‌లోడ్ అవుతోంది… %1$s</string>

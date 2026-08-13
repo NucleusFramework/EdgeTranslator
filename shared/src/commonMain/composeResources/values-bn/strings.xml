@@ -144,6 +144,11 @@
     <string name="lang_names_native">দেশীয় নাম</string>
     <string name="settings_model">মডেল</string>
     <string name="settings_backend">ব্যাকএন্ড</string>
+    <string name="settings_model_keep_alive">মেমোরিতে মডেল</string>
+    <string name="settings_model_on_demand">প্রয়োজনে</string>
+    <string name="settings_model_always_on">সবসময় প্রস্তুত</string>
+    <string name="settings_model_on_demand_body">প্রথম অনুবাদে লোড হয় এবং ৫ মিনিট নিষ্ক্রিয় থাকলে ছেড়ে দেয়।</string>
+    <string name="settings_model_always_on_body">তাৎক্ষণিক অনুবাদের জন্য লোড থাকে।</string>
     <string name="settings_model_installed">ইনস্টল আছে</string>
     <string name="settings_model_missing">ইনস্টল নেই</string>
     <string name="settings_model_downloading">ডাউনলোড হচ্ছে… %1$s</string>

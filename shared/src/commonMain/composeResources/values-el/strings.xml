@@ -144,6 +144,11 @@
     <string name="lang_names_native">Τοπικά ονόματα</string>
     <string name="settings_model">Μοντέλο</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Μοντέλο στη μνήμη</string>
+    <string name="settings_model_on_demand">Κατά παραγγελία</string>
+    <string name="settings_model_always_on">Πάντα έτοιμο</string>
+    <string name="settings_model_on_demand_body">Φορτώνεται στην πρώτη μετάφραση και αποφορτώνεται μετά από 5 λεπτά αδράνειας.</string>
+    <string name="settings_model_always_on_body">Παραμένει φορτωμένο ώστε οι μεταφράσεις να ξεκινούν αμέσως.</string>
     <string name="settings_model_installed">Εγκατεστημένο</string>
     <string name="settings_model_missing">Δεν έχει εγκατασταθεί</string>
     <string name="settings_model_downloading">Λήψη… %1$s</string>

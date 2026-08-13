@@ -144,6 +144,11 @@
     <string name="lang_names_native">Ingoa taketake</string>
     <string name="settings_model">Tauira</string>
     <string name="settings_backend">Tuarā</string>
+    <string name="settings_model_keep_alive">Tauira i te pūmahara</string>
+    <string name="settings_model_on_demand">Ina hiahiatia</string>
+    <string name="settings_model_always_on">Kua rite tonu</string>
+    <string name="settings_model_on_demand_body">Ka utaina i te whakamāori tuatahi, ka tukuna i muri i te 5 meneti kāore e mahi.</string>
+    <string name="settings_model_always_on_body">Ka noho utaina kia tīmata wawe ngā whakamāori.</string>
     <string name="settings_model_installed">Kua tāuta</string>
     <string name="settings_model_missing">Kāore i tāutaina</string>
     <string name="settings_model_downloading">E tikiake ana… %1$s</string>

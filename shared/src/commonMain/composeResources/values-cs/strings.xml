@@ -144,6 +144,11 @@
     <string name="lang_names_native">Rodné názvy</string>
     <string name="settings_model">Model</string>
     <string name="settings_backend">Backend</string>
+    <string name="settings_model_keep_alive">Model v paměti</string>
+    <string name="settings_model_on_demand">Na vyžádání</string>
+    <string name="settings_model_always_on">Vždy připraven</string>
+    <string name="settings_model_on_demand_body">Načte se při prvním překladu a uvolní se po 5 minutách nečinnosti.</string>
+    <string name="settings_model_always_on_body">Zůstane načtený, aby překlady začínaly okamžitě.</string>
     <string name="settings_model_installed">Nainstalováno</string>
     <string name="settings_model_missing">Nenainstalováno</string>
     <string name="settings_model_downloading">Stahování… %1$s</string>
