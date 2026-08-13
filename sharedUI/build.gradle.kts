@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.sqlDelight)
     alias(libs.plugins.structured.coroutines)
     alias(libs.plugins.stability.analyzer)
+    alias(libs.plugins.aboutLibraries)
 }
 
 kotlin {
@@ -47,6 +48,7 @@ kotlin {
             implementation(libs.multiplatformSettings)
             implementation(libs.kotlinx.datetime)
             implementation(libs.materialKolor)
+            implementation(libs.aboutlibraries.compose.m3)
             implementation(libs.sqlDelight.runtime)
             api(libs.filekit.core)
             api(libs.filekit.dialogs)
@@ -72,6 +74,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.sqlDelight.driver.sqlite)
             implementation(libs.sqlite.jdbc)
+            implementation(libs.nucleus.core.runtime)
             implementation(libs.nucleus.system.color)
             implementation(libs.nucleus.system.info)
             implementation(libs.nucleus.native.http.ktor)
@@ -101,6 +104,23 @@ val stabilityConfig = rootProject.layout.projectDirectory.file("config/stability
 
 composeCompiler {
     stabilityConfigurationFiles.add(stabilityConfig)
+}
+
+aboutLibraries {
+    export {
+        outputFile = file("src/commonMain/composeResources/files/aboutlibraries.json")
+    }
+    library {
+        duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+    }
+}
+
+tasks.matching {
+    it.name.startsWith("generateResourceAccessorsForCommonMain") ||
+        it.name.startsWith("copyNonXmlValueResourcesForCommonMain") ||
+        it.name.startsWith("prepareComposeResourcesTaskForCommonMain")
+}.configureEach {
+    dependsOn("exportLibraryDefinitions")
 }
 
 composeStabilityAnalyzer {

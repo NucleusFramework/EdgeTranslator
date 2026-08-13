@@ -10,6 +10,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.install.InstallScreen
+import dev.nucleusframework.offlinetranslator.main.AboutScreen
 import dev.nucleusframework.offlinetranslator.main.HistoryScreen
 import dev.nucleusframework.offlinetranslator.main.MainShell
 import dev.nucleusframework.offlinetranslator.main.SettingsScreen
@@ -102,6 +103,7 @@ private fun AppNavDisplay(backStack: NavBackStack<AppKey>, state: AppState, onIn
                     onIntent = onIntent,
                 )
             }
+            entry<AppKey.About> { AboutScreen() }
         },
     )
 }

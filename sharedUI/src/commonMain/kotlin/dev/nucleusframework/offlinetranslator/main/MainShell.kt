@@ -5,9 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Spellcheck
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.outlined.WifiOff
 import androidx.compose.material3.HorizontalDivider
@@ -32,6 +33,7 @@ import dev.nucleusframework.offlinetranslator.app.label
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
+import dev.nucleusframework.offlinetranslator.platform.Platform
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.app_name
 import offlinetranslator.sharedui.generated.resources.nav_backend
@@ -125,6 +127,10 @@ private fun NavRail(selected: AppKey, modelId: LlmModel, onIntent: (AppIntent) -
                 fontSize = 11.sp,
                 lineHeight = 15.sp,
             )
+            val version = Platform.appVersion
+            if (version.isNotEmpty()) {
+                Text(version, color = c.onSurfaceVariant, fontSize = 11.sp)
+            }
         }
     }
 }
@@ -148,7 +154,8 @@ private fun NavRailItem(dest: AppKey, selected: Boolean, onClick: () -> Unit) {
 private fun AppKey.icon(): ImageVector = when (this) {
     AppKey.Translate -> Icons.Outlined.Translate
     AppKey.Proofread -> Icons.Outlined.Spellcheck
-    AppKey.History -> Icons.Outlined.History
+    AppKey.History -> Icons.Outlined.Star
     AppKey.Settings -> Icons.Outlined.Settings
+    AppKey.About -> Icons.Outlined.Info
     else -> Icons.Outlined.Translate
 }

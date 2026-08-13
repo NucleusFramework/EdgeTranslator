@@ -4,6 +4,7 @@ import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 
 internal expect object Platform {
     val osLabel: String
+    val appVersion: String
     fun cpuCount(): Int
     fun appDir(): String
     fun cacheDir(): String

@@ -1,5 +1,6 @@
 package dev.nucleusframework.offlinetranslator.platform
 
+import dev.nucleusframework.core.runtime.NucleusApp
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.isRegularFile
@@ -28,6 +29,9 @@ internal actual object Platform {
                 else -> "Linux"
             }
         }
+
+    actual val appVersion: String
+        get() = NucleusApp.version.orEmpty()
 
     actual fun cpuCount(): Int = Runtime.getRuntime().availableProcessors().coerceAtLeast(1)
 

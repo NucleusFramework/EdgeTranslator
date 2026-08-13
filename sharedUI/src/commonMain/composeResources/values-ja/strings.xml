@@ -5,8 +5,13 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">翻訳</string>
-    <string name="nav_history">履歴</string>
+    <string name="nav_history">お気に入り</string>
     <string name="nav_settings">設定</string>
+    <string name="nav_about">このアプリについて</string>
+    <string name="about_author">作者</string>
+    <string name="about_license">ライセンス</string>
+    <string name="about_libraries">オープンソースライセンス</string>
+    <string name="about_version">バージョン</string>
     <string name="offline">オフライン</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -51,7 +56,7 @@
 
     <string name="install_step">ステップ %1$d / %2$d</string>
     <string name="install_welcome_title">オフラインで翻訳。\n言葉はこの端末から出ません</string>
-    <string name="install_welcome_body">モデルはこのマシン上で動きます。テキスト、文書、履歴はすべてローカルに残ります。インストール後に外部へ送る通信はありません。</string>
+    <string name="install_welcome_body">モデルはこのマシン上で動きます。テキスト、文書、お気に入りはすべてローカルに残ります。インストール後に外部へ送る通信はありません。</string>
     <string name="install_feature_local_title">推論は100%ローカル</string>
     <string name="install_feature_local_body">機密ファイル、NDA、医療データ</string>
     <string name="install_feature_model_title">モデルを選ぶ</string>
@@ -61,8 +66,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · より速い</string>
     <string name="model_precise_title">高精度</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · より正確</string>
-    <string name="install_feature_history_title">ローカル履歴</string>
-    <string name="install_feature_history_body">翻訳を検索して再利用</string>
+    <string name="install_feature_history_title">ローカルのお気に入り</string>
+    <string name="install_feature_history_body">翻訳を保存して再利用</string>
     <string name="install_feature_voices_title">音声</string>
     <string name="install_feature_voices_body">Piperが翻訳を読み上げます — %2$d言語中%1$d、各約63 MB</string>
     <string name="install_spec_voices">音声</string>
@@ -116,12 +121,12 @@
     <string name="translation_error">翻訳エラー。</string>
     <string name="alternatives_header">別訳 · 「%1$s」</string>
 
-    <string name="history_title">履歴</string>
+    <string name="history_title">お気に入り</string>
     <string name="history_col_date">日付</string>
     <string name="history_col_pair">言語対</string>
     <string name="history_col_source">原文</string>
     <string name="history_col_target">翻訳</string>
-    <string name="history_empty">項目がありません</string>
+    <string name="history_empty">お気に入りはありません</string>
     <string name="history_filter_all">すべて</string>
     <string name="history_filter_pinned">ピン留め</string>
     <string name="history_filter_last_7">過去7日</string>
@@ -147,19 +152,19 @@
     <string name="settings_voices_summary">%1$d音声 · %2$dインストール済み</string>
     <string name="settings_reset">リセット</string>
     <string name="settings_reset_title">アプリをリセット</string>
-    <string name="settings_reset_body">モデル、音声、履歴、設定を削除します。最初からやり直しになります。</string>
+    <string name="settings_reset_body">モデル、音声、お気に入り、設定を削除します。最初からやり直しになります。</string>
     <string name="confirm_delete_voice">音声 %1$s をディスクから削除しますか？後でもう一度ダウンロードできます。</string>
 
     <string name="dialog_confirm">確認</string>
     <string name="dialog_install_voice">音声</string>
     <string name="dialog_install_voice_body">音声 %1$s はインストールされていません。読み上げるにはダウンロードしてください（%2$s）。</string>
-    <string name="confirm_purge_history">履歴をすべて消去しますか？</string>
+    <string name="confirm_purge_history">お気に入りをすべて消去しますか？</string>
     <string name="confirm_delete_model">%1$s をディスクから削除しますか？後でもう一度ダウンロードできます。</string>
-    <string name="confirm_reset_app">アプリをリセットしますか？モデル、音声、履歴、設定が削除されます。</string>
+    <string name="confirm_reset_app">アプリをリセットしますか？モデル、音声、お気に入り、設定が削除されます。</string>
 
     <string name="msg_nothing_to_save">保存するものがありません。原文と訳文の両方を入力してください。</string>
-    <string name="msg_history_disabled">履歴は無効です。</string>
-    <string name="msg_saved_to_history">履歴に保存しました。</string>
+    <string name="msg_history_disabled">お気に入りは無効です。</string>
+    <string name="msg_saved_to_history">お気に入りに保存しました。</string>
     <string name="msg_nothing_to_copy">コピーするものがありません。</string>
     <string name="msg_translation_copied">翻訳をコピーしました。</string>
     <string name="download_error_airplane">機内モード: ダウンロードをブロックしました。</string>

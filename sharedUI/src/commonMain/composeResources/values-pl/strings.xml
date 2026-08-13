@@ -5,8 +5,13 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Tłumacz</string>
-    <string name="nav_history">Historia</string>
+    <string name="nav_history">Ulubione</string>
     <string name="nav_settings">Ustawienia</string>
+    <string name="nav_about">O aplikacji</string>
+    <string name="about_author">Autor</string>
+    <string name="about_license">Licencja</string>
+    <string name="about_libraries">Licencje open source</string>
+    <string name="about_version">Wersja</string>
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -51,7 +56,7 @@
 
     <string name="install_step">Krok %1$d z %2$d</string>
     <string name="install_welcome_title">Tłumacz offline,\nbez wychodzenia choćby jednego słowa z tego urządzenia</string>
-    <string name="install_welcome_body">Model działa na tym komputerze. Teksty, dokumenty i historia zostają lokalnie — żadnego wychodzącego żądania po instalacji.</string>
+    <string name="install_welcome_body">Model działa na tym komputerze. Teksty, dokumenty i ulubione zostają lokalnie — żadnego wychodzącego żądania po instalacji.</string>
     <string name="install_feature_local_title">W 100% lokalna inferencja</string>
     <string name="install_feature_local_body">Teczki poufne, NDA, dane medyczne</string>
     <string name="install_feature_model_title">Wybierz model</string>
@@ -61,8 +66,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · szybszy</string>
     <string name="model_precise_title">Precyzyjny</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · wierniejszy</string>
-    <string name="install_feature_history_title">Lokalna historia</string>
-    <string name="install_feature_history_body">Znajdź i ponownie użyj tłumaczeń</string>
+    <string name="install_feature_history_title">Lokalne ulubione</string>
+    <string name="install_feature_history_body">Zapisz i ponownie użyj tłumaczeń</string>
     <string name="install_feature_voices_title">Głosy</string>
     <string name="install_feature_voices_body">Piper czyta tłumaczenia na głos — %1$d z %2$d języków, ok. 63 MB każdy</string>
     <string name="install_spec_voices">Głosy</string>
@@ -116,12 +121,12 @@
     <string name="translation_error">Błąd tłumaczenia.</string>
     <string name="alternatives_header">Alternatywy · „%1$s”</string>
 
-    <string name="history_title">Historia</string>
+    <string name="history_title">Ulubione</string>
     <string name="history_col_date">Data</string>
     <string name="history_col_pair">Para</string>
     <string name="history_col_source">Źródło</string>
     <string name="history_col_target">Tłumaczenie</string>
-    <string name="history_empty">Brak wpisów</string>
+    <string name="history_empty">Brak ulubionych</string>
     <string name="history_filter_all">Wszystkie</string>
     <string name="history_filter_pinned">Przypięte</string>
     <string name="history_filter_last_7">Ostatnie 7 dni</string>
@@ -147,19 +152,19 @@
     <string name="settings_voices_summary">%1$d głosów · %2$d zainstalowanych</string>
     <string name="settings_reset">Reset</string>
     <string name="settings_reset_title">Zresetuj aplikację</string>
-    <string name="settings_reset_body">Usuwa modele, głosy, historię i ustawienia. Zaczniesz od początku.</string>
+    <string name="settings_reset_body">Usuwa modele, głosy, ulubione i ustawienia. Zaczniesz od początku.</string>
     <string name="confirm_delete_voice">Usunąć głos %1$s z dysku? Możesz pobrać go ponownie później.</string>
 
     <string name="dialog_confirm">Potwierdź</string>
     <string name="dialog_install_voice">Głos</string>
     <string name="dialog_install_voice_body">Głos %1$s nie jest zainstalowany. Pobierz go, aby czytać tekst na głos (%2$s).</string>
-    <string name="confirm_purge_history">Wyczyścić całą historię?</string>
+    <string name="confirm_purge_history">Wyczyścić wszystkie ulubione?</string>
     <string name="confirm_delete_model">Usunąć %1$s z dysku? Możesz pobrać go ponownie później.</string>
-    <string name="confirm_reset_app">Zresetować aplikację? Modele, głosy, historia i ustawienia zostaną usunięte.</string>
+    <string name="confirm_reset_app">Zresetować aplikację? Modele, głosy, ulubione i ustawienia zostaną usunięte.</string>
 
     <string name="msg_nothing_to_save">Nie ma nic do zapisania: źródło i cel muszą być wypełnione.</string>
-    <string name="msg_history_disabled">Historia jest wyłączona.</string>
-    <string name="msg_saved_to_history">Zapisano w historii.</string>
+    <string name="msg_history_disabled">Ulubione są wyłączone.</string>
+    <string name="msg_saved_to_history">Zapisano w ulubionych.</string>
     <string name="msg_nothing_to_copy">Nie ma nic do skopiowania.</string>
     <string name="msg_translation_copied">Tłumaczenie skopiowane.</string>
     <string name="download_error_airplane">Tryb samolotowy: pobieranie zablokowane.</string>

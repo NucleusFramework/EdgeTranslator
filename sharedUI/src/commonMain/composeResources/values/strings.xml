@@ -6,8 +6,13 @@
 
     <string name="nav_translate">Translate</string>
     <string name="nav_proofread">Proofreading</string>
-    <string name="nav_history">History</string>
+    <string name="nav_history">Favorites</string>
     <string name="nav_settings">Settings</string>
+    <string name="nav_about">About</string>
+    <string name="about_author">Author</string>
+    <string name="about_license">License</string>
+    <string name="about_libraries">Open source licenses</string>
+    <string name="about_version">Version</string>
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -52,7 +57,7 @@
 
     <string name="install_step">Step %1$d of %2$d</string>
     <string name="install_welcome_title">Translate offline,\nwithout a word leaving this device</string>
-    <string name="install_welcome_body">The model runs on this machine. Texts, documents and history stay local — no outbound request after install.</string>
+    <string name="install_welcome_body">The model runs on this machine. Texts, documents and favorites stay local — no outbound request after install.</string>
     <string name="install_feature_local_title">100% local inference</string>
     <string name="install_feature_local_body">Confidential files, NDAs, health data</string>
     <string name="install_feature_model_title">Choose your model</string>
@@ -62,8 +67,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · quicker</string>
     <string name="model_precise_title">Precision</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · more accurate</string>
-    <string name="install_feature_history_title">Local history</string>
-    <string name="install_feature_history_body">Find and reuse your translations</string>
+    <string name="install_feature_history_title">Local favorites</string>
+    <string name="install_feature_history_body">Save and reuse your translations</string>
     <string name="install_feature_voices_title">Speech voices</string>
     <string name="install_feature_voices_body">Piper reads translations aloud — %1$d of %2$d languages, about 63 MB each</string>
     <string name="install_spec_voices">Voices</string>
@@ -117,12 +122,12 @@
     <string name="translation_error">Translation error.</string>
     <string name="alternatives_header">Alternatives · “%1$s”</string>
 
-    <string name="history_title">History</string>
+    <string name="history_title">Favorites</string>
     <string name="history_col_date">Date</string>
     <string name="history_col_pair">Pair</string>
     <string name="history_col_source">Source</string>
     <string name="history_col_target">Translation</string>
-    <string name="history_empty">No entries</string>
+    <string name="history_empty">No favorites</string>
     <string name="history_filter_all">All</string>
     <string name="history_filter_pinned">Pinned</string>
     <string name="history_filter_last_7">Last 7 days</string>
@@ -148,19 +153,19 @@
     <string name="settings_voices_summary">%1$d voices · %2$d installed</string>
     <string name="settings_reset">Reset</string>
     <string name="settings_reset_title">Reset the app</string>
-    <string name="settings_reset_body">Deletes models, voices, history and settings. You will start over from the beginning.</string>
+    <string name="settings_reset_body">Deletes models, voices, favorites and settings. You will start over from the beginning.</string>
     <string name="confirm_delete_voice">Delete the %1$s voice from disk? You can download it again later.</string>
 
     <string name="dialog_confirm">Confirm</string>
     <string name="dialog_install_voice">Speech voice</string>
     <string name="dialog_install_voice_body">The %1$s voice is not installed. Download it to read text aloud (%2$s).</string>
-    <string name="confirm_purge_history">Clear all history?</string>
+    <string name="confirm_purge_history">Clear all favorites?</string>
     <string name="confirm_delete_model">Delete %1$s from disk? You can download it again later.</string>
-    <string name="confirm_reset_app">Reset the app? Models, voices, history and settings will be deleted.</string>
+    <string name="confirm_reset_app">Reset the app? Models, voices, favorites and settings will be deleted.</string>
 
     <string name="msg_nothing_to_save">Nothing to save: source and target must both be filled in.</string>
-    <string name="msg_history_disabled">History is disabled.</string>
-    <string name="msg_saved_to_history">Saved to history.</string>
+    <string name="msg_history_disabled">Favorites are disabled.</string>
+    <string name="msg_saved_to_history">Saved to favorites.</string>
     <string name="msg_nothing_to_copy">Nothing to copy.</string>
     <string name="msg_translation_copied">Translation copied.</string>
     <string name="download_error_airplane">Airplane mode: download blocked.</string>

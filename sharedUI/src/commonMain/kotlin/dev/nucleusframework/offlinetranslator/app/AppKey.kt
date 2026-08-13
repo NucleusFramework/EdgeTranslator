@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.navigation3.runtime.NavKey
 import offlinetranslator.sharedui.generated.resources.Res
+import offlinetranslator.sharedui.generated.resources.nav_about
 import offlinetranslator.sharedui.generated.resources.nav_history
 import offlinetranslator.sharedui.generated.resources.nav_proofread
 import offlinetranslator.sharedui.generated.resources.nav_settings
@@ -19,6 +20,7 @@ sealed interface AppKey : NavKey {
     data object Proofread : AppKey
     data object History : AppKey
     data object Settings : AppKey
+    data object About : AppKey
 }
 
 val MainDestinations: List<AppKey> = listOf(
@@ -26,6 +28,7 @@ val MainDestinations: List<AppKey> = listOf(
     AppKey.Proofread,
     AppKey.History,
     AppKey.Settings,
+    AppKey.About,
 )
 
 fun AppKey.isMain(): Boolean = this in MainDestinations
@@ -36,6 +39,7 @@ fun AppKey.label(): String = when (this) {
     AppKey.Proofread -> stringResource(Res.string.nav_proofread)
     AppKey.History -> stringResource(Res.string.nav_history)
     AppKey.Settings -> stringResource(Res.string.nav_settings)
+    AppKey.About -> stringResource(Res.string.nav_about)
     else -> ""
 }
 

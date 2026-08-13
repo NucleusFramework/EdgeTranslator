@@ -167,6 +167,20 @@ private fun dev.nucleusframework.offlinetranslator.install.WizardFooter(stepsFil
     - primary: STABLE (composable function type)
 
 @Composable
+private fun dev.nucleusframework.offlinetranslator.main.AboutHeader(onLicenseClick: kotlin.Function0<kotlin.Unit>): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - onLicenseClick: STABLE (function type)
+
+@Composable
+public fun dev.nucleusframework.offlinetranslator.main.AboutScreen(modifier: androidx.compose.ui.Modifier): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - modifier: STABLE (marked @Stable or @Immutable)
+
+@Composable
 private fun dev.nucleusframework.offlinetranslator.main.AddRow(title: kotlin.String, menu: @[Composable] androidx.compose.runtime.internal.ComposableFunction1<@[ParameterName(name = \): kotlin.Unit
   skippable: true
   restartable: true
@@ -261,12 +275,28 @@ public fun dev.nucleusframework.offlinetranslator.main.HistoryScreen(data: dev.n
     - modifier: STABLE (marked @Stable or @Immutable)
 
 @Composable
+private fun dev.nucleusframework.offlinetranslator.main.InfoRow(title: kotlin.String, value: kotlin.String, onClick: kotlin.Function0<kotlin.Unit>?): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - title: STABLE (String is immutable)
+    - value: STABLE (String is immutable)
+    - onClick: STABLE (function type)
+
+@Composable
 private fun dev.nucleusframework.offlinetranslator.main.InfoRow(title: kotlin.String, value: kotlin.String): kotlin.Unit
   skippable: true
   restartable: true
   params:
     - title: STABLE (String is immutable)
     - value: STABLE (String is immutable)
+
+@Composable
+private fun dev.nucleusframework.offlinetranslator.main.LicenseSheet(onDismiss: kotlin.Function0<kotlin.Unit>): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - onDismiss: STABLE (function type)
 
 @Composable
 private fun dev.nucleusframework.offlinetranslator.main.LinkRow(title: kotlin.String, body: kotlin.String, progress: kotlin.Float?, onClick: kotlin.Function0<kotlin.Unit>): kotlin.Unit

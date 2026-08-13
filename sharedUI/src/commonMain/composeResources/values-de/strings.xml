@@ -5,8 +5,13 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Übersetzen</string>
-    <string name="nav_history">Verlauf</string>
+    <string name="nav_history">Favoriten</string>
     <string name="nav_settings">Einstellungen</string>
+    <string name="nav_about">Über</string>
+    <string name="about_author">Autor</string>
+    <string name="about_license">Lizenz</string>
+    <string name="about_libraries">Open-Source-Lizenzen</string>
+    <string name="about_version">Version</string>
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -51,7 +56,7 @@
 
     <string name="install_step">Schritt %1$d von %2$d</string>
     <string name="install_welcome_title">Offline übersetzen,\nohne dass ein Wort dieses Gerät verlässt</string>
-    <string name="install_welcome_body">Das Modell läuft auf diesem Rechner. Texte, Dokumente und Verlauf bleiben lokal — nach der Installation keine ausgehende Anfrage.</string>
+    <string name="install_welcome_body">Das Modell läuft auf diesem Rechner. Texte, Dokumente und Favoriten bleiben lokal — nach der Installation keine ausgehende Anfrage.</string>
     <string name="install_feature_local_title">100 % lokale Inferenz</string>
     <string name="install_feature_local_body">Vertrauliche Akten, NDAs, Gesundheitsdaten</string>
     <string name="install_feature_model_title">Modell wählen</string>
@@ -61,8 +66,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · schneller</string>
     <string name="model_precise_title">Präzise</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · genauer</string>
-    <string name="install_feature_history_title">Lokaler Verlauf</string>
-    <string name="install_feature_history_body">Übersetzungen finden und wiederverwenden</string>
+    <string name="install_feature_history_title">Lokale Favoriten</string>
+    <string name="install_feature_history_body">Übersetzungen speichern und wiederverwenden</string>
     <string name="install_feature_voices_title">Stimmen</string>
     <string name="install_feature_voices_body">Piper liest Übersetzungen vor — %1$d von %2$d Sprachen, etwa 63 MB je Stimme</string>
     <string name="install_spec_voices">Stimmen</string>
@@ -116,12 +121,12 @@
     <string name="translation_error">Übersetzungsfehler.</string>
     <string name="alternatives_header">Alternativen · „%1$s“</string>
 
-    <string name="history_title">Verlauf</string>
+    <string name="history_title">Favoriten</string>
     <string name="history_col_date">Datum</string>
     <string name="history_col_pair">Paar</string>
     <string name="history_col_source">Quelle</string>
     <string name="history_col_target">Übersetzung</string>
-    <string name="history_empty">Keine Einträge</string>
+    <string name="history_empty">Keine Favoriten</string>
     <string name="history_filter_all">Alle</string>
     <string name="history_filter_pinned">Angeheftet</string>
     <string name="history_filter_last_7">Letzte 7 Tage</string>
@@ -147,19 +152,19 @@
     <string name="settings_voices_summary">%1$d Stimmen · %2$d installiert</string>
     <string name="settings_reset">Zurücksetzen</string>
     <string name="settings_reset_title">App zurücksetzen</string>
-    <string name="settings_reset_body">Löscht Modelle, Stimmen, Verlauf und Einstellungen. Sie beginnen wieder von vorn.</string>
+    <string name="settings_reset_body">Löscht Modelle, Stimmen, Favoriten und Einstellungen. Sie beginnen wieder von vorn.</string>
     <string name="confirm_delete_voice">Stimme %1$s vom Datenträger löschen? Sie können sie später erneut herunterladen.</string>
 
     <string name="dialog_confirm">Bestätigen</string>
     <string name="dialog_install_voice">Stimme</string>
     <string name="dialog_install_voice_body">Die Stimme %1$s ist nicht installiert. Laden Sie sie herunter, um Text vorlesen zu lassen (%2$s).</string>
-    <string name="confirm_purge_history">Gesamten Verlauf leeren?</string>
+    <string name="confirm_purge_history">Alle Favoriten leeren?</string>
     <string name="confirm_delete_model">%1$s vom Datenträger löschen? Sie können es später erneut herunterladen.</string>
-    <string name="confirm_reset_app">App zurücksetzen? Modelle, Stimmen, Verlauf und Einstellungen werden gelöscht.</string>
+    <string name="confirm_reset_app">App zurücksetzen? Modelle, Stimmen, Favoriten und Einstellungen werden gelöscht.</string>
 
     <string name="msg_nothing_to_save">Nichts zu speichern: Quelle und Ziel müssen ausgefüllt sein.</string>
-    <string name="msg_history_disabled">Verlauf ist deaktiviert.</string>
-    <string name="msg_saved_to_history">Im Verlauf gespeichert.</string>
+    <string name="msg_history_disabled">Favoriten sind deaktiviert.</string>
+    <string name="msg_saved_to_history">In den Favoriten gespeichert.</string>
     <string name="msg_nothing_to_copy">Nichts zu kopieren.</string>
     <string name="msg_translation_copied">Übersetzung kopiert.</string>
     <string name="download_error_airplane">Flugmodus: Download blockiert.</string>

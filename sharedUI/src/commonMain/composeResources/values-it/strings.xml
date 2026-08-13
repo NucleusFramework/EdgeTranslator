@@ -5,8 +5,13 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Traduci</string>
-    <string name="nav_history">Cronologia</string>
+    <string name="nav_history">Preferiti</string>
     <string name="nav_settings">Impostazioni</string>
+    <string name="nav_about">Informazioni</string>
+    <string name="about_author">Autore</string>
+    <string name="about_license">Licenza</string>
+    <string name="about_libraries">Licenze open source</string>
+    <string name="about_version">Versione</string>
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -51,7 +56,7 @@
 
     <string name="install_step">Passaggio %1$d di %2$d</string>
     <string name="install_welcome_title">Traduci offline,\nsenza far uscire una parola da questo dispositivo</string>
-    <string name="install_welcome_body">Il modello viene eseguito su questo computer. Testi, documenti e cronologia restano in locale — nessuna richiesta in uscita dopo l'installazione.</string>
+    <string name="install_welcome_body">Il modello viene eseguito su questo computer. Testi, documenti e preferiti restano in locale — nessuna richiesta in uscita dopo l'installazione.</string>
     <string name="install_feature_local_title">Inferenza 100% locale</string>
     <string name="install_feature_local_body">File riservati, NDA, dati sanitari</string>
     <string name="install_feature_model_title">Scegli il modello</string>
@@ -61,8 +66,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · più rapido</string>
     <string name="model_precise_title">Precisione</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · più fedele</string>
-    <string name="install_feature_history_title">Cronologia locale</string>
-    <string name="install_feature_history_body">Trova e riutilizza le tue traduzioni</string>
+    <string name="install_feature_history_title">Preferiti locali</string>
+    <string name="install_feature_history_body">Salva e riutilizza le tue traduzioni</string>
     <string name="install_feature_voices_title">Voci</string>
     <string name="install_feature_voices_body">Piper legge le traduzioni ad alta voce — %1$d di %2$d lingue, circa 63 MB ciascuna</string>
     <string name="install_spec_voices">Voci</string>
@@ -116,12 +121,12 @@
     <string name="translation_error">Errore di traduzione.</string>
     <string name="alternatives_header">Alternative · «%1$s»</string>
 
-    <string name="history_title">Cronologia</string>
+    <string name="history_title">Preferiti</string>
     <string name="history_col_date">Data</string>
     <string name="history_col_pair">Coppia</string>
     <string name="history_col_source">Origine</string>
     <string name="history_col_target">Traduzione</string>
-    <string name="history_empty">Nessuna voce</string>
+    <string name="history_empty">Nessun preferito</string>
     <string name="history_filter_all">Tutte</string>
     <string name="history_filter_pinned">Fissate</string>
     <string name="history_filter_last_7">Ultimi 7 giorni</string>
@@ -147,19 +152,19 @@
     <string name="settings_voices_summary">%1$d voci · %2$d installate</string>
     <string name="settings_reset">Reimposta</string>
     <string name="settings_reset_title">Reimposta l'app</string>
-    <string name="settings_reset_body">Elimina modelli, voci, cronologia e impostazioni. Ricomincerai da capo.</string>
+    <string name="settings_reset_body">Elimina modelli, voci, preferiti e impostazioni. Ricomincerai da capo.</string>
     <string name="confirm_delete_voice">Eliminare la voce %1$s dal disco? Potrai scaricarla di nuovo più tardi.</string>
 
     <string name="dialog_confirm">Conferma</string>
     <string name="dialog_install_voice">Voce</string>
     <string name="dialog_install_voice_body">La voce %1$s non è installata. Scaricala per leggere il testo ad alta voce (%2$s).</string>
-    <string name="confirm_purge_history">Svuotare tutta la cronologia?</string>
+    <string name="confirm_purge_history">Svuotare tutti i preferiti?</string>
     <string name="confirm_delete_model">Eliminare %1$s dal disco? Potrai scaricarlo di nuovo più tardi.</string>
-    <string name="confirm_reset_app">Reimpostare l'app? Modelli, voci, cronologia e impostazioni verranno eliminati.</string>
+    <string name="confirm_reset_app">Reimpostare l'app? Modelli, voci, preferiti e impostazioni verranno eliminati.</string>
 
     <string name="msg_nothing_to_save">Niente da salvare: origine e destinazione devono essere compilate.</string>
-    <string name="msg_history_disabled">Cronologia disattivata.</string>
-    <string name="msg_saved_to_history">Salvato nella cronologia.</string>
+    <string name="msg_history_disabled">Preferiti disattivati.</string>
+    <string name="msg_saved_to_history">Salvato nei preferiti.</string>
     <string name="msg_nothing_to_copy">Niente da copiare.</string>
     <string name="msg_translation_copied">Traduzione copiata.</string>
     <string name="download_error_airplane">Modalità aereo: download bloccato.</string>

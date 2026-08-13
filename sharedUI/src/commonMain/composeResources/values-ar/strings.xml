@@ -5,8 +5,13 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">ترجمة</string>
-    <string name="nav_history">السجل</string>
+    <string name="nav_history">المفضلة</string>
     <string name="nav_settings">الإعدادات</string>
+    <string name="nav_about">حول</string>
+    <string name="about_author">المؤلف</string>
+    <string name="about_license">الرخصة</string>
+    <string name="about_libraries">تراخيص المصادر المفتوحة</string>
+    <string name="about_version">الإصدار</string>
     <string name="offline">دون اتصال</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -51,7 +56,7 @@
 
     <string name="install_step">الخطوة %1$d من %2$d</string>
     <string name="install_welcome_title">ترجم دون اتصال،\nدون أن تغادر كلمة هذا الجهاز</string>
-    <string name="install_welcome_body">يعمل النموذج على هذا الجهاز. تبقى النصوص والمستندات والسجل محلية — لا طلب صادر بعد التثبيت.</string>
+    <string name="install_welcome_body">يعمل النموذج على هذا الجهاز. تبقى النصوص والمستندات والمفضلة محلية — لا طلب صادر بعد التثبيت.</string>
     <string name="install_feature_local_title">استدلال محلي بالكامل</string>
     <string name="install_feature_local_body">ملفات سرية واتفاقيات عدم إفصاح وبيانات صحية</string>
     <string name="install_feature_model_title">اختر النموذج</string>
@@ -61,8 +66,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · أسرع</string>
     <string name="model_precise_title">دقيق</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · أدق</string>
-    <string name="install_feature_history_title">سجل محلي</string>
-    <string name="install_feature_history_body">اعثر على ترجماتك وأعد استخدامها</string>
+    <string name="install_feature_history_title">المفضلة المحلية</string>
+    <string name="install_feature_history_body">احفظ ترجماتك وأعد استخدامها</string>
     <string name="install_feature_voices_title">أصوات</string>
     <string name="install_feature_voices_body">يقرأ Piper الترجمات بصوت عالٍ — %1$d من أصل %2$d لغة، نحو 63 م.ب لكل صوت</string>
     <string name="install_spec_voices">أصوات</string>
@@ -116,12 +121,12 @@
     <string name="translation_error">خطأ في الترجمة.</string>
     <string name="alternatives_header">بدائل · «%1$s»</string>
 
-    <string name="history_title">السجل</string>
+    <string name="history_title">المفضلة</string>
     <string name="history_col_date">التاريخ</string>
     <string name="history_col_pair">الزوج</string>
     <string name="history_col_source">المصدر</string>
     <string name="history_col_target">الترجمة</string>
-    <string name="history_empty">لا توجد عناصر</string>
+    <string name="history_empty">لا توجد مفضلات</string>
     <string name="history_filter_all">الكل</string>
     <string name="history_filter_pinned">المثبّت</string>
     <string name="history_filter_last_7">آخر 7 أيام</string>
@@ -147,19 +152,19 @@
     <string name="settings_voices_summary">%1$d أصوات · %2$d مثبّتة</string>
     <string name="settings_reset">إعادة ضبط</string>
     <string name="settings_reset_title">إعادة ضبط التطبيق</string>
-    <string name="settings_reset_body">يحذف النماذج والأصوات والسجل والإعدادات. ستبدأ من جديد.</string>
+    <string name="settings_reset_body">يحذف النماذج والأصوات والمفضلة والإعدادات. ستبدأ من جديد.</string>
     <string name="confirm_delete_voice">حذف الصوت %1$s من القرص؟ يمكنك تنزيله لاحقًا.</string>
 
     <string name="dialog_confirm">تأكيد</string>
     <string name="dialog_install_voice">صوت</string>
     <string name="dialog_install_voice_body">الصوت %1$s غير مثبّت. نزّله لقراءة النص بصوت عالٍ (%2$s).</string>
-    <string name="confirm_purge_history">مسح السجل بالكامل؟</string>
+    <string name="confirm_purge_history">مسح كل المفضلة؟</string>
     <string name="confirm_delete_model">حذف %1$s من القرص؟ يمكنك تنزيله لاحقًا.</string>
-    <string name="confirm_reset_app">إعادة ضبط التطبيق؟ سيتم حذف النماذج والأصوات والسجل والإعدادات.</string>
+    <string name="confirm_reset_app">إعادة ضبط التطبيق؟ سيتم حذف النماذج والأصوات والمفضلة والإعدادات.</string>
 
     <string name="msg_nothing_to_save">لا شيء للحفظ: يجب ملء المصدر والهدف.</string>
-    <string name="msg_history_disabled">السجل معطّل.</string>
-    <string name="msg_saved_to_history">حُفظ في السجل.</string>
+    <string name="msg_history_disabled">المفضلة معطّلة.</string>
+    <string name="msg_saved_to_history">حُفظ في المفضلة.</string>
     <string name="msg_nothing_to_copy">لا شيء للنسخ.</string>
     <string name="msg_translation_copied">تم نسخ الترجمة.</string>
     <string name="download_error_airplane">وضع الطيران: التنزيل محظور.</string>

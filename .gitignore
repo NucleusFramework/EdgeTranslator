@@ -16,3 +16,4 @@ Pods/
 *.gpg
 *yarn.lock
 /com/
+sharedUI/src/commonMain/composeResources/files/aboutlibraries.json

@@ -5,8 +5,13 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Vertalen</string>
-    <string name="nav_history">Geschiedenis</string>
+    <string name="nav_history">Favorieten</string>
     <string name="nav_settings">Instellingen</string>
+    <string name="nav_about">Over</string>
+    <string name="about_author">Auteur</string>
+    <string name="about_license">Licentie</string>
+    <string name="about_libraries">Open-sourcelicenties</string>
+    <string name="about_version">Versie</string>
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -51,7 +56,7 @@
 
     <string name="install_step">Stap %1$d van %2$d</string>
     <string name="install_welcome_title">Offline vertalen,\nzonder dat een woord dit apparaat verlaat</string>
-    <string name="install_welcome_body">Het model draait op deze machine. Teksten, documenten en geschiedenis blijven lokaal — geen uitgaand verzoek na de installatie.</string>
+    <string name="install_welcome_body">Het model draait op deze machine. Teksten, documenten en favorieten blijven lokaal — geen uitgaand verzoek na de installatie.</string>
     <string name="install_feature_local_title">100% lokale inferentie</string>
     <string name="install_feature_local_body">Vertrouwelijke dossiers, NDA’s, gezondheidsgegevens</string>
     <string name="install_feature_model_title">Kies je model</string>
@@ -61,8 +66,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · sneller</string>
     <string name="model_precise_title">Precisie</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · nauwkeuriger</string>
-    <string name="install_feature_history_title">Lokale geschiedenis</string>
-    <string name="install_feature_history_body">Vind en hergebruik je vertalingen</string>
+    <string name="install_feature_history_title">Lokale favorieten</string>
+    <string name="install_feature_history_body">Sla je vertalingen op en hergebruik ze</string>
     <string name="install_feature_voices_title">Stemmen</string>
     <string name="install_feature_voices_body">Piper leest vertalingen voor — %1$d van %2$d talen, ongeveer 63 MB per stuk</string>
     <string name="install_spec_voices">Stemmen</string>
@@ -116,12 +121,12 @@
     <string name="translation_error">Vertaalfout.</string>
     <string name="alternatives_header">Alternatieven · „%1$s”</string>
 
-    <string name="history_title">Geschiedenis</string>
+    <string name="history_title">Favorieten</string>
     <string name="history_col_date">Datum</string>
     <string name="history_col_pair">Paar</string>
     <string name="history_col_source">Bron</string>
     <string name="history_col_target">Vertaling</string>
-    <string name="history_empty">Geen items</string>
+    <string name="history_empty">Geen favorieten</string>
     <string name="history_filter_all">Alles</string>
     <string name="history_filter_pinned">Vastgezet</string>
     <string name="history_filter_last_7">Laatste 7 dagen</string>
@@ -147,19 +152,19 @@
     <string name="settings_voices_summary">%1$d stemmen · %2$d geïnstalleerd</string>
     <string name="settings_reset">Opnieuw instellen</string>
     <string name="settings_reset_title">App opnieuw instellen</string>
-    <string name="settings_reset_body">Verwijdert modellen, stemmen, geschiedenis en instellingen. Je begint opnieuw.</string>
+    <string name="settings_reset_body">Verwijdert modellen, stemmen, favorieten en instellingen. Je begint opnieuw.</string>
     <string name="confirm_delete_voice">Stem %1$s van de schijf verwijderen? Je kunt die later opnieuw downloaden.</string>
 
     <string name="dialog_confirm">Bevestigen</string>
     <string name="dialog_install_voice">Stem</string>
     <string name="dialog_install_voice_body">De stem %1$s is niet geïnstalleerd. Download die om tekst te laten voorlezen (%2$s).</string>
-    <string name="confirm_purge_history">Alle geschiedenis wissen?</string>
+    <string name="confirm_purge_history">Alle favorieten wissen?</string>
     <string name="confirm_delete_model">%1$s van de schijf verwijderen? Je kunt het later opnieuw downloaden.</string>
-    <string name="confirm_reset_app">App opnieuw instellen? Modellen, stemmen, geschiedenis en instellingen worden verwijderd.</string>
+    <string name="confirm_reset_app">App opnieuw instellen? Modellen, stemmen, favorieten en instellingen worden verwijderd.</string>
 
     <string name="msg_nothing_to_save">Niets om op te slaan: bron en doel moeten beide ingevuld zijn.</string>
-    <string name="msg_history_disabled">Geschiedenis is uitgeschakeld.</string>
-    <string name="msg_saved_to_history">Opgeslagen in de geschiedenis.</string>
+    <string name="msg_history_disabled">Favorieten zijn uitgeschakeld.</string>
+    <string name="msg_saved_to_history">Opgeslagen in favorieten.</string>
     <string name="msg_nothing_to_copy">Niets om te kopiëren.</string>
     <string name="msg_translation_copied">Vertaling gekopieerd.</string>
     <string name="download_error_airplane">Vliegtuigmodus: download geblokkeerd.</string>

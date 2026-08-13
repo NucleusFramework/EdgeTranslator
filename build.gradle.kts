@@ -16,6 +16,7 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.stability.analyzer) apply false
+    alias(libs.plugins.aboutLibraries) apply false
 }
 
 val detektVersion = libs.versions.detekt.get()

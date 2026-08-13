@@ -5,8 +5,13 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">翻译</string>
-    <string name="nav_history">历史</string>
+    <string name="nav_history">收藏</string>
     <string name="nav_settings">设置</string>
+    <string name="nav_about">关于</string>
+    <string name="about_author">作者</string>
+    <string name="about_license">许可证</string>
+    <string name="about_libraries">开源许可证</string>
+    <string name="about_version">版本</string>
     <string name="offline">离线</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -51,7 +56,7 @@
 
     <string name="install_step">第 %1$d 步，共 %2$d 步</string>
     <string name="install_welcome_title">离线翻译，\n文字不会离开这台设备</string>
-    <string name="install_welcome_body">模型在本机运行。文本、文档和历史都留在本地——安装后不会发出任何请求。</string>
+    <string name="install_welcome_body">模型在本机运行。文本、文档和收藏都留在本地——安装后不会发出任何请求。</string>
     <string name="install_feature_local_title">100% 本地推理</string>
     <string name="install_feature_local_body">机密文件、保密协议、健康数据</string>
     <string name="install_feature_model_title">选择模型</string>
@@ -61,8 +66,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · 更快</string>
     <string name="model_precise_title">精确</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · 更准</string>
-    <string name="install_feature_history_title">本地历史</string>
-    <string name="install_feature_history_body">查找并复用译文</string>
+    <string name="install_feature_history_title">本地收藏</string>
+    <string name="install_feature_history_body">保存并复用译文</string>
     <string name="install_feature_voices_title">语音</string>
     <string name="install_feature_voices_body">Piper 朗读译文 — %2$d 种语言中的 %1$d 种，每个约 63 MB</string>
     <string name="install_spec_voices">语音</string>
@@ -116,12 +121,12 @@
     <string name="translation_error">翻译出错。</string>
     <string name="alternatives_header">备选 · “%1$s”</string>
 
-    <string name="history_title">历史</string>
+    <string name="history_title">收藏</string>
     <string name="history_col_date">日期</string>
     <string name="history_col_pair">语言对</string>
     <string name="history_col_source">原文</string>
     <string name="history_col_target">译文</string>
-    <string name="history_empty">暂无记录</string>
+    <string name="history_empty">暂无收藏</string>
     <string name="history_filter_all">全部</string>
     <string name="history_filter_pinned">已固定</string>
     <string name="history_filter_last_7">最近 7 天</string>
@@ -147,19 +152,19 @@
     <string name="settings_voices_summary">%1$d 个语音 · 已安装 %2$d</string>
     <string name="settings_reset">重置</string>
     <string name="settings_reset_title">重置应用</string>
-    <string name="settings_reset_body">将删除模型、语音、历史和设置。你需要从头开始。</string>
+    <string name="settings_reset_body">将删除模型、语音、收藏和设置。你需要从头开始。</string>
     <string name="confirm_delete_voice">从磁盘删除语音 %1$s？之后可以重新下载。</string>
 
     <string name="dialog_confirm">确认</string>
     <string name="dialog_install_voice">语音</string>
     <string name="dialog_install_voice_body">语音 %1$s 尚未安装。下载后即可朗读文本（%2$s）。</string>
-    <string name="confirm_purge_history">清空全部历史？</string>
+    <string name="confirm_purge_history">清空全部收藏？</string>
     <string name="confirm_delete_model">从磁盘删除 %1$s？之后可以重新下载。</string>
-    <string name="confirm_reset_app">重置应用？模型、语音、历史和设置都将被删除。</string>
+    <string name="confirm_reset_app">重置应用？模型、语音、收藏和设置都将被删除。</string>
 
     <string name="msg_nothing_to_save">没有可保存的内容：原文和译文都需要填写。</string>
-    <string name="msg_history_disabled">历史记录已关闭。</string>
-    <string name="msg_saved_to_history">已保存到历史。</string>
+    <string name="msg_history_disabled">收藏已关闭。</string>
+    <string name="msg_saved_to_history">已保存到收藏。</string>
     <string name="msg_nothing_to_copy">没有可复制的内容。</string>
     <string name="msg_translation_copied">译文已复制。</string>
     <string name="download_error_airplane">飞行模式：下载已阻止。</string>

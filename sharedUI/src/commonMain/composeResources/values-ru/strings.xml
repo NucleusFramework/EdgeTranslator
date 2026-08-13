@@ -5,8 +5,13 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Перевод</string>
-    <string name="nav_history">История</string>
+    <string name="nav_history">Избранное</string>
     <string name="nav_settings">Настройки</string>
+    <string name="nav_about">О программе</string>
+    <string name="about_author">Автор</string>
+    <string name="about_license">Лицензия</string>
+    <string name="about_libraries">Лицензии открытого ПО</string>
+    <string name="about_version">Версия</string>
     <string name="offline">Офлайн</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -51,7 +56,7 @@
 
     <string name="install_step">Шаг %1$d из %2$d</string>
     <string name="install_welcome_title">Переводите офлайн,\nне выпуская ни слова с этого устройства</string>
-    <string name="install_welcome_body">Модель работает на этом компьютере. Тексты, документы и история остаются локально — после установки исходящих запросов нет.</string>
+    <string name="install_welcome_body">Модель работает на этом компьютере. Тексты, документы и избранное остаются локально — после установки исходящих запросов нет.</string>
     <string name="install_feature_local_title">100% локальный вывод</string>
     <string name="install_feature_local_body">Конфиденциальные файлы, NDA, медицинские данные</string>
     <string name="install_feature_model_title">Выберите модель</string>
@@ -61,8 +66,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · быстрее</string>
     <string name="model_precise_title">Точная</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · точнее</string>
-    <string name="install_feature_history_title">Локальная история</string>
-    <string name="install_feature_history_body">Находите и используйте переводы повторно</string>
+    <string name="install_feature_history_title">Локальное избранное</string>
+    <string name="install_feature_history_body">Сохраняйте и используйте переводы повторно</string>
     <string name="install_feature_voices_title">Голоса</string>
     <string name="install_feature_voices_body">Piper читает переводы вслух — %1$d из %2$d языков, около 63 МБ каждый</string>
     <string name="install_spec_voices">Голоса</string>
@@ -116,12 +121,12 @@
     <string name="translation_error">Ошибка перевода.</string>
     <string name="alternatives_header">Варианты · «%1$s»</string>
 
-    <string name="history_title">История</string>
+    <string name="history_title">Избранное</string>
     <string name="history_col_date">Дата</string>
     <string name="history_col_pair">Пара</string>
     <string name="history_col_source">Источник</string>
     <string name="history_col_target">Перевод</string>
-    <string name="history_empty">Нет записей</string>
+    <string name="history_empty">Нет избранного</string>
     <string name="history_filter_all">Все</string>
     <string name="history_filter_pinned">Закреплённые</string>
     <string name="history_filter_last_7">Последние 7 дней</string>
@@ -147,19 +152,19 @@
     <string name="settings_voices_summary">%1$d голосов · установлено %2$d</string>
     <string name="settings_reset">Сброс</string>
     <string name="settings_reset_title">Сбросить приложение</string>
-    <string name="settings_reset_body">Удаляет модели, голоса, историю и настройки. Вы начнёте сначала.</string>
+    <string name="settings_reset_body">Удаляет модели, голоса, избранное и настройки. Вы начнёте сначала.</string>
     <string name="confirm_delete_voice">Удалить голос %1$s с диска? Позже его можно скачать снова.</string>
 
     <string name="dialog_confirm">Подтвердить</string>
     <string name="dialog_install_voice">Голос</string>
     <string name="dialog_install_voice_body">Голос %1$s не установлен. Скачайте его, чтобы читать текст вслух (%2$s).</string>
-    <string name="confirm_purge_history">Очистить всю историю?</string>
+    <string name="confirm_purge_history">Очистить всё избранное?</string>
     <string name="confirm_delete_model">Удалить %1$s с диска? Позже можно скачать снова.</string>
-    <string name="confirm_reset_app">Сбросить приложение? Модели, голоса, история и настройки будут удалены.</string>
+    <string name="confirm_reset_app">Сбросить приложение? Модели, голоса, избранное и настройки будут удалены.</string>
 
     <string name="msg_nothing_to_save">Нечего сохранять: источник и перевод должны быть заполнены.</string>
-    <string name="msg_history_disabled">История отключена.</string>
-    <string name="msg_saved_to_history">Сохранено в истории.</string>
+    <string name="msg_history_disabled">Избранное отключено.</string>
+    <string name="msg_saved_to_history">Сохранено в избранном.</string>
     <string name="msg_nothing_to_copy">Нечего копировать.</string>
     <string name="msg_translation_copied">Перевод скопирован.</string>
     <string name="download_error_airplane">Режим полёта: загрузка заблокирована.</string>

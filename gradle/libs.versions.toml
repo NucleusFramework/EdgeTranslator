@@ -29,6 +29,7 @@ ktlint-cli = "1.8.0"
 compose-rules = "0.6.4"
 # Built against Kotlin 2.4.0; 2.4.10 is the same compiler family.
 stability-analyzer = "0.12.0"
+aboutLibraries = "15.0.4"
 
 [libraries]
 
@@ -72,6 +73,7 @@ materialKolor = { module = "com.materialkolor:material-kolor", version.ref = "ma
 nucleus-application = { module = "dev.nucleusframework:nucleus.nucleus-application", version.ref = "nucleus" }
 nucleus-decorated-window-tao = { module = "dev.nucleusframework:nucleus.decorated-window-tao", version.ref = "nucleus" }
 nucleus-decorated-window-material3 = { module = "dev.nucleusframework:nucleus.decorated-window-material3", version.ref = "nucleus" }
+nucleus-core-runtime = { module = "dev.nucleusframework:nucleus.core-runtime", version.ref = "nucleus" }
 nucleus-system-color = { module = "dev.nucleusframework:nucleus.system-color", version.ref = "nucleus" }
 nucleus-system-info = { module = "dev.nucleusframework:nucleus.system-info", version.ref = "nucleus" }
 nucleus-native-http-ktor = { module = "dev.nucleusframework:nucleus.native-http-ktor", version.ref = "nucleus" }
@@ -83,6 +85,7 @@ piper-jni = { module = "io.github.jvoice-project:piper-jni", version.ref = "pipe
 structured-coroutines-annotations = { module = "io.github.santimattius:structured-coroutines-annotations", version.ref = "structured-coroutines" }
 detekt-compose-rules = { module = "io.nlopez.compose.rules:detekt", version.ref = "compose-rules" }
 ktlint-compose-rules = { module = "io.nlopez.compose.rules:ktlint", version.ref = "compose-rules" }
+aboutlibraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
 
 [plugins]
 
@@ -99,3 +102,4 @@ structured-coroutines = { id = "io.github.santimattius.structured-coroutines", v
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
 stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version.ref = "stability-analyzer" }
+aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }

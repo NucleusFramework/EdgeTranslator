@@ -164,7 +164,17 @@ private fun WelcomeStep(settings: UserSettings, ttsReady: Boolean, onIntent: (Ap
                 }
                 Column(Modifier.weight(1f)) {
                     Text(stringResource(Res.string.app_name), fontSize = 22.sp, color = c.onSurface)
-                    Text(stringResource(Res.string.app_version, "1.0", Platform.osLabel), fontSize = 12.sp, color = c.onSurfaceVariant)
+                    Text(
+                        stringResource(
+                            Res.string.app_version,
+                            Platform.appVersion.ifEmpty {
+                                "1.0.0"
+                            },
+                            Platform.osLabel,
+                        ),
+                        fontSize = 12.sp,
+                        color = c.onSurfaceVariant,
+                    )
                 }
                 UiLanguagePicker(ui, settings.langNames, onIntent)
             }
@@ -194,7 +204,7 @@ private fun WelcomeStep(settings: UserSettings, ttsReady: Boolean, onIntent: (Ap
             )
             Spacer(Modifier.height(2.dp))
             FeatureCard(
-                Icons.Outlined.History,
+                Icons.Outlined.Star,
                 stringResource(Res.string.install_feature_history_title),
                 stringResource(Res.string.install_feature_history_body),
             )

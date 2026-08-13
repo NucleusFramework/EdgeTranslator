@@ -33,6 +33,9 @@ internal fun androidActivity(): ComponentActivity? = activityRef?.get()
 internal actual object Platform {
     actual val osLabel: String = "Android"
 
+    actual val appVersion: String
+        get() = ctx().packageManager.getPackageInfo(ctx().packageName, 0).versionName.orEmpty()
+
     actual fun cpuCount(): Int = Runtime.getRuntime().availableProcessors().coerceAtLeast(1)
 
     actual fun appDir(): String = filekitFilesDir()

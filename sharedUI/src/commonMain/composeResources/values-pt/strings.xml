@@ -5,8 +5,13 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Traduzir</string>
-    <string name="nav_history">Histórico</string>
+    <string name="nav_history">Favoritos</string>
     <string name="nav_settings">Definições</string>
+    <string name="nav_about">Sobre</string>
+    <string name="about_author">Autor</string>
+    <string name="about_license">Licença</string>
+    <string name="about_libraries">Licenças de código aberto</string>
+    <string name="about_version">Versão</string>
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
@@ -51,7 +56,7 @@
 
     <string name="install_step">Passo %1$d de %2$d</string>
     <string name="install_welcome_title">Traduzir offline,\nsem uma palavra sair deste dispositivo</string>
-    <string name="install_welcome_body">O modelo corre nesta máquina. Textos, documentos e histórico ficam locais — nenhum pedido de saída após a instalação.</string>
+    <string name="install_welcome_body">O modelo corre nesta máquina. Textos, documentos e favoritos ficam locais — nenhum pedido de saída após a instalação.</string>
     <string name="install_feature_local_title">Inferência 100% local</string>
     <string name="install_feature_local_body">Ficheiros confidenciais, NDA, dados de saúde</string>
     <string name="install_feature_model_title">Escolha o modelo</string>
@@ -61,8 +66,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · mais ágil</string>
     <string name="model_precise_title">Precisão</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · mais fiel</string>
-    <string name="install_feature_history_title">Histórico local</string>
-    <string name="install_feature_history_body">Encontre e reutilize as suas traduções</string>
+    <string name="install_feature_history_title">Favoritos locais</string>
+    <string name="install_feature_history_body">Guarde e reutilize as suas traduções</string>
     <string name="install_feature_voices_title">Vozes</string>
     <string name="install_feature_voices_body">O Piper lê as traduções em voz alta — %1$d de %2$d idiomas, cerca de 63 MB cada</string>
     <string name="install_spec_voices">Vozes</string>
@@ -116,12 +121,12 @@
     <string name="translation_error">Erro de tradução.</string>
     <string name="alternatives_header">Alternativas · «%1$s»</string>
 
-    <string name="history_title">Histórico</string>
+    <string name="history_title">Favoritos</string>
     <string name="history_col_date">Data</string>
     <string name="history_col_pair">Par</string>
     <string name="history_col_source">Origem</string>
     <string name="history_col_target">Tradução</string>
-    <string name="history_empty">Sem entradas</string>
+    <string name="history_empty">Sem favoritos</string>
     <string name="history_filter_all">Todas</string>
     <string name="history_filter_pinned">Afixadas</string>
     <string name="history_filter_last_7">Últimos 7 dias</string>
@@ -147,19 +152,19 @@
     <string name="settings_voices_summary">%1$d vozes · %2$d instaladas</string>
     <string name="settings_reset">Repor</string>
     <string name="settings_reset_title">Repor a aplicação</string>
-    <string name="settings_reset_body">Elimina modelos, vozes, histórico e definições. Começará do início.</string>
+    <string name="settings_reset_body">Elimina modelos, vozes, favoritos e definições. Começará do início.</string>
     <string name="confirm_delete_voice">Eliminar a voz %1$s do disco? Poderá descarregá-la novamente mais tarde.</string>
 
     <string name="dialog_confirm">Confirmar</string>
     <string name="dialog_install_voice">Voz</string>
     <string name="dialog_install_voice_body">A voz %1$s não está instalada. Descarregue-a para ler o texto em voz alta (%2$s).</string>
-    <string name="confirm_purge_history">Limpar todo o histórico?</string>
+    <string name="confirm_purge_history">Limpar todos os favoritos?</string>
     <string name="confirm_delete_model">Eliminar %1$s do disco? Poderá descarregá-lo novamente mais tarde.</string>
-    <string name="confirm_reset_app">Repor a aplicação? Modelos, vozes, histórico e definições serão eliminados.</string>
+    <string name="confirm_reset_app">Repor a aplicação? Modelos, vozes, favoritos e definições serão eliminados.</string>
 
     <string name="msg_nothing_to_save">Nada a guardar: origem e destino devem estar preenchidos.</string>
-    <string name="msg_history_disabled">O histórico está desativado.</string>
-    <string name="msg_saved_to_history">Guardado no histórico.</string>
+    <string name="msg_history_disabled">Os favoritos estão desativados.</string>
+    <string name="msg_saved_to_history">Guardado nos favoritos.</string>
     <string name="msg_nothing_to_copy">Nada a copiar.</string>
     <string name="msg_translation_copied">Tradução copiada.</string>
     <string name="download_error_airplane">Modo de avião: transferência bloqueada.</string>
