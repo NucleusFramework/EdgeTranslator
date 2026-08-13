@@ -15,6 +15,7 @@
     <string name="offline">Çevrimdışı</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Otomatik</string>
     <string name="nav_backend">Arka uç: %1$s</string>
     <string name="action_ok">Tamam</string>
     <string name="action_cancel">İptal</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Şimdi konuşun</string>
     <string name="mic_listening">Dinleniyor…</string>
     <string name="mic_transcribing">Yazıya dökülüyor…</string>
+    <string name="image_reading">Belge okunuyor…</string>
     <string name="mic_tap_stop">Durdurmak için mikrofona dokunun</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Kullanılabilir mikrofon yok.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Arayüz dili</string>
     <string name="lang_names_native">Yerel adlar</string>
     <string name="settings_model">Model</string>
+    <string name="settings_backend">Arka uç</string>
     <string name="settings_model_installed">Kurulu</string>
     <string name="settings_model_missing">Kurulu değil</string>
     <string name="settings_model_downloading">İndiriliyor… %1$s</string>

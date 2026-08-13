@@ -25,6 +25,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +45,7 @@ import dev.nucleusframework.offlinetranslator.domain.DownloadPhase
 import dev.nucleusframework.offlinetranslator.domain.DownloadState
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.Languages
+import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
@@ -53,6 +55,7 @@ import dev.nucleusframework.offlinetranslator.domain.formatEta
 import dev.nucleusframework.offlinetranslator.domain.formatPercent
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
+import dev.nucleusframework.offlinetranslator.engine.LlmRuntime
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.platform.systemUiLanguage
 import dev.nucleusframework.offlinetranslator.ui.Chip
@@ -142,7 +145,27 @@ private fun DisplaySection(settings: UserSettings, onIntent: (AppIntent) -> Unit
 private fun ModelSection(settings: UserSettings, model: ModelInfo, download: DownloadState, onIntent: (AppIntent) -> Unit) {
     val ui = settings.uiLanguage
     val selected = settings.selectedModel
+    val gpuAvailable by LlmRuntime.gpuAvailable.collectAsState()
     SettingsSection(stringResource(Res.string.settings_model)) {
+        ChipsRow(stringResource(Res.string.settings_backend)) {
+            Chip(
+                stringResource(Res.string.engine_auto),
+                selected = settings.backend == LlmBackend.Auto,
+                onClick = { onIntent(AppIntent.SetLlmBackend(LlmBackend.Auto)) },
+            )
+            Chip(
+                stringResource(Res.string.engine_gpu),
+                selected = settings.backend == LlmBackend.Gpu,
+                onClick = { onIntent(AppIntent.SetLlmBackend(LlmBackend.Gpu)) },
+                enabled = gpuAvailable != false,
+            )
+            Chip(
+                stringResource(Res.string.engine_cpu),
+                selected = settings.backend == LlmBackend.Cpu,
+                onClick = { onIntent(AppIntent.SetLlmBackend(LlmBackend.Cpu)) },
+            )
+        }
+        Divider()
         Divided(GemmaModels.all) { catalog ->
             val installed = catalog.isOnDisk() || (model.installed && model.id == catalog.id)
             val mine = catalog.id == selected

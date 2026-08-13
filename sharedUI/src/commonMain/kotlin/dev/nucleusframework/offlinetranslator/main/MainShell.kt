@@ -34,6 +34,7 @@ import dev.nucleusframework.offlinetranslator.app.AppIntent
 import dev.nucleusframework.offlinetranslator.app.AppKey
 import dev.nucleusframework.offlinetranslator.app.MainDestinations
 import dev.nucleusframework.offlinetranslator.app.label
+import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
@@ -55,6 +56,7 @@ fun MainShell(
     uiLanguage: UiLanguage,
     offline: Boolean,
     modelId: LlmModel,
+    backend: LlmBackend,
     onIntent: (AppIntent) -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -67,7 +69,7 @@ fun MainShell(
         // On desktop the brand + screen chrome live in the window title bar.
         if (!LocalHostHasTitleBar.current) key(uiLanguage) { OfflineBar(offline) }
         Row(Modifier.fillMaxSize()) {
-            key(uiLanguage) { NavRail(destination, modelId, onIntent) }
+            key(uiLanguage) { NavRail(destination, modelId, backend, onIntent) }
             Box(Modifier.weight(1f).fillMaxHeight()) { content() }
         }
     }
@@ -98,7 +100,7 @@ private fun OfflineBar(offline: Boolean) {
 }
 
 @Composable
-private fun NavRail(selected: AppKey, modelId: LlmModel, onIntent: (AppIntent) -> Unit) {
+private fun NavRail(selected: AppKey, modelId: LlmModel, backend: LlmBackend, onIntent: (AppIntent) -> Unit) {
     val c = MaterialTheme.colorScheme
     Column(
         Modifier.width(220.dp).fillMaxHeight().background(c.surfaceContainer)
@@ -123,7 +125,7 @@ private fun NavRail(selected: AppKey, modelId: LlmModel, onIntent: (AppIntent) -
         ) {
             LocalSystemMeters.current?.invoke(Modifier)
             Text(
-                stringResource(Res.string.nav_backend, acceleratorLabel()),
+                stringResource(Res.string.nav_backend, backendLabel(backend)),
                 color = c.onSurfaceVariant,
                 fontSize = 11.sp,
             )

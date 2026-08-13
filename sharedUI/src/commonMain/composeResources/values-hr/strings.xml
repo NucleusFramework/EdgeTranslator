@@ -15,6 +15,7 @@
     <string name="offline">Izvan mreže</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Auto</string>
     <string name="nav_backend">Pozadina: %1$s</string>
     <string name="action_ok">U redu</string>
     <string name="action_cancel">Odustani</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Govorite sada</string>
     <string name="mic_listening">Slušam…</string>
     <string name="mic_transcribing">Transkripcija…</string>
+    <string name="image_reading">Čitanje dokumenta…</string>
     <string name="mic_tap_stop">Dodirnite mikrofon za zaustavljanje</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Nema dostupnog mikrofona.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Jezik sučelja</string>
     <string name="lang_names_native">Izvorni nazivi</string>
     <string name="settings_model">Model</string>
+    <string name="settings_backend">Backend</string>
     <string name="settings_model_installed">Instalirano</string>
     <string name="settings_model_missing">Nije instalirano</string>
     <string name="settings_model_downloading">Preuzimanje… %1$s</string>

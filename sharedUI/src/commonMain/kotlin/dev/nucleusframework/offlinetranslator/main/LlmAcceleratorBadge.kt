@@ -8,13 +8,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import dev.nucleusframework.offlinetranslator.engine.LlmAccelerator
 import dev.nucleusframework.offlinetranslator.engine.LlmRuntime
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.em_dash
+import offlinetranslator.sharedui.generated.resources.engine_auto
 import offlinetranslator.sharedui.generated.resources.engine_cpu
 import offlinetranslator.sharedui.generated.resources.engine_gpu
 import org.jetbrains.compose.resources.stringResource
+
+/** The backend chosen in Settings: Auto, GPU, or CPU. */
+@Composable
+fun backendLabel(backend: LlmBackend): String = when (backend) {
+    LlmBackend.Auto -> stringResource(Res.string.engine_auto)
+    LlmBackend.Gpu -> stringResource(Res.string.engine_gpu)
+    LlmBackend.Cpu -> stringResource(Res.string.engine_cpu)
+}
 
 /** The backend the LLM is actually running on: GPU, CPU, or not loaded yet. */
 @Composable

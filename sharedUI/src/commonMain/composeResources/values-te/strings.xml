@@ -15,6 +15,7 @@
     <string name="offline">ఆఫ్‌లైన్</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">స్వయంచాలకం</string>
     <string name="nav_backend">బ్యాకెండ్: %1$s</string>
     <string name="action_ok">సరే</string>
     <string name="action_cancel">రద్దు</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">ఇప్పుడు మాట్లాడండి</string>
     <string name="mic_listening">వింటోంది…</string>
     <string name="mic_transcribing">లిఖిస్తోంది…</string>
+    <string name="image_reading">పత్రం చదువుతోంది…</string>
     <string name="mic_tap_stop">ఆపడానికి మైక్‌ను నొక్కండి</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">మైక్రోఫోన్ లేదు.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">ఇంటర్‌ఫేస్ భాష</string>
     <string name="lang_names_native">స్థానిక పేర్లు</string>
     <string name="settings_model">మోడల్</string>
+    <string name="settings_backend">బ్యాకెండ్</string>
     <string name="settings_model_installed">ఇన్‌స్టాల్ అయింది</string>
     <string name="settings_model_missing">ఇన్‌స్టాల్ లేదు</string>
     <string name="settings_model_downloading">డౌన్‌లోడ్ అవుతోంది… %1$s</string>

@@ -16,6 +16,7 @@
     <string name="offline">دون اتصال</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">تلقائي</string>
     <string name="nav_backend">الخلفية: %1$s</string>
 
     <string name="action_ok">حسنًا</string>
@@ -46,6 +47,7 @@
     <string name="mic_speak_now">تحدّث الآن</string>
     <string name="mic_listening">جارٍ الاستماع…</string>
     <string name="mic_transcribing">جارٍ التحويل إلى نص…</string>
+    <string name="image_reading">جارٍ قراءة المستند…</string>
     <string name="mic_tap_stop">انقر على الميكروفون للإيقاف</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">لا يوجد ميكروفون متاح.</string>
@@ -145,6 +147,7 @@
     <string name="lang_names_system">لغة الواجهة</string>
     <string name="lang_names_native">الأسماء الأصلية</string>
     <string name="settings_model">النموذج</string>
+    <string name="settings_backend">المحرك</string>
     <string name="settings_model_installed">مثبّت</string>
     <string name="settings_model_missing">غير مثبّت</string>
     <string name="settings_model_downloading">جارٍ التنزيل… %1$s</string>

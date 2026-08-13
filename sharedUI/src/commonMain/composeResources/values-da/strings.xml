@@ -15,6 +15,7 @@
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Auto</string>
     <string name="nav_backend">Backend: %1$s</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Annuller</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Tal nu</string>
     <string name="mic_listening">Lytter…</string>
     <string name="mic_transcribing">Transskriberer…</string>
+    <string name="image_reading">Læser dokumentet…</string>
     <string name="mic_tap_stop">Tryk på mikrofonen for at stoppe</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Ingen mikrofon tilgængelig.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Grænsefladesprog</string>
     <string name="lang_names_native">Indfødte navne</string>
     <string name="settings_model">Model</string>
+    <string name="settings_backend">Backend</string>
     <string name="settings_model_installed">Installeret</string>
     <string name="settings_model_missing">Ikke installeret</string>
     <string name="settings_model_downloading">Downloader… %1$s</string>

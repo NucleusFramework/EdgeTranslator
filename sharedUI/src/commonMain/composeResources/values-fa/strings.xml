@@ -15,6 +15,7 @@
     <string name="offline">آفلاین</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">خودکار</string>
     <string name="nav_backend">پشتیبان: %1$s</string>
     <string name="action_ok">باشه</string>
     <string name="action_cancel">لغو</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">حالا صحبت کنید</string>
     <string name="mic_listening">در حال شنیدن…</string>
     <string name="mic_transcribing">در حال نویسه‌گردانی…</string>
+    <string name="image_reading">در حال خواندن سند…</string>
     <string name="mic_tap_stop">برای توقف روی میکروفون بزنید</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">میکروفونی در دسترس نیست.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">زبان رابط</string>
     <string name="lang_names_native">نام‌های بومی</string>
     <string name="settings_model">مدل</string>
+    <string name="settings_backend">موتور</string>
     <string name="settings_model_installed">نصب‌شده</string>
     <string name="settings_model_missing">نصب نشده</string>
     <string name="settings_model_downloading">در حال دانلود… %1$s</string>

@@ -15,6 +15,7 @@
     <string name="offline">Офлайн</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Авто</string>
     <string name="nav_backend">Бекенд: %1$s</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Скасувати</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Говоріть</string>
     <string name="mic_listening">Слухаю…</string>
     <string name="mic_transcribing">Розпізнавання…</string>
+    <string name="image_reading">Читання документа…</string>
     <string name="mic_tap_stop">Натисніть мікрофон, щоб зупинити</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Немає доступного мікрофона.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Мова інтерфейсу</string>
     <string name="lang_names_native">Рідні назви</string>
     <string name="settings_model">Модель</string>
+    <string name="settings_backend">Бекенд</string>
     <string name="settings_model_installed">Встановлено</string>
     <string name="settings_model_missing">Не встановлено</string>
     <string name="settings_model_downloading">Завантаження… %1$s</string>

@@ -15,6 +15,7 @@
     <string name="offline">Εκτός σύνδεσης</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Αυτόματα</string>
     <string name="nav_backend">Υπόβαθρο: %1$s</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Ακύρωση</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Μιλήστε τώρα</string>
     <string name="mic_listening">Ακρόαση…</string>
     <string name="mic_transcribing">Μεταγραφή…</string>
+    <string name="image_reading">Ανάγνωση εγγράφου…</string>
     <string name="mic_tap_stop">Πατήστε το μικρόφωνο για διακοπή</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Δεν υπάρχει διαθέσιμο μικρόφωνο.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Γλώσσα διεπαφής</string>
     <string name="lang_names_native">Τοπικά ονόματα</string>
     <string name="settings_model">Μοντέλο</string>
+    <string name="settings_backend">Backend</string>
     <string name="settings_model_installed">Εγκατεστημένο</string>
     <string name="settings_model_missing">Δεν έχει εγκατασταθεί</string>
     <string name="settings_model_downloading">Λήψη… %1$s</string>

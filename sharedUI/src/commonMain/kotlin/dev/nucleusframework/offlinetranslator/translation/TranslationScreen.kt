@@ -15,6 +15,7 @@ import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.SwapHoriz
@@ -79,6 +80,7 @@ import offlinetranslator.sharedui.generated.resources.action_saved
 import offlinetranslator.sharedui.generated.resources.alternatives_header
 import offlinetranslator.sharedui.generated.resources.cd_dictate
 import offlinetranslator.sharedui.generated.resources.cd_pick_image
+import offlinetranslator.sharedui.generated.resources.image_reading
 import offlinetranslator.sharedui.generated.resources.cd_speak
 import offlinetranslator.sharedui.generated.resources.cd_speak_loading
 import offlinetranslator.sharedui.generated.resources.cd_speak_stop
@@ -207,7 +209,9 @@ private fun SourcePanel(
             LanguageHeader(settings, state.lang, LangRole.Source, onIntent)
         }
         HorizontalDivider(color = c.surfaceContainerHighest)
-        if (state.micPhase != MicPhase.Idle) {
+        if (state.imageBusy) {
+            ScanningPane(Modifier.weight(1f).fillMaxWidth())
+        } else if (state.micPhase != MicPhase.Idle) {
             ListeningPane(state.micPhase, onIntent, Modifier.weight(1f).fillMaxWidth())
         } else {
             val focusRequester = remember { FocusRequester() }
@@ -247,7 +251,7 @@ private fun SourcePanel(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            if (state.micPhase == MicPhase.Idle) {
+            if (!state.imageBusy && state.micPhase == MicPhase.Idle) {
                 Text(
                     pluralStringResource(Res.plurals.char_count, chars, chars),
                     color = c.onSurfaceVariant,
@@ -258,7 +262,7 @@ private fun SourcePanel(
                     color = c.onSurfaceVariant,
                     fontSize = 12.sp,
                 )
-            } else {
+            } else if (!state.imageBusy) {
                 MicClock()
             }
             Spacer(Modifier.weight(1f))
@@ -291,6 +295,28 @@ private fun SourcePanel(
                 },
             )
         }
+    }
+}
+
+@Composable
+private fun ScanningPane(modifier: Modifier = Modifier) {
+    val c = MaterialTheme.colorScheme
+    Column(
+        modifier.padding(horizontal = 24.dp, vertical = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(Modifier.size(72.dp), strokeWidth = 2.dp, color = c.primary)
+            Icon(Icons.Outlined.Description, null, Modifier.size(32.dp), tint = c.primary)
+        }
+        Spacer(Modifier.height(28.dp))
+        Text(
+            stringResource(Res.string.image_reading),
+            color = c.onSurfaceVariant,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Medium,
+        )
     }
 }
 

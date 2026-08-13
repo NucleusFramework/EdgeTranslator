@@ -8,6 +8,7 @@ import com.google.ai.edge.litertlm.Engine
 import com.google.ai.edge.litertlm.EngineConfig
 import com.google.ai.edge.litertlm.SamplerConfig
 import com.google.ai.edge.litertlm.ThinkingConfig
+import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
@@ -15,19 +16,26 @@ import io.ktor.client.plugins.HttpTimeout
 internal actual class NativeLlm actual constructor() {
     private var engine: Engine? = null
 
-    actual fun load(modelPath: String, cacheDir: String, threads: Int): LlmAccelerator {
+    actual fun load(modelPath: String, cacheDir: String, threads: Int, backend: LlmBackend): LlmAccelerator {
         close()
-        val gpu = runCatching { openEngine(modelPath, cacheSubdir(cacheDir, "gpu"), Backend.GPU()) }.getOrNull()
-        if (gpu != null) {
-            engine = gpu
-            return LlmAccelerator.Gpu
+        val pick = pickBackend(backend, LlmRuntime.gpuAvailable.value) {
+            val gpu = runCatching { openEngine(modelPath, cacheSubdir(cacheDir, "gpu"), Backend.GPU()) }.getOrNull()
+            if (gpu != null) {
+                engine = gpu
+                true
+            } else {
+                false
+            }
         }
-        engine = openEngine(
-            modelPath,
-            cacheSubdir(cacheDir, "cpu"),
-            Backend.CPU(threadCount = threads.takeIf { it > 0 }),
-        )
-        return LlmAccelerator.Cpu
+        if (engine == null) {
+            engine = openEngine(
+                modelPath,
+                cacheSubdir(cacheDir, "cpu"),
+                Backend.CPU(threadCount = threads.takeIf { it > 0 }),
+            )
+        }
+        pick.gpuAvailable?.let(LlmRuntime::reportGpuAvailable)
+        return pick.accelerator
     }
 
     actual suspend fun generate(

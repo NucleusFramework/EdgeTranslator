@@ -3,6 +3,7 @@ package dev.nucleusframework.offlinetranslator.data
 import dev.nucleusframework.offlinetranslator.domain.AUTO_LANG
 import dev.nucleusframework.offlinetranslator.domain.AppData
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
+import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.domain.ThemeMode
@@ -33,6 +34,7 @@ internal fun encodeSnapshot(data: AppData): String = buildString {
     appendLine("shortcut=${b64(s.shortcut)}")
     appendLine("modelDir=${b64(s.modelDir)}")
     appendLine("selectedModel=${s.selectedModel.name}")
+    appendLine("backend=${s.backend.name}")
     appendLine("langNames=${s.langNames.name}")
     appendLine("selectedVoices=${s.selectedVoices.entries.joinToString(",") { "${it.key}=${it.value}" }}")
     val m = data.model
@@ -69,6 +71,7 @@ internal fun decodeSnapshot(text: String): AppData {
     var shortcut = "⌘⌃ T"
     var modelDir = ""
     var selectedModel = LlmModel.Fast
+    var backend = LlmBackend.Auto
     var langNames = LangNameStyle.System
     var selectedVoices = emptyMap<String, String>()
     var modelId = LlmModel.Fast
@@ -113,6 +116,10 @@ internal fun decodeSnapshot(text: String): AppData {
             line.startsWith("selectedModel=") ->
                 selectedModel =
                     runCatching { LlmModel.valueOf(line.substringAfter("=")) }.getOrDefault(LlmModel.Fast)
+
+            line.startsWith("backend=") ->
+                backend =
+                    runCatching { LlmBackend.valueOf(line.substringAfter("=")) }.getOrDefault(LlmBackend.Auto)
 
             line.startsWith("langNames=") ->
                 langNames =
@@ -159,6 +166,7 @@ internal fun decodeSnapshot(text: String): AppData {
             shortcut = shortcut,
             modelDir = modelDir,
             selectedModel = selectedModel,
+            backend = backend,
             langNames = langNames,
             selectedVoices = selectedVoices,
         ),

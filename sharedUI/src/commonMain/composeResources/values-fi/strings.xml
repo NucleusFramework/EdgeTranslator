@@ -15,6 +15,7 @@
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Automaattinen</string>
     <string name="nav_backend">Tausta: %1$s</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Peruuta</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Puhu nyt</string>
     <string name="mic_listening">Kuunnellaan…</string>
     <string name="mic_transcribing">Kirjoitetaan puhetta…</string>
+    <string name="image_reading">Luetaan asiakirjaa…</string>
     <string name="mic_tap_stop">Pysäytä napauttamalla mikrofonia</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Mikrofoni ei ole käytettävissä.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Käyttöliittymän kieli</string>
     <string name="lang_names_native">Omat nimet</string>
     <string name="settings_model">Malli</string>
+    <string name="settings_backend">Backend</string>
     <string name="settings_model_installed">Asennettu</string>
     <string name="settings_model_missing">Ei asennettu</string>
     <string name="settings_model_downloading">Ladataan… %1$s</string>

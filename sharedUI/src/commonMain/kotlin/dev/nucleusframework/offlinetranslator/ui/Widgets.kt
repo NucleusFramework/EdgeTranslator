@@ -73,11 +73,15 @@ fun OutlinedPill(label: String, onClick: () -> Unit, modifier: Modifier = Modifi
 
 /** Small 32dp filter/choice chip (rounded 8). */
 @Composable
-fun Chip(label: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun Chip(label: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
     val c = MaterialTheme.colorScheme
-    val base = modifier.height(32.dp).clip(RoundedCornerShape(8.dp)).clickable(onClick = onClick)
+    val base = modifier.height(32.dp).clip(RoundedCornerShape(8.dp)).clickable(enabled = enabled, onClick = onClick)
     val shaped = if (selected) base.background(c.primaryContainer) else base.border(1.dp, c.outlineVariant, RoundedCornerShape(8.dp))
-    val fg = if (selected) c.onPrimaryContainer else c.onSurfaceVariant
+    val fg = when {
+        !enabled -> c.onSurfaceVariant.copy(alpha = 0.38f)
+        selected -> c.onPrimaryContainer
+        else -> c.onSurfaceVariant
+    }
     Row(
         shaped.padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,

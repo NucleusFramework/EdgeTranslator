@@ -15,6 +15,7 @@
     <string name="offline">ऑफ़लाइन</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">स्वतः</string>
     <string name="nav_backend">बैकएंड: %1$s</string>
     <string name="action_ok">ठीक</string>
     <string name="action_cancel">रद्द</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">अब बोलें</string>
     <string name="mic_listening">सुन रहा है…</string>
     <string name="mic_transcribing">लिख रहा है…</string>
+    <string name="image_reading">दस्तावेज़ पढ़ा जा रहा है…</string>
     <string name="mic_tap_stop">रोकने के लिए माइक पर टैप करें</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">कोई माइक्रोफ़ोन नहीं है।</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">इंटरफ़ेस भाषा</string>
     <string name="lang_names_native">मूल नाम</string>
     <string name="settings_model">मॉडल</string>
+    <string name="settings_backend">बैकएंड</string>
     <string name="settings_model_installed">इंस्टॉल है</string>
     <string name="settings_model_missing">इंस्टॉल नहीं</string>
     <string name="settings_model_downloading">डाउनलोड हो रहा है… %1$s</string>

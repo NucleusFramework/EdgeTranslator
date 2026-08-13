@@ -16,6 +16,7 @@
     <string name="offline">オフライン</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">自動</string>
     <string name="nav_backend">バックエンド: %1$s</string>
 
     <string name="action_ok">OK</string>
@@ -46,6 +47,7 @@
     <string name="mic_speak_now">話してください</string>
     <string name="mic_listening">聞いています…</string>
     <string name="mic_transcribing">文字起こし中…</string>
+    <string name="image_reading">文書を読み取っています…</string>
     <string name="mic_tap_stop">マイクをタップして停止</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">マイクがありません。</string>
@@ -145,6 +147,7 @@
     <string name="lang_names_system">表示言語</string>
     <string name="lang_names_native">現地名</string>
     <string name="settings_model">モデル</string>
+    <string name="settings_backend">バックエンド</string>
     <string name="settings_model_installed">インストール済み</string>
     <string name="settings_model_missing">未インストール</string>
     <string name="settings_model_downloading">ダウンロード中… %1$s</string>

@@ -15,6 +15,7 @@
     <string name="offline">অফলাইন</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">স্বয়ংক্রিয়</string>
     <string name="nav_backend">ব্যাকএন্ড: %1$s</string>
     <string name="action_ok">ঠিক আছে</string>
     <string name="action_cancel">বাতিল</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">এখন বলুন</string>
     <string name="mic_listening">শুনছে…</string>
     <string name="mic_transcribing">লিখছে…</string>
+    <string name="image_reading">নথি পড়া হচ্ছে…</string>
     <string name="mic_tap_stop">থামতে মাইকে ট্যাপ করুন</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">কোনো মাইক্রোফোন নেই।</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">ইন্টারফেসের ভাষা</string>
     <string name="lang_names_native">দেশীয় নাম</string>
     <string name="settings_model">মডেল</string>
+    <string name="settings_backend">ব্যাকএন্ড</string>
     <string name="settings_model_installed">ইনস্টল আছে</string>
     <string name="settings_model_missing">ইনস্টল নেই</string>
     <string name="settings_model_downloading">ডাউনলোড হচ্ছে… %1$s</string>

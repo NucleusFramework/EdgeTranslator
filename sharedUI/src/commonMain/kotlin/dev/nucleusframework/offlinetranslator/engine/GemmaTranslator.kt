@@ -1,6 +1,7 @@
 package dev.nucleusframework.offlinetranslator.engine
 
 import dev.nucleusframework.offlinetranslator.domain.Languages
+import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import dev.nucleusframework.offlinetranslator.platform.IoDispatcher
 import dev.nucleusframework.offlinetranslator.platform.Platform
 import dev.zacsweers.metro.AppScope
@@ -23,6 +24,7 @@ class GemmaTranslator(
     private val mutex = Mutex()
     private var session: NativeLlm? = null
     private var loadedPath: String? = null
+    private var loadedBackend: LlmBackend? = null
 
     override suspend fun translate(request: TranslationRequest): TranslationResult {
         val path = request.modelPath
@@ -83,22 +85,26 @@ class GemmaTranslator(
         session?.close()
         session = null
         loadedPath = null
+        loadedBackend = null
         LlmRuntime.report(LlmAccelerator.None)
     }
 
     private fun ensureLoaded(path: String): NativeLlm {
+        val pref = LlmRuntime.preference
         val current = session
-        if (current != null && loadedPath == path) return current
+        if (current != null && loadedPath == path && loadedBackend == pref) return current
         current?.close()
         session = null
         loadedPath = null
+        loadedBackend = null
         val dir = cacheDir()
         Platform.mkdir(dir)
         val next = sessionFactory()
         try {
-            val used = next.load(path, dir, threads().coerceAtLeast(1))
+            val used = next.load(path, dir, threads().coerceAtLeast(1), pref)
             session = next
             loadedPath = path
+            loadedBackend = pref
             LlmRuntime.report(used)
             return next
         } catch (t: Throwable) {

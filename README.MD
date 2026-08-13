@@ -1,8 +1,8 @@
 # Edge Translator
 
-Offline translator for Android and desktop (macOS, Windows, Linux).
+Offline translator for **desktop** (macOS, Windows, Linux). An Android app is planned.
 
-The model runs on the device. After install, text, speech, and history stay local — no outbound request.
+The model runs on the device. After install, text, speech, images, and favorites stay local — no outbound request.
 
 The interface is available in the same 35 languages as the catalog, including RTL (Arabic, Hebrew, Persian).
 
@@ -10,13 +10,17 @@ The interface is available in the same 35 languages as the catalog, including RT
 
 - On-device streaming translation, via [Gemma 4](https://ai.google.dev/gemma) and [LiteRT-LM](https://github.com/google-ai-edge/LiteRT-LM)
 - 35 languages (CC3M-35L / PaliGemma catalog), with automatic source-language detection
+- Proofreading: the same model corrects spelling and grammar in the language of the input
 - Dictation: speak up to 30 seconds, transcribed and translated on-device (Gemma 4 FLEURS, 12 languages)
 - Image translation: pick a photo or a screenshot, the model reads its text and translates it on-device
-- Read aloud on desktop: [Piper](https://github.com/rhasspy/piper) voices, 30 languages, downloaded on demand
+- Read aloud: [Piper](https://github.com/rhasspy/piper) voices, 30 languages, downloaded on demand
 - Two model profiles: **Fast** (E2B) or **Precision** (E4B)
 - GPU acceleration when available, otherwise CPU
-- Local history (search, pinning, filters)
-- First launch: resumable download, then SHA-256 verification; optional voice install on desktop
+- Local favorites (search, pinning, filters)
+- Model and voice downloads you control: start, pause, resume, or cancel — Settings never starts a download on its own
+- First launch: resumable download, then SHA-256 verification; optional voice install
+- Desktop auto-update from [GitHub Releases](https://github.com/kdroidFilter/OfflineTranslator/releases)
+- About screen with open-source licenses
 - Follows the system light / dark appearance
 
 ## Languages
@@ -25,7 +29,7 @@ The interface is available in the same 35 languages as the catalog, including RT
 |------------|------:|-----------|
 | Translation | 35 | French, English, Arabic, Bengali, Chinese, Croatian, Czech, Danish, Dutch, Filipino, Finnish, German, Greek, Hebrew, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Māori, Norwegian, Persian, Polish, Portuguese, Romanian, Russian, Spanish, Swahili, Swedish, Telugu, Thai, Turkish, Ukrainian, Vietnamese |
 | Dictation | 12 | French, English, Arabic, Chinese, German, Hindi, Italian, Japanese, Korean, Portuguese, Russian, Spanish |
-| Read aloud (desktop) | 30 | every catalog language except Croatian, Filipino, Japanese, Māori, Thai |
+| Read aloud | 30 | every catalog language except Croatian, Filipino, Japanese, Māori, Thai |
 
 ## Models
 
@@ -44,24 +48,15 @@ Gemma models are covered by Google’s [Gemma license](https://ai.google.dev/gem
 
 ## Requirements
 
-- JDK 17 or newer
-- Android 8.0 (API 26) or newer for the mobile target
-- Internet connection only to download a model or a voice
+- JDK 25 or newer (to build or run from source)
+- Internet connection only to download a model, a voice, or an app update
 - Microphone optional (dictation)
 
-## Running the app
+## Install
 
-### Android
+Prebuilt packages (DMG, NSIS, Deb) are published on [GitHub Releases](https://github.com/kdroidFilter/OfflineTranslator/releases). Packaged builds update themselves from there.
 
-Open the project in Android Studio and run the `androidApp` configuration, or:
-
-```bash
-./gradlew :androidApp:assembleDebug
-```
-
-The APK is at `androidApp/build/outputs/apk/debug/androidApp-debug.apk`.
-
-### Desktop
+## Running from source
 
 ```bash
 ./gradlew :desktopApp:run
@@ -75,23 +70,27 @@ Hot reload:
 
 Force the install screen: pass `--onboarding` as a launch argument.
 
-Native packages (GraalVM — DMG / NSIS / Deb):
+Native packages (GraalVM — DMG / Zip / NSIS / Deb):
 
 ```bash
 ./gradlew :desktopApp:packageGraalvmDmg    # macOS
+./gradlew :desktopApp:packageGraalvmZip    # macOS updater payload
 ./gradlew :desktopApp:packageGraalvmNsis   # Windows
 ./gradlew :desktopApp:packageGraalvmDeb    # Linux
 ```
+
+Pushing a `v*` tag builds these packages for Linux (x64, ARM64), macOS (Intel, Apple Silicon), and Windows (x64), then publishes them as a GitHub Release.
 
 ## Layout
 
 ```
 sharedUI/     logic, Compose UI, translation engine, data
-androidApp/   Android entry point
 desktopApp/   desktop entry point (Nucleus)
 ```
 
-All application code lives in `sharedUI`. The `*App` modules only start the UI.
+All application code lives in `sharedUI`. The desktop module only starts the UI.
+
+Android is planned: the shared UI is already Compose Multiplatform, but there is no shipping Android app yet.
 
 ## License
 

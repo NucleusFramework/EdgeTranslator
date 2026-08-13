@@ -15,6 +15,7 @@
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Auto</string>
     <string name="nav_backend">Backend: %1$s</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Kanselahin</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Magsalita na</string>
     <string name="mic_listening">Nakikinig…</string>
     <string name="mic_transcribing">Tinatranskriba…</string>
+    <string name="image_reading">Binabasa ang dokumento…</string>
     <string name="mic_tap_stop">I-tap ang mic para tumigil</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Walang available na mikropono.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Wika ng interface</string>
     <string name="lang_names_native">Mga katutubong pangalan</string>
     <string name="settings_model">Modelo</string>
+    <string name="settings_backend">Backend</string>
     <string name="settings_model_installed">Naka-install</string>
     <string name="settings_model_missing">Hindi naka-install</string>
     <string name="settings_model_downloading">Dina-download… %1$s</string>

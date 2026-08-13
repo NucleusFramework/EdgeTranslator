@@ -15,6 +15,7 @@
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Auto</string>
     <string name="nav_backend">Backend: %1$s</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Zrušit</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Mluvte</string>
     <string name="mic_listening">Poslouchám…</string>
     <string name="mic_transcribing">Přepisuji…</string>
+    <string name="image_reading">Načítání dokumentu…</string>
     <string name="mic_tap_stop">Klepnutím na mikrofon zastavíte</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Není k dispozici žádný mikrofon.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Jazyk rozhraní</string>
     <string name="lang_names_native">Rodné názvy</string>
     <string name="settings_model">Model</string>
+    <string name="settings_backend">Backend</string>
     <string name="settings_model_installed">Nainstalováno</string>
     <string name="settings_model_missing">Nenainstalováno</string>
     <string name="settings_model_downloading">Stahování… %1$s</string>

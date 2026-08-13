@@ -16,6 +16,7 @@
     <string name="offline">Offline</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Auto</string>
     <string name="nav_backend">Backend: %1$s</string>
 
     <string name="action_ok">OK</string>
@@ -46,6 +47,7 @@
     <string name="mic_speak_now">Bitte sprechen</string>
     <string name="mic_listening">Hören…</string>
     <string name="mic_transcribing">Transkribieren…</string>
+    <string name="image_reading">Dokument wird gelesen…</string>
     <string name="mic_tap_stop">Tippen Sie auf das Mikrofon zum Beenden</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Kein Mikrofon verfügbar.</string>
@@ -145,6 +147,7 @@
     <string name="lang_names_system">Oberflächensprache</string>
     <string name="lang_names_native">Einheimische Namen</string>
     <string name="settings_model">Modell</string>
+    <string name="settings_backend">Backend</string>
     <string name="settings_model_installed">Installiert</string>
     <string name="settings_model_missing">Nicht installiert</string>
     <string name="settings_model_downloading">Wird heruntergeladen… %1$s</string>

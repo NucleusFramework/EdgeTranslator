@@ -14,6 +14,7 @@ import dev.nucleusframework.offlinetranslator.domain.DownloadState
 import dev.nucleusframework.offlinetranslator.domain.HistoryItem
 import dev.nucleusframework.offlinetranslator.domain.LangRole
 import dev.nucleusframework.offlinetranslator.domain.Languages
+import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
 import dev.nucleusframework.offlinetranslator.domain.filterHistory
@@ -26,6 +27,7 @@ import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
 import dev.nucleusframework.offlinetranslator.engine.GemmaTranslator
 import dev.nucleusframework.offlinetranslator.engine.ImagePicker
+import dev.nucleusframework.offlinetranslator.engine.LlmRuntime
 import dev.nucleusframework.offlinetranslator.engine.MIC_MAX_MS
 import dev.nucleusframework.offlinetranslator.engine.MicRecorder
 import dev.nucleusframework.offlinetranslator.engine.ModelDownloader
@@ -214,6 +216,13 @@ class AppViewModel(
                 }
             }
 
+            is AppIntent.SetLlmBackend -> {
+                LlmRuntime.preference = intent.backend
+                persist(now = true)
+                val path = _state.value.data.model.path
+                if (path.isNotBlank() && translator is GemmaTranslator) preloadModel(path)
+            }
+
             is AppIntent.DownloadModel -> {
                 persist(now = true)
                 val catalog = GemmaModels.of(intent.id)
@@ -297,6 +306,7 @@ class AppViewModel(
                 data = data.copy(settings = data.settings.copy(selectedModel = fallback))
             }
         }
+        LlmRuntime.preference = data.settings.backend
         val catalog = GemmaModels.of(data.settings.selectedModel)
         val download = if (modelOnDisk(catalog)) {
             DownloadState(phase = DownloadPhase.Done, bytesDownloaded = catalog.bytes, totalBytes = catalog.bytes)
@@ -371,6 +381,7 @@ class AppViewModel(
                 latencyMs = null,
                 error = null,
                 micPhase = MicPhase.Idle,
+                imageBusy = false,
             ),
         )
 
@@ -427,6 +438,8 @@ class AppViewModel(
         }
 
         is AppIntent.SetLangNameStyle -> s.updateSettings { it.copy(langNames = intent.style) }
+
+        is AppIntent.SetLlmBackend -> s.updateSettings { it.copy(backend = intent.backend) }
 
         is AppIntent.DownloadTick -> s.copy(
             download = s.download.copy(
@@ -655,6 +668,7 @@ class AppViewModel(
         tts.unload()
         scope.launch { runCatching { mic.stop() } }
         unloadEngine()
+        LlmRuntime.preference = LlmBackend.Auto
         GemmaModels.all.forEach(deleteModelFiles)
         PiperVoices.all().forEach { deleteVoiceFiles(it.id) }
         wipeDownloadDirs()
@@ -1168,7 +1182,7 @@ class AppViewModel(
             mutate { it.copy(message = AppMessage.MicUnavailable) }
             return
         }
-        if (!_state.value.data.model.installed) return
+        if (!_state.value.data.model.installed || _state.value.translation.imageBusy) return
         recordJob?.cancel()
         // The pane goes up before mic.start(): opening the line is slow cold (OS permission
         // prompt, device wake-up), and a button that does nothing for a second reads as broken.
@@ -1238,10 +1252,9 @@ class AppViewModel(
         applyReadResult(result, failMessage = AppMessage.MicFailed)
     }
 
-    // ponytail: réutilise le job et la phase du micro — même état « le modèle lit », un seul à la fois.
     private fun translateImage() {
         val s = _state.value
-        if (!s.data.model.installed || s.translation.micPhase != MicPhase.Idle) return
+        if (!s.data.model.installed || s.translation.micPhase != MicPhase.Idle || s.translation.imageBusy) return
         recordJob?.cancel()
         recordJob = scope.launch {
             val image: ByteArray? = try {
@@ -1255,7 +1268,7 @@ class AppViewModel(
             mutate {
                 it.copy(
                     translation = it.translation.copy(
-                        micPhase = MicPhase.Processing,
+                        imageBusy = true,
                         sourceText = "",
                         targetText = "",
                         alternatives = emptyList(),
@@ -1282,7 +1295,7 @@ class AppViewModel(
     /** Dictation and image share the shape: the model returns the source text and its translation. */
     private fun applyReadResult(result: TranslationResult, failMessage: AppMessage?) {
         mutate { current ->
-            val t = current.translation.copy(micPhase = MicPhase.Idle)
+            val t = current.translation.copy(micPhase = MicPhase.Idle, imageBusy = false)
             when (result) {
                 TranslationResult.Unavailable -> current.copy(
                     translation = t.copy(status = TranslationStatus.WaitingEngine, targetText = ""),

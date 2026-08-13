@@ -15,6 +15,7 @@
     <string name="offline">Tuimotu</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Aunoa</string>
     <string name="nav_backend">Tuarā: %1$s</string>
     <string name="action_ok">Āe</string>
     <string name="action_cancel">Whakakore</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Kōrero ināianei</string>
     <string name="mic_listening">E whakarongo ana…</string>
     <string name="mic_transcribing">E tuhi ana…</string>
+    <string name="image_reading">E pānui ana i te tuhinga…</string>
     <string name="mic_tap_stop">Pāwhiri te hopuoro kia mutu</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Kāore he hopuoro.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Reo atanga</string>
     <string name="lang_names_native">Ingoa taketake</string>
     <string name="settings_model">Tauira</string>
+    <string name="settings_backend">Tuarā</string>
     <string name="settings_model_installed">Kua tāuta</string>
     <string name="settings_model_missing">Kāore i tāutaina</string>
     <string name="settings_model_downloading">E tikiake ana… %1$s</string>

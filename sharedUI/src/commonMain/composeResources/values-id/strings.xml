@@ -15,6 +15,7 @@
     <string name="offline">Luring</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Otomatis</string>
     <string name="nav_backend">Backend: %1$s</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Batal</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Bicara sekarang</string>
     <string name="mic_listening">Mendengarkan…</string>
     <string name="mic_transcribing">Mentranskripsi…</string>
+    <string name="image_reading">Membaca dokumen…</string>
     <string name="mic_tap_stop">Ketuk mikrofon untuk berhenti</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Tidak ada mikrofon.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Bahasa antarmuka</string>
     <string name="lang_names_native">Nama asli</string>
     <string name="settings_model">Model</string>
+    <string name="settings_backend">Backend</string>
     <string name="settings_model_installed">Terpasang</string>
     <string name="settings_model_missing">Belum terpasang</string>
     <string name="settings_model_downloading">Mengunduh… %1$s</string>

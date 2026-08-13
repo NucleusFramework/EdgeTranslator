@@ -15,6 +15,7 @@
     <string name="offline">오프라인</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">자동</string>
     <string name="nav_backend">백엔드: %1$s</string>
     <string name="action_ok">확인</string>
     <string name="action_cancel">취소</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">지금 말하세요</string>
     <string name="mic_listening">듣는 중…</string>
     <string name="mic_transcribing">받아쓰는 중…</string>
+    <string name="image_reading">문서를 읽는 중…</string>
     <string name="mic_tap_stop">마이크를 눌러 중지</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">사용할 수 있는 마이크가 없습니다.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">인터페이스 언어</string>
     <string name="lang_names_native">고유 이름</string>
     <string name="settings_model">모델</string>
+    <string name="settings_backend">백엔드</string>
     <string name="settings_model_installed">설치됨</string>
     <string name="settings_model_missing">설치되지 않음</string>
     <string name="settings_model_downloading">다운로드 중… %1$s</string>

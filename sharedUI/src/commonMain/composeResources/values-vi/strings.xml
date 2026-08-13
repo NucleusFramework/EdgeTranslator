@@ -15,6 +15,7 @@
     <string name="offline">Ngoại tuyến</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">Tự động</string>
     <string name="nav_backend">Phần phụ trợ: %1$s</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Hủy</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">Hãy nói</string>
     <string name="mic_listening">Đang nghe…</string>
     <string name="mic_transcribing">Đang chuyển thành chữ…</string>
+    <string name="image_reading">Đang đọc tài liệu…</string>
     <string name="mic_tap_stop">Chạm micrô để dừng</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Không có micrô.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">Ngôn ngữ giao diện</string>
     <string name="lang_names_native">Tên bản địa</string>
     <string name="settings_model">Mô hình</string>
+    <string name="settings_backend">Backend</string>
     <string name="settings_model_installed">Đã cài</string>
     <string name="settings_model_missing">Chưa cài</string>
     <string name="settings_model_downloading">Đang tải… %1$s</string>

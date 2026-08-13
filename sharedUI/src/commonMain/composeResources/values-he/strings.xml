@@ -15,6 +15,7 @@
     <string name="offline">לא מקוון</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">אוטומטי</string>
     <string name="nav_backend">מנוע: %1$s</string>
     <string name="action_ok">אישור</string>
     <string name="action_cancel">ביטול</string>
@@ -44,6 +45,7 @@
     <string name="mic_speak_now">דברו עכשיו</string>
     <string name="mic_listening">מאזין…</string>
     <string name="mic_transcribing">מתמלל…</string>
+    <string name="image_reading">קורא את המסמך…</string>
     <string name="mic_tap_stop">הקישו על המיקרופון כדי לעצור</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">אין מיקרופון זמין.</string>
@@ -139,6 +141,7 @@
     <string name="lang_names_system">שפת הממשק</string>
     <string name="lang_names_native">שמות מקוריים</string>
     <string name="settings_model">מודל</string>
+    <string name="settings_backend">מנוע</string>
     <string name="settings_model_installed">מותקן</string>
     <string name="settings_model_missing">לא מותקן</string>
     <string name="settings_model_downloading">מוריד… %1$s</string>

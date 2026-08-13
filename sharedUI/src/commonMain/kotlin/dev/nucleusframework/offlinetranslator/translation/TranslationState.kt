@@ -41,6 +41,7 @@ data class TranslationState(
     val latencyMs: Long? = null,
     val error: String? = null,
     val micPhase: MicPhase = MicPhase.Idle,
+    val imageBusy: Boolean = false,
     val speakTarget: Boolean? = null,
     val speakBusy: Boolean = false,
     /** Busy *before* audio starts: voice model load + synthesis. Drives the loader popup. */
@@ -69,6 +70,7 @@ data class SourcePanelState(
     val lang: String,
     val text: String,
     val micPhase: MicPhase,
+    val imageBusy: Boolean,
     val ttsReady: Boolean,
     val voiceInstalled: Boolean,
     val speakActive: Boolean,
@@ -99,6 +101,7 @@ fun TranslationState.toSourcePanel() = SourcePanelState(
     lang = sourceLang,
     text = sourceText,
     micPhase = micPhase,
+    imageBusy = imageBusy,
     ttsReady = ttsReady,
     voiceInstalled = sourceLang in installedVoices,
     speakActive = speakTarget == false,

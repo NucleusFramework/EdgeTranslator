@@ -55,6 +55,8 @@ private val COMMA_DECIMAL = setOf(
 
 enum class ThemeMode { System, Light, Dark }
 
+enum class LlmBackend { Auto, Gpu, Cpu }
+
 enum class LlmModel { Fast, Precise }
 
 enum class HistoryFilter { All, Pinned, Last7Days }
@@ -105,6 +107,7 @@ data class UserSettings(
     val shortcut: String = "⌘⌃ T",
     val modelDir: String = "",
     val selectedModel: LlmModel = LlmModel.Fast,
+    val backend: LlmBackend = LlmBackend.Auto,
     val langNames: LangNameStyle = LangNameStyle.System,
     val selectedVoices: Map<String, String> = emptyMap(),
 )

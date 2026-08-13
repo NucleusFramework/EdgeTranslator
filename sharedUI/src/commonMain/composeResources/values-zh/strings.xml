@@ -16,6 +16,7 @@
     <string name="offline">离线</string>
     <string name="engine_gpu">GPU</string>
     <string name="engine_cpu">CPU</string>
+    <string name="engine_auto">自动</string>
     <string name="nav_backend">后端：%1$s</string>
 
     <string name="action_ok">确定</string>
@@ -46,6 +47,7 @@
     <string name="mic_speak_now">请开始说话</string>
     <string name="mic_listening">正在聆听…</string>
     <string name="mic_transcribing">正在转写…</string>
+    <string name="image_reading">正在识别文档…</string>
     <string name="mic_tap_stop">点按麦克风停止</string>
     <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">没有可用的麦克风。</string>
@@ -145,6 +147,7 @@
     <string name="lang_names_system">界面语言</string>
     <string name="lang_names_native">本地名称</string>
     <string name="settings_model">模型</string>
+    <string name="settings_backend">后端</string>
     <string name="settings_model_installed">已安装</string>
     <string name="settings_model_missing">未安装</string>
     <string name="settings_model_downloading">正在下载… %1$s</string>

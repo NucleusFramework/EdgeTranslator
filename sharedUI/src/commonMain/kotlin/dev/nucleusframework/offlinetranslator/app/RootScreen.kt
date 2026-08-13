@@ -42,6 +42,7 @@ fun RootScreen(state: AppState, backStack: NavBackStack<AppKey>, onIntent: (AppI
                 uiLanguage = state.data.settings.uiLanguage,
                 offline = state.offline,
                 modelId = state.data.model.id,
+                backend = state.data.settings.backend,
                 onIntent = onIntent,
             ) {
                 AppNavDisplay(backStack, state, onIntent)

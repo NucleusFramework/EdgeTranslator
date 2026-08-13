@@ -19,6 +19,7 @@ import dev.nucleusframework.offlinetranslator.domain.HistoryItem
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.LangRole
 import dev.nucleusframework.offlinetranslator.domain.Languages
+import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.paragraphCount
@@ -270,10 +271,12 @@ class AppViewModelTest {
         vm.onIntent(AppIntent.SelectModel(LlmModel.Precise))
         vm.onIntent(AppIntent.SetUiLanguage(UiLanguage.En))
         vm.onIntent(AppIntent.SetLangNameStyle(LangNameStyle.Native))
+        vm.onIntent(AppIntent.SetLlmBackend(LlmBackend.Cpu))
         val loaded = store.load()
         assertEquals(LlmModel.Precise, loaded.settings.selectedModel)
         assertEquals(UiLanguage.En, loaded.settings.uiLanguage)
         assertEquals(LangNameStyle.Native, loaded.settings.langNames)
+        assertEquals(LlmBackend.Cpu, loaded.settings.backend)
     }
 
     @Test
@@ -502,13 +505,18 @@ class AppViewModelTest {
     fun snapshotRoundTrip() {
         val original = seedData().copy(
             installed = true,
-            settings = seedData().settings.copy(selectedModel = LlmModel.Precise, langNames = LangNameStyle.Native),
+            settings = seedData().settings.copy(
+                selectedModel = LlmModel.Precise,
+                langNames = LangNameStyle.Native,
+                backend = LlmBackend.Gpu,
+            ),
             model = seedData().model.copy(id = LlmModel.Precise, installed = true),
         )
         val restored = decodeSnapshot(encodeSnapshot(original))
         assertEquals(original.installed, restored.installed)
         assertEquals(LlmModel.Precise, restored.settings.selectedModel)
         assertEquals(LangNameStyle.Native, restored.settings.langNames)
+        assertEquals(LlmBackend.Gpu, restored.settings.backend)
         assertEquals(original.lastSourceLang, restored.lastSourceLang)
         assertEquals(original.lastTargetLang, restored.lastTargetLang)
         assertEquals(LlmModel.Precise, restored.model.id)
@@ -532,6 +540,15 @@ class AppViewModelTest {
         val legacy = encodeSnapshot(explicit).lineSequence().filterNot { it.startsWith("uiAuto=") }.joinToString("\n")
         assertFalse(decodeSnapshot(legacy).settings.uiLanguageAuto)
         assertEquals(UiLanguage.De, decodeSnapshot(legacy).settings.uiLanguage)
+    }
+
+    @Test
+    fun llmBackendSurvivesRoundTripAndDefaultsToAutoForOlderSnapshots() {
+        val gpu = seedData().let { it.copy(settings = it.settings.copy(backend = LlmBackend.Gpu)) }
+        assertEquals(LlmBackend.Gpu, decodeSnapshot(encodeSnapshot(gpu)).settings.backend)
+
+        val legacy = encodeSnapshot(gpu).lineSequence().filterNot { it.startsWith("backend=") }.joinToString("\n")
+        assertEquals(LlmBackend.Auto, decodeSnapshot(legacy).settings.backend)
     }
 
     @Test
@@ -657,6 +674,7 @@ class AppViewModelTest {
         assertEquals("Arrêt", vm.state.value.translation.sourceText)
         assertEquals("Stop", vm.state.value.translation.targetText)
         assertEquals(MicPhase.Idle, vm.state.value.translation.micPhase)
+        assertFalse(vm.state.value.translation.imageBusy)
     }
 
     @Test
@@ -676,6 +694,7 @@ class AppViewModelTest {
         assertEquals("Bonjour", vm.state.value.translation.sourceText)
         assertEquals("Hello", vm.state.value.translation.targetText)
         assertEquals(MicPhase.Idle, vm.state.value.translation.micPhase)
+        assertFalse(vm.state.value.translation.imageBusy)
     }
 
     @Test
