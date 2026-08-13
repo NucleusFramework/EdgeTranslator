@@ -95,7 +95,6 @@ import offlinetranslator.shared.generated.resources.cd_pick_image
 import offlinetranslator.shared.generated.resources.drop_text_or_image
 import offlinetranslator.shared.generated.resources.image_reading
 import offlinetranslator.shared.generated.resources.cd_speak
-import offlinetranslator.shared.generated.resources.cd_speak_loading
 import offlinetranslator.shared.generated.resources.cd_speak_stop
 import offlinetranslator.shared.generated.resources.cd_swap_languages
 import offlinetranslator.shared.generated.resources.char_count
@@ -615,7 +614,7 @@ private fun SpeakControls(
 ) {
     if (!ttsReady || !Languages.hasTts(lang)) return
     val downloading = voiceDownload.busy && PiperVoices.covers(voiceDownload.lang, lang)
-    val preparing = loading || downloading
+    val preparing = downloading || loading || (active && !playing && !paused)
     val c = MaterialTheme.colorScheme
     val iconMod = Modifier.size(22.dp).clip(CircleShape)
     Row(
@@ -623,6 +622,14 @@ private fun SpeakControls(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        if (active) {
+            Icon(
+                Icons.Outlined.Stop,
+                stringResource(Res.string.cd_speak_stop),
+                iconMod.clickable { onIntent(AppIntent.StopSpeak) },
+                tint = c.primary,
+            )
+        }
         when {
             preparing && downloading -> CircularProgressIndicator(
                 progress = { voiceDownload.fraction.coerceIn(0f, 1f) },
@@ -633,9 +640,7 @@ private fun SpeakControls(
             )
 
             preparing -> CircularProgressIndicator(
-                modifier = Modifier.size(22.dp).clickable(
-                    onClickLabel = stringResource(Res.string.cd_speak_loading),
-                ) { onIntent(AppIntent.StopSpeak) },
+                modifier = Modifier.size(22.dp),
                 strokeWidth = 2.dp,
                 color = c.primary,
             )
@@ -666,14 +671,6 @@ private fun SpeakControls(
                     },
                 )
             }
-        }
-        if (active) {
-            Icon(
-                Icons.Outlined.Stop,
-                stringResource(Res.string.cd_speak_stop),
-                iconMod.clickable { onIntent(AppIntent.StopSpeak) },
-                tint = c.primary,
-            )
         }
     }
 }
