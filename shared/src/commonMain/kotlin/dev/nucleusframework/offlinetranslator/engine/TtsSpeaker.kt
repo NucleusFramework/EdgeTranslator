@@ -7,9 +7,9 @@ interface TtsSpeaker : AutoCloseable {
     fun canSpeak(lang: String): Boolean
 
     /**
-     * [onReady] fires when the audio line has started and the first samples are
-     * queued. Everything before it is the cold cost — engine init, voice model
-     * load, synthesis, opening the device — which is what the UI puts a loader on.
+     * [onReady] fires when audio actually starts. Everything before it is the cold
+     * cost — engine init, voice model load, synthesis — which is what the UI puts a
+     * loader on.
      */
     suspend fun speak(text: String, lang: String, voiceId: String? = null, onReady: () -> Unit = {})
     fun pause() {}

@@ -6,14 +6,12 @@ import io.ktor.client.HttpClient
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.nio.file.Path
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.locks.ReentrantLock
 import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.AudioSystem
-import javax.sound.sampled.Clip
 import javax.sound.sampled.DataLine
-import javax.sound.sampled.LineEvent
 import javax.sound.sampled.SourceDataLine
+import kotlin.concurrent.withLock
 
 actual fun createTtsSpeaker(http: HttpClient): TtsSpeaker = PiperTts()
 
@@ -23,7 +21,7 @@ private class PiperTts : TtsSpeaker {
     private var voice: PiperVoice? = null
     private var voiceLang: String? = null
 
-    @Volatile private var clip: Clip? = null
+    @Volatile private var line: SourceDataLine? = null
 
     @Volatile private var playing = false
 
@@ -31,7 +29,8 @@ private class PiperTts : TtsSpeaker {
 
     @Volatile private var closed = false
 
-    @Volatile private var primed = false
+    private val gate = ReentrantLock()
+    private val unpaused = gate.newCondition()
 
     override val available: Boolean = true
 
@@ -53,16 +52,16 @@ private class PiperTts : TtsSpeaker {
             if (closed) return
             val engine = ensurePiper()
             val loaded = ensureVoice(engine, spec, spec.id)
-            var samples = engine.textToAudio(loaded, text)
-            if (samples.isEmpty()) samples = engine.textToAudio(loaded, text)
-            play(samples, loaded.sampleRate, onReady)
+            val samples = engine.textToAudio(loaded, text)
+            onReady()
+            play(samples, loaded.sampleRate)
         }
     }
 
     override fun pause() {
         paused = true
         try {
-            clip?.stop()
+            line?.stop()
         } catch (_: Exception) {
         }
     }
@@ -70,21 +69,23 @@ private class PiperTts : TtsSpeaker {
     override fun resume() {
         paused = false
         try {
-            clip?.start()
+            line?.start()
         } catch (_: Exception) {
         }
+        gate.withLock { unpaused.signalAll() }
     }
 
     override fun stop() {
         playing = false
         paused = false
+        gate.withLock { unpaused.signalAll() }
         try {
-            clip?.stop()
-            clip?.flush()
-            clip?.close()
+            line?.stop()
+            line?.flush()
+            line?.close()
         } catch (_: Exception) {
         }
-        clip = null
+        line = null
     }
 
     override fun unload() {
@@ -128,67 +129,47 @@ private class PiperTts : TtsSpeaker {
         return loaded
     }
 
-    private fun play(samples: ShortArray, sampleRate: Int, onReady: () -> Unit) {
+    private fun play(samples: ShortArray, sampleRate: Int) {
         if (samples.isEmpty()) return
         val format = AudioFormat(sampleRate.toFloat(), 16, 1, true, false)
-        prime(format)
-        val bytes = pcm(samples)
-        val out = AudioSystem.getClip()
-        out.open(format, bytes, 0, bytes.size)
-        val done = CountDownLatch(1)
-        out.addLineListener { ev ->
-            if (ev.type == LineEvent.Type.STOP && !paused) done.countDown()
-        }
-        clip = out
-        playing = true
-        paused = false
-        out.start()
-        onReady()
-        while (playing) {
-            if (done.await(50, TimeUnit.MILLISECONDS)) break
-        }
-        playing = false
-        try {
-            out.close()
-        } catch (_: Exception) {
-        }
-        if (clip === out) clip = null
-    }
-
-    /**
-     * PulseAudio / PipeWire drops the first Java Sound stream. Burn it on silence
-     * so the utterance opens a live sink.
-     */
-    private fun prime(format: AudioFormat) {
-        if (primed) return
-        primed = true
         val info = DataLine.Info(SourceDataLine::class.java, format)
         val out = AudioSystem.getLine(info) as SourceDataLine
-        val silence = (format.sampleRate.toInt() * 2 / 10).coerceAtLeast(2048)
-        out.open(format, silence.coerceAtLeast(8192))
-        try {
-            out.start()
-            out.write(ByteArray(silence), 0, silence)
-            out.drain()
-        } finally {
+        out.open(format)
+        out.start()
+        line = out
+        playing = true
+        val buf = ByteArray(4096)
+        var i = 0
+        while (playing && i < samples.size) {
+            gate.withLock {
+                while (paused && playing) {
+                    try {
+                        unpaused.await()
+                    } catch (_: InterruptedException) {
+                        Thread.currentThread().interrupt()
+                        return
+                    }
+                }
+            }
+            if (!playing) break
+            var b = 0
+            while (b + 1 < buf.size && i < samples.size) {
+                val s = samples[i].toInt()
+                buf[b++] = (s and 0xFF).toByte()
+                buf[b++] = (s shr 8).toByte()
+                i++
+            }
             try {
-                out.stop()
-                out.flush()
-                out.close()
-            } catch (_: Exception) {
+                out.write(buf, 0, b)
+            } catch (err: Exception) {
+                if (playing) throw err
+                break
             }
         }
-    }
-
-    private fun pcm(samples: ShortArray): ByteArray {
-        val bytes = ByteArray(samples.size * 2)
-        var i = 0
-        var b = 0
-        while (i < samples.size) {
-            val s = samples[i++].toInt()
-            bytes[b++] = (s and 0xFF).toByte()
-            bytes[b++] = (s shr 8).toByte()
-        }
-        return bytes
+        if (playing) out.drain()
+        playing = false
+        out.stop()
+        out.close()
+        if (line === out) line = null
     }
 }
