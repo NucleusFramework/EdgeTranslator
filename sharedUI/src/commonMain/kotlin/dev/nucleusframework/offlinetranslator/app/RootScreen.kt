@@ -1,8 +1,20 @@
 package dev.nucleusframework.offlinetranslator.app
 
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavBackStack
@@ -54,6 +66,10 @@ fun RootScreen(state: AppState, backStack: NavBackStack<AppKey>, onIntent: (AppI
 
 @Composable
 private fun AppNavDisplay(backStack: NavBackStack<AppKey>, state: AppState, onIntent: (AppIntent) -> Unit) {
+    val firstPage = remember { backStack.last() }
+    var animatePages by remember { mutableStateOf(false) }
+    if (!animatePages && backStack.last() != firstPage) animatePages = true
+    val transform = if (animatePages) pageFade() else pageNone()
     NavDisplay(
         backStack = backStack,
         onBack = {
@@ -62,6 +78,9 @@ private fun AppNavDisplay(backStack: NavBackStack<AppKey>, state: AppState, onIn
                 else -> Unit
             }
         },
+        transitionSpec = { transform },
+        popTransitionSpec = { transform },
+        predictivePopTransitionSpec = { transform },
         entryProvider = entryProvider {
             entry<AppKey.Welcome> { InstallEntry(InstallStep.Welcome, state, onIntent) }
             entry<AppKey.Download> { InstallEntry(InstallStep.Download, state, onIntent) }
@@ -121,3 +140,10 @@ private fun InstallEntry(step: InstallStep, state: AppState, onIntent: (AppInten
         onIntent = onIntent,
     )
 }
+
+private val PageFadeEasing = CubicBezierEasing(0.25f, 0.1f, 0.25f, 1f)
+
+private fun pageFade(): ContentTransform =
+    fadeIn(tween(150, easing = PageFadeEasing)) togetherWith fadeOut(tween(150, easing = PageFadeEasing))
+
+private fun pageNone(): ContentTransform = EnterTransition.None togetherWith ExitTransition.None

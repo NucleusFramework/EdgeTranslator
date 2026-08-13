@@ -1,5 +1,8 @@
 package dev.nucleusframework.offlinetranslator.main
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -140,8 +144,17 @@ private fun NavRail(selected: AppKey, modelId: LlmModel, onIntent: (AppIntent) -
 @Composable
 private fun NavRailItem(dest: AppKey, selected: Boolean, onClick: () -> Unit) {
     val c = MaterialTheme.colorScheme
-    val bg = if (selected) c.primaryContainer else c.surfaceContainer
-    val fg = if (selected) c.onPrimaryContainer else c.onSurfaceVariant
+    val easing = CubicBezierEasing(0.2833f, 0.99f, 0.31833f, 0.99f)
+    val bg by animateColorAsState(
+        if (selected) c.primaryContainer else c.surfaceContainer,
+        tween(280, easing = easing),
+        label = "nav-bg",
+    )
+    val fg by animateColorAsState(
+        if (selected) c.onPrimaryContainer else c.onSurfaceVariant,
+        tween(280, easing = easing),
+        label = "nav-fg",
+    )
     Row(
         Modifier.fillMaxWidth().height(56.dp).clip(RoundedCornerShape(28.dp)).background(bg)
             .clickable(onClick = onClick).padding(horizontal = 16.dp),
