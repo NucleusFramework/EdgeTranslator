@@ -216,6 +216,9 @@
         },
         {
             "glob": "org/sqlite/native/**"
+        },
+        {
+            "glob": "espeak-ng-data.zip"
         }
     ]
 }
