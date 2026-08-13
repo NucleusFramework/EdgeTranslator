@@ -205,6 +205,21 @@
                     ]
                 }
             ]
+        },
+        {
+            "type": "org.freedesktop.dbus.connections.impl.DBusConnection",
+            "methods": [
+                {
+                    "name": "addGenericSigHandler",
+                    "parameterTypes": [
+                        "org.freedesktop.dbus.matchrules.DBusMatchRule",
+                        "org.freedesktop.dbus.interfaces.DBusSigHandler"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "dev.nucleusframework.window.tao.dnd.TaoSyntheticDropContext$shadowComponent$1"
         }
     ],
     "resources": [
