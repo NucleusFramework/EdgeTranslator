@@ -95,6 +95,32 @@ nucleus.application {
             debPackageVersion = releaseVersion
             // electron-builder refuses .deb without a maintainer email.
             debMaintainer = "Elie Gambache <elyahou.hadass@gmail.com>"
+
+            // GPG signing (deb) + passwordless self-update.
+            // Keys: LinuxSigningSettings defaults from compose.desktop.linux.signing.*
+            //   CI: LINUX_GPG_* secrets → root gradle.properties (release-desktop)
+            //   Local: packaging/linux-signing.local.properties (gitignored) — see .example
+            signing {
+                enabled.set(true)
+                silentUpdate.set(true)
+                val localSigning = file("packaging/linux-signing.local.properties")
+                if (localSigning.isFile) {
+                    val props =
+                        localSigning
+                            .readLines()
+                            .map { it.trim() }
+                            .filter { it.isNotEmpty() && !it.startsWith("#") && it.contains("=") }
+                            .associate { line ->
+                                val i = line.indexOf('=')
+                                line.substring(0, i).trim() to line.substring(i + 1).trim()
+                            }
+
+                    fun local(name: String): String? = props[name]?.takeIf { it.isNotEmpty() }
+                    local("compose.desktop.linux.signing.keyId")?.let { keyId.set(it) }
+                    local("compose.desktop.linux.signing.keyFile")?.let { keyFile.set(file(it)) }
+                    local("compose.desktop.linux.signing.passphrase")?.let { passphrase.set(it) }
+                }
+            }
         }
         windows {
             iconFile.set(project.file("appIcons/WindowsIcon.ico"))

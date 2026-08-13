@@ -10,6 +10,8 @@ captures
 .externalNativeBuild
 .cxx
 local.properties
+desktopApp/packaging/linux-signing.local.properties
+desktopApp/packaging/linux-signing-key.asc
 xcuserdata/
 Pods/
 *.jks

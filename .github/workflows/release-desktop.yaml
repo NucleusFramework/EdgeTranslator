@@ -72,6 +72,28 @@ jobs:
           setup-gradle: 'true'
           setup-node: 'true'
 
+      - name: Configure Linux GPG signing
+        if: runner.os == 'Linux'
+        shell: bash
+        env:
+          LINUX_GPG_PRIVATE_KEY: ${{ secrets.LINUX_GPG_PRIVATE_KEY }}
+          LINUX_GPG_KEY_ID: ${{ secrets.LINUX_GPG_KEY_ID }}
+          LINUX_GPG_PASSPHRASE: ${{ secrets.LINUX_GPG_PASSPHRASE }}
+        run: |
+          if [ -z "$LINUX_GPG_PRIVATE_KEY" ]; then
+            echo "No LINUX_GPG_PRIVATE_KEY secret set; skipping Linux package signing."
+            exit 0
+          fi
+          KEY_FILE="$RUNNER_TEMP/edgetranslator-signing-key.asc"
+          printf '%s' "$LINUX_GPG_PRIVATE_KEY" > "$KEY_FILE"
+          {
+            echo "compose.desktop.linux.sign=true"
+            echo "compose.desktop.linux.signing.keyId=$LINUX_GPG_KEY_ID"
+            echo "compose.desktop.linux.signing.keyFile=$KEY_FILE"
+            echo "compose.desktop.linux.signing.passphrase=$LINUX_GPG_PASSPHRASE"
+            echo "compose.desktop.linux.signing.silentUpdate=true"
+          } >> gradle.properties
+
       - name: Build GraalVM native packages
         shell: bash
         # GraalVM CE is resolved through the GitHub releases API. Hosted runners share an IP,
