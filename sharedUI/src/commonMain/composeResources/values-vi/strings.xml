@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">Giọng %1$s chưa được cài. Tải xuống để đọc văn bản (%2$s).</string>
     <string name="confirm_purge_history">Xóa toàn bộ mục yêu thích?</string>
     <string name="confirm_delete_model">Xóa %1$s khỏi đĩa? Bạn có thể tải lại sau.</string>
+    <string name="confirm_reset_title">Bạn có chắc không?</string>
     <string name="confirm_reset_app">Đặt lại ứng dụng? Mô hình, giọng, mục yêu thích và cài đặt sẽ bị xóa.</string>
     <string name="msg_nothing_to_save">Không có gì để lưu: nguồn và đích đều phải điền.</string>
     <string name="msg_history_disabled">Mục yêu thích đang tắt.</string>

@@ -160,6 +160,7 @@
     <string name="dialog_install_voice_body">La voce %1$s non è installata. Scaricala per leggere il testo ad alta voce (%2$s).</string>
     <string name="confirm_purge_history">Svuotare tutti i preferiti?</string>
     <string name="confirm_delete_model">Eliminare %1$s dal disco? Potrai scaricarlo di nuovo più tardi.</string>
+    <string name="confirm_reset_title">Sei davvero sicuro?</string>
     <string name="confirm_reset_app">Reimpostare l'app? Modelli, voci, preferiti e impostazioni verranno eliminati.</string>
 
     <string name="msg_nothing_to_save">Niente da salvare: origine e destinazione devono essere compilate.</string>

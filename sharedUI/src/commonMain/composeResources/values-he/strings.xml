@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">הקול %1$s אינו מותקן. הורידו אותו כדי להקריא טקסט (%2$s).</string>
     <string name="confirm_purge_history">לנקות את כל המועדפים?</string>
     <string name="confirm_delete_model">למחוק את %1$s מהדיסק? אפשר להוריד שוב מאוחר יותר.</string>
+    <string name="confirm_reset_title">האם אתה בטוח?</string>
     <string name="confirm_reset_app">לאפס את האפליקציה? מודלים, קולות, מועדפים והגדרות יימחקו.</string>
     <string name="msg_nothing_to_save">אין מה לשמור: המקור והיעד חייבים להיות מלאים.</string>
     <string name="msg_history_disabled">המועדפים כבויים.</string>

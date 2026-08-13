@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">Голос %1$s не встановлено. Завантажте його, щоб читати текст вголос (%2$s).</string>
     <string name="confirm_purge_history">Очистити все обране?</string>
     <string name="confirm_delete_model">Видалити %1$s з диска? Пізніше можна завантажити знову.</string>
+    <string name="confirm_reset_title">Ви впевнені?</string>
     <string name="confirm_reset_app">Скинути застосунок? Моделі, голоси, обране й налаштування будуть видалені.</string>
     <string name="msg_nothing_to_save">Немає що зберігати: джерело й ціль мають бути заповнені.</string>
     <string name="msg_history_disabled">Обране вимкнено.</string>

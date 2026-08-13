@@ -160,6 +160,7 @@
     <string name="dialog_install_voice_body">语音 %1$s 尚未安装。下载后即可朗读文本（%2$s）。</string>
     <string name="confirm_purge_history">清空全部收藏？</string>
     <string name="confirm_delete_model">从磁盘删除 %1$s？之后可以重新下载。</string>
+    <string name="confirm_reset_title">确定要继续吗？</string>
     <string name="confirm_reset_app">重置应用？模型、语音、收藏和设置都将被删除。</string>
 
     <string name="msg_nothing_to_save">没有可保存的内容：原文和译文都需要填写。</string>

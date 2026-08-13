@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">Stemmen %1$s er ikke installert. Last den ned for å lese tekst høyt (%2$s).</string>
     <string name="confirm_purge_history">Tømme alle favoritter?</string>
     <string name="confirm_delete_model">Slette %1$s fra disken? Du kan laste den ned igjen senere.</string>
+    <string name="confirm_reset_title">Er du sikker?</string>
     <string name="confirm_reset_app">Tilbakestille appen? Modeller, stemmer, favoritter og innstillinger slettes.</string>
     <string name="msg_nothing_to_save">Ingenting å lagre: kilde og mål må begge fylles ut.</string>
     <string name="msg_history_disabled">Favoritter er slått av.</string>

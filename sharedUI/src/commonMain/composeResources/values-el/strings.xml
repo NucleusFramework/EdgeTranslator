@@ -148,6 +148,7 @@
     <string name="dialog_install_voice_body">Η φωνή %1$s δεν είναι εγκατεστημένη. Κατεβάστε την για ανάγνωση κειμένου (%2$s).</string>
     <string name="confirm_purge_history">Εκκαθάριση όλων των αγαπημένων;</string>
     <string name="confirm_delete_model">Διαγραφή του %1$s από τον δίσκο; Μπορείτε να το κατεβάσετε ξανά αργότερα.</string>
+    <string name="confirm_reset_title">Είστε σίγουροι;</string>
     <string name="confirm_reset_app">Επαναφορά της εφαρμογής; Μοντέλα, φωνές, αγαπημένα και ρυθμίσεις θα διαγραφούν.</string>
     <string name="msg_nothing_to_save">Τίποτα προς αποθήκευση: πηγή και στόχος πρέπει να συμπληρωθούν.</string>
     <string name="msg_history_disabled">Τα αγαπημένα είναι απενεργοποιημένα.</string>
@@ -240,4 +241,5 @@
     <string name="month_nov">Νοε</string>
     <string name="month_dec">Δεκ</string>
     <string name="proofread_placeholder">γεια σας ολους, θα ηθελα να σας παρουσιασω το νεο μου προτζεκτ, ειναι ενας πληρως οφλαιν μεταφραστης διορθωτης, οπως βλεπετε γραφω ενα κειμενο γεματο ορθογραφικα λαθη κι ομως επιστρεφει εντελως διορθωμενο. αλλιως kotlin και compose ειναι η ζωη, nucleus επισης!\nλαικ αν σου αρεσε</string>
+    <string name="proofread_result_placeholder">Γεια σας όλους, θα ήθελα να σας παρουσιάσω το νέο μου project, είναι ένας πλήρως οφλαιν μεταφραστής-διορθωτής, όπως βλέπετε γράφω ένα κείμενο γεμάτο ορθογραφικά λάθη κι όμως επιστρέφει εντελώς διορθωμένο. Αλλιώς Kotlin και Compose είναι η ζωή, Nucleus επίσης!nΛαικ αν σου αρεσε.</string>
 </resources>

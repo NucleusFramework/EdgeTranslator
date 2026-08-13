@@ -148,6 +148,7 @@
     <string name="dialog_install_voice_body">Kāore te reo %1$s i tāutaina. Tikiake kia pānui kupu (%2$s).</string>
     <string name="confirm_purge_history">Ūkuia ngā makau katoa?</string>
     <string name="confirm_delete_model">Mukua a %1$s i te kōpae? Ka taea te tikiake anō ā muri ake.</string>
+    <string name="confirm_reset_title">Kei te tino mōhio koe?</string>
     <string name="confirm_reset_app">Tautuhi anō te taupānga? Ka mukua ngā tauira, reo, makau me ngā tautuhinga.</string>
     <string name="msg_nothing_to_save">Kāore he mea hei tiaki: me whakakī te pūtake me te whāinga.</string>
     <string name="msg_history_disabled">Kua weto ngā makau.</string>

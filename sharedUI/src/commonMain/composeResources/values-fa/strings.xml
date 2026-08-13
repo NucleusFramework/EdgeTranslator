@@ -149,6 +149,7 @@
     <string name="dialog_install_voice_body">صدای %1$s نصب نشده است. برای خواندن متن آن را دانلود کنید (%2$s).</string>
     <string name="confirm_purge_history">همهٔ علاقه‌مندی‌ها پاک شود؟</string>
     <string name="confirm_delete_model">%1$s از دیسک حذف شود؟ بعداً دوباره می‌توانید دانلود کنید.</string>
+    <string name="confirm_reset_title">مطمئن هستید؟</string>
     <string name="confirm_reset_app">برنامه بازنشانی شود؟ مدل‌ها، صداها، علاقه‌مندی‌ها و تنظیمات حذف می‌شوند.</string>
     <string name="msg_nothing_to_save">چیزی برای ذخیره نیست: مبدأ و مقصد باید پر باشند.</string>
     <string name="msg_history_disabled">علاقه‌مندی‌ها خاموش است.</string>
@@ -241,4 +242,5 @@
     <string name="month_nov">نوامبر</string>
     <string name="month_dec">دسامبر</string>
     <string name="proofread_placeholder">سلام بهمه دوست دارم پروژه جدیدمو بهتون معرفی کنم یه مترجم ویراستار کاملا افلاینه همونطور که میبینید یه متن پر از غلط املای مینویسم ولی کامل تصحیح شده برمیگرده. وگرنه kotlin و compose زندگینه nucleus هم\nلایک اگر خوشتون اومد</string>
+    <string name="proofread_result_placeholder">سلام به همه، دوست دارم پروژه جدیدمو بهتون معرفی کنم. یه مترجم ویراستار کاملاً آفلاینه. همونطور که می‌بینید، یه متن پر از غلط املایی می‌نویسم ولی کامل تصحیح شده برمی‌گرده. وگرنه kotlin و compose زندگینه nucleus هم.nلایک اگر خوشتون اومد.</string>
 </resources>

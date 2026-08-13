@@ -148,6 +148,7 @@
     <string name="dialog_install_voice_body">Sauti %1$s haijasakinishwa. Pakua ili kusoma maandishi (%2$s).</string>
     <string name="confirm_purge_history">Futa vipendwa vyote?</string>
     <string name="confirm_delete_model">Futa %1$s kwenye diski? Unaweza kuipakua tena baadaye.</string>
+    <string name="confirm_reset_title">Una uhakika?</string>
     <string name="confirm_reset_app">Weka upya programu? Miundo, sauti, vipendwa na mipangilio itafutwa.</string>
     <string name="msg_nothing_to_save">Hakuna cha kuhifadhi: chanzo na lengo lazima vijazwe.</string>
     <string name="msg_history_disabled">Vipendwa vimezimwa.</string>

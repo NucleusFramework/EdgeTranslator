@@ -160,6 +160,7 @@
     <string name="dialog_install_voice_body">Głos %1$s nie jest zainstalowany. Pobierz go, aby czytać tekst na głos (%2$s).</string>
     <string name="confirm_purge_history">Wyczyścić wszystkie ulubione?</string>
     <string name="confirm_delete_model">Usunąć %1$s z dysku? Możesz pobrać go ponownie później.</string>
+    <string name="confirm_reset_title">Czy na pewno?</string>
     <string name="confirm_reset_app">Zresetować aplikację? Modele, głosy, ulubione i ustawienia zostaną usunięte.</string>
 
     <string name="msg_nothing_to_save">Nie ma nic do zapisania: źródło i cel muszą być wypełnione.</string>

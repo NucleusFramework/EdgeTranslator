@@ -161,6 +161,7 @@
     <string name="dialog_install_voice_body">The %1$s voice is not installed. Download it to read text aloud (%2$s).</string>
     <string name="confirm_purge_history">Clear all favorites?</string>
     <string name="confirm_delete_model">Delete %1$s from disk? You can download it again later.</string>
+    <string name="confirm_reset_title">Are you sure?</string>
     <string name="confirm_reset_app">Reset the app? Models, voices, favorites and settings will be deleted.</string>
 
     <string name="msg_nothing_to_save">Nothing to save: source and target must both be filled in.</string>
@@ -259,6 +260,6 @@
     <string name="proofread_header">Text</string>
     <string name="proofread_result_header">Correction</string>
     <string name="proofread_placeholder">hi evryone, id like to present my new projet, its a fully ofline translatr n proofreder, as u can see i write a txt full of speling mistaks n yet it comes bak complety corectd. also kotlin n compose r life, nucleus 2!\nlike if u liked it</string>
-    <string name="proofread_result_placeholder">The corrected text will appear here.</string>
+    <string name="proofread_result_placeholder">Hi everyone, I'd like to present my new project. It's a fully offline translator and proofreader. As you can see, I wrote a text full of spelling mistakes, and yet it comes back completely corrected. Also, Kotlin and Compose are life, nucleus 2!nLike if you liked it.</string>
     <string name="action_apply">Apply</string>
 </resources>

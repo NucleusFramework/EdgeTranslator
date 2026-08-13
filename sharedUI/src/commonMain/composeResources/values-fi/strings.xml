@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">Ääntä %1$s ei ole asennettu. Lataa se lukeaksesi tekstiä ääneen (%2$s).</string>
     <string name="confirm_purge_history">Tyhjennetäänkö kaikki suosikit?</string>
     <string name="confirm_delete_model">Poistetaanko %1$s levyltä? Voit ladata sen myöhemmin uudelleen.</string>
+    <string name="confirm_reset_title">Oletko varma?</string>
     <string name="confirm_reset_app">Nollataanko sovellus? Mallit, äänet, suosikit ja asetukset poistetaan.</string>
     <string name="msg_nothing_to_save">Ei tallennettavaa: lähde ja kohde pitää täyttää.</string>
     <string name="msg_history_disabled">Suosikit ovat pois päältä.</string>
@@ -245,4 +246,5 @@
     <string name="month_nov">marras</string>
     <string name="month_dec">joulu</string>
     <string name="proofread_placeholder">moi kaikille, haluaisin esitellä uuden projektini, se on täysin ofline kääntäjä oikolukija, kuten näette kirjoitan tekstin täynnä kirjoitusvirheitä ja silti se palaa kokonaan korjattuna. muuten kotlin ja compose on elämä, nucleus myös!\nlike jos tykkäsit</string>
+    <string name="proofread_result_placeholder">Moi kaikille, haluaisin esitellä uuden projektini, se on täysin offline kääntäjäoikolukija, kuten näette, kirjoitan tekstin täynnä kirjoitusvirheitä ja silti se palaa kokonaan korjattuna. Muuten Kotlin ja Compose ovat elämä, Nucleus myös!nLike jos tykkäsit.</string>
 </resources>

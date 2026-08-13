@@ -148,6 +148,7 @@
     <string name="dialog_install_voice_body">কণ্ঠ %1$s ইনস্টল নেই। পাঠ পড়তে ডাউনলোড করুন (%2$s)।</string>
     <string name="confirm_purge_history">সব পছন্দ মুছবেন?</string>
     <string name="confirm_delete_model">ডিস্ক থেকে %1$s মুছবেন? পরে আবার ডাউনলোড করতে পারবেন।</string>
+    <string name="confirm_reset_title">আপনি কি নিশ্চিত?</string>
     <string name="confirm_reset_app">অ্যাপ রিসেট করবেন? মডেল, কণ্ঠ, পছন্দসমূহ ও সেটিংস মুছে যাবে।</string>
     <string name="msg_nothing_to_save">সংরক্ষণের কিছু নেই: উৎস ও লক্ষ্য দুটোই পূরণ করতে হবে।</string>
     <string name="msg_history_disabled">পছন্দসমূহ বন্ধ।</string>
@@ -240,4 +241,5 @@
     <string name="month_nov">নভে</string>
     <string name="month_dec">ডিসে</string>
     <string name="proofread_placeholder">সবাইকে হ্যালো আমি আমার নতুন প্রজেক্ট পরিচয় করাতে চাই এটা সম্পুর্ন অফলাইন অনুবাদক শুদ্ধিকারক আপনারা দেখছেন আমি ভুলে ভরা লেখা লিখছি তবুও সেটা সম্পুর্ন শুদ্ধ হয়ে ফিরে আসে। নাহলে kotlin আর compose ই জীবন nucleus ও\nলাইক দিও যদি ভালো লাগে</string>
+    <string name="proofread_result_placeholder">সবাইকে হ্যালো, আমি আমার নতুন প্রজেক্ট পরিচয় করাতে চাই। এটা সম্পূর্ণ অফলাইন অনুবাদক শুদ্ধিকারক। আপনারা দেখছেন আমি ভুল ভরা লেখা লিখছি, তবুও সেটা সম্পূর্ণ শুদ্ধ হয়ে ফিরে আসে। নাহলে Kotlin আর Compose ই জীবন nucleus ও। লাইক দিও যদি ভালো লাগে।</string>
 </resources>

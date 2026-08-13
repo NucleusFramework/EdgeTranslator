@@ -149,6 +149,7 @@
     <string name="dialog_install_voice_body">Glas %1$s nije instaliran. Preuzmite ga za čitanje teksta naglas (%2$s).</string>
     <string name="confirm_purge_history">Isprazniti sve favorite?</string>
     <string name="confirm_delete_model">Izbrisati %1$s s diska? Kasnije ga možete ponovno preuzeti.</string>
+    <string name="confirm_reset_title">Jeste li sigurni?</string>
     <string name="confirm_reset_app">Resetirati aplikaciju? Modeli, glasovi, favoriti i postavke bit će izbrisani.</string>
     <string name="msg_nothing_to_save">Nema što spremiti: izvor i cilj moraju biti ispunjeni.</string>
     <string name="msg_history_disabled">Favoriti su isključeni.</string>

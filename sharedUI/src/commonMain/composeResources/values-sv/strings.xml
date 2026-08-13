@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">Rösten %1$s är inte installerad. Ladda ner den för att läsa text högt (%2$s).</string>
     <string name="confirm_purge_history">Rensa alla favoriter?</string>
     <string name="confirm_delete_model">Ta bort %1$s från disken? Du kan ladda ner den igen senare.</string>
+    <string name="confirm_reset_title">Är du säker?</string>
     <string name="confirm_reset_app">Återställ appen? Modeller, röster, favoriter och inställningar tas bort.</string>
     <string name="msg_nothing_to_save">Inget att spara: källa och mål måste båda fyllas i.</string>
     <string name="msg_history_disabled">Favoriterna är avstängda.</string>

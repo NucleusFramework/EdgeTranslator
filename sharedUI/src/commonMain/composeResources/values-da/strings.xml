@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">Stemmen %1$s er ikke installeret. Download den for at læse tekst højt (%2$s).</string>
     <string name="confirm_purge_history">Ryd alle favoritter?</string>
     <string name="confirm_delete_model">Slet %1$s fra disken? Du kan downloade den igen senere.</string>
+    <string name="confirm_reset_title">Er du sikker?</string>
     <string name="confirm_reset_app">Nulstil appen? Modeller, stemmer, favoritter og indstillinger slettes.</string>
     <string name="msg_nothing_to_save">Intet at gemme: kilde og mål skal begge være udfyldt.</string>
     <string name="msg_history_disabled">Favoritter er slået fra.</string>
@@ -245,4 +246,5 @@
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
     <string name="proofread_placeholder">hej allesm, jeg vil gerne præsentere mit nye projekt, det er en helt ofline oversætter korrekturlæser, som i kan se skriver jeg en tekst fuld af stavefejl og alligevel kommer den helt rettet tilbage. ellers kotlin og compose er livet, nucleus også!\nlike hvis du kunne lide det</string>
+    <string name="proofread_result_placeholder">Hej allesammen, jeg vil gerne præsentere mit nye projekt. Det er en helt offline oversætter/korrekturlæser, som I kan se, skriver jeg en tekst fuld af stavefejl, og alligevel kommer den helt rettet tilbage. Ellers er Kotlin og Compose livet, Nucleus også!nLike hvis du kunne lide det.</string>
 </resources>

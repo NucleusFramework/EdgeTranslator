@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">ยังไม่ได้ติดตั้งเสียง %1$s ดาวน์โหลดเพื่ออ่านข้อความ (%2$s)</string>
     <string name="confirm_purge_history">ล้างรายการโปรดทั้งหมด?</string>
     <string name="confirm_delete_model">ลบ %1$s ออกจากดิสก์? ดาวน์โหลดใหม่ได้ภายหลัง</string>
+    <string name="confirm_reset_title">คุณแน่ใจหรือไม่?</string>
     <string name="confirm_reset_app">รีเซ็ตแอป? โมเดล เสียง รายการโปรด และการตั้งค่าจะถูกลบ</string>
     <string name="msg_nothing_to_save">ไม่มีอะไรให้บันทึก: ต้องกรอกทั้งต้นทางและปลายทาง</string>
     <string name="msg_history_disabled">รายการโปรดถูกปิด</string>

@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">%1$s sesi kurulu değil. Metni sesli okumak için indirin (%2$s).</string>
     <string name="confirm_purge_history">Tüm favoriler silinsin mi?</string>
     <string name="confirm_delete_model">%1$s diskten silinsin mi? Daha sonra yeniden indirebilirsiniz.</string>
+    <string name="confirm_reset_title">Emin misiniz?</string>
     <string name="confirm_reset_app">Uygulama sıfırlansın mı? Modeller, sesler, favoriler ve ayarlar silinecek.</string>
     <string name="msg_nothing_to_save">Kaydedilecek bir şey yok: kaynak ve hedef dolu olmalı.</string>
     <string name="msg_history_disabled">Favoriler kapalı.</string>

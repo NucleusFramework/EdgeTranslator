@@ -49,6 +49,7 @@ import offlinetranslator.sharedui.generated.resources.confirm_delete_model
 import offlinetranslator.sharedui.generated.resources.confirm_delete_voice
 import offlinetranslator.sharedui.generated.resources.confirm_purge_history
 import offlinetranslator.sharedui.generated.resources.confirm_reset_app
+import offlinetranslator.sharedui.generated.resources.confirm_reset_title
 import offlinetranslator.sharedui.generated.resources.dialog_confirm
 import offlinetranslator.sharedui.generated.resources.dialog_install_voice
 import offlinetranslator.sharedui.generated.resources.dialog_install_voice_body
@@ -100,7 +101,11 @@ private fun ConfirmDialog(d: AppDialog.Confirm, onIntent: (AppIntent) -> Unit) {
 
         ConfirmAction.ResetApp -> stringResource(Res.string.confirm_reset_app)
     }
-    Sheet(onDismiss = { onIntent(AppIntent.DismissDialog) }, title = stringResource(Res.string.dialog_confirm)) {
+    val title = when (d.action) {
+        ConfirmAction.ResetApp -> stringResource(Res.string.confirm_reset_title)
+        else -> stringResource(Res.string.dialog_confirm)
+    }
+    Sheet(onDismiss = { onIntent(AppIntent.DismissDialog) }, title = title) {
         Text(message, color = MaterialTheme.colorScheme.onSurface, fontSize = 15.sp)
         Spacer(Modifier.height(16.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

@@ -149,6 +149,7 @@
     <string name="dialog_install_voice_body">Vocea %1$s nu este instalată. Descărcați-o pentru a citi textul (%2$s).</string>
     <string name="confirm_purge_history">Goliți toate favoritele?</string>
     <string name="confirm_delete_model">Ștergeți %1$s de pe disc? Îl puteți descărca din nou mai târziu.</string>
+    <string name="confirm_reset_title">Sunteți sigur?</string>
     <string name="confirm_reset_app">Resetați aplicația? Modelele, vocile, favoritele și setările vor fi șterse.</string>
     <string name="msg_nothing_to_save">Nimic de salvat: sursa și ținta trebuie completate.</string>
     <string name="msg_history_disabled">Favoritele sunt dezactivate.</string>

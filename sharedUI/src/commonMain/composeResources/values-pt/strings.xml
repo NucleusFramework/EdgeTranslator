@@ -160,6 +160,7 @@
     <string name="dialog_install_voice_body">A voz %1$s não está instalada. Descarregue-a para ler o texto em voz alta (%2$s).</string>
     <string name="confirm_purge_history">Limpar todos os favoritos?</string>
     <string name="confirm_delete_model">Eliminar %1$s do disco? Poderá descarregá-lo novamente mais tarde.</string>
+    <string name="confirm_reset_title">Tem a certeza?</string>
     <string name="confirm_reset_app">Repor a aplicação? Modelos, vozes, favoritos e definições serão eliminados.</string>
 
     <string name="msg_nothing_to_save">Nada a guardar: origem e destino devem estar preenchidos.</string>

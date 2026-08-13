@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">आवाज़ %1$s इंस्टॉल नहीं है। पाठ पढ़ने के लिए डाउनलोड करें (%2$s)।</string>
     <string name="confirm_purge_history">सारे पसंदीदा साफ़ करें?</string>
     <string name="confirm_delete_model">डिस्क से %1$s हटाएँ? बाद में फिर डाउनलोड कर सकते हैं।</string>
+    <string name="confirm_reset_title">क्या आप वाकई सुनिश्चित हैं?</string>
     <string name="confirm_reset_app">ऐप रीसेट करें? मॉडल, आवाज़ें, पसंदीदा और सेटिंग्स हट जाएँगी।</string>
     <string name="msg_nothing_to_save">सहेजने को कुछ नहीं: स्रोत और लक्ष्य दोनों भरें।</string>
     <string name="msg_history_disabled">पसंदीदा बंद हैं।</string>

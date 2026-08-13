@@ -148,6 +148,7 @@
     <string name="dialog_install_voice_body">%1$s వాయిస్ ఇన్‌స్టాల్ కాలేదు. పాఠ్యం చదవడానికి డౌన్‌లోడ్ చేయండి (%2$s).</string>
     <string name="confirm_purge_history">మొత్తం ఇష్టాంశాలు తుడవాలా?</string>
     <string name="confirm_delete_model">డిస్క్ నుంచి %1$s తొలగించాలా? తర్వాత మళ్లీ డౌన్‌లోడ్ చేయవచ్చు.</string>
+    <string name="confirm_reset_title">మీరు ఖచ్చితంగా అనుకుంటున్నారా?</string>
     <string name="confirm_reset_app">యాప్ రీసెట్ చేయాలా? మోడల్స్, వాయిస్‌లు, ఇష్టాంశాలు, సెట్టింగ్‌లు తొలగిపోతాయి.</string>
     <string name="msg_nothing_to_save">సేవ్ చేయడానికి ఏమీ లేదు: మూలం, లక్ష్యం రెండూ నింపాలి.</string>
     <string name="msg_history_disabled">ఇష్టాంశాలు ఆఫ్‌లో ఉన్నాయి.</string>

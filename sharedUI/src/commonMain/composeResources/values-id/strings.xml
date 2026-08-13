@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">Suara %1$s belum terpasang. Unduh untuk membacakan teks (%2$s).</string>
     <string name="confirm_purge_history">Kosongkan semua favorit?</string>
     <string name="confirm_delete_model">Hapus %1$s dari disk? Anda dapat mengunduhnya lagi nanti.</string>
+    <string name="confirm_reset_title">Anda yakin?</string>
     <string name="confirm_reset_app">Atur ulang aplikasi? Model, suara, favorit, dan pengaturan akan dihapus.</string>
     <string name="msg_nothing_to_save">Tidak ada yang disimpan: sumber dan sasaran harus diisi.</string>
     <string name="msg_history_disabled">Favorit dinonaktifkan.</string>

@@ -160,6 +160,7 @@
     <string name="dialog_install_voice_body">De stem %1$s is niet geïnstalleerd. Download die om tekst te laten voorlezen (%2$s).</string>
     <string name="confirm_purge_history">Alle favorieten wissen?</string>
     <string name="confirm_delete_model">%1$s van de schijf verwijderen? Je kunt het later opnieuw downloaden.</string>
+    <string name="confirm_reset_title">Weet je het zeker?</string>
     <string name="confirm_reset_app">App opnieuw instellen? Modellen, stemmen, favorieten en instellingen worden verwijderd.</string>
 
     <string name="msg_nothing_to_save">Niets om op te slaan: bron en doel moeten beide ingevuld zijn.</string>

@@ -160,6 +160,7 @@
     <string name="dialog_install_voice_body">La voz %1$s no está instalada. Descárguela para leer el texto en voz alta (%2$s).</string>
     <string name="confirm_purge_history">¿Vaciar todos los favoritos?</string>
     <string name="confirm_delete_model">¿Eliminar %1$s del disco? Podrá descargarlo de nuevo más tarde.</string>
+    <string name="confirm_reset_title">¿Está seguro?</string>
     <string name="confirm_reset_app">¿Restablecer la aplicación? Se eliminarán modelos, voces, favoritos y ajustes.</string>
 
     <string name="msg_nothing_to_save">Nada que guardar: origen y destino deben estar rellenados.</string>
@@ -256,4 +257,5 @@
     <string name="month_nov">nov.</string>
     <string name="month_dec">dic.</string>
     <string name="proofread_placeholder">ola a tds, me gustaria presentaros mi nvo proyecto, se trata de un traductor corrector completamnte fuera de linea, como veis escribo un txt lleno de faltas de ortografia y aun asi vuelve enteramnte corregido. si no kotlin y compose son la vida, nucleus tbn!\nlike si te ha gustado</string>
+    <string name="proofread_result_placeholder">Hola a todos, me gustaría presentaros mi nuevo proyecto. Se trata de un traductor corrector completamente fuera de línea. Como veis, escribo un txt lleno de faltas de ortografía y aun así vuelve enteramente corregido. Si no, Kotlin y Compose son la vida, ¡Nucleus también!nLike si te ha gustado.</string>
 </resources>

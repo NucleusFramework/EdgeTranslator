@@ -160,6 +160,7 @@
     <string name="dialog_install_voice_body">الصوت %1$s غير مثبّت. نزّله لقراءة النص بصوت عالٍ (%2$s).</string>
     <string name="confirm_purge_history">مسح كل المفضلة؟</string>
     <string name="confirm_delete_model">حذف %1$s من القرص؟ يمكنك تنزيله لاحقًا.</string>
+    <string name="confirm_reset_title">هل أنت متأكد؟</string>
     <string name="confirm_reset_app">إعادة ضبط التطبيق؟ سيتم حذف النماذج والأصوات والمفضلة والإعدادات.</string>
 
     <string name="msg_nothing_to_save">لا شيء للحفظ: يجب ملء المصدر والهدف.</string>
@@ -272,4 +273,5 @@
     <string name="month_nov">نوفمبر</string>
     <string name="month_dec">ديسمبر</string>
     <string name="proofread_placeholder">مرحبا بلجميع حاب اعرفكم علي مشروعي الجدييد هوا مترجم ومدقق املائي بالكامل اوفلاين زي ما تشوفون اكتب نص مليان اخطاء املائيه ومع دلك يرجع مصحح بالكامل غير كده kotlin وcompose هما الحياه وnucleus كمان\nلايك اذا عجبكم</string>
+    <string name="proofread_result_placeholder">مرحباً بالجميع، حابب أعرفكم على مشروعي الجديد، هو مترجم ومدقق إملائي بالكامل أوفلاين. زي ما تشوفون، أكتب نص مليان أخطاء إملائية ومع ذلك يرجع مصحح بالكامل. غير كده، Kotlin وCompose هما الحياة، وNucleus كمان.nلايك إذا عجبكم.</string>
 </resources>

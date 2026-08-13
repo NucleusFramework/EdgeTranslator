@@ -160,6 +160,7 @@
     <string name="dialog_install_voice_body">Die Stimme %1$s ist nicht installiert. Laden Sie sie herunter, um Text vorlesen zu lassen (%2$s).</string>
     <string name="confirm_purge_history">Alle Favoriten leeren?</string>
     <string name="confirm_delete_model">%1$s vom Datenträger löschen? Sie können es später erneut herunterladen.</string>
+    <string name="confirm_reset_title">Sind Sie wirklich sicher?</string>
     <string name="confirm_reset_app">App zurücksetzen? Modelle, Stimmen, Favoriten und Einstellungen werden gelöscht.</string>
 
     <string name="msg_nothing_to_save">Nichts zu speichern: Quelle und Ziel müssen ausgefüllt sein.</string>
@@ -256,4 +257,5 @@
     <string name="month_nov">Nov.</string>
     <string name="month_dec">Dez.</string>
     <string name="proofread_placeholder">hallo tsmn, ich würd euch gern mein neus projekt vorstellen, es handelt sich um n komplett ofline übersetzer korrekturprogramm, wie ihr seht schreib ich n text voler rechtschreibfeeler und trotzdem kommt er komplett korrigirt zurück. ansonsten kotlin und compose is das leben, nucleus auch!\nlike wenn dirs gefaln hat</string>
+    <string name="proofread_result_placeholder">Hallo zusammen, ich würde euch gern mein neues Projekt vorstellen. Es handelt sich um ein komplett offline Übersetzer-Korrekturprogramm. Wie ihr seht, schreibe ich einen Text voller Rechtschreibfehler und trotzdem kommt er komplett korrigiert zurück. Ansonsten Kotlin und Compose ist das Leben, Nucleus auch!nLike, wenn dir gefällt.</string>
 </resources>

@@ -160,6 +160,7 @@
     <string name="dialog_install_voice_body">音声 %1$s はインストールされていません。読み上げるにはダウンロードしてください（%2$s）。</string>
     <string name="confirm_purge_history">お気に入りをすべて消去しますか？</string>
     <string name="confirm_delete_model">%1$s をディスクから削除しますか？後でもう一度ダウンロードできます。</string>
+    <string name="confirm_reset_title">本当によろしいですか？</string>
     <string name="confirm_reset_app">アプリをリセットしますか？モデル、音声、お気に入り、設定が削除されます。</string>
 
     <string name="msg_nothing_to_save">保存するものがありません。原文と訳文の両方を入力してください。</string>

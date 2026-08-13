@@ -161,6 +161,7 @@
     <string name="dialog_install_voice_body">La voix %1$s n’est pas installée. Téléchargez-la pour lire le texte à voix haute (%2$s).</string>
     <string name="confirm_purge_history">Vider tous les favoris ?</string>
     <string name="confirm_delete_model">Supprimer %1$s du disque ? Vous pourrez le télécharger à nouveau plus tard.</string>
+    <string name="confirm_reset_title">Êtes-vous vraiment sûr ?</string>
     <string name="confirm_reset_app">Réinitialiser l'application ? Les modèles, les voix, les favoris et les réglages seront supprimés.</string>
 
     <string name="msg_nothing_to_save">Rien à enregistrer : source et cible doivent être renseignées.</string>
@@ -259,6 +260,6 @@
     <string name="proofread_header">Texte</string>
     <string name="proofread_result_header">Correction</string>
     <string name="proofread_placeholder">slt tt le mnde , jaimerai vs presente mon nv projet, il sagi dun traducteur correcteur cmpletemen hors ligne, com vs voyez, jecri un text boure de fotes dorth et prtant il revien entieremnt corrge, sinon kotlin et compose cest la vie, nucleus ossi !\nlike si tu as aime</string>
-    <string name="proofread_result_placeholder">Le texte corrigé apparaîtra ici.</string>
+    <string name="proofread_result_placeholder">Salut tout le monde, j'aimerais vous présenter mon nouveau projet. Il s'agit d'un traducteur correcteur complètement hors ligne. Comme vous voyez, j'écris un texte bourré de fautes d'orthographe et pourtant il revient entièrement corrigé. Sinon, Kotlin et Compose, c'est la vie, Nucleus aussi !nLike si tu as aimé.</string>
     <string name="action_apply">Appliquer</string>
 </resources>

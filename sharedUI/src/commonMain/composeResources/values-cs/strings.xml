@@ -153,6 +153,7 @@
     <string name="dialog_install_voice_body">Hlas %1$s není nainstalován. Stáhněte ho, abyste mohli číst text nahlas (%2$s).</string>
     <string name="confirm_purge_history">Vymazat všechny oblíbené?</string>
     <string name="confirm_delete_model">Smazat %1$s z disku? Později ho můžete stáhnout znovu.</string>
+    <string name="confirm_reset_title">Opravdu to chcete?</string>
     <string name="confirm_reset_app">Resetovat aplikaci? Modely, hlasy, oblíbené a nastavení budou smazány.</string>
     <string name="msg_nothing_to_save">Není co uložit: zdroj i cíl musí být vyplněné.</string>
     <string name="msg_history_disabled">Oblíbené jsou vypnuté.</string>
@@ -253,4 +254,5 @@
     <string name="month_nov">lis</string>
     <string name="month_dec">pro</string>
     <string name="proofread_placeholder">ahoj vsichni, chtel bych vam predstavit muj novy projekt, je to uplne ofline prekladac korektor, jak vidite pisu text plny pravopisnych chyb a presto se vrati uplne opraveny. jinak kotlin a compose je zivot, nucleus taky!\nlike pokud se ti to libilo</string>
+    <string name="proofread_result_placeholder">Ahoj všichni, chtěl bych vám představit můj nový projekt, je to úplně offline překladač-korektor, jak vidíte, píšu text plný pravopisných chyb a proto se vrátí úplně opravený. Jinak Kotlin a Compose je život, Nucleus taky!nLike pokud se ti to líbilo</string>
 </resources>

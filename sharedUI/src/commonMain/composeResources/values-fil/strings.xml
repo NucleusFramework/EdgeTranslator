@@ -149,6 +149,7 @@
     <string name="dialog_install_voice_body">Hindi naka-install ang boses na %1$s. I-download ito para basahin ang teksto (%2$s).</string>
     <string name="confirm_purge_history">Burahin ang lahat ng paborito?</string>
     <string name="confirm_delete_model">Tanggalin ang %1$s sa disk? Puwede mo itong i-download ulit mamaya.</string>
+    <string name="confirm_reset_title">Sigurado ka ba?</string>
     <string name="confirm_reset_app">I-reset ang app? Tatanggalin ang mga modelo, boses, paborito, at setting.</string>
     <string name="msg_nothing_to_save">Walang ise-save: kailangang punan ang pinagmulan at target.</string>
     <string name="msg_history_disabled">Naka-off ang mga paborito.</string>
@@ -241,4 +242,5 @@
     <string name="month_nov">Nob</string>
     <string name="month_dec">Dis</string>
     <string name="proofread_placeholder">kamusta lahat, gusto ko sanang ipakilala ang bago kong proyekto, ito ay isang ganap na ofline na tagasalin at tagatama, gaya ng nakikita nyo nagsusulat ako ng tekstong puno ng maling spelling pero bumabalik itong ganap na naitama. kung hindi kotlin at compose ang buhay, nucleus din!\nlike kung nagustuhan mo</string>
+    <string name="proofread_result_placeholder">Kamusta lahat, gusto ko sanang ipakilala ang bago kong proyekto. Ito ay isang ganap na offline na tagasalin at tagatama, gaya ng nakikita niyo, nagsusulat ako ng tekstong puno ng maling spelling pero bumabalik itong ganap na naitama. Kung hindi Kotlin at Compose ang buhay, Nucleus din!nLike kung nagustuhan mo</string>
 </resources>

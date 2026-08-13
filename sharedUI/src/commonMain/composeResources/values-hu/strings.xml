@@ -149,6 +149,7 @@
     <string name="dialog_install_voice_body">A(z) %1$s hang nincs telepítve. Töltse le a szöveg felolvasásához (%2$s).</string>
     <string name="confirm_purge_history">Törli az összes kedvencet?</string>
     <string name="confirm_delete_model">Törli a(z) %1$s elemet a lemezről? Később újra letöltheti.</string>
+    <string name="confirm_reset_title">Biztos benne?</string>
     <string name="confirm_reset_app">Visszaállítja az alkalmazást? A modellek, hangok, kedvencek és beállítások törlődnek.</string>
     <string name="msg_nothing_to_save">Nincs mit menteni: a forrást és a célt is ki kell tölteni.</string>
     <string name="msg_history_disabled">A kedvencek ki vannak kapcsolva.</string>
