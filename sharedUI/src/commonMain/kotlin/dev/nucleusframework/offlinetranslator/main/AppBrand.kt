@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +28,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 private const val GITHUB_REPO = "https://github.com/kdroidFilter/OfflineTranslator"
+private const val SPONSOR_URL = "https://ko-fi.com/lomityaesh"
 
 /**
  * True when the platform host shows the app identity in its own window chrome
@@ -69,5 +71,18 @@ fun GitHubButton(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center,
     ) {
         Icon(painterResource(Res.drawable.ic_github), "GitHub", Modifier.size(18.dp), tint = c.onSurfaceVariant)
+    }
+}
+
+/** Opens Ko-fi. Used next to [GitHubButton] on the desktop title bar. */
+@Composable
+fun SponsorButton(modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
+    val c = MaterialTheme.colorScheme
+    Box(
+        modifier.size(40.dp).clip(CircleShape).clickable { uriHandler.openUri(SPONSOR_URL) },
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(Icons.Filled.Favorite, "Sponsor", Modifier.size(18.dp), tint = c.onSurfaceVariant)
     }
 }

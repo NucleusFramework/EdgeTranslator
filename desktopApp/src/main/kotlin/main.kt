@@ -29,6 +29,7 @@ import dev.nucleusframework.core.runtime.Platform
 import dev.nucleusframework.offlinetranslator.App
 import dev.nucleusframework.offlinetranslator.main.BrandLabel
 import dev.nucleusframework.offlinetranslator.main.GitHubButton
+import dev.nucleusframework.offlinetranslator.main.SponsorButton
 import dev.nucleusframework.offlinetranslator.main.LocalHostHasTitleBar
 import dev.nucleusframework.offlinetranslator.main.LocalSystemMeters
 import dev.nucleusframework.offlinetranslator.main.LocalWindowDrag
@@ -124,7 +125,7 @@ fun main(args: Array<String>) {
 }
 
 /**
- * Window chrome: the app title and a GitHub link at the trailing edge.
+ * Window chrome: the app title, GitHub and sponsor links at the trailing edge.
  * Navigation, the meters and each screen's own strip live in the app body.
  *
  * The whole strip is the drag surface — `WindowScaffold` makes nothing implicit.
@@ -160,8 +161,9 @@ private fun DecoratedWindowScope.AppChrome() {
                 )
                 .padding(start = 12.dp),
         )
-        // Trailing edge: GitHub, then the caption buttons. macOS draws real
-        // traffic-lights, so only the link sits there (padded off the frame).
+        // Trailing edge: GitHub + sponsor heart, then the caption buttons.
+        // macOS draws real traffic-lights, so only the links sit there (padded
+        // off the frame).
         val mac = Platform.Current == Platform.MacOS
         Row(
             Modifier
@@ -171,6 +173,7 @@ private fun DecoratedWindowScope.AppChrome() {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             GitHubButton()
+            SponsorButton()
             if (!mac) WindowControls(Modifier.fillMaxHeight())
         }
     }
