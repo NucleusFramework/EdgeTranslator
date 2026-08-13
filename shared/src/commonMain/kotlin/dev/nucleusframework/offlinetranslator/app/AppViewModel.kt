@@ -117,8 +117,12 @@ class AppViewModel(
 
     private var saveJob: Job? = null
     private var downloadJob: Job? = null
+    private var translateDebounceJob: Job? = null
     private var translateJob: Job? = null
+    private var translating = false
+    private var proofreadDebounceJob: Job? = null
     private var proofreadJob: Job? = null
+    private var proofreading = false
     private var recordJob: Job? = null
     private var speakJob: Job? = null
     private var voiceJob: Job? = null
@@ -258,7 +262,10 @@ class AppViewModel(
 
             AppIntent.ApplyProofread -> Unit
 
-            AppIntent.NewTranslation -> cancelMic()
+            AppIntent.NewTranslation -> {
+                cancelMic()
+                cancelTranslateJobs()
+            }
 
             AppIntent.SwapLanguages, is AppIntent.ChooseLanguage -> {
                 scheduleTranslate()
@@ -724,8 +731,8 @@ class AppViewModel(
         downloadJob = null
         voiceJob?.cancel()
         voiceJob = null
-        translateJob?.cancel()
-        translateJob = null
+        cancelTranslateJobs()
+        cancelProofreadJobs()
         recordJob?.cancel()
         recordJob = null
         speakJob?.cancel()
@@ -791,12 +798,26 @@ class AppViewModel(
     }
 
     private fun unloadEngine() {
-        translateJob?.cancel()
-        translateJob = null
-        proofreadJob?.cancel()
-        proofreadJob = null
+        cancelTranslateJobs()
+        cancelProofreadJobs()
         cancelIdleRelease()
         translator.close()
+    }
+
+    private fun cancelTranslateJobs() {
+        translateDebounceJob?.cancel()
+        translateDebounceJob = null
+        translateJob?.cancel()
+        translateJob = null
+        translating = false
+    }
+
+    private fun cancelProofreadJobs() {
+        proofreadDebounceJob?.cancel()
+        proofreadDebounceJob = null
+        proofreadJob?.cancel()
+        proofreadJob = null
+        proofreading = false
     }
 
     private fun copyTranslation() {
@@ -1461,9 +1482,9 @@ class AppViewModel(
     }
 
     private fun scheduleTranslate() {
-        translateJob?.cancel()
         val snapshot = _state.value.translation
         if (snapshot.sourceText.isBlank()) {
+            cancelTranslateJobs()
             mutate {
                 it.copy(
                     translation = it.translation.copy(
@@ -1477,131 +1498,183 @@ class AppViewModel(
             return
         }
         cancelIdleRelease()
-        translateJob = scope.launch {
+        translateDebounceJob?.cancel()
+        translateDebounceJob = scope.launch {
             if (translateDelayMs > 0) delay(translateDelayMs)
-            runTranslation()
+            if (translating) return@launch
+            val t = _state.value.translation
+            val text = t.sourceText
+            val from = t.sourceLang
+            val to = t.targetLang
+            if (text.isBlank()) return@launch
+            translateJob = scope.launch {
+                translating = true
+                try {
+                    runTranslation(text, from, to)
+                } finally {
+                    translating = false
+                }
+                val next = _state.value.translation
+                if (next.sourceText.isNotBlank() &&
+                    (next.sourceText != text || next.sourceLang != from || next.targetLang != to)
+                ) {
+                    scheduleTranslate()
+                }
+            }
         }
     }
 
-    private suspend fun runTranslation() {
+    private suspend fun runTranslation(text: String, from: String, to: String) {
         val s = _state.value
+        if (!sameTranslateInput(s.translation, text, from, to)) return
         mutate {
-            it.copy(
-                translation = it.translation.copy(
-                    targetText = "",
-                    alternatives = emptyList(),
-                    highlightTerm = "",
-                    alternativesFor = "",
-                    selectedAlternative = "",
-                    status = TranslationStatus.WaitingEngine,
-                    error = null,
-                    latencyMs = null,
-                ),
-            )
+            if (!sameTranslateInput(it.translation, text, from, to)) it
+            else {
+                it.copy(
+                    translation = it.translation.copy(
+                        targetText = "",
+                        alternatives = emptyList(),
+                        highlightTerm = "",
+                        alternativesFor = "",
+                        selectedAlternative = "",
+                        status = TranslationStatus.WaitingEngine,
+                        error = null,
+                        latencyMs = null,
+                    ),
+                )
+            }
         }
         val result = translator.translate(
             TranslationRequest(
-                text = s.translation.sourceText,
-                sourceLang = s.translation.sourceLang,
-                targetLang = s.translation.targetLang,
+                text = text,
+                sourceLang = from,
+                targetLang = to,
                 modelPath = s.data.model.path,
                 onPartial = { partial ->
                     mutate { current ->
-                        current.copy(
-                            translation = current.translation.copy(
-                                targetText = partial,
-                                status = TranslationStatus.WaitingEngine,
-                                error = null,
-                            ),
-                        )
+                        if (!sameTranslateInput(current.translation, text, from, to)) current
+                        else {
+                            current.copy(
+                                translation = current.translation.copy(
+                                    targetText = partial,
+                                    status = TranslationStatus.WaitingEngine,
+                                    error = null,
+                                ),
+                            )
+                        }
                     }
                 },
             ),
         )
         mutate { current ->
             val t = current.translation
-            when (result) {
-                TranslationResult.Unavailable -> t.copy(
-                    status = TranslationStatus.WaitingEngine,
-                    targetText = "",
-                    alternatives = emptyList(),
-                    error = null,
-                    latencyMs = null,
-                )
+            if (!sameTranslateInput(t, text, from, to)) current
+            else {
+                when (result) {
+                    TranslationResult.Unavailable -> t.copy(
+                        status = TranslationStatus.WaitingEngine,
+                        targetText = "",
+                        alternatives = emptyList(),
+                        error = null,
+                        latencyMs = null,
+                    )
 
-                is TranslationResult.Error -> t.copy(
-                    status = TranslationStatus.Error,
-                    error = result.message,
-                )
+                    is TranslationResult.Error -> t.copy(
+                        status = TranslationStatus.Error,
+                        error = result.message,
+                    )
 
-                is TranslationResult.Ok -> t.copy(
-                    targetText = result.text,
-                    alternatives = result.alternatives,
-                    highlightTerm = result.highlight,
-                    alternativesFor = result.highlight,
-                    selectedAlternative = result.highlight,
-                    status = TranslationStatus.Ready,
-                    latencyMs = result.latencyMs,
-                    error = null,
-                )
-            }.let { current.copy(translation = it) }
+                    is TranslationResult.Ok -> t.copy(
+                        targetText = result.text,
+                        alternatives = result.alternatives,
+                        highlightTerm = result.highlight,
+                        alternativesFor = result.highlight,
+                        selectedAlternative = result.highlight,
+                        status = TranslationStatus.Ready,
+                        latencyMs = result.latencyMs,
+                        error = null,
+                    )
+                }.let { current.copy(translation = it) }
+            }
         }
-        scheduleIdleRelease()
+        if (sameTranslateInput(_state.value.translation, text, from, to)) scheduleIdleRelease()
     }
 
+    private fun sameTranslateInput(t: TranslationState, text: String, from: String, to: String) =
+        t.sourceText == text && t.sourceLang == from && t.targetLang == to
+
     private fun scheduleProofread() {
-        proofreadJob?.cancel()
         if (_state.value.proofread.text.isBlank()) {
+            cancelProofreadJobs()
             mutate { it.copy(proofread = it.proofread.copy(result = "", status = TranslationStatus.Idle, error = null, latencyMs = null)) }
             return
         }
         cancelIdleRelease()
-        proofreadJob = scope.launch {
+        proofreadDebounceJob?.cancel()
+        proofreadDebounceJob = scope.launch {
             if (translateDelayMs > 0) delay(translateDelayMs)
-            runProofread()
+            if (proofreading) return@launch
+            val text = _state.value.proofread.text
+            if (text.isBlank()) return@launch
+            proofreadJob = scope.launch {
+                proofreading = true
+                try {
+                    runProofread(text)
+                } finally {
+                    proofreading = false
+                }
+                val next = _state.value.proofread.text
+                if (next.isNotBlank() && next != text) scheduleProofread()
+            }
         }
     }
 
-    private suspend fun runProofread() {
+    private suspend fun runProofread(text: String) {
         val s = _state.value
+        if (s.proofread.text != text) return
         mutate {
-            it.copy(proofread = it.proofread.copy(result = "", status = TranslationStatus.WaitingEngine, error = null, latencyMs = null))
+            if (it.proofread.text != text) it
+            else it.copy(proofread = it.proofread.copy(result = "", status = TranslationStatus.WaitingEngine, error = null, latencyMs = null))
         }
         val result = translator.translate(
             TranslationRequest(
-                text = s.proofread.text,
+                text = text,
                 sourceLang = s.translation.sourceLang,
                 targetLang = s.translation.sourceLang,
                 modelPath = s.data.model.path,
                 mode = TranslationMode.Proofread,
                 onPartial = { partial ->
                     mutate {
-                        it.copy(proofread = it.proofread.copy(result = partial, status = TranslationStatus.WaitingEngine, error = null))
+                        if (it.proofread.text != text) it
+                        else it.copy(proofread = it.proofread.copy(result = partial, status = TranslationStatus.WaitingEngine, error = null))
                     }
                 },
             ),
         )
         mutate { current ->
             val p = current.proofread
-            when (result) {
-                TranslationResult.Unavailable -> p.copy(
-                    status = TranslationStatus.WaitingEngine,
-                    result = "",
-                    error = null,
-                    latencyMs = null,
-                )
+            if (p.text != text) current
+            else {
+                when (result) {
+                    TranslationResult.Unavailable -> p.copy(
+                        status = TranslationStatus.WaitingEngine,
+                        result = "",
+                        error = null,
+                        latencyMs = null,
+                    )
 
-                is TranslationResult.Error -> p.copy(status = TranslationStatus.Error, error = result.message)
+                    is TranslationResult.Error -> p.copy(status = TranslationStatus.Error, error = result.message)
 
-                is TranslationResult.Ok -> p.copy(
-                    result = result.text,
-                    status = TranslationStatus.Ready,
-                    latencyMs = result.latencyMs,
-                    error = null,
-                )
-            }.let { current.copy(proofread = it) }
+                    is TranslationResult.Ok -> p.copy(
+                        result = result.text,
+                        status = TranslationStatus.Ready,
+                        latencyMs = result.latencyMs,
+                        error = null,
+                    )
+                }.let { current.copy(proofread = it) }
+            }
         }
-        scheduleIdleRelease()
+        if (_state.value.proofread.text == text) scheduleIdleRelease()
     }
 
     private fun persist(now: Boolean = false) {
