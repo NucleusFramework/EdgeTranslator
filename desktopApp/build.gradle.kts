@@ -19,8 +19,8 @@ kotlin {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+    // Also makes `run` launch on a JDK 25, instead of whatever JVM runs Gradle.
+    toolchain { languageVersion.set(JavaLanguageVersion.of(25)) }
 }
 
 dependencies {
