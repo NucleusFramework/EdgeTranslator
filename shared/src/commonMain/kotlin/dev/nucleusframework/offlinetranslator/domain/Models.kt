@@ -82,10 +82,8 @@ fun LlmModel.minRamGib(): Int = when (this) {
  * `totalRamBytes <= 0` means the probe failed — do not lock the user out.
  * A 1 GiB slack accepts machines sold as 8/16 GB that report 7.x / 15.x.
  */
-fun LlmModel.allowedOn(totalRamBytes: Long): Boolean {
-    if (totalRamBytes <= 0L) return true
-    return totalRamBytes >= (minRamGib() - 1L) * GIB_BYTES
-}
+fun LlmModel.allowedOn(totalRamBytes: Long): Boolean =
+    totalRamBytes <= 0L || totalRamBytes >= (minRamGib() - 1L) * GIB_BYTES
 
 enum class HistoryFilter { All, Pinned, Last7Days }
 
