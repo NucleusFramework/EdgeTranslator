@@ -44,6 +44,8 @@
     <string name="cd_pin">Fastgør</string>
     <string name="cd_unpin">Frigør</string>
     <string name="cd_delete">Slet</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Støt projektet</string>
     <string name="install_step">Trin %1$d af %2$d</string>
     <string name="install_welcome_title">Oversæt offline,\nuden at et ord forlader denne enhed</string>
     <string name="install_welcome_body">Modellen kører på denne maskine. Tekster, dokumenter og historik forbliver lokale — ingen udgående anmodning efter installation.</string>

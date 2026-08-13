@@ -43,6 +43,8 @@
     <string name="cd_pin">Titi</string>
     <string name="cd_unpin">Wetewete</string>
     <string name="cd_delete">Muku</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Tautokona te kaupapa</string>
     <string name="install_step">Hipanga %1$d o %2$d</string>
     <string name="install_welcome_title">Whakamāori tuimotu,\nkāore tētahi kupu e wehe i tēnei pūrere</string>
     <string name="install_welcome_body">Ka rere te tauira i runga i tēnei rorohiko. Ka noho ngā kupu, tuhinga me te hītori ki konei — kāore he tono puta i muri i te tāuta.</string>

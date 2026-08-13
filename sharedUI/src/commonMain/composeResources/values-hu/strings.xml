@@ -44,6 +44,8 @@
     <string name="cd_pin">Rögzítés</string>
     <string name="cd_unpin">Rögzítés feloldása</string>
     <string name="cd_delete">Törlés</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">A projekt támogatása</string>
     <string name="install_step">%1$d / %2$d. lépés</string>
     <string name="install_welcome_title">Fordítson offline,\nanélkül, hogy egy szó is elhagyná ezt az eszközt</string>
     <string name="install_welcome_body">A modell ezen a gépen fut. A szövegek, dokumentumok és az előzmények helyben maradnak — telepítés után nincs kimenő kérés.</string>

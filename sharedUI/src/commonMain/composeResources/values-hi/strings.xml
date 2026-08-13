@@ -44,6 +44,8 @@
     <string name="cd_pin">पिन करें</string>
     <string name="cd_unpin">पिन हटाएँ</string>
     <string name="cd_delete">हटाएँ</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">परियोजना का समर्थन करें</string>
     <string name="install_step">चरण %1$d / %2$d</string>
     <string name="install_welcome_title">ऑफ़लाइन अनुवाद करें,\nइस डिवाइस से एक शब्द भी बाहर न जाए</string>
     <string name="install_welcome_body">मॉडल इस मशीन पर चलता है। पाठ, दस्तावेज़ और इतिहास स्थानीय रहते हैं — इंस्टॉल के बाद कोई बाहरी अनुरोध नहीं।</string>

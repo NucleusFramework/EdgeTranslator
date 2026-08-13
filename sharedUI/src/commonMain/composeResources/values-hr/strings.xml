@@ -44,6 +44,8 @@
     <string name="cd_pin">Prikvači</string>
     <string name="cd_unpin">Otkvači</string>
     <string name="cd_delete">Izbriši</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Podrži projekt</string>
     <string name="install_step">Korak %1$d od %2$d</string>
     <string name="install_welcome_title">Prevodite izvan mreže,\nbez da ijedna riječ napusti ovaj uređaj</string>
     <string name="install_welcome_body">Model radi na ovom računalu. Tekstovi, dokumenti i povijest ostaju lokalno — nakon instalacije nema odlaznih zahtjeva.</string>

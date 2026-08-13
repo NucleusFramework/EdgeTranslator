@@ -46,6 +46,8 @@
     <string name="cd_pin">Przypnij</string>
     <string name="cd_unpin">Odepnij</string>
     <string name="cd_delete">Usuń</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Wesprzyj projekt</string>
 
     <string name="install_step">Krok %1$d z %2$d</string>
     <string name="install_welcome_title">Tłumacz offline,\nbez wychodzenia choćby jednego słowa z tego urządzenia</string>

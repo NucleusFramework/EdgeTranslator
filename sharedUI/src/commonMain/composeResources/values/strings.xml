@@ -47,6 +47,8 @@
     <string name="cd_pin">Pin</string>
     <string name="cd_unpin">Unpin</string>
     <string name="cd_delete">Delete</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Support the project</string>
 
     <string name="install_step">Step %1$d of %2$d</string>
     <string name="install_welcome_title">Translate offline,\nwithout a word leaving this device</string>

@@ -46,6 +46,8 @@
     <string name="cd_pin">Fijar</string>
     <string name="cd_unpin">Desfijar</string>
     <string name="cd_delete">Eliminar</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Apoyar el proyecto</string>
 
     <string name="install_step">Paso %1$d de %2$d</string>
     <string name="install_welcome_title">Traduzca sin conexión,\nsin que salga una palabra de este dispositivo</string>

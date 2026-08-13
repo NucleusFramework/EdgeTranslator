@@ -46,6 +46,8 @@
     <string name="cd_pin">تثبيت</string>
     <string name="cd_unpin">إلغاء التثبيت</string>
     <string name="cd_delete">حذف</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">دعم المشروع</string>
 
     <string name="install_step">الخطوة %1$d من %2$d</string>
     <string name="install_welcome_title">ترجم دون اتصال،\nدون أن تغادر كلمة هذا الجهاز</string>

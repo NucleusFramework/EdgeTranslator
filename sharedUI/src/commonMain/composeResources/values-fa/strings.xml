@@ -44,6 +44,8 @@
     <string name="cd_pin">سنجاق</string>
     <string name="cd_unpin">برداشتن سنجاق</string>
     <string name="cd_delete">حذف</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">حمایت از پروژه</string>
     <string name="install_step">گام %1$d از %2$d</string>
     <string name="install_welcome_title">آفلاین ترجمه کنید،\nبدون اینکه کلمه‌ای از این دستگاه بیرون برود</string>
     <string name="install_welcome_body">مدل روی این رایانه اجرا می‌شود. متن‌ها، اسناد و تاریخچه محلی می‌مانند — پس از نصب هیچ درخواست خروجی نیست.</string>

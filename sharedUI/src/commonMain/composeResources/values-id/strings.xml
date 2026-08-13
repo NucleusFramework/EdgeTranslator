@@ -44,6 +44,8 @@
     <string name="cd_pin">Sematkan</string>
     <string name="cd_unpin">Lepas sematan</string>
     <string name="cd_delete">Hapus</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Dukung proyek</string>
     <string name="install_step">Langkah %1$d dari %2$d</string>
     <string name="install_welcome_title">Terjemahkan luring,\ntanpa satu kata pun meninggalkan perangkat ini</string>
     <string name="install_welcome_body">Model berjalan di mesin ini. Teks, dokumen, dan riwayat tetap lokal — tidak ada permintaan keluar setelah pemasangan.</string>

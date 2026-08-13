@@ -11,7 +11,12 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
@@ -24,6 +29,8 @@ import androidx.compose.ui.unit.sp
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.app_name
 import offlinetranslator.sharedui.generated.resources.ic_github
+import offlinetranslator.sharedui.generated.resources.tooltip_github
+import offlinetranslator.sharedui.generated.resources.tooltip_sponsor
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -66,11 +73,9 @@ fun BrandLabel(modifier: Modifier = Modifier) {
 fun GitHubButton(modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
     val c = MaterialTheme.colorScheme
-    Box(
-        modifier.size(40.dp).clip(CircleShape).clickable { uriHandler.openUri(GITHUB_REPO) },
-        contentAlignment = Alignment.Center,
-    ) {
-        Icon(painterResource(Res.drawable.ic_github), "GitHub", Modifier.size(18.dp), tint = c.onSurfaceVariant)
+    val label = stringResource(Res.string.tooltip_github)
+    TitleBarIconButton(label, { uriHandler.openUri(GITHUB_REPO) }, modifier) {
+        Icon(painterResource(Res.drawable.ic_github), label, Modifier.size(18.dp), tint = c.onSurfaceVariant)
     }
 }
 
@@ -79,10 +84,27 @@ fun GitHubButton(modifier: Modifier = Modifier) {
 fun SponsorButton(modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
     val c = MaterialTheme.colorScheme
-    Box(
-        modifier.size(40.dp).clip(CircleShape).clickable { uriHandler.openUri(SPONSOR_URL) },
-        contentAlignment = Alignment.Center,
+    val label = stringResource(Res.string.tooltip_sponsor)
+    TitleBarIconButton(label, { uriHandler.openUri(SPONSOR_URL) }, modifier) {
+        Icon(Icons.Filled.Favorite, label, Modifier.size(18.dp), tint = c.onSurfaceVariant)
+    }
+}
+
+@Composable
+private fun TitleBarIconButton(
+    tooltip: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    icon: @Composable () -> Unit,
+) {
+    TooltipBox(
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Below),
+        tooltip = { PlainTooltip { Text(tooltip) } },
+        state = rememberTooltipState(),
+        modifier = modifier,
     ) {
-        Icon(Icons.Filled.Favorite, "Sponsor", Modifier.size(18.dp), tint = c.onSurfaceVariant)
+        Box(Modifier.size(40.dp).clip(CircleShape).clickable(onClick = onClick), contentAlignment = Alignment.Center) {
+            icon()
+        }
     }
 }

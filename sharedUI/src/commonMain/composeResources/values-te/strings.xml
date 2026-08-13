@@ -43,6 +43,8 @@
     <string name="cd_pin">పిన్</string>
     <string name="cd_unpin">పిన్ తీయి</string>
     <string name="cd_delete">తొలగించు</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">ప్రాజెక్ట్‌కు మద్దతు ఇవ్వండి</string>
     <string name="install_step">దశ %1$d / %2$d</string>
     <string name="install_welcome_title">ఆఫ్‌లైన్‌లో అనువదించండి,\nఈ పరికరం నుంచి ఒక్క పదం కూడా బయటకు వెళ్లకుండా</string>
     <string name="install_welcome_body">మోడల్ ఈ యంత్రంపై నడుస్తుంది. పాఠ్యం, పత్రాలు, చరిత్ర స్థానికంగానే ఉంటాయి — ఇన్‌స్టాల్ తర్వాత బయటకు అభ్యర్థనలు లేవు.</string>

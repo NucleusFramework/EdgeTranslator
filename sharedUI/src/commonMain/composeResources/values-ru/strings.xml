@@ -46,6 +46,8 @@
     <string name="cd_pin">Закрепить</string>
     <string name="cd_unpin">Открепить</string>
     <string name="cd_delete">Удалить</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Поддержать проект</string>
 
     <string name="install_step">Шаг %1$d из %2$d</string>
     <string name="install_welcome_title">Переводите офлайн,\nне выпуская ни слова с этого устройства</string>

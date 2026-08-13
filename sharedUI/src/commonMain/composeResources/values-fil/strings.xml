@@ -44,6 +44,8 @@
     <string name="cd_pin">I-pin</string>
     <string name="cd_unpin">I-unpin</string>
     <string name="cd_delete">Tanggalin</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Suportahan ang proyekto</string>
     <string name="install_step">Hakbang %1$d ng %2$d</string>
     <string name="install_welcome_title">Magsalin nang offline,\nwalang salitang umaalis sa device na ito</string>
     <string name="install_welcome_body">Tumatakbo ang modelo sa makinang ito. Ang mga teksto, dokumento, at kasaysayan ay nananatiling lokal — walang palabas na kahilingan pagkatapos i-install.</string>

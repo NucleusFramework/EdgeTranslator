@@ -44,6 +44,8 @@
     <string name="cd_pin">Ghim</string>
     <string name="cd_unpin">Bỏ ghim</string>
     <string name="cd_delete">Xóa</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Ủng hộ dự án</string>
     <string name="install_step">Bước %1$d / %2$d</string>
     <string name="install_welcome_title">Dịch ngoại tuyến,\nkhông một từ nào rời khỏi thiết bị này</string>
     <string name="install_welcome_body">Mô hình chạy trên máy này. Văn bản, tài liệu và lịch sử ở lại máy — không có yêu cầu ra ngoài sau khi cài.</string>

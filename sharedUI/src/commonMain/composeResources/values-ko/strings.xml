@@ -44,6 +44,8 @@
     <string name="cd_pin">고정</string>
     <string name="cd_unpin">고정 해제</string>
     <string name="cd_delete">삭제</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">프로젝트 후원</string>
     <string name="install_step">%2$d단계 중 %1$d단계</string>
     <string name="install_welcome_title">오프라인으로 번역.\n이 기기 밖으로 단어가 나가지 않습니다</string>
     <string name="install_welcome_body">모델은 이 컴퓨터에서 실행됩니다. 텍스트, 문서, 기록은 모두 로컬에 남습니다. 설치 후에는 외부 요청이 없습니다.</string>

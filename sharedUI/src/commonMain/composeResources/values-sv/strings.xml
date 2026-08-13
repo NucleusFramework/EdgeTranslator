@@ -44,6 +44,8 @@
     <string name="cd_pin">Fäst</string>
     <string name="cd_unpin">Lossa</string>
     <string name="cd_delete">Ta bort</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Stöd projektet</string>
     <string name="install_step">Steg %1$d av %2$d</string>
     <string name="install_welcome_title">Översätt offline,\nutan att ett ord lämnar den här enheten</string>
     <string name="install_welcome_body">Modellen körs på den här datorn. Texter, dokument och historik stannar lokalt — ingen utgående förfrågan efter installationen.</string>

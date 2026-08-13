@@ -44,6 +44,8 @@
     <string name="cd_pin">Fest</string>
     <string name="cd_unpin">Løsne</string>
     <string name="cd_delete">Slett</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Støtt prosjektet</string>
     <string name="install_step">Trinn %1$d av %2$d</string>
     <string name="install_welcome_title">Oversett frakoblet,\nuten at et ord forlater denne enheten</string>
     <string name="install_welcome_body">Modellen kjører på denne maskinen. Tekster, dokumenter og historikk blir lokale — ingen utgående forespørsel etter installasjon.</string>

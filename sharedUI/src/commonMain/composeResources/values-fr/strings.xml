@@ -47,6 +47,8 @@
     <string name="cd_pin">Épingler</string>
     <string name="cd_unpin">Désépingler</string>
     <string name="cd_delete">Supprimer</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Soutenir le projet</string>
 
     <string name="install_step">Étape %1$d sur %2$d</string>
     <string name="install_welcome_title">Traduire sans réseau,\nsans faire sortir un mot</string>

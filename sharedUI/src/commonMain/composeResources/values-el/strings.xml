@@ -43,6 +43,8 @@
     <string name="cd_pin">Καρφίτσωμα</string>
     <string name="cd_unpin">Ξεκαρφίτσωμα</string>
     <string name="cd_delete">Διαγραφή</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Υποστηρίξτε το έργο</string>
     <string name="install_step">Βήμα %1$d από %2$d</string>
     <string name="install_welcome_title">Μεταφράστε εκτός σύνδεσης,\nχωρίς να φύγει λέξη από αυτή τη συσκευή</string>
     <string name="install_welcome_body">Το μοντέλο εκτελείται σε αυτόν τον υπολογιστή. Κείμενα, έγγραφα και ιστορικό μένουν τοπικά — κανένα εξερχόμενο αίτημα μετά την εγκατάσταση.</string>

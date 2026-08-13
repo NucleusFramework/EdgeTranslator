@@ -43,6 +43,8 @@
     <string name="cd_pin">পিন</string>
     <string name="cd_unpin">পিন খুলুন</string>
     <string name="cd_delete">মুছুন</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">প্রকল্পটিকে সমর্থন করুন</string>
     <string name="install_step">ধাপ %1$d / %2$d</string>
     <string name="install_welcome_title">অফলাইনে অনুবাদ করুন,\nএই ডিভাইস থেকে একটি শব্দও না বেরিয়ে</string>
     <string name="install_welcome_body">মডেল এই মেশিনে চলে। পাঠ, নথি ও ইতিহাস স্থানীয় থাকে — ইনস্টলের পর কোনো বাহ্যিক অনুরোধ নেই।</string>

@@ -46,6 +46,8 @@
     <string name="cd_pin">Vastzetten</string>
     <string name="cd_unpin">Losmaken</string>
     <string name="cd_delete">Verwijderen</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Steun het project</string>
 
     <string name="install_step">Stap %1$d van %2$d</string>
     <string name="install_welcome_title">Offline vertalen,\nzonder dat een woord dit apparaat verlaat</string>

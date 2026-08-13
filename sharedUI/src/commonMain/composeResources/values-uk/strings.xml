@@ -44,6 +44,8 @@
     <string name="cd_pin">Закріпити</string>
     <string name="cd_unpin">Відкріпити</string>
     <string name="cd_delete">Видалити</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Підтримати проєкт</string>
     <string name="install_step">Крок %1$d з %2$d</string>
     <string name="install_welcome_title">Перекладайте офлайн,\nне випускаючи жодного слова з цього пристрою</string>
     <string name="install_welcome_body">Модель працює на цьому комп’ютері. Тексти, документи й історія лишаються локально — після встановлення вихідних запитів немає.</string>

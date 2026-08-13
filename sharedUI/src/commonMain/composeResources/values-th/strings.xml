@@ -44,6 +44,8 @@
     <string name="cd_pin">ปักหมุด</string>
     <string name="cd_unpin">เลิกปักหมุด</string>
     <string name="cd_delete">ลบ</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">สนับสนุนโปรเจกต์</string>
     <string name="install_step">ขั้นตอนที่ %1$d จาก %2$d</string>
     <string name="install_welcome_title">แปลแบบออฟไลน์\nโดยไม่มีคำใดออกจากอุปกรณ์นี้</string>
     <string name="install_welcome_body">โมเดลทำงานบนเครื่องนี้ ข้อความ เอกสาร และประวัติอยู่ที่เครื่อง — ไม่มีคำขอออกหลังติดตั้ง</string>

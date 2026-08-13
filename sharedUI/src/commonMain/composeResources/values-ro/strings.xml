@@ -44,6 +44,8 @@
     <string name="cd_pin">Fixează</string>
     <string name="cd_unpin">Anulează fixarea</string>
     <string name="cd_delete">Șterge</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Susține proiectul</string>
     <string name="install_step">Pasul %1$d din %2$d</string>
     <string name="install_welcome_title">Traduceți offline,\nfără ca vreun cuvânt să părăsească acest dispozitiv</string>
     <string name="install_welcome_body">Modelul rulează pe acest calculator. Textele, documentele și istoricul rămân locale — nicio cerere ieșită după instalare.</string>

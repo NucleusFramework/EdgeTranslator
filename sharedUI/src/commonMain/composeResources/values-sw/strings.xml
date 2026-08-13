@@ -43,6 +43,8 @@
     <string name="cd_pin">Bandika</string>
     <string name="cd_unpin">Ondoa bandiko</string>
     <string name="cd_delete">Futa</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Saidia mradi</string>
     <string name="install_step">Hatua %1$d kati ya %2$d</string>
     <string name="install_welcome_title">Tafsiri nje ya mtandao,\nbila neno lolote kuondoka kwenye kifaa hiki</string>
     <string name="install_welcome_body">Muundo unafanya kazi kwenye kompyuta hii. Maandishi, nyaraka na historia hukaa hapa — hakuna ombi linalotoka baada ya usakinishaji.</string>

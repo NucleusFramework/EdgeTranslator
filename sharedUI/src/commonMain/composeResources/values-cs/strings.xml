@@ -44,6 +44,8 @@
     <string name="cd_pin">Připnout</string>
     <string name="cd_unpin">Odepnout</string>
     <string name="cd_delete">Smazat</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Podpořit projekt</string>
     <string name="install_step">Krok %1$d z %2$d</string>
     <string name="install_welcome_title">Překládejte offline,\naniž by slovo opustilo toto zařízení</string>
     <string name="install_welcome_body">Model běží na tomto počítači. Texty, dokumenty a historie zůstanou lokálně — po instalaci žádný odchozí požadavek.</string>

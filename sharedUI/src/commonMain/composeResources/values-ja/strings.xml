@@ -46,6 +46,8 @@
     <string name="cd_pin">ピン留め</string>
     <string name="cd_unpin">ピンを外す</string>
     <string name="cd_delete">削除</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">プロジェクトを支援</string>
 
     <string name="install_step">ステップ %1$d / %2$d</string>
     <string name="install_welcome_title">オフラインで翻訳。\n言葉はこの端末から出ません</string>

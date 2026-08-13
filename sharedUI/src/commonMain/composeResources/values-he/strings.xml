@@ -44,6 +44,8 @@
     <string name="cd_pin">נעיצה</string>
     <string name="cd_unpin">ביטול נעיצה</string>
     <string name="cd_delete">מחיקה</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">תמיכה בפרויקט</string>
     <string name="install_step">שלב %1$d מתוך %2$d</string>
     <string name="install_welcome_title">תרגמו במצב לא מקוון,\nבלי שמילה תצא מהמכשיר הזה</string>
     <string name="install_welcome_body">המודל רץ במחשב הזה. טקסטים, מסמכים והיסטוריה נשארים מקומיים — אין בקשה יוצאת אחרי ההתקנה.</string>

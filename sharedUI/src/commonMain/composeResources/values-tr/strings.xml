@@ -44,6 +44,8 @@
     <string name="cd_pin">Sabitle</string>
     <string name="cd_unpin">Sabitlemeyi kaldır</string>
     <string name="cd_delete">Sil</string>
+    <string name="tooltip_github">GitHub</string>
+    <string name="tooltip_sponsor">Projeyi destekle</string>
     <string name="install_step">Adım %1$d / %2$d</string>
     <string name="install_welcome_title">Çevrimdışı çevirin,\nbu cihazdan tek kelime çıkmadan</string>
     <string name="install_welcome_body">Model bu makinede çalışır. Metinler, belgeler ve geçmiş yerelde kalır — kurulumdan sonra giden istek yoktur.</string>
