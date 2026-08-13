@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2.6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">번역</string>
+    <string name="nav_proofread">교정</string>
     <string name="nav_history">즐겨찾기</string>
     <string name="nav_settings">설정</string>
     <string name="nav_about">정보</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">삭제</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">프로젝트 후원</string>
+    <string name="update_available">앱을 다시 시작하면 업데이트가 자동으로 설치됩니다.</string>
+    <string name="update_restart_title">지금 다시 시작할까요?</string>
+    <string name="update_restart_body">업데이트가 준비되었습니다. 지금 다시 시작해 설치하거나, 나중에 종료하세요. 자동으로 설치됩니다.</string>
+    <string name="action_restart_now">지금 다시 시작</string>
     <string name="install_step">%2$d단계 중 %1$d단계</string>
     <string name="install_welcome_title">오프라인으로 번역.\n이 기기 밖으로 단어가 나가지 않습니다</string>
     <string name="install_welcome_body">모델은 이 컴퓨터에서 실행됩니다. 텍스트, 문서, 즐겨찾기는 모두 로컬에 남습니다. 설치 후에는 외부 요청이 없습니다.</string>
@@ -241,4 +246,9 @@
     <string name="month_oct">10월</string>
     <string name="month_nov">11월</string>
     <string name="month_dec">12월</string>
+    <string name="proofread_header">텍스트</string>
+    <string name="proofread_result_header">교정</string>
+    <string name="proofread_placeholder">교정할 텍스트를 입력하세요…</string>
+    <string name="proofread_result_placeholder">교정된 텍스트가 여기에 나타납니다.</string>
+    <string name="action_apply">적용</string>
 </resources>

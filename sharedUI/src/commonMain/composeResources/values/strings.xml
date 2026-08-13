@@ -54,6 +54,10 @@
     <string name="cd_delete">Delete</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Support the project</string>
+    <string name="update_available">An update will be installed automatically after you restart the app.</string>
+    <string name="update_restart_title">Restart now?</string>
+    <string name="update_restart_body">The update is ready. Restart to install it now, or quit later — it will install automatically.</string>
+    <string name="action_restart_now">Restart now</string>
 
     <string name="install_step">Step %1$d of %2$d</string>
     <string name="install_welcome_title">Translate offline,\nwithout a word leaving this device</string>

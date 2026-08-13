@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2.6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Isalin</string>
+    <string name="nav_proofread">Pagwawasto</string>
     <string name="nav_history">Mga paborito</string>
     <string name="nav_settings">Mga setting</string>
     <string name="nav_about">Tungkol</string>
@@ -43,7 +44,7 @@
     <string name="mic_listening">Nakikinig…</string>
     <string name="mic_transcribing">Tinatranskriba…</string>
     <string name="mic_tap_stop">I-tap ang mic para tumigil</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Walang available na mikropono.</string>
     <string name="msg_mic_failed">Hindi marekord ang audio.</string>
     <string name="cd_pin">I-pin</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Tanggalin</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Suportahan ang proyekto</string>
+    <string name="update_available">Isang update ang awtomatikong mai-install pagkatapos mong i-restart ang app.</string>
+    <string name="update_restart_title">I-restart ngayon?</string>
+    <string name="update_restart_body">Handa na ang update. I-restart para i-install ito ngayon, o isara mamaya — awtomatiko itong mai-install.</string>
+    <string name="action_restart_now">I-restart ngayon</string>
     <string name="install_step">Hakbang %1$d ng %2$d</string>
     <string name="install_welcome_title">Magsalin nang offline,\nwalang salitang umaalis sa device na ito</string>
     <string name="install_welcome_body">Tumatakbo ang modelo sa makinang ito. Ang mga teksto, dokumento, at paborito ay nananatiling lokal — walang palabas na kahilingan pagkatapos i-install.</string>
@@ -128,6 +133,7 @@
     <string name="history_clear">Burahin</string>
     <string name="settings_title">Mga setting</string>
     <string name="settings_ui_language">Wika ng interface</string>
+    <string name="settings_ui_language_system">Sistema</string>
     <string name="settings_lang_names">Mga pangalan ng wika</string>
     <string name="lang_names_system">Wika ng interface</string>
     <string name="lang_names_native">Mga katutubong pangalan</string>
@@ -139,6 +145,9 @@
     <string name="settings_model_delete">Tanggalin</string>
     <string name="settings_voices">Mga boses</string>
     <string name="settings_voices_location">Lokasyon ng mga boses</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_storage">Imbakan</string>
+    <string name="settings_voices_add">Magdagdag ng boses</string>
     <string name="settings_voices_summary">%1$d boses · %2$d naka-install</string>
     <string name="settings_reset">I-reset</string>
     <string name="settings_reset_title">I-reset ang app</string>
@@ -241,4 +250,9 @@
     <string name="month_oct">Okt</string>
     <string name="month_nov">Nob</string>
     <string name="month_dec">Dis</string>
+    <string name="proofread_header">Teksto</string>
+    <string name="proofread_result_header">Pagwawasto</string>
+    <string name="proofread_placeholder">Ilagay ang tekstong iwawasto…</string>
+    <string name="proofread_result_placeholder">Lilitaw dito ang naitama na teksto.</string>
+    <string name="action_apply">Ilapat</string>
 </resources>

@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · ۲٫۶ گیگابایت</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">ترجمه</string>
+    <string name="nav_proofread">تصحیح</string>
     <string name="nav_history">علاقه‌مندی‌ها</string>
     <string name="nav_settings">تنظیمات</string>
     <string name="nav_about">درباره</string>
@@ -43,7 +44,7 @@
     <string name="mic_listening">در حال شنیدن…</string>
     <string name="mic_transcribing">در حال نویسه‌گردانی…</string>
     <string name="mic_tap_stop">برای توقف روی میکروفون بزنید</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">میکروفونی در دسترس نیست.</string>
     <string name="msg_mic_failed">صدا ضبط نشد.</string>
     <string name="cd_pin">سنجاق</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">حذف</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">حمایت از پروژه</string>
+    <string name="update_available">پس از راه‌اندازی مجدد برنامه، به‌روزرسانی به‌طور خودکار نصب می‌شود.</string>
+    <string name="update_restart_title">همین حالا راه‌اندازی مجدد؟</string>
+    <string name="update_restart_body">به‌روزرسانی آماده است. برای نصب فوری راه‌اندازی مجدد کنید، یا بعداً خارج شوید — به‌طور خودکار نصب می‌شود.</string>
+    <string name="action_restart_now">راه‌اندازی مجدد</string>
     <string name="install_step">گام %1$d از %2$d</string>
     <string name="install_welcome_title">آفلاین ترجمه کنید،\nبدون اینکه کلمه‌ای از این دستگاه بیرون برود</string>
     <string name="install_welcome_body">مدل روی این رایانه اجرا می‌شود. متن‌ها، اسناد و علاقه‌مندی‌ها محلی می‌مانند — پس از نصب هیچ درخواست خروجی نیست.</string>
@@ -128,6 +133,7 @@
     <string name="history_clear">پاک کردن</string>
     <string name="settings_title">تنظیمات</string>
     <string name="settings_ui_language">زبان رابط</string>
+    <string name="settings_ui_language_system">سیستم</string>
     <string name="settings_lang_names">نام زبان‌ها</string>
     <string name="lang_names_system">زبان رابط</string>
     <string name="lang_names_native">نام‌های بومی</string>
@@ -139,6 +145,9 @@
     <string name="settings_model_delete">حذف</string>
     <string name="settings_voices">صداها</string>
     <string name="settings_voices_location">محل صداها</string>
+    <string name="settings_display">نمایش</string>
+    <string name="settings_storage">فضای ذخیره‌سازی</string>
+    <string name="settings_voices_add">افزودن صدا</string>
     <string name="settings_voices_summary">%1$d صدا · %2$d نصب‌شده</string>
     <string name="settings_reset">بازنشانی</string>
     <string name="settings_reset_title">بازنشانی برنامه</string>
@@ -241,4 +250,9 @@
     <string name="month_oct">اکتبر</string>
     <string name="month_nov">نوامبر</string>
     <string name="month_dec">دسامبر</string>
+    <string name="proofread_header">متن</string>
+    <string name="proofread_result_header">تصحیح</string>
+    <string name="proofread_placeholder">متن را برای تصحیح وارد کنید…</string>
+    <string name="proofread_result_placeholder">متن تصحیح‌شده اینجا ظاهر می‌شود.</string>
+    <string name="action_apply">اعمال</string>
 </resources>

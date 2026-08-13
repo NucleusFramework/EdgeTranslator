@@ -87,6 +87,83 @@
         },
         {
             "type": "kotlin.Boolean"
+        },
+        {
+            "type": "androidx.compose.ui.window.ApplicationScope"
+        },
+        {
+            "type": "androidx.lifecycle.ViewModel"
+        },
+        {
+            "type": "com.sun.media.sound.DirectAudioDevice",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "addFormat",
+                    "parameterTypes": [
+                        "java.util.Vector",
+                        "int",
+                        "int",
+                        "int",
+                        "float",
+                        "int",
+                        "boolean",
+                        "boolean"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.media.sound.DirectAudioDeviceProvider$DirectAudioDeviceInfo",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "int",
+                        "int",
+                        "int",
+                        "java.lang.String",
+                        "java.lang.String",
+                        "java.lang.String",
+                        "java.lang.String"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.media.sound.PortMixerProvider$PortMixerInfo",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "int",
+                        "java.lang.String",
+                        "java.lang.String",
+                        "java.lang.String",
+                        "java.lang.String"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "dev.nucleusframework.application.NucleusApplicationScope"
+        },
+        {
+            "type": "dev.nucleusframework.offlinetranslator.app.AppIntent"
+        },
+        {
+            "type": "dev.nucleusframework.offlinetranslator.app.AppViewModel"
+        },
+        {
+            "type": "dev.nucleusframework.window.tao.event.TaoSyntheticMouseWheelEvent$source$1"
+        },
+        {
+            "type": "sun.text.resources.cldr.FormatData_en"
+        },
+        {
+            "type": "sun.text.resources.cldr.FormatData_en_US"
         }
     ],
     "resources": [

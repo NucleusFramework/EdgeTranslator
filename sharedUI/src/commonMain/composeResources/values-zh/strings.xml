@@ -5,6 +5,7 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">翻译</string>
+    <string name="nav_proofread">校对</string>
     <string name="nav_history">收藏</string>
     <string name="nav_settings">设置</string>
     <string name="nav_about">关于</string>
@@ -53,6 +54,10 @@
     <string name="cd_delete">删除</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">支持这个项目</string>
+    <string name="update_available">重新启动应用后将自动安装更新。</string>
+    <string name="update_restart_title">立即重新启动？</string>
+    <string name="update_restart_body">更新已就绪。立即重新启动以安装，或稍后退出——将自动安装。</string>
+    <string name="action_restart_now">立即重新启动</string>
 
     <string name="install_step">第 %1$d 步，共 %2$d 步</string>
     <string name="install_welcome_title">离线翻译，\n文字不会离开这台设备</string>
@@ -252,4 +257,9 @@
     <string name="month_oct">10月</string>
     <string name="month_nov">11月</string>
     <string name="month_dec">12月</string>
+    <string name="proofread_header">文本</string>
+    <string name="proofread_result_header">校对</string>
+    <string name="proofread_placeholder">输入要校对的文本…</string>
+    <string name="proofread_result_placeholder">校对后的文本将显示在这里。</string>
+    <string name="action_apply">应用</string>
 </resources>

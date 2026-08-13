@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Fordítás</string>
+    <string name="nav_proofread">Korrektúra</string>
     <string name="nav_history">Kedvencek</string>
     <string name="nav_settings">Beállítások</string>
     <string name="nav_about">Névjegy</string>
@@ -43,7 +44,7 @@
     <string name="mic_listening">Hallgatás…</string>
     <string name="mic_transcribing">Átírás…</string>
     <string name="mic_tap_stop">Koppintson a mikrofonra a leállításhoz</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Nincs elérhető mikrofon.</string>
     <string name="msg_mic_failed">A hangot nem sikerült rögzíteni.</string>
     <string name="cd_pin">Rögzítés</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Törlés</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">A projekt támogatása</string>
+    <string name="update_available">A frissítés automatikusan települ az alkalmazás újraindítása után.</string>
+    <string name="update_restart_title">Újraindítás most?</string>
+    <string name="update_restart_body">A frissítés készen áll. Indítsa újra a azonnali telepítéshez, vagy lépjen ki később — automatikusan települ.</string>
+    <string name="action_restart_now">Újraindítás most</string>
     <string name="install_step">%1$d / %2$d. lépés</string>
     <string name="install_welcome_title">Fordítson offline,\nanélkül, hogy egy szó is elhagyná ezt az eszközt</string>
     <string name="install_welcome_body">A modell ezen a gépen fut. A szövegek, dokumentumok és a kedvencek helyben maradnak — telepítés után nincs kimenő kérés.</string>
@@ -128,6 +133,7 @@
     <string name="history_clear">Törlés</string>
     <string name="settings_title">Beállítások</string>
     <string name="settings_ui_language">Felület nyelve</string>
+    <string name="settings_ui_language_system">Rendszer</string>
     <string name="settings_lang_names">Nyelvnevek</string>
     <string name="lang_names_system">Felület nyelve</string>
     <string name="lang_names_native">Natív nevek</string>
@@ -139,6 +145,9 @@
     <string name="settings_model_delete">Törlés</string>
     <string name="settings_voices">Hangok</string>
     <string name="settings_voices_location">Hangok helye</string>
+    <string name="settings_display">Megjelenítés</string>
+    <string name="settings_storage">Tárhely</string>
+    <string name="settings_voices_add">Hang hozzáadása</string>
     <string name="settings_voices_summary">%1$d hang · %2$d telepítve</string>
     <string name="settings_reset">Visszaállítás</string>
     <string name="settings_reset_title">Alkalmazás visszaállítása</string>
@@ -241,4 +250,9 @@
     <string name="month_oct">okt.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
+    <string name="proofread_header">Szöveg</string>
+    <string name="proofread_result_header">Javítás</string>
+    <string name="proofread_placeholder">Írja be a javítandó szöveget…</string>
+    <string name="proofread_result_placeholder">A javított szöveg itt jelenik meg.</string>
+    <string name="action_apply">Alkalmaz</string>
 </resources>

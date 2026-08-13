@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2.6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">অনুবাদ</string>
+    <string name="nav_proofread">সংশোধন</string>
     <string name="nav_history">পছন্দসমূহ</string>
     <string name="nav_settings">সেটিংস</string>
     <string name="nav_about">সম্পর্কে</string>
@@ -23,6 +24,7 @@
     <string name="action_copy">কপি</string>
     <string name="action_copied">কপি হয়েছে</string>
     <string name="action_save">সংরক্ষণ</string>
+    <string name="action_saved">সংরক্ষিত</string>
     <string name="action_quit">প্রস্থান</string>
     <string name="action_start">শুরু করুন</string>
     <string name="action_continue">চালিয়ে যান</string>
@@ -42,7 +44,7 @@
     <string name="mic_listening">শুনছে…</string>
     <string name="mic_transcribing">লিখছে…</string>
     <string name="mic_tap_stop">থামতে মাইকে ট্যাপ করুন</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">কোনো মাইক্রোফোন নেই।</string>
     <string name="msg_mic_failed">অডিও রেকর্ড হয়নি।</string>
     <string name="cd_pin">পিন</string>
@@ -50,6 +52,10 @@
     <string name="cd_delete">মুছুন</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">প্রকল্পটিকে সমর্থন করুন</string>
+    <string name="update_available">আপনি অ্যাপটি পুনরায় চালু করার পরে আপডেটটি স্বয়ংক্রিয়ভাবে ইনস্টল হবে।</string>
+    <string name="update_restart_title">এখনই পুনরায় চালু করবেন?</string>
+    <string name="update_restart_body">আপডেট প্রস্তুত। এখনই ইনস্টল করতে পুনরায় চালু করুন, অথবা পরে বন্ধ করুন — এটি স্বয়ংক্রিয়ভাবে ইনস্টল হবে।</string>
+    <string name="action_restart_now">এখনই পুনরায় চালু করুন</string>
     <string name="install_step">ধাপ %1$d / %2$d</string>
     <string name="install_welcome_title">অফলাইনে অনুবাদ করুন,\nএই ডিভাইস থেকে একটি শব্দও না বেরিয়ে</string>
     <string name="install_welcome_body">মডেল এই মেশিনে চলে। পাঠ, নথি ও পছন্দসমূহ স্থানীয় থাকে — ইনস্টলের পর কোনো বাহ্যিক অনুরোধ নেই।</string>
@@ -127,6 +133,7 @@
     <string name="history_clear">মুছুন</string>
     <string name="settings_title">সেটিংস</string>
     <string name="settings_ui_language">ইন্টারফেসের ভাষা</string>
+    <string name="settings_ui_language_system">সিস্টেম</string>
     <string name="settings_lang_names">ভাষার নাম</string>
     <string name="lang_names_system">ইন্টারফেসের ভাষা</string>
     <string name="lang_names_native">দেশীয় নাম</string>
@@ -138,6 +145,9 @@
     <string name="settings_model_delete">মুছুন</string>
     <string name="settings_voices">কণ্ঠ</string>
     <string name="settings_voices_location">কণ্ঠের অবস্থান</string>
+    <string name="settings_display">প্রদর্শন</string>
+    <string name="settings_storage">সঞ্চয়স্থান</string>
+    <string name="settings_voices_add">কণ্ঠ যোগ করুন</string>
     <string name="settings_voices_summary">%1$d কণ্ঠ · %2$d ইনস্টল</string>
     <string name="settings_reset">রিসেট</string>
     <string name="settings_reset_title">অ্যাপ রিসেট করুন</string>
@@ -240,4 +250,9 @@
     <string name="month_oct">অক্টো</string>
     <string name="month_nov">নভে</string>
     <string name="month_dec">ডিসে</string>
+    <string name="proofread_header">পাঠ</string>
+    <string name="proofread_result_header">সংশোধন</string>
+    <string name="proofread_placeholder">সংশোধনের জন্য পাঠ লিখুন…</string>
+    <string name="proofread_result_placeholder">সংশোধিত পাঠ এখানে দেখা যাবে।</string>
+    <string name="action_apply">প্রয়োগ</string>
 </resources>

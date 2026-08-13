@@ -5,6 +5,7 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Traduzir</string>
+    <string name="nav_proofread">Revisão</string>
     <string name="nav_history">Favoritos</string>
     <string name="nav_settings">Definições</string>
     <string name="nav_about">Sobre</string>
@@ -53,6 +54,10 @@
     <string name="cd_delete">Eliminar</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Apoiar o projeto</string>
+    <string name="update_available">Uma atualização será instalada automaticamente depois de reiniciar a aplicação.</string>
+    <string name="update_restart_title">Reiniciar agora?</string>
+    <string name="update_restart_body">A atualização está pronta. Reinicie para a instalar agora, ou saia mais tarde — será instalada automaticamente.</string>
+    <string name="action_restart_now">Reiniciar agora</string>
 
     <string name="install_step">Passo %1$d de %2$d</string>
     <string name="install_welcome_title">Traduzir offline,\nsem uma palavra sair deste dispositivo</string>
@@ -256,4 +261,9 @@
     <string name="month_oct">out.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dez.</string>
+    <string name="proofread_header">Texto</string>
+    <string name="proofread_result_header">Correção</string>
+    <string name="proofread_placeholder">Introduza o texto a rever…</string>
+    <string name="proofread_result_placeholder">O texto corrigido aparecerá aqui.</string>
+    <string name="action_apply">Aplicar</string>
 </resources>

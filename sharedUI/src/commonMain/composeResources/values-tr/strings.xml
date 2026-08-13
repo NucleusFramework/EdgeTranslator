@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Çevir</string>
+    <string name="nav_proofread">Düzeltme</string>
     <string name="nav_history">Favoriler</string>
     <string name="nav_settings">Ayarlar</string>
     <string name="nav_about">Hakkında</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Sil</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Projeyi destekle</string>
+    <string name="update_available">Uygulamayı yeniden başlattığınızda güncelleme otomatik olarak yüklenecek.</string>
+    <string name="update_restart_title">Şimdi yeniden başlatılsın mı?</string>
+    <string name="update_restart_body">Güncelleme hazır. Şimdi yüklemek için yeniden başlatın veya sonra çıkın — otomatik olarak yüklenecek.</string>
+    <string name="action_restart_now">Şimdi yeniden başlat</string>
     <string name="install_step">Adım %1$d / %2$d</string>
     <string name="install_welcome_title">Çevrimdışı çevirin,\nbu cihazdan tek kelime çıkmadan</string>
     <string name="install_welcome_body">Model bu makinede çalışır. Metinler, belgeler ve favoriler yerelde kalır — kurulumdan sonra giden istek yoktur.</string>
@@ -245,4 +250,9 @@
     <string name="month_oct">Eki</string>
     <string name="month_nov">Kas</string>
     <string name="month_dec">Ara</string>
+    <string name="proofread_header">Metin</string>
+    <string name="proofread_result_header">Düzeltme</string>
+    <string name="proofread_placeholder">Düzeltilecek metni girin…</string>
+    <string name="proofread_result_placeholder">Düzeltilmiş metin burada görünecek.</string>
+    <string name="action_apply">Uygula</string>
 </resources>

@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2.6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">अनुवाद</string>
+    <string name="nav_proofread">संशोधन</string>
     <string name="nav_history">पसंदीदा</string>
     <string name="nav_settings">सेटिंग्स</string>
     <string name="nav_about">परिचय</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">हटाएँ</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">परियोजना का समर्थन करें</string>
+    <string name="update_available">ऐप को फिर से शुरू करने के बाद अपडेट अपने आप इंस्टॉल हो जाएगा।</string>
+    <string name="update_restart_title">अभी पुनः प्रारंभ करें?</string>
+    <string name="update_restart_body">अपडेट तैयार है। अभी इंस्टॉल करने के लिए पुनः प्रारंभ करें, या बाद में बंद करें — यह अपने आप इंस्टॉल हो जाएगा।</string>
+    <string name="action_restart_now">अभी पुनः प्रारंभ करें</string>
     <string name="install_step">चरण %1$d / %2$d</string>
     <string name="install_welcome_title">ऑफ़लाइन अनुवाद करें,\nइस डिवाइस से एक शब्द भी बाहर न जाए</string>
     <string name="install_welcome_body">मॉडल इस मशीन पर चलता है। पाठ, दस्तावेज़ और पसंदीदा स्थानीय रहते हैं — इंस्टॉल के बाद कोई बाहरी अनुरोध नहीं।</string>
@@ -245,4 +250,9 @@
     <string name="month_oct">अक्टू</string>
     <string name="month_nov">नव</string>
     <string name="month_dec">दिस</string>
+    <string name="proofread_header">पाठ</string>
+    <string name="proofread_result_header">संशोधन</string>
+    <string name="proofread_placeholder">संशोधन के लिए पाठ लिखें…</string>
+    <string name="proofread_result_placeholder">संशोधित पाठ यहाँ दिखाई देगा।</string>
+    <string name="action_apply">लागू करें</string>
 </resources>

@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 ГБ</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Переклад</string>
+    <string name="nav_proofread">Коректура</string>
     <string name="nav_history">Обране</string>
     <string name="nav_settings">Налаштування</string>
     <string name="nav_about">Про програму</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Видалити</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Підтримати проєкт</string>
+    <string name="update_available">Оновлення встановиться автоматично після перезапуску програми.</string>
+    <string name="update_restart_title">Перезапустити зараз?</string>
+    <string name="update_restart_body">Оновлення готове. Перезапустіть, щоб установити зараз, або закрийте пізніше — воно встановиться автоматично.</string>
+    <string name="action_restart_now">Перезапустити зараз</string>
     <string name="install_step">Крок %1$d з %2$d</string>
     <string name="install_welcome_title">Перекладайте офлайн,\nне випускаючи жодного слова з цього пристрою</string>
     <string name="install_welcome_body">Модель працює на цьому комп’ютері. Тексти, документи й обране лишаються локально — після встановлення вихідних запитів немає.</string>
@@ -253,4 +258,9 @@
     <string name="month_oct">жовт.</string>
     <string name="month_nov">лист.</string>
     <string name="month_dec">груд.</string>
+    <string name="proofread_header">Текст</string>
+    <string name="proofread_result_header">Виправлення</string>
+    <string name="proofread_placeholder">Введіть текст для коректури…</string>
+    <string name="proofread_result_placeholder">Виправлений текст з’явиться тут.</string>
+    <string name="action_apply">Застосувати</string>
 </resources>

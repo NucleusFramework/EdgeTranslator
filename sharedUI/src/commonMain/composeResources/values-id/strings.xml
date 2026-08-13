@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Terjemahkan</string>
+    <string name="nav_proofread">Koreksi</string>
     <string name="nav_history">Favorit</string>
     <string name="nav_settings">Pengaturan</string>
     <string name="nav_about">Tentang</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Hapus</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Dukung proyek</string>
+    <string name="update_available">Pembaruan akan dipasang otomatis setelah Anda memulai ulang aplikasi.</string>
+    <string name="update_restart_title">Mulai ulang sekarang?</string>
+    <string name="update_restart_body">Pembaruan siap. Mulai ulang untuk memasangnya sekarang, atau keluar nanti — akan terpasang otomatis.</string>
+    <string name="action_restart_now">Mulai ulang sekarang</string>
     <string name="install_step">Langkah %1$d dari %2$d</string>
     <string name="install_welcome_title">Terjemahkan luring,\ntanpa satu kata pun meninggalkan perangkat ini</string>
     <string name="install_welcome_body">Model berjalan di mesin ini. Teks, dokumen, dan favorit tetap lokal — tidak ada permintaan keluar setelah pemasangan.</string>
@@ -241,4 +246,9 @@
     <string name="month_oct">Okt</string>
     <string name="month_nov">Nov</string>
     <string name="month_dec">Des</string>
+    <string name="proofread_header">Teks</string>
+    <string name="proofread_result_header">Koreksi</string>
+    <string name="proofread_placeholder">Masukkan teks yang akan dikoreksi…</string>
+    <string name="proofread_result_placeholder">Teks yang dikoreksi akan muncul di sini.</string>
+    <string name="action_apply">Terapkan</string>
 </resources>

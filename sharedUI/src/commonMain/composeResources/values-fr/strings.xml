@@ -54,6 +54,10 @@
     <string name="cd_delete">Supprimer</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Soutenir le projet</string>
+    <string name="update_available">La mise à jour sera installée automatiquement après le redémarrage de l&apos;application.</string>
+    <string name="update_restart_title">Redémarrer maintenant ?</string>
+    <string name="update_restart_body">La mise à jour est prête. Redémarrez pour l&apos;installer maintenant, ou quittez plus tard : elle s&apos;installera automatiquement.</string>
+    <string name="action_restart_now">Redémarrer maintenant</string>
 
     <string name="install_step">Étape %1$d sur %2$d</string>
     <string name="install_welcome_title">Traduire sans réseau,\nsans faire sortir un mot</string>

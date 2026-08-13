@@ -1,4 +1,6 @@
 import dev.nucleusframework.desktop.application.dsl.CompressionLevel
+import dev.nucleusframework.desktop.application.dsl.ReleaseChannel
+import dev.nucleusframework.desktop.application.dsl.ReleaseType
 import dev.nucleusframework.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -27,27 +29,51 @@ dependencies {
     implementation(libs.nucleus.decorated.window.material3)
 }
 
+val releaseVersion =
+    System.getenv("RELEASE_VERSION")
+        ?.removePrefix("v")
+        ?.takeIf { it.isNotBlank() && it.first().isDigit() }
+        ?: "1.0.0"
+
+val nativePackageVersion = releaseVersion.substringBefore("-")
+
 nucleus.application {
     mainClass = "MainKt"
 
     graalvm.isEnabled.set(true)
 
     nativeDistributions {
-        targetFormats(TargetFormat.Dmg, TargetFormat.Nsis, TargetFormat.Deb)
+        // Zip is the silent macOS updater payload; DMG stays the first-install image.
+        targetFormats(TargetFormat.Dmg, TargetFormat.Zip, TargetFormat.Nsis, TargetFormat.Deb)
         packageName = "OfflineTranslator"
-        packageVersion = "1.0.0"
+        packageVersion = releaseVersion
         cleanupNativeLibs = true
         compressionLevel = CompressionLevel.Ultra
+        homepage = "https://github.com/kdroidFilter/OfflineTranslator"
+
+        publish {
+            github {
+                enabled = true
+                owner = "kdroidFilter"
+                repo = "OfflineTranslator"
+                channel = ReleaseChannel.Latest
+                releaseType = ReleaseType.Release
+            }
+        }
 
         linux {
             iconFile.set(project.file("appIcons/LinuxIcon.png"))
             modules("jdk.security.auth")
+            debPackageVersion = releaseVersion
         }
         windows {
             iconFile.set(project.file("appIcons/WindowsIcon.ico"))
+            packageVersion = nativePackageVersion
+            upgradeUuid = "8f3a2c1d-6b4e-4d90-a7c5-1e9f0b8d4a63"
         }
         macOS {
             iconFile.set(project.file("appIcons/MacosIcon.icns"))
+            packageVersion = nativePackageVersion
             bundleID = "dev.nucleusframework.offlinetranslator.desktopApp"
             infoPlist {
                 extraKeysRawXml = """

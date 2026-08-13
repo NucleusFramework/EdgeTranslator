@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2.6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Tafsiri</string>
+    <string name="nav_proofread">Sahihisha</string>
     <string name="nav_history">Vipendwa</string>
     <string name="nav_settings">Mipangilio</string>
     <string name="nav_about">Kuhusu</string>
@@ -23,6 +24,7 @@
     <string name="action_copy">Nakili</string>
     <string name="action_copied">Imenakiliwa</string>
     <string name="action_save">Hifadhi</string>
+    <string name="action_saved">Imehifadhiwa</string>
     <string name="action_quit">Toka</string>
     <string name="action_start">Anza</string>
     <string name="action_continue">Endelea</string>
@@ -42,7 +44,7 @@
     <string name="mic_listening">Inasikiliza…</string>
     <string name="mic_transcribing">Inaandika…</string>
     <string name="mic_tap_stop">Gusa maikrofoni kusimamisha</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Hakuna maikrofoni.</string>
     <string name="msg_mic_failed">Haikuweza kurekodi sauti.</string>
     <string name="cd_pin">Bandika</string>
@@ -50,6 +52,10 @@
     <string name="cd_delete">Futa</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Saidia mradi</string>
+    <string name="update_available">Sasisho litasakinishwa kiotomatiki baada ya kuanzisha tena programu.</string>
+    <string name="update_restart_title">Anzisha tena sasa?</string>
+    <string name="update_restart_body">Sasisho liko tayari. Anzisha tena ili kulisakinisha sasa, au funga baadaye — litasakinishwa kiotomatiki.</string>
+    <string name="action_restart_now">Anzisha tena sasa</string>
     <string name="install_step">Hatua %1$d kati ya %2$d</string>
     <string name="install_welcome_title">Tafsiri nje ya mtandao,\nbila neno lolote kuondoka kwenye kifaa hiki</string>
     <string name="install_welcome_body">Muundo unafanya kazi kwenye kompyuta hii. Maandishi, nyaraka na vipendwa hukaa hapa — hakuna ombi linalotoka baada ya usakinishaji.</string>
@@ -127,6 +133,7 @@
     <string name="history_clear">Futa</string>
     <string name="settings_title">Mipangilio</string>
     <string name="settings_ui_language">Lugha ya kiolesura</string>
+    <string name="settings_ui_language_system">Mfumo</string>
     <string name="settings_lang_names">Majina ya lugha</string>
     <string name="lang_names_system">Lugha ya kiolesura</string>
     <string name="lang_names_native">Majina asilia</string>
@@ -138,6 +145,9 @@
     <string name="settings_model_delete">Futa</string>
     <string name="settings_voices">Sauti</string>
     <string name="settings_voices_location">Mahali pa sauti</string>
+    <string name="settings_display">Onyesho</string>
+    <string name="settings_storage">Hifadhi</string>
+    <string name="settings_voices_add">Ongeza sauti</string>
     <string name="settings_voices_summary">Sauti %1$d · %2$d zimesakinishwa</string>
     <string name="settings_reset">Weka upya</string>
     <string name="settings_reset_title">Weka upya programu</string>
@@ -240,4 +250,9 @@
     <string name="month_oct">Okt</string>
     <string name="month_nov">Nov</string>
     <string name="month_dec">Des</string>
+    <string name="proofread_header">Maandishi</string>
+    <string name="proofread_result_header">Marekebisho</string>
+    <string name="proofread_placeholder">Andika maandishi ya kurekebisha…</string>
+    <string name="proofread_result_placeholder">Maandishi yaliyosahihishwa yataonekana hapa.</string>
+    <string name="action_apply">Tumia</string>
 </resources>

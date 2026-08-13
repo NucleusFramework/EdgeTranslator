@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Översätt</string>
+    <string name="nav_proofread">Korrektur</string>
     <string name="nav_history">Favoriter</string>
     <string name="nav_settings">Inställningar</string>
     <string name="nav_about">Om</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Ta bort</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Stöd projektet</string>
+    <string name="update_available">En uppdatering installeras automatiskt när du startar om appen.</string>
+    <string name="update_restart_title">Starta om nu?</string>
+    <string name="update_restart_body">Uppdateringen är klar. Starta om för att installera den nu, eller avsluta senare — den installeras automatiskt.</string>
+    <string name="action_restart_now">Starta om nu</string>
     <string name="install_step">Steg %1$d av %2$d</string>
     <string name="install_welcome_title">Översätt offline,\nutan att ett ord lämnar den här enheten</string>
     <string name="install_welcome_body">Modellen körs på den här datorn. Texter, dokument och favoriter stannar lokalt — ingen utgående förfrågan efter installationen.</string>
@@ -245,4 +250,9 @@
     <string name="month_oct">okt.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
+    <string name="proofread_header">Text</string>
+    <string name="proofread_result_header">Korrektur</string>
+    <string name="proofread_placeholder">Ange texten som ska korrigeras…</string>
+    <string name="proofread_result_placeholder">Den korrigerade texten visas här.</string>
+    <string name="action_apply">Använd</string>
 </resources>

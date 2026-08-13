@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2.6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">అనువదించు</string>
+    <string name="nav_proofread">సరిచూడు</string>
     <string name="nav_history">ఇష్టాంశాలు</string>
     <string name="nav_settings">సెట్టింగ్‌లు</string>
     <string name="nav_about">గురించి</string>
@@ -23,6 +24,7 @@
     <string name="action_copy">కాపీ</string>
     <string name="action_copied">కాపీ అయింది</string>
     <string name="action_save">సేవ్</string>
+    <string name="action_saved">సేవ్ అయింది</string>
     <string name="action_quit">నిష్క్రమించు</string>
     <string name="action_start">ప్రారంభించు</string>
     <string name="action_continue">కొనసాగించు</string>
@@ -42,7 +44,7 @@
     <string name="mic_listening">వింటోంది…</string>
     <string name="mic_transcribing">లిఖిస్తోంది…</string>
     <string name="mic_tap_stop">ఆపడానికి మైక్‌ను నొక్కండి</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">మైక్రోఫోన్ లేదు.</string>
     <string name="msg_mic_failed">ఆడియో రికార్డ్ కాలేదు.</string>
     <string name="cd_pin">పిన్</string>
@@ -50,6 +52,10 @@
     <string name="cd_delete">తొలగించు</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">ప్రాజెక్ట్‌కు మద్దతు ఇవ్వండి</string>
+    <string name="update_available">యాప్‌ను మళ్లీ ప్రారంభించిన తర్వాత అప్‌డేట్ స్వయంచాలకంగా ఇన్‌స్టాల్ అవుతుంది.</string>
+    <string name="update_restart_title">ఇప్పుడే పునఃప్రారంభించాలా?</string>
+    <string name="update_restart_body">అప్‌డేట్ సిద్ధం. ఇప్పుడు ఇన్‌స్టాల్ చేయడానికి పునఃప్రారంభించండి, లేదా తర్వాత మూసివేయండి — ఇది స్వయంచాలకంగా ఇన్‌స్టాల్ అవుతుంది.</string>
+    <string name="action_restart_now">ఇప్పుడే పునఃప్రారంభించు</string>
     <string name="install_step">దశ %1$d / %2$d</string>
     <string name="install_welcome_title">ఆఫ్‌లైన్‌లో అనువదించండి,\nఈ పరికరం నుంచి ఒక్క పదం కూడా బయటకు వెళ్లకుండా</string>
     <string name="install_welcome_body">మోడల్ ఈ యంత్రంపై నడుస్తుంది. పాఠ్యం, పత్రాలు, ఇష్టాంశాలు స్థానికంగానే ఉంటాయి — ఇన్‌స్టాల్ తర్వాత బయటకు అభ్యర్థనలు లేవు.</string>
@@ -127,6 +133,7 @@
     <string name="history_clear">తుడుచు</string>
     <string name="settings_title">సెట్టింగ్‌లు</string>
     <string name="settings_ui_language">ఇంటర్‌ఫేస్ భాష</string>
+    <string name="settings_ui_language_system">సిస్టమ్</string>
     <string name="settings_lang_names">భాషల పేర్లు</string>
     <string name="lang_names_system">ఇంటర్‌ఫేస్ భాష</string>
     <string name="lang_names_native">స్థానిక పేర్లు</string>
@@ -138,6 +145,9 @@
     <string name="settings_model_delete">తొలగించు</string>
     <string name="settings_voices">వాయిస్‌లు</string>
     <string name="settings_voices_location">వాయిస్‌ల స్థానం</string>
+    <string name="settings_display">ప్రదర్శన</string>
+    <string name="settings_storage">నిల్వ</string>
+    <string name="settings_voices_add">వాయిస్ జోడించండి</string>
     <string name="settings_voices_summary">%1$d వాయిస్‌లు · %2$d ఇన్‌స్టాల్</string>
     <string name="settings_reset">రీసెట్</string>
     <string name="settings_reset_title">యాప్‌ను రీసెట్ చేయి</string>
@@ -240,4 +250,9 @@
     <string name="month_oct">అక్టో</string>
     <string name="month_nov">నవ</string>
     <string name="month_dec">డిసె</string>
+    <string name="proofread_header">పాఠ్యం</string>
+    <string name="proofread_result_header">సవరణ</string>
+    <string name="proofread_placeholder">సరిచూడాల్సిన పాఠ్యం రాయండి…</string>
+    <string name="proofread_result_placeholder">సవరించిన పాఠ్యం ఇక్కడ కనిపిస్తుంది.</string>
+    <string name="action_apply">వర్తింపజేయి</string>
 </resources>

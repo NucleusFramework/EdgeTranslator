@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Prevedi</string>
+    <string name="nav_proofread">Lektura</string>
     <string name="nav_history">Favoriti</string>
     <string name="nav_settings">Postavke</string>
     <string name="nav_about">O aplikaciji</string>
@@ -43,7 +44,7 @@
     <string name="mic_listening">Slušam…</string>
     <string name="mic_transcribing">Transkripcija…</string>
     <string name="mic_tap_stop">Dodirnite mikrofon za zaustavljanje</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Nema dostupnog mikrofona.</string>
     <string name="msg_mic_failed">Zvuk se nije mogao snimiti.</string>
     <string name="cd_pin">Prikvači</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Izbriši</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Podrži projekt</string>
+    <string name="update_available">Ažuriranje će se automatski instalirati nakon ponovnog pokretanja aplikacije.</string>
+    <string name="update_restart_title">Ponovo pokrenuti sada?</string>
+    <string name="update_restart_body">Ažuriranje je spremno. Ponovo pokrenite za trenutačnu instalaciju, ili zatvorite kasnije — instalirat će se automatski.</string>
+    <string name="action_restart_now">Ponovo pokreni sada</string>
     <string name="install_step">Korak %1$d od %2$d</string>
     <string name="install_welcome_title">Prevodite izvan mreže,\nbez da ijedna riječ napusti ovaj uređaj</string>
     <string name="install_welcome_body">Model radi na ovom računalu. Tekstovi, dokumenti i favoriti ostaju lokalno — nakon instalacije nema odlaznih zahtjeva.</string>
@@ -128,6 +133,7 @@
     <string name="history_clear">Isprazni</string>
     <string name="settings_title">Postavke</string>
     <string name="settings_ui_language">Jezik sučelja</string>
+    <string name="settings_ui_language_system">Sustav</string>
     <string name="settings_lang_names">Nazivi jezika</string>
     <string name="lang_names_system">Jezik sučelja</string>
     <string name="lang_names_native">Izvorni nazivi</string>
@@ -139,6 +145,9 @@
     <string name="settings_model_delete">Izbriši</string>
     <string name="settings_voices">Glasovi</string>
     <string name="settings_voices_location">Lokacija glasova</string>
+    <string name="settings_display">Prikaz</string>
+    <string name="settings_storage">Pohrana</string>
+    <string name="settings_voices_add">Dodaj glas</string>
     <string name="settings_voices_summary">%1$d glasova · instalirano %2$d</string>
     <string name="settings_reset">Reset</string>
     <string name="settings_reset_title">Resetiraj aplikaciju</string>
@@ -245,4 +254,9 @@
     <string name="month_oct">lis</string>
     <string name="month_nov">stu</string>
     <string name="month_dec">pro</string>
+    <string name="proofread_header">Tekst</string>
+    <string name="proofread_result_header">Ispravak</string>
+    <string name="proofread_placeholder">Unesite tekst za lekturu…</string>
+    <string name="proofread_result_placeholder">Ispravljeni tekst pojavit će se ovdje.</string>
+    <string name="action_apply">Primijeni</string>
 </resources>

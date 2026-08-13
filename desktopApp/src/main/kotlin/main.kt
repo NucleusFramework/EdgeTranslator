@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,12 +29,16 @@ import dev.nucleusframework.application.nucleusApplication
 import dev.nucleusframework.core.runtime.Platform
 import dev.nucleusframework.offlinetranslator.App
 import dev.nucleusframework.offlinetranslator.main.BrandLabel
+import dev.nucleusframework.offlinetranslator.main.DesktopUpdate
 import dev.nucleusframework.offlinetranslator.main.GitHubButton
-import dev.nucleusframework.offlinetranslator.main.SponsorButton
 import dev.nucleusframework.offlinetranslator.main.LocalHostHasTitleBar
 import dev.nucleusframework.offlinetranslator.main.LocalSystemMeters
 import dev.nucleusframework.offlinetranslator.main.LocalWindowDrag
+import dev.nucleusframework.offlinetranslator.main.SponsorButton
 import dev.nucleusframework.offlinetranslator.main.SystemMeters
+import dev.nucleusframework.offlinetranslator.main.UpdateButton
+import dev.nucleusframework.offlinetranslator.main.UpdateRestartDialog
+import dev.nucleusframework.offlinetranslator.main.rememberDesktopUpdate
 import dev.nucleusframework.offlinetranslator.theme.rememberEdgeColorScheme
 import dev.nucleusframework.window.ControlButtonsDirection
 import dev.nucleusframework.window.DecoratedWindowScope
@@ -65,13 +70,18 @@ fun main(args: Array<String>) {
         // window controls sit outside App's own LocalLayoutDirection.
         var rtl by remember { mutableStateOf(false) }
         val colors = rememberEdgeColorScheme(dark)
+        val update = rememberDesktopUpdate()
+        val quit = {
+            update.installOnExit()
+            exitApplication()
+        }
 
         MaterialTheme(colorScheme = colors) {
             MaterialDecoratedWindow(
-                onCloseRequest = ::exitApplication,
+                onCloseRequest = quit,
                 state = rememberWindowState(width = 1440.dp, height = 900.dp),
                 title = "Edge Translator",
-                minimumSize = DpSize(960.dp, 640.dp),
+                minimumSize = DpSize(240.dp, 300.dp),
             ) {
                 val windowScope = this
                 // The colour behind everything Compose does not paint (live
@@ -92,7 +102,7 @@ fun main(args: Array<String>) {
                     modifier = Modifier.macOSLargeCornerRadius(),
                     controlButtonsDirection = if (rtl) ControlButtonsDirection.Rtl else ControlButtonsDirection.Ltr,
                     titleBar = {
-                        CompositionLocalProvider(LocalLayoutDirection provides dir) { windowScope.AppChrome() }
+                        CompositionLocalProvider(LocalLayoutDirection provides dir) { windowScope.AppChrome(update) }
                     },
                 ) {
                     // Lock the app content to 75% density (denser UI). Scaled off the monitor's
@@ -100,23 +110,26 @@ fun main(args: Array<String>) {
                     // The chrome stays at native density so it keeps crisp next to the
                     // window controls.
                     val base = LocalDensity.current
-                    CompositionLocalProvider(
-                        LocalDensity provides Density(base.density * DESKTOP_DENSITY_SCALE, base.fontScale),
-                        LocalHostHasTitleBar provides true,
-                        // Lets the shared UI declare its own drag surfaces — the
-                        // navigation rail — without depending on Nucleus.
-                        LocalWindowDrag provides Modifier.windowDragArea(),
-                        // Host-only: the meters read this machine via system-info.
-                        LocalSystemMeters provides { modifier -> SystemMeters(modifier) },
-                    ) {
-                        App(
-                            // SideEffect: App reports the resolved theme during
-                            // composition, so the write has to land after it.
-                            onThemeChange = { isDark -> SideEffect { dark = isDark } },
-                            onLayoutDirectionChange = { isRtl -> SideEffect { rtl = isRtl } },
-                            onQuit = ::exitApplication,
-                            forceOnboarding = forceOnboarding,
-                        )
+                    Box(Modifier.fillMaxSize()) {
+                        CompositionLocalProvider(
+                            LocalDensity provides Density(base.density * DESKTOP_DENSITY_SCALE, base.fontScale),
+                            LocalHostHasTitleBar provides true,
+                            // Lets the shared UI declare its own drag surfaces — the
+                            // navigation rail — without depending on Nucleus.
+                            LocalWindowDrag provides Modifier.windowDragArea(),
+                            // Host-only: the meters read this machine via system-info.
+                            LocalSystemMeters provides { modifier -> SystemMeters(modifier) },
+                        ) {
+                            App(
+                                // SideEffect: App reports the resolved theme during
+                                // composition, so the write has to land after it.
+                                onThemeChange = { isDark -> SideEffect { dark = isDark } },
+                                onLayoutDirectionChange = { isRtl -> SideEffect { rtl = isRtl } },
+                                onQuit = quit,
+                                forceOnboarding = forceOnboarding,
+                            )
+                        }
+                        UpdateRestartDialog(update)
                     }
                 }
             }
@@ -125,13 +138,13 @@ fun main(args: Array<String>) {
 }
 
 /**
- * Window chrome: the app title, GitHub and sponsor links at the trailing edge.
+ * Window chrome: the app title, update icon, GitHub and sponsor links at the trailing edge.
  * Navigation, the meters and each screen's own strip live in the app body.
  *
  * The whole strip is the drag surface — `WindowScaffold` makes nothing implicit.
  */
 @Composable
-private fun DecoratedWindowScope.AppChrome() {
+private fun DecoratedWindowScope.AppChrome(update: DesktopUpdate) {
     val colors = MaterialTheme.colorScheme
     val insets = LocalWindowChromeInsets.current
 
@@ -172,6 +185,7 @@ private fun DecoratedWindowScope.AppChrome() {
                 .padding(end = if (mac) 10.dp else 0.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            UpdateButton(update)
             GitHubButton()
             SponsorButton()
             if (!mac) WindowControls(Modifier.fillMaxHeight())

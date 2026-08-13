@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Přeložit</string>
+    <string name="nav_proofread">Korektura</string>
     <string name="nav_history">Oblíbené</string>
     <string name="nav_settings">Nastavení</string>
     <string name="nav_about">O aplikaci</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Smazat</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Podpořit projekt</string>
+    <string name="update_available">Aktualizace se po restartu aplikace nainstaluje automaticky.</string>
+    <string name="update_restart_title">Restartovat teď?</string>
+    <string name="update_restart_body">Aktualizace je připravena. Restartujte pro okamžitou instalaci, nebo ukončete později — nainstaluje se automaticky.</string>
+    <string name="action_restart_now">Restartovat teď</string>
     <string name="install_step">Krok %1$d z %2$d</string>
     <string name="install_welcome_title">Překládejte offline,\naniž by slovo opustilo toto zařízení</string>
     <string name="install_welcome_body">Model běží na tomto počítači. Texty, dokumenty a oblíbené zůstanou lokálně — po instalaci žádný odchozí požadavek.</string>
@@ -253,4 +258,9 @@
     <string name="month_oct">říj</string>
     <string name="month_nov">lis</string>
     <string name="month_dec">pro</string>
+    <string name="proofread_header">Text</string>
+    <string name="proofread_result_header">Korektura</string>
+    <string name="proofread_placeholder">Zadejte text ke kontrole…</string>
+    <string name="proofread_result_placeholder">Opravený text se zobrazí zde.</string>
+    <string name="action_apply">Použít</string>
 </resources>

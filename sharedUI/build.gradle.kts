@@ -78,6 +78,7 @@ kotlin {
             implementation(libs.nucleus.system.color)
             implementation(libs.nucleus.system.info)
             implementation(libs.nucleus.native.http.ktor)
+            implementation(libs.nucleus.updater.runtime)
             implementation(libs.litertlm.jvm)
             implementation(libs.piper.jni)
         }

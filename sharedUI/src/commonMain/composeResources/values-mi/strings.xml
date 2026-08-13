@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2.6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Whakamāori</string>
+    <string name="nav_proofread">Whakatika</string>
     <string name="nav_history">Ngā makau</string>
     <string name="nav_settings">Tautuhinga</string>
     <string name="nav_about">Mō</string>
@@ -23,6 +24,7 @@
     <string name="action_copy">Tārua</string>
     <string name="action_copied">Kua tāruatia</string>
     <string name="action_save">Tiaki</string>
+    <string name="action_saved">Kua tiakina</string>
     <string name="action_quit">Puta</string>
     <string name="action_start">Tīmata</string>
     <string name="action_continue">Haere tonu</string>
@@ -42,7 +44,7 @@
     <string name="mic_listening">E whakarongo ana…</string>
     <string name="mic_transcribing">E tuhi ana…</string>
     <string name="mic_tap_stop">Pāwhiri te hopuoro kia mutu</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Kāore he hopuoro.</string>
     <string name="msg_mic_failed">Kāore i taea te hopu ororongo.</string>
     <string name="cd_pin">Titi</string>
@@ -50,6 +52,10 @@
     <string name="cd_delete">Muku</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Tautokona te kaupapa</string>
+    <string name="update_available">Ka tāutahia aunoatia te whakahōu i muri i tō tīmata anō i te taupānga.</string>
+    <string name="update_restart_title">Tīmata anō ināianei?</string>
+    <string name="update_restart_body">Kua reri te whakahōu. Tīmata anō kia tāutahia ināianei, tēnā ka whakakore ā muri ake — ka tāutahia aunoatia.</string>
+    <string name="action_restart_now">Tīmata anō ināianei</string>
     <string name="install_step">Hipanga %1$d o %2$d</string>
     <string name="install_welcome_title">Whakamāori tuimotu,\nkāore tētahi kupu e wehe i tēnei pūrere</string>
     <string name="install_welcome_body">Ka rere te tauira i runga i tēnei rorohiko. Ka noho ngā kupu, tuhinga me ngā makau ki konei — kāore he tono puta i muri i te tāuta.</string>
@@ -127,6 +133,7 @@
     <string name="history_clear">Ūkui</string>
     <string name="settings_title">Tautuhinga</string>
     <string name="settings_ui_language">Reo atanga</string>
+    <string name="settings_ui_language_system">Pūnaha</string>
     <string name="settings_lang_names">Ingoa reo</string>
     <string name="lang_names_system">Reo atanga</string>
     <string name="lang_names_native">Ingoa taketake</string>
@@ -138,6 +145,9 @@
     <string name="settings_model_delete">Muku</string>
     <string name="settings_voices">Reo</string>
     <string name="settings_voices_location">Wāhi reo</string>
+    <string name="settings_display">Whakaatu</string>
+    <string name="settings_storage">Putunga</string>
+    <string name="settings_voices_add">Tāpirihia he reo</string>
     <string name="settings_voices_summary">%1$d reo · %2$d kua tāuta</string>
     <string name="settings_reset">Tautuhi anō</string>
     <string name="settings_reset_title">Tautuhi anō te taupānga</string>
@@ -236,4 +246,9 @@
     <string name="month_oct">Oke</string>
     <string name="month_nov">Noe</string>
     <string name="month_dec">Tīhe</string>
+    <string name="proofread_header">Kupu</string>
+    <string name="proofread_result_header">Whakatikatanga</string>
+    <string name="proofread_placeholder">Tāuruhia te kupu hei whakatika…</string>
+    <string name="proofread_result_placeholder">Ka puta te kupu kua whakatikaina ki konei.</string>
+    <string name="action_apply">Whakamahia</string>
 </resources>

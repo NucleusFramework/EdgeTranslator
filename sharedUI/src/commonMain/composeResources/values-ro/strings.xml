@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Traducere</string>
+    <string name="nav_proofread">Corectură</string>
     <string name="nav_history">Favorite</string>
     <string name="nav_settings">Setări</string>
     <string name="nav_about">Despre</string>
@@ -43,7 +44,7 @@
     <string name="mic_listening">Ascult…</string>
     <string name="mic_transcribing">Se transcrie…</string>
     <string name="mic_tap_stop">Atingeți microfonul pentru a opri</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Niciun microfon disponibil.</string>
     <string name="msg_mic_failed">Audio-ul nu a putut fi înregistrat.</string>
     <string name="cd_pin">Fixează</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Șterge</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Susține proiectul</string>
+    <string name="update_available">O actualizare va fi instalată automat după repornirea aplicației.</string>
+    <string name="update_restart_title">Repornești acum?</string>
+    <string name="update_restart_body">Actualizarea este gata. Repornește pentru a o instala acum, sau închide mai târziu — se va instala automat.</string>
+    <string name="action_restart_now">Repornește acum</string>
     <string name="install_step">Pasul %1$d din %2$d</string>
     <string name="install_welcome_title">Traduceți offline,\nfără ca vreun cuvânt să părăsească acest dispozitiv</string>
     <string name="install_welcome_body">Modelul rulează pe acest calculator. Textele, documentele și favoritele rămân locale — nicio cerere ieșită după instalare.</string>
@@ -128,6 +133,7 @@
     <string name="history_clear">Golește</string>
     <string name="settings_title">Setări</string>
     <string name="settings_ui_language">Limba interfeței</string>
+    <string name="settings_ui_language_system">Sistem</string>
     <string name="settings_lang_names">Numele limbilor</string>
     <string name="lang_names_system">Limba interfeței</string>
     <string name="lang_names_native">Nume native</string>
@@ -139,6 +145,9 @@
     <string name="settings_model_delete">Șterge</string>
     <string name="settings_voices">Voci</string>
     <string name="settings_voices_location">Locația vocilor</string>
+    <string name="settings_display">Afișare</string>
+    <string name="settings_storage">Stocare</string>
+    <string name="settings_voices_add">Adăugare voce</string>
     <string name="settings_voices_summary">%1$d voci · %2$d instalate</string>
     <string name="settings_reset">Resetare</string>
     <string name="settings_reset_title">Resetați aplicația</string>
@@ -245,4 +254,9 @@
     <string name="month_oct">oct.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
+    <string name="proofread_header">Text</string>
+    <string name="proofread_result_header">Corectură</string>
+    <string name="proofread_placeholder">Introduceți textul de corectat…</string>
+    <string name="proofread_result_placeholder">Textul corectat va apărea aici.</string>
+    <string name="action_apply">Aplicare</string>
 </resources>

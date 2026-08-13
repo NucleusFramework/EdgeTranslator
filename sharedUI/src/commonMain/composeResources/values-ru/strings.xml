@@ -5,6 +5,7 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Перевод</string>
+    <string name="nav_proofread">Корректура</string>
     <string name="nav_history">Избранное</string>
     <string name="nav_settings">Настройки</string>
     <string name="nav_about">О программе</string>
@@ -53,6 +54,10 @@
     <string name="cd_delete">Удалить</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Поддержать проект</string>
+    <string name="update_available">Обновление установится автоматически после перезапуска приложения.</string>
+    <string name="update_restart_title">Перезапустить сейчас?</string>
+    <string name="update_restart_body">Обновление готово. Перезапустите, чтобы установить сейчас, или закройте позже — оно установится автоматически.</string>
+    <string name="action_restart_now">Перезапустить сейчас</string>
 
     <string name="install_step">Шаг %1$d из %2$d</string>
     <string name="install_welcome_title">Переводите офлайн,\nне выпуская ни слова с этого устройства</string>
@@ -264,4 +269,9 @@
     <string name="month_oct">окт.</string>
     <string name="month_nov">нояб.</string>
     <string name="month_dec">дек.</string>
+    <string name="proofread_header">Текст</string>
+    <string name="proofread_result_header">Исправление</string>
+    <string name="proofread_placeholder">Введите текст для корректуры…</string>
+    <string name="proofread_result_placeholder">Исправленный текст появится здесь.</string>
+    <string name="action_apply">Применить</string>
 </resources>

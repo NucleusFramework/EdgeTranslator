@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2.6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">แปล</string>
+    <string name="nav_proofread">ตรวจแก้</string>
     <string name="nav_history">รายการโปรด</string>
     <string name="nav_settings">การตั้งค่า</string>
     <string name="nav_about">เกี่ยวกับ</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">ลบ</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">สนับสนุนโปรเจกต์</string>
+    <string name="update_available">การอัปเดตจะติดตั้งโดยอัตโนมัติหลังจากคุณรีสตาร์ทแอป</string>
+    <string name="update_restart_title">รีสตาร์ทตอนนี้?</string>
+    <string name="update_restart_body">การอัปเดตพร้อมแล้ว รีสตาร์ทเพื่อติดตั้งตอนนี้ หรือออกในภายหลัง — จะติดตั้งโดยอัตโนมัติ</string>
+    <string name="action_restart_now">รีสตาร์ทตอนนี้</string>
     <string name="install_step">ขั้นตอนที่ %1$d จาก %2$d</string>
     <string name="install_welcome_title">แปลแบบออฟไลน์\nโดยไม่มีคำใดออกจากอุปกรณ์นี้</string>
     <string name="install_welcome_body">โมเดลทำงานบนเครื่องนี้ ข้อความ เอกสาร และรายการโปรดอยู่ที่เครื่อง — ไม่มีคำขอออกหลังติดตั้ง</string>
@@ -241,4 +246,9 @@
     <string name="month_oct">ต.ค.</string>
     <string name="month_nov">พ.ย.</string>
     <string name="month_dec">ธ.ค.</string>
+    <string name="proofread_header">ข้อความ</string>
+    <string name="proofread_result_header">การแก้ไข</string>
+    <string name="proofread_placeholder">พิมพ์ข้อความที่จะตรวจแก้…</string>
+    <string name="proofread_result_placeholder">ข้อความที่แก้ไขจะปรากฏที่นี่</string>
+    <string name="action_apply">ใช้</string>
 </resources>

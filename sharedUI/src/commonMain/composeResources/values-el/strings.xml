@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Μετάφραση</string>
+    <string name="nav_proofread">Διόρθωση</string>
     <string name="nav_history">Αγαπημένα</string>
     <string name="nav_settings">Ρυθμίσεις</string>
     <string name="nav_about">Σχετικά</string>
@@ -23,6 +24,7 @@
     <string name="action_copy">Αντιγραφή</string>
     <string name="action_copied">Αντιγράφηκε</string>
     <string name="action_save">Αποθήκευση</string>
+    <string name="action_saved">Αποθηκεύτηκε</string>
     <string name="action_quit">Έξοδος</string>
     <string name="action_start">Έναρξη</string>
     <string name="action_continue">Συνέχεια</string>
@@ -42,7 +44,7 @@
     <string name="mic_listening">Ακρόαση…</string>
     <string name="mic_transcribing">Μεταγραφή…</string>
     <string name="mic_tap_stop">Πατήστε το μικρόφωνο για διακοπή</string>
-    <string name="mic_time">%1$d:%2$02d / 0:30</string>
+    <string name="mic_time">%1$s / 0:30</string>
     <string name="msg_mic_unavailable">Δεν υπάρχει διαθέσιμο μικρόφωνο.</string>
     <string name="msg_mic_failed">Δεν ήταν δυνατή η εγγραφή ήχου.</string>
     <string name="cd_pin">Καρφίτσωμα</string>
@@ -50,6 +52,10 @@
     <string name="cd_delete">Διαγραφή</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Υποστηρίξτε το έργο</string>
+    <string name="update_available">Μια ενημέρωση θα εγκατασταθεί αυτόματα μετά την επανεκκίνηση της εφαρμογής.</string>
+    <string name="update_restart_title">Επανεκκίνηση τώρα;</string>
+    <string name="update_restart_body">Η ενημέρωση είναι έτοιμη. Επανεκκινήστε για να την εγκαταστήσετε τώρα, ή κλείστε αργότερα — θα εγκατασταθεί αυτόματα.</string>
+    <string name="action_restart_now">Επανεκκίνηση τώρα</string>
     <string name="install_step">Βήμα %1$d από %2$d</string>
     <string name="install_welcome_title">Μεταφράστε εκτός σύνδεσης,\nχωρίς να φύγει λέξη από αυτή τη συσκευή</string>
     <string name="install_welcome_body">Το μοντέλο εκτελείται σε αυτόν τον υπολογιστή. Κείμενα, έγγραφα και αγαπημένα μένουν τοπικά — κανένα εξερχόμενο αίτημα μετά την εγκατάσταση.</string>
@@ -127,6 +133,7 @@
     <string name="history_clear">Εκκαθάριση</string>
     <string name="settings_title">Ρυθμίσεις</string>
     <string name="settings_ui_language">Γλώσσα διεπαφής</string>
+    <string name="settings_ui_language_system">Σύστημα</string>
     <string name="settings_lang_names">Ονόματα γλωσσών</string>
     <string name="lang_names_system">Γλώσσα διεπαφής</string>
     <string name="lang_names_native">Τοπικά ονόματα</string>
@@ -138,6 +145,9 @@
     <string name="settings_model_delete">Διαγραφή</string>
     <string name="settings_voices">Φωνές</string>
     <string name="settings_voices_location">Θέση φωνών</string>
+    <string name="settings_display">Εμφάνιση</string>
+    <string name="settings_storage">Αποθήκευση</string>
+    <string name="settings_voices_add">Προσθήκη φωνής</string>
     <string name="settings_voices_summary">%1$d φωνές · %2$d εγκατεστημένες</string>
     <string name="settings_reset">Επαναφορά</string>
     <string name="settings_reset_title">Επαναφορά εφαρμογής</string>
@@ -240,4 +250,9 @@
     <string name="month_oct">Οκτ</string>
     <string name="month_nov">Νοε</string>
     <string name="month_dec">Δεκ</string>
+    <string name="proofread_header">Κείμενο</string>
+    <string name="proofread_result_header">Διόρθωση</string>
+    <string name="proofread_placeholder">Εισαγάγετε το κείμενο προς διόρθωση…</string>
+    <string name="proofread_result_placeholder">Το διορθωμένο κείμενο θα εμφανιστεί εδώ.</string>
+    <string name="action_apply">Εφαρμογή</string>
 </resources>

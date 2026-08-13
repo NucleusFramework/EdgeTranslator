@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Dịch</string>
+    <string name="nav_proofread">Hiệu đính</string>
     <string name="nav_history">Mục yêu thích</string>
     <string name="nav_settings">Cài đặt</string>
     <string name="nav_about">Giới thiệu</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Xóa</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Ủng hộ dự án</string>
+    <string name="update_available">Bản cập nhật sẽ được cài đặt tự động sau khi bạn khởi động lại ứng dụng.</string>
+    <string name="update_restart_title">Khởi động lại ngay?</string>
+    <string name="update_restart_body">Bản cập nhật đã sẵn sàng. Khởi động lại để cài ngay, hoặc thoát sau — bản cập nhật sẽ được cài tự động.</string>
+    <string name="action_restart_now">Khởi động lại ngay</string>
     <string name="install_step">Bước %1$d / %2$d</string>
     <string name="install_welcome_title">Dịch ngoại tuyến,\nkhông một từ nào rời khỏi thiết bị này</string>
     <string name="install_welcome_body">Mô hình chạy trên máy này. Văn bản, tài liệu và mục yêu thích ở lại máy — không có yêu cầu ra ngoài sau khi cài.</string>
@@ -241,4 +246,9 @@
     <string name="month_oct">Th10</string>
     <string name="month_nov">Th11</string>
     <string name="month_dec">Th12</string>
+    <string name="proofread_header">Văn bản</string>
+    <string name="proofread_result_header">Bản sửa</string>
+    <string name="proofread_placeholder">Nhập văn bản cần hiệu đính…</string>
+    <string name="proofread_result_placeholder">Văn bản đã sửa sẽ hiện ở đây.</string>
+    <string name="action_apply">Áp dụng</string>
 </resources>

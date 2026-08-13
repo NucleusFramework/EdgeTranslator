@@ -5,6 +5,7 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Vertalen</string>
+    <string name="nav_proofread">Correctie</string>
     <string name="nav_history">Favorieten</string>
     <string name="nav_settings">Instellingen</string>
     <string name="nav_about">Over</string>
@@ -53,6 +54,10 @@
     <string name="cd_delete">Verwijderen</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Steun het project</string>
+    <string name="update_available">Een update wordt automatisch geïnstalleerd nadat je de app opnieuw start.</string>
+    <string name="update_restart_title">Nu opnieuw starten?</string>
+    <string name="update_restart_body">De update is klaar. Start opnieuw om hem nu te installeren, of sluit later af — hij wordt automatisch geïnstalleerd.</string>
+    <string name="action_restart_now">Nu opnieuw starten</string>
 
     <string name="install_step">Stap %1$d van %2$d</string>
     <string name="install_welcome_title">Offline vertalen,\nzonder dat een woord dit apparaat verlaat</string>
@@ -256,4 +261,9 @@
     <string name="month_oct">okt.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
+    <string name="proofread_header">Tekst</string>
+    <string name="proofread_result_header">Correctie</string>
+    <string name="proofread_placeholder">Voer de te corrigeren tekst in…</string>
+    <string name="proofread_result_placeholder">De gecorrigeerde tekst verschijnt hier.</string>
+    <string name="action_apply">Toepassen</string>
 </resources>

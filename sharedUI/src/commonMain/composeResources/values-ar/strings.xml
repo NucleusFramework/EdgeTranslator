@@ -5,6 +5,7 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">ترجمة</string>
+    <string name="nav_proofread">تدقيق</string>
     <string name="nav_history">المفضلة</string>
     <string name="nav_settings">الإعدادات</string>
     <string name="nav_about">حول</string>
@@ -53,6 +54,10 @@
     <string name="cd_delete">حذف</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">دعم المشروع</string>
+    <string name="update_available">سيتم تثبيت التحديث تلقائيًا بعد إعادة تشغيل التطبيق.</string>
+    <string name="update_restart_title">إعادة التشغيل الآن؟</string>
+    <string name="update_restart_body">التحديث جاهز. أعد التشغيل لتثبيته الآن، أو أغلق لاحقًا وسيُثبَّت تلقائيًا.</string>
+    <string name="action_restart_now">إعادة التشغيل الآن</string>
 
     <string name="install_step">الخطوة %1$d من %2$d</string>
     <string name="install_welcome_title">ترجم دون اتصال،\nدون أن تغادر كلمة هذا الجهاز</string>
@@ -272,4 +277,9 @@
     <string name="month_oct">أكتوبر</string>
     <string name="month_nov">نوفمبر</string>
     <string name="month_dec">ديسمبر</string>
+    <string name="proofread_header">النص</string>
+    <string name="proofread_result_header">التصحيح</string>
+    <string name="proofread_placeholder">أدخل النص المراد تدقيقه…</string>
+    <string name="proofread_result_placeholder">سيظهر النص المصحح هنا.</string>
+    <string name="action_apply">تطبيق</string>
 </resources>

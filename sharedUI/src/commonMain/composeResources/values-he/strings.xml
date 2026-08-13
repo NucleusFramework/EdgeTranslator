@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2.6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">תרגום</string>
+    <string name="nav_proofread">הגהה</string>
     <string name="nav_history">מועדפים</string>
     <string name="nav_settings">הגדרות</string>
     <string name="nav_about">אודות</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">מחיקה</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">תמיכה בפרויקט</string>
+    <string name="update_available">עדכון יותקן אוטומטית אחרי הפעלה מחדש של האפליקציה.</string>
+    <string name="update_restart_title">להפעיל מחדש עכשיו?</string>
+    <string name="update_restart_body">העדכון מוכן. הפעילו מחדש כדי להתקין עכשיו, או צאו מאוחר יותר — הוא יותקן אוטומטית.</string>
+    <string name="action_restart_now">הפעלה מחדש עכשיו</string>
     <string name="install_step">שלב %1$d מתוך %2$d</string>
     <string name="install_welcome_title">תרגמו במצב לא מקוון,\nבלי שמילה תצא מהמכשיר הזה</string>
     <string name="install_welcome_body">המודל רץ במחשב הזה. טקסטים, מסמכים ומועדפים נשארים מקומיים — אין בקשה יוצאת אחרי ההתקנה.</string>
@@ -249,4 +254,9 @@
     <string name="month_oct">אוק׳</string>
     <string name="month_nov">נוב׳</string>
     <string name="month_dec">דצמ׳</string>
+    <string name="proofread_header">טקסט</string>
+    <string name="proofread_result_header">תיקון</string>
+    <string name="proofread_placeholder">הזינו את הטקסט להגהה…</string>
+    <string name="proofread_result_placeholder">הטקסט המתוקן יופיע כאן.</string>
+    <string name="action_apply">החלה</string>
 </resources>

@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Oversett</string>
+    <string name="nav_proofread">Korrektur</string>
     <string name="nav_history">Favoritter</string>
     <string name="nav_settings">Innstillinger</string>
     <string name="nav_about">Om</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Slett</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Støtt prosjektet</string>
+    <string name="update_available">En oppdatering installeres automatisk når du starter appen på nytt.</string>
+    <string name="update_restart_title">Start på nytt nå?</string>
+    <string name="update_restart_body">Oppdateringen er klar. Start på nytt for å installere den nå, eller avslutt senere — den installeres automatisk.</string>
+    <string name="action_restart_now">Start på nytt nå</string>
     <string name="install_step">Trinn %1$d av %2$d</string>
     <string name="install_welcome_title">Oversett frakoblet,\nuten at et ord forlater denne enheten</string>
     <string name="install_welcome_body">Modellen kjører på denne maskinen. Tekster, dokumenter og favoritter blir lokale — ingen utgående forespørsel etter installasjon.</string>
@@ -245,4 +250,9 @@
     <string name="month_oct">okt.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">des.</string>
+    <string name="proofread_header">Tekst</string>
+    <string name="proofread_result_header">Korrektur</string>
+    <string name="proofread_placeholder">Skriv inn teksten som skal rettes…</string>
+    <string name="proofread_result_placeholder">Den rettede teksten vises her.</string>
+    <string name="action_apply">Bruk</string>
 </resources>

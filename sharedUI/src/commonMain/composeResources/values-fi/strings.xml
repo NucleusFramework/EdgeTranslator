@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Käännä</string>
+    <string name="nav_proofread">Oikoluku</string>
     <string name="nav_history">Suosikit</string>
     <string name="nav_settings">Asetukset</string>
     <string name="nav_about">Tietoja</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Poista</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Tue projektia</string>
+    <string name="update_available">Päivitys asennetaan automaattisesti, kun käynnistät sovelluksen uudelleen.</string>
+    <string name="update_restart_title">Käynnistä uudelleen nyt?</string>
+    <string name="update_restart_body">Päivitys on valmis. Käynnistä uudelleen asentaaksesi sen nyt, tai sulje myöhemmin — se asennetaan automaattisesti.</string>
+    <string name="action_restart_now">Käynnistä uudelleen</string>
     <string name="install_step">Vaihe %1$d / %2$d</string>
     <string name="install_welcome_title">Käännä offline,\nilman että sana poistuu tältä laitteelta</string>
     <string name="install_welcome_body">Malli toimii tällä koneella. Tekstit, asiakirjat ja suosikit jäävät paikallisiksi — asennuksen jälkeen ei lähteviä pyyntöjä.</string>
@@ -245,4 +250,9 @@
     <string name="month_oct">loka</string>
     <string name="month_nov">marras</string>
     <string name="month_dec">joulu</string>
+    <string name="proofread_header">Teksti</string>
+    <string name="proofread_result_header">Korjaus</string>
+    <string name="proofread_placeholder">Kirjoita oikoluettava teksti…</string>
+    <string name="proofread_result_placeholder">Korjattu teksti näkyy tässä.</string>
+    <string name="action_apply">Käytä</string>
 </resources>

@@ -4,6 +4,7 @@
     <string name="model_filename">gemma-4-E2B-it.litertlm · QAT 2/4/8-bit · 2,6 GB</string>
     <string name="em_dash">—</string>
     <string name="nav_translate">Oversæt</string>
+    <string name="nav_proofread">Korrektur</string>
     <string name="nav_history">Favoritter</string>
     <string name="nav_settings">Indstillinger</string>
     <string name="nav_about">Om</string>
@@ -51,6 +52,10 @@
     <string name="cd_delete">Slet</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Støt projektet</string>
+    <string name="update_available">En opdatering installeres automatisk, når du genstarter appen.</string>
+    <string name="update_restart_title">Genstart nu?</string>
+    <string name="update_restart_body">Opdateringen er klar. Genstart for at installere den nu, eller afslut senere — den installeres automatisk.</string>
+    <string name="action_restart_now">Genstart nu</string>
     <string name="install_step">Trin %1$d af %2$d</string>
     <string name="install_welcome_title">Oversæt offline,\nuden at et ord forlader denne enhed</string>
     <string name="install_welcome_body">Modellen kører på denne maskine. Tekster, dokumenter og favoritter forbliver lokale — ingen udgående anmodning efter installation.</string>
@@ -245,4 +250,9 @@
     <string name="month_oct">okt.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
+    <string name="proofread_header">Tekst</string>
+    <string name="proofread_result_header">Korrektur</string>
+    <string name="proofread_placeholder">Indtast teksten, der skal rettes…</string>
+    <string name="proofread_result_placeholder">Den rettede tekst vises her.</string>
+    <string name="action_apply">Anvend</string>
 </resources>

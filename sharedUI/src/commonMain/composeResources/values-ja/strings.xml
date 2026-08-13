@@ -5,6 +5,7 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">翻訳</string>
+    <string name="nav_proofread">校正</string>
     <string name="nav_history">お気に入り</string>
     <string name="nav_settings">設定</string>
     <string name="nav_about">このアプリについて</string>
@@ -53,6 +54,10 @@
     <string name="cd_delete">削除</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">プロジェクトを支援</string>
+    <string name="update_available">アプリを再起動すると、アップデートが自動的にインストールされます。</string>
+    <string name="update_restart_title">今すぐ再起動しますか？</string>
+    <string name="update_restart_body">アップデートの準備ができました。今すぐ再起動してインストールするか、後で終了してください。自動的にインストールされます。</string>
+    <string name="action_restart_now">今すぐ再起動</string>
 
     <string name="install_step">ステップ %1$d / %2$d</string>
     <string name="install_welcome_title">オフラインで翻訳。\n言葉はこの端末から出ません</string>
@@ -252,4 +257,9 @@
     <string name="month_oct">10月</string>
     <string name="month_nov">11月</string>
     <string name="month_dec">12月</string>
+    <string name="proofread_header">テキスト</string>
+    <string name="proofread_result_header">校正</string>
+    <string name="proofread_placeholder">校正するテキストを入力…</string>
+    <string name="proofread_result_placeholder">校正済みのテキストがここに表示されます。</string>
+    <string name="action_apply">適用</string>
 </resources>

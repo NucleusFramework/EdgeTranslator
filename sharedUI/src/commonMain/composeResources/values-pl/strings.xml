@@ -5,6 +5,7 @@
     <string name="em_dash">—</string>
 
     <string name="nav_translate">Tłumacz</string>
+    <string name="nav_proofread">Korekta</string>
     <string name="nav_history">Ulubione</string>
     <string name="nav_settings">Ustawienia</string>
     <string name="nav_about">O aplikacji</string>
@@ -53,6 +54,10 @@
     <string name="cd_delete">Usuń</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Wesprzyj projekt</string>
+    <string name="update_available">Aktualizacja zostanie zainstalowana automatycznie po ponownym uruchomieniu aplikacji.</string>
+    <string name="update_restart_title">Uruchomić ponownie teraz?</string>
+    <string name="update_restart_body">Aktualizacja jest gotowa. Uruchom ponownie, aby zainstalować teraz, lub zamknij później — zainstaluje się automatycznie.</string>
+    <string name="action_restart_now">Uruchom ponownie teraz</string>
 
     <string name="install_step">Krok %1$d z %2$d</string>
     <string name="install_welcome_title">Tłumacz offline,\nbez wychodzenia choćby jednego słowa z tego urządzenia</string>
@@ -264,4 +269,9 @@
     <string name="month_oct">paź</string>
     <string name="month_nov">lis</string>
     <string name="month_dec">gru</string>
+    <string name="proofread_header">Tekst</string>
+    <string name="proofread_result_header">Korekta</string>
+    <string name="proofread_placeholder">Wpisz tekst do korekty…</string>
+    <string name="proofread_result_placeholder">Poprawiony tekst pojawi się tutaj.</string>
+    <string name="action_apply">Zastosuj</string>
 </resources>
