@@ -64,6 +64,7 @@ import dev.nucleusframework.offlinetranslator.domain.UserSettings
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
 import dev.nucleusframework.offlinetranslator.domain.formatLatency
 import dev.nucleusframework.offlinetranslator.domain.paragraphCount
+import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.MIC_BARS
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.platform.readDropPayload
@@ -309,8 +310,8 @@ private fun SourcePanel(
         ) {
             if (!state.imageBusy && state.micPhase == MicPhase.Idle) {
                 Text(
-                    pluralStringResource(Res.plurals.char_count, chars, chars),
-                    color = c.onSurfaceVariant,
+                    "${pluralStringResource(Res.plurals.char_count, chars, chars)} / ${GemmaModel.MAX_INPUT_CHARS}",
+                    color = if (chars >= GemmaModel.MAX_INPUT_CHARS) c.error else c.onSurfaceVariant,
                     fontSize = 12.sp,
                 )
                 Text(

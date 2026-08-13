@@ -413,24 +413,30 @@ class AppViewModel(
 
         AppIntent.SaveToHistory -> saveToHistory(s)
 
-        is AppIntent.SetSourceText -> s.copy(
-            translation = s.translation.copy(
-                sourceText = intent.text,
-                status = if (intent.text.isBlank()) TranslationStatus.Idle else TranslationStatus.WaitingEngine,
-            ),
-        )
+        is AppIntent.SetSourceText -> {
+            val text = GemmaModel.capInput(intent.text)
+            s.copy(
+                translation = s.translation.copy(
+                    sourceText = text,
+                    status = if (text.isBlank()) TranslationStatus.Idle else TranslationStatus.WaitingEngine,
+                ),
+            )
+        }
 
-        is AppIntent.SetProofreadText -> s.copy(
-            proofread = s.proofread.copy(
-                text = intent.text,
-                status = if (intent.text.isBlank()) TranslationStatus.Idle else TranslationStatus.WaitingEngine,
-            ),
-        )
+        is AppIntent.SetProofreadText -> {
+            val text = GemmaModel.capInput(intent.text)
+            s.copy(
+                proofread = s.proofread.copy(
+                    text = text,
+                    status = if (text.isBlank()) TranslationStatus.Idle else TranslationStatus.WaitingEngine,
+                ),
+            )
+        }
 
         AppIntent.ApplyProofread -> if (s.proofread.result.isBlank()) {
             s
         } else {
-            s.copy(proofread = s.proofread.copy(text = s.proofread.result))
+            s.copy(proofread = s.proofread.copy(text = GemmaModel.capInput(s.proofread.result)))
         }
 
         is AppIntent.ChooseLanguage -> chooseLanguage(s, intent.code, intent.role)
@@ -625,7 +631,7 @@ class AppViewModel(
             translation = s.translation.copy(
                 sourceLang = item.sourceLang,
                 targetLang = item.targetLang,
-                sourceText = item.sourceText,
+                sourceText = GemmaModel.capInput(item.sourceText),
                 targetText = item.targetText,
                 savedSource = item.sourceText.trim(),
                 savedTarget = item.targetText.trim(),
@@ -1317,7 +1323,7 @@ class AppViewModel(
 
                 is TranslationResult.Ok -> current.copy(
                     translation = t.copy(
-                        sourceText = result.transcription.ifBlank { result.text },
+                        sourceText = GemmaModel.capInput(result.transcription.ifBlank { result.text }),
                         targetText = result.text,
                         status = TranslationStatus.Ready,
                         latencyMs = result.latencyMs,

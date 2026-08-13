@@ -6,6 +6,9 @@ import dev.nucleusframework.desktop.application.dsl.ReleaseType
 import dev.nucleusframework.desktop.application.dsl.TargetFormat
 import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.File
+import java.net.URI
+import java.util.zip.ZipFile
 
 plugins {
     alias(libs.plugins.compose.compiler)
@@ -57,8 +60,12 @@ nucleus.application {
     }
 
     nativeDistributions {
+        // SQLDelight JdbcSqliteDriver → DriverManager. jlink does not infer java.sql.
+        modules("java.sql")
         // Zip is the silent macOS updater payload; DMG stays the first-install image.
         targetFormats(TargetFormat.Dmg, TargetFormat.Zip, TargetFormat.Nsis, TargetFormat.Deb)
+        // https://kotlinlang.org/docs/multiplatform/compose-native-distribution.html#managing-resources
+        appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
         packageName = "OfflineTranslator"
         packageVersion = releaseVersion
         cleanupNativeLibs = true
@@ -97,4 +104,43 @@ nucleus.application {
             }
         }
     }
+}
+
+// LiteRT-LM pins this DXC drop for Windows GPU (WORKSPACE @directx_shader_compiler).
+val dxcUrl = "https://github.com/microsoft/DirectXShaderCompiler/releases/download/v1.9.2602/dxc_2026_02_20.zip"
+val windowsAppResources = project.layout.projectDirectory.dir("resources/windows-x64")
+
+val resolveWindowsDxc = tasks.register("resolveWindowsDxc") {
+    val url = dxcUrl
+    val dest = windowsAppResources
+    inputs.property("url", url)
+    outputs.dir(dest)
+    onlyIf { org.gradle.internal.os.OperatingSystem.current().isWindows }
+    doLast {
+        val out = dest.asFile
+        out.mkdirs()
+        val dxil = out.resolve("dxil.dll")
+        val compiler = out.resolve("dxcompiler.dll")
+        if (dxil.isFile && compiler.isFile) return@doLast
+        val zip = out.resolve("dxc.zip")
+        URI.create(url).toURL().openStream().use { input ->
+            zip.outputStream().use { input.copyTo(it) }
+        }
+        ZipFile(zip).use { zf ->
+            val wanted = setOf("dxil.dll", "dxcompiler.dll")
+            zf.entries().asSequence()
+                .filter { !it.isDirectory && File(it.name).name in wanted && it.name.replace('\\', '/').contains("bin/x64/") }
+                .forEach { entry ->
+                    zf.getInputStream(entry).use { input ->
+                        out.resolve(File(entry.name).name).outputStream().use { input.copyTo(it) }
+                    }
+                }
+        }
+        zip.delete()
+        check(dxil.isFile && compiler.isFile) { "DXC zip missing bin/x64/dxil.dll or dxcompiler.dll" }
+    }
+}
+
+tasks.matching { it.name == "prepareAppResources" }.configureEach {
+    dependsOn(resolveWindowsDxc)
 }

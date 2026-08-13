@@ -7,7 +7,8 @@ import com.google.ai.edge.litertlm.ConversationConfig
 import com.google.ai.edge.litertlm.Engine
 import com.google.ai.edge.litertlm.EngineConfig
 import com.google.ai.edge.litertlm.SamplerConfig
-import com.google.ai.edge.litertlm.ThinkingConfig
+// litertlm-jvm 0.14.0 has no ThinkingConfig / maxOutputToken (added in 0.15+).
+// import com.google.ai.edge.litertlm.ThinkingConfig
 import dev.nucleusframework.nativehttp.ktor.installNativeSsl
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import io.ktor.client.HttpClient
@@ -19,6 +20,7 @@ internal actual class NativeLlm actual constructor() {
 
     actual fun load(modelPath: String, cacheDir: String, threads: Int, backend: LlmBackend): LlmAccelerator {
         close()
+        loadWindowsDxc()
         val pick = pickBackend(backend, LlmRuntime.gpuAvailable.value) {
             val gpu = runCatching { openEngine(modelPath, cacheSubdir(cacheDir, "gpu"), Backend.GPU()) }.getOrNull()
             if (gpu != null) {
@@ -51,9 +53,10 @@ internal actual class NativeLlm actual constructor() {
             ConversationConfig(
                 systemInstruction = Contents.of(systemInstruction),
                 samplerConfig = SamplerConfig(topK = 1, topP = 1.0, temperature = 0.2),
-                thinkingConfig = ThinkingConfig(enableThinking = false),
+                // 0.14.0 ConversationConfig: thinkingConfig / maxOutputToken do not exist yet.
+                // thinkingConfig = ThinkingConfig(enableThinking = false),
                 channels = emptyList(),
-                maxOutputToken = 1024,
+                // maxOutputToken = 1024,
             ),
         ).use { conversation ->
             val acc = StringBuilder()
@@ -107,6 +110,17 @@ private fun openEngine(modelPath: String, cacheDir: String, backend: Backend): E
 }
 
 private fun cacheSubdir(cacheDir: String, name: String): String = java.io.File(cacheDir, name).apply { mkdirs() }.absolutePath
+
+/** Dawn/WebGPU looks up dxil.dll + dxcompiler.dll via the usual Windows search path. */
+private fun loadWindowsDxc() {
+    val os = System.getProperty("os.name").orEmpty()
+    if (!os.contains("win", ignoreCase = true)) return
+    val dir = System.getProperty("compose.application.resources.dir")?.let { java.io.File(it) } ?: return
+    for (name in listOf("dxil.dll", "dxcompiler.dll")) {
+        val dll = dir.resolve(name)
+        if (dll.isFile) runCatching { System.load(dll.absolutePath) }
+    }
+}
 
 internal actual fun createHttpClient(): HttpClient = HttpClient(OkHttp) {
     followRedirects = true

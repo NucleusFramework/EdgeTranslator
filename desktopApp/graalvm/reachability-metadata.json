@@ -164,11 +164,58 @@
         },
         {
             "type": "sun.text.resources.cldr.FormatData_en_US"
+        },
+        {
+            "type": "com.google.ai.edge.litertlm.LiteRtLmJniException",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.String"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.net.www.protocol.http.Handler",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "java.sql.DriverManager",
+            "methods": [
+                {
+                    "name": "getConnection",
+                    "parameterTypes": [
+                        "java.lang.String",
+                        "java.util.Properties"
+                    ]
+                },
+                {
+                    "name": "registerDriver",
+                    "parameterTypes": [
+                        "java.sql.Driver"
+                    ]
+                }
+            ]
         }
     ],
     "resources": [
         {
             "glob": "com/google/ai/edge/litertlm/jni/liblitertlm_jni.so"
+        },
+        {
+            "glob": "com/google/ai/edge/litertlm/jni/litertlm_jni.dll"
+        },
+        {
+            "glob": "org/sqlite/native/**"
         }
     ]
 }

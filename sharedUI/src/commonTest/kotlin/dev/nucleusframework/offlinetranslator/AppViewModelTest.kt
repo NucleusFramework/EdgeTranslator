@@ -24,6 +24,7 @@ import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.paragraphCount
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
+import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.DownloadedModel
 import dev.nucleusframework.offlinetranslator.engine.IdleDownloader
 import dev.nucleusframework.offlinetranslator.engine.ImagePicker
@@ -163,6 +164,14 @@ class AppViewModelTest {
         val t = vm.state.value.translation
         assertEquals(text.length, t.sourceChars)
         assertEquals(2, t.sourceParagraphs)
+    }
+
+    @Test
+    fun sourceTextIsCapped() {
+        val vm = vm()
+        val over = "a".repeat(GemmaModel.MAX_INPUT_CHARS + 50)
+        vm.onIntent(AppIntent.SetSourceText(over))
+        assertEquals(GemmaModel.MAX_INPUT_CHARS, vm.state.value.translation.sourceText.length)
     }
 
     @Test

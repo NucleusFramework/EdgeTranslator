@@ -19,7 +19,10 @@ kotlinx-datetime = "0.8.0"
 sqlDelight = "2.3.2"
 materialKolor = "5.0.0"
 nucleus = "2.4.2"
-litertlm = "0.16.0"
+# 0.15.0+ litertlm-jvm aborts the JVM on Windows CPU generate (0xC0000409 in
+# litertlm_jni.dll nativeGenerateContent / sendMessage). 0.14.0 is the last
+# good desktop JNI. https://github.com/google-ai-edge/LiteRT-LM/issues/3230
+litertlm = "0.14.0"
 filekit = "0.15.0"
 structured-coroutines = "1.1.0"
 piper-jni = "1.4.2"
@@ -98,7 +101,7 @@ android-kmp-library = { id = "com.android.kotlin.multiplatform.library", version
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
-nucleus = { id = "dev.nucleusframework", version.ref = "nucleus" }
+nucleus = { id = "dev.nucleusframework", version = "nucleus" }
 structured-coroutines = { id = "io.github.santimattius.structured-coroutines", version.ref = "structured-coroutines" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }

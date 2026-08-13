@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.app.AppIntent
+import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.formatLatency
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
@@ -113,7 +114,11 @@ private fun InputPanel(state: ProofreadState, onIntent: (AppIntent) -> Unit, mod
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Text(pluralStringResource(Res.plurals.char_count, state.chars, state.chars), color = c.onSurfaceVariant, fontSize = 12.sp)
+            Text(
+                "${pluralStringResource(Res.plurals.char_count, state.chars, state.chars)} / ${GemmaModel.MAX_INPUT_CHARS}",
+                color = if (state.chars >= GemmaModel.MAX_INPUT_CHARS) c.error else c.onSurfaceVariant,
+                fontSize = 12.sp,
+            )
             Text(
                 pluralStringResource(Res.plurals.paragraph_count, state.paragraphs, state.paragraphs),
                 color = c.onSurfaceVariant,

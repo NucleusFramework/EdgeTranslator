@@ -82,5 +82,14 @@ object GemmaModel {
     const val CONTEXT_TOKENS = 32_768
     const val MAX_NUM_TOKENS = CONTEXT_TOKENS / 2 - 5_000
 
+    /**
+     * 0.14 ConversationConfig has no maxOutputToken, so the source field must leave
+     * room for the system prompt and unbounded decode inside [MAX_NUM_TOKENS].
+     */
+    const val MAX_INPUT_CHARS = 8_000
+
+    fun capInput(text: String): String =
+        if (text.length <= MAX_INPUT_CHARS) text else text.take(MAX_INPUT_CHARS)
+
     fun cacheDir(): String = Platform.cacheDir()
 }

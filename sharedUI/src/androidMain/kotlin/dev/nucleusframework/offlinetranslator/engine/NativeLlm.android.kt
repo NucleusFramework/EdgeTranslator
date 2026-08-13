@@ -7,7 +7,8 @@ import com.google.ai.edge.litertlm.ConversationConfig
 import com.google.ai.edge.litertlm.Engine
 import com.google.ai.edge.litertlm.EngineConfig
 import com.google.ai.edge.litertlm.SamplerConfig
-import com.google.ai.edge.litertlm.ThinkingConfig
+// litertlm-android 0.14.0 has no ThinkingConfig / maxOutputToken (added in 0.15+).
+// import com.google.ai.edge.litertlm.ThinkingConfig
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -50,9 +51,10 @@ internal actual class NativeLlm actual constructor() {
             ConversationConfig(
                 systemInstruction = Contents.of(systemInstruction),
                 samplerConfig = SamplerConfig(topK = 1, topP = 1.0, temperature = 0.2),
-                thinkingConfig = ThinkingConfig(enableThinking = false),
+                // 0.14.0 ConversationConfig: thinkingConfig / maxOutputToken do not exist yet.
+                // thinkingConfig = ThinkingConfig(enableThinking = false),
                 channels = emptyList(),
-                maxOutputToken = 1024,
+                // maxOutputToken = 1024,
             ),
         ).use { conversation ->
             val acc = StringBuilder()
