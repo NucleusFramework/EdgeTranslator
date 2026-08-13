@@ -101,6 +101,11 @@ structuredCoroutines {
     useKmpCommonProfile()
 }
 
+compose.resources {
+    // Independent of rootProject.name — renaming the app must not move Res.
+    packageOfResClass = "offlinetranslator.sharedui.generated.resources"
+}
+
 val stabilityConfig = rootProject.layout.projectDirectory.file("config/stability-config.conf")
 
 composeCompiler {
