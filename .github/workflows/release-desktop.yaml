@@ -91,11 +91,17 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-assets-${{ runner.os }}-${{ matrix.arch }}
+          # Installers only. graalvm-deb/ also holds linux-icons/*.png, package.json
+          # and electron-builder templates that must not reach GitHub Releases.
           path: |
-            desktopApp/build/compose/binaries/**/graalvm-deb/**
-            desktopApp/build/compose/binaries/**/graalvm-nsis/**
-            desktopApp/build/compose/binaries/**/graalvm-dmg/**
-            desktopApp/build/compose/binaries/**/graalvm-zip/**
+            desktopApp/build/compose/binaries/**/graalvm-deb/*.deb
+            desktopApp/build/compose/binaries/**/graalvm-deb/*.asc
+            desktopApp/build/compose/binaries/**/graalvm-nsis/*.exe
+            desktopApp/build/compose/binaries/**/graalvm-nsis/*.blockmap
+            desktopApp/build/compose/binaries/**/graalvm-dmg/*.dmg
+            desktopApp/build/compose/binaries/**/graalvm-dmg/*.blockmap
+            desktopApp/build/compose/binaries/**/graalvm-zip/*.zip
+            desktopApp/build/compose/binaries/**/graalvm-zip/*.blockmap
           if-no-files-found: error
 
   publish:
@@ -120,6 +126,16 @@ jobs:
         with:
           path: artifacts
           pattern: release-assets-*
+
+      - name: Drop packaging leftovers
+        shell: bash
+        run: |
+          set -euo pipefail
+          find artifacts -type f ! \( \
+            -name '*.deb' -o -name '*.rpm' -o -name '*.asc' -o \
+            -name '*.dmg' -o -name '*.exe' -o -name '*.zip' -o \
+            -name '*.blockmap' \
+          \) -print -delete
 
       - name: Determine version and channel
         shell: bash
