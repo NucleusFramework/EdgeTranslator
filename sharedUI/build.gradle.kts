@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.metro)
     alias(libs.plugins.sqlDelight)
     alias(libs.plugins.structured.coroutines)
+    alias(libs.plugins.stability.analyzer)
 }
 
 kotlin {
@@ -94,4 +95,25 @@ sqldelight {
 
 structuredCoroutines {
     useKmpCommonProfile()
+}
+
+val stabilityConfig = rootProject.layout.projectDirectory.file("config/stability-config.conf")
+
+composeCompiler {
+    stabilityConfigurationFiles.add(stabilityConfig)
+}
+
+composeStabilityAnalyzer {
+    stabilityConfigurationFiles.add(stabilityConfig)
+    traceAll {
+        enabled.set(true)
+        threshold.set(2)
+        variants.set(listOf("debug"))
+    }
+    stabilityValidation {
+        enabled.set(true)
+        outputDir.set(layout.projectDirectory.dir("stability"))
+        includeTests.set(false)
+        failOnStabilityChange.set(true)
+    }
 }

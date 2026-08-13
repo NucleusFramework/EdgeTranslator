@@ -32,14 +32,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.app.AppIntent
-import dev.nucleusframework.offlinetranslator.app.AppState
 import dev.nucleusframework.offlinetranslator.app.InstallStep
 import dev.nucleusframework.offlinetranslator.domain.DownloadPhase
+import dev.nucleusframework.offlinetranslator.domain.DownloadState
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
+import dev.nucleusframework.offlinetranslator.domain.UserSettings
+import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
 import dev.nucleusframework.offlinetranslator.domain.formatEta
 import dev.nucleusframework.offlinetranslator.domain.formatPercent
 import dev.nucleusframework.offlinetranslator.engine.GemmaModel
@@ -123,23 +126,34 @@ import offlinetranslator.sharedui.generated.resources.voices_selected_size
 import offlinetranslator.sharedui.generated.resources.voices_title
 import org.jetbrains.compose.resources.stringResource
 
+@TraceRecomposition(tag = "install")
 @Composable
-fun InstallScreen(step: InstallStep, state: AppState, onIntent: (AppIntent) -> Unit) {
+fun InstallScreen(
+    step: InstallStep,
+    settings: UserSettings,
+    download: DownloadState,
+    voiceDownload: VoiceDownloadState,
+    voicePicks: Set<String>,
+    ttsReady: Boolean,
+    installedVoices: Set<String>,
+    onIntent: (AppIntent) -> Unit,
+) {
     when (step) {
-        InstallStep.Welcome -> WelcomeStep(state, onIntent)
-        InstallStep.Download -> DownloadStep(state, onIntent)
-        InstallStep.Voices -> VoicesStep(state, onIntent)
+        InstallStep.Welcome -> WelcomeStep(settings, ttsReady, onIntent)
+        InstallStep.Download -> DownloadStep(settings, download, ttsReady, onIntent)
+        InstallStep.Voices -> VoicesStep(settings, voiceDownload, voicePicks, installedVoices, ttsReady, onIntent)
     }
 }
 
 // ── A1 · Bienvenue ────────────────────────────────────────────────────────────
 
 @Composable
-private fun WelcomeStep(state: AppState, onIntent: (AppIntent) -> Unit) {
+private fun WelcomeStep(settings: UserSettings, ttsReady: Boolean, onIntent: (AppIntent) -> Unit) {
     val c = MaterialTheme.colorScheme
-    val ui = state.data.settings.uiLanguage
-    val selected = state.data.settings.selectedModel
+    val ui = settings.uiLanguage
+    val selected = settings.selectedModel
     val catalog = GemmaModels.of(selected)
+    val stepCount = if (ttsReady) 3 else 2
     Row(Modifier.fillMaxSize()) {
         Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()).padding(56.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -152,10 +166,10 @@ private fun WelcomeStep(state: AppState, onIntent: (AppIntent) -> Unit) {
                     Text(stringResource(Res.string.app_name), fontSize = 22.sp, color = c.onSurface)
                     Text(stringResource(Res.string.app_version, "1.0", Platform.osLabel), fontSize = 12.sp, color = c.onSurfaceVariant)
                 }
-                UiLanguagePicker(ui, state.data.settings.langNames, onIntent)
+                UiLanguagePicker(ui, settings.langNames, onIntent)
             }
             Spacer(Modifier.height(28.dp))
-            StepLabel(stringResource(Res.string.install_step, 1, state.installSteps))
+            StepLabel(stringResource(Res.string.install_step, 1, stepCount))
             Spacer(Modifier.height(10.dp))
             Text(stringResource(Res.string.install_welcome_title), fontSize = 36.sp, lineHeight = 44.sp, color = c.onSurface)
             Spacer(Modifier.height(14.dp))
@@ -184,7 +198,7 @@ private fun WelcomeStep(state: AppState, onIntent: (AppIntent) -> Unit) {
                 stringResource(Res.string.install_feature_history_title),
                 stringResource(Res.string.install_feature_history_body),
             )
-            if (state.translation.ttsReady) {
+            if (ttsReady) {
                 Spacer(Modifier.height(2.dp))
                 FeatureCard(
                     Icons.Outlined.RecordVoiceOver,
@@ -225,7 +239,7 @@ private fun WelcomeStep(state: AppState, onIntent: (AppIntent) -> Unit) {
                     stringResource(Res.string.install_spec_langs),
                     stringResource(Res.string.install_spec_langs_value, Languages.all.size, Languages.audioCount),
                 )
-                if (state.translation.ttsReady) {
+                if (ttsReady) {
                     SpecRow(
                         stringResource(Res.string.install_spec_voices),
                         stringResource(Res.string.install_spec_voices_value, Languages.ttsCount),
@@ -304,10 +318,10 @@ private data class DownloadStepItem(
 )
 
 @Composable
-private fun DownloadStep(state: AppState, onIntent: (AppIntent) -> Unit) {
+private fun DownloadStep(settings: UserSettings, d: DownloadState, ttsReady: Boolean, onIntent: (AppIntent) -> Unit) {
     val c = MaterialTheme.colorScheme
-    val ui = state.data.settings.uiLanguage
-    val d = state.download
+    val ui = settings.uiLanguage
+    val stepCount = if (ttsReady) 3 else 2
     val phase = d.phase
     val dash = stringResource(Res.string.em_dash)
     val statusDone = stringResource(Res.string.download_status_done)
@@ -406,9 +420,9 @@ private fun DownloadStep(state: AppState, onIntent: (AppIntent) -> Unit) {
     val filled = d.fraction.coerceIn(0.01f, 0.99f)
     Column(Modifier.fillMaxSize()) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(start = 56.dp, end = 56.dp, top = 32.dp)) {
-            StepLabel(stringResource(Res.string.install_step, 2, state.installSteps))
+            StepLabel(stringResource(Res.string.install_step, 2, stepCount))
             Spacer(Modifier.height(10.dp))
-            val catalog = GemmaModels.of(state.data.settings.selectedModel)
+            val catalog = GemmaModels.of(settings.selectedModel)
             Text(stringResource(Res.string.download_title), fontSize = 32.sp, color = c.onSurface)
             Text(
                 "${catalog.fileName} · ${catalog.quantization} · ${formatBytesUi(catalog.bytes, ui)}",
@@ -505,8 +519,8 @@ private fun DownloadStep(state: AppState, onIntent: (AppIntent) -> Unit) {
                 }
             }
         }
-        WizardFooter(stepsFilled = 2, stepCount = state.installSteps, onBack = { onIntent(AppIntent.InstallBack) }) {
-            if (state.translation.ttsReady) {
+        WizardFooter(stepsFilled = 2, stepCount = stepCount, onBack = { onIntent(AppIntent.InstallBack) }) {
+            if (ttsReady) {
                 FilledPill(
                     stringResource(Res.string.action_continue),
                     onClick = { onIntent(AppIntent.GoToStep(InstallStep.Voices)) },
@@ -524,18 +538,25 @@ private fun DownloadStep(state: AppState, onIntent: (AppIntent) -> Unit) {
 }
 
 @Composable
-private fun VoicesStep(state: AppState, onIntent: (AppIntent) -> Unit) {
+private fun VoicesStep(
+    settings: UserSettings,
+    download: VoiceDownloadState,
+    voicePicks: Set<String>,
+    installedVoices: Set<String>,
+    ttsReady: Boolean,
+    onIntent: (AppIntent) -> Unit,
+) {
     val c = MaterialTheme.colorScheme
-    val ui = state.data.settings.uiLanguage
-    val style = state.data.settings.langNames
-    val download = state.voiceDownload
+    val ui = settings.uiLanguage
+    val style = settings.langNames
+    val stepCount = if (ttsReady) 3 else 2
     var voiceLang by rememberSaveable { mutableStateOf<String?>(null) }
     val openLang = voiceLang?.let { Languages.get(it) }
-    val missingPicks = state.voicePicks.filter { PiperVoices.of(it)?.isOnDisk() != true }
+    val missingPicks = voicePicks.filter { PiperVoices.of(it)?.isOnDisk() != true }
     val selectedBytes = missingPicks.sumOf { PiperVoices.of(it)?.bytes ?: 0L }
     Column(Modifier.fillMaxSize()) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(start = 56.dp, end = 56.dp, top = 32.dp)) {
-            StepLabel(stringResource(Res.string.install_step, 3, state.installSteps))
+            StepLabel(stringResource(Res.string.install_step, 3, stepCount))
             Spacer(Modifier.height(10.dp))
             Text(
                 openLang?.let { languageLabel(it.code, style) } ?: stringResource(Res.string.voices_title),
@@ -580,7 +601,7 @@ private fun VoicesStep(state: AppState, onIntent: (AppIntent) -> Unit) {
                 }
                 Spacer(Modifier.weight(1f))
                 Text(
-                    stringResource(Res.string.voices_selected_size, state.voicePicks.size, formatBytesUi(selectedBytes, ui)),
+                    stringResource(Res.string.voices_selected_size, voicePicks.size, formatBytesUi(selectedBytes, ui)),
                     fontSize = 13.sp,
                     color = c.onSurfaceVariant,
                 )
@@ -588,8 +609,8 @@ private fun VoicesStep(state: AppState, onIntent: (AppIntent) -> Unit) {
             Spacer(Modifier.height(16.dp))
             if (download.running || download.error != null || download.finished.isNotEmpty()) {
                 val current = download.lang?.let { PiperVoices.of(it) }
-                val currentLabel = current?.let { "${languageLabel(it.lang, state.data.settings.langNames)} · ${it.displayName}" }
-                    ?: download.lang?.let { languageLabel(it, state.data.settings.langNames) }.orEmpty()
+                val currentLabel = current?.let { "${languageLabel(it.lang, style)} · ${it.displayName}" }
+                    ?: download.lang?.let { languageLabel(it, style) }.orEmpty()
                 Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.primaryContainer).padding(24.dp)) {
                     Text(
                         if (download.lang != null) {
@@ -643,8 +664,8 @@ private fun VoicesStep(state: AppState, onIntent: (AppIntent) -> Unit) {
             if (openLang == null) {
                 Languages.all.filter { it.tts && PiperVoices.forLang(it.code).isNotEmpty() }.forEach { lang ->
                     val voices = PiperVoices.forLang(lang.code)
-                    val picked = voices.count { it.id in state.voicePicks || it.isOnDisk() }
-                    val installed = lang.code in state.translation.installedVoices
+                    val picked = voices.count { it.id in voicePicks || it.isOnDisk() }
+                    val installed = lang.code in installedVoices
                     ModelPickCard(
                         title = languageLabel(lang.code, style),
                         body = stringResource(Res.string.settings_voices_summary, voices.size, picked),
@@ -656,7 +677,7 @@ private fun VoicesStep(state: AppState, onIntent: (AppIntent) -> Unit) {
             } else {
                 PiperVoices.forLang(openLang.code).forEach { spec ->
                     val installed = spec.isOnDisk()
-                    val selected = spec.id in state.voicePicks || installed
+                    val selected = spec.id in voicePicks || installed
                     ModelPickCard(
                         title = spec.displayName,
                         body = buildString {
@@ -673,7 +694,7 @@ private fun VoicesStep(state: AppState, onIntent: (AppIntent) -> Unit) {
         }
         WizardFooter(
             stepsFilled = 3,
-            stepCount = state.installSteps,
+            stepCount = stepCount,
             onBack = {
                 if (voiceLang != null) {
                     voiceLang = null

@@ -24,11 +24,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.app.AppIntent
 import dev.nucleusframework.offlinetranslator.app.AppKey
-import dev.nucleusframework.offlinetranslator.app.AppState
 import dev.nucleusframework.offlinetranslator.app.MainDestinations
 import dev.nucleusframework.offlinetranslator.app.label
+import dev.nucleusframework.offlinetranslator.domain.LlmModel
+import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.app_name
@@ -40,10 +42,13 @@ import org.jetbrains.compose.resources.stringResource
  * The running app (design section B): offline strip + extended navigation rail,
  * with the content area supplied by Nav3.
  */
+@TraceRecomposition(tag = "shell")
 @Composable
 fun MainShell(
     destination: AppKey,
-    state: AppState,
+    uiLanguage: UiLanguage,
+    offline: Boolean,
+    modelId: LlmModel,
     onIntent: (AppIntent) -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -52,12 +57,11 @@ fun MainShell(
     // chrome's args don't change with the language — so key the chrome on it. Overriding
     // LocalComposeEnvironment would be the general fix, but it's internal to the library.
     // Not applied to content(): that would reset each screen's scroll position.
-    val lang = state.data.settings.uiLanguage
     Column(modifier.fillMaxSize()) {
         // On desktop the brand + screen chrome live in the window title bar.
-        if (!LocalHostHasTitleBar.current) key(lang) { OfflineBar(state.offline) }
+        if (!LocalHostHasTitleBar.current) key(uiLanguage) { OfflineBar(offline) }
         Row(Modifier.fillMaxSize()) {
-            key(lang) { NavRail(destination, state, onIntent) }
+            key(uiLanguage) { NavRail(destination, modelId, onIntent) }
             Box(Modifier.weight(1f).fillMaxHeight()) { content() }
         }
     }
@@ -88,7 +92,7 @@ private fun OfflineBar(offline: Boolean) {
 }
 
 @Composable
-private fun NavRail(selected: AppKey, state: AppState, onIntent: (AppIntent) -> Unit) {
+private fun NavRail(selected: AppKey, modelId: LlmModel, onIntent: (AppIntent) -> Unit) {
     val c = MaterialTheme.colorScheme
     Column(
         Modifier.width(220.dp).fillMaxHeight().background(c.surfaceContainer)
@@ -116,7 +120,7 @@ private fun NavRail(selected: AppKey, state: AppState, onIntent: (AppIntent) -> 
                 fontSize = 11.sp,
             )
             Text(
-                GemmaModels.of(state.data.model.id).name,
+                GemmaModels.of(modelId).name,
                 color = c.onSurfaceVariant,
                 fontSize = 11.sp,
                 lineHeight = 15.sp,

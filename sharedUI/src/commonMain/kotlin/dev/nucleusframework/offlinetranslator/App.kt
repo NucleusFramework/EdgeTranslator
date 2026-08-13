@@ -10,14 +10,19 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.skydoves.compose.stability.runtime.ComposeStabilityAnalyzer
+import com.skydoves.compose.stability.runtime.IgnoreStabilityReport
+import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.app.AppViewModel
 import dev.nucleusframework.offlinetranslator.app.RootScreen
 import dev.nucleusframework.offlinetranslator.di.AppGraph
 import dev.nucleusframework.offlinetranslator.di.createAppGraph
 import dev.nucleusframework.offlinetranslator.domain.ThemeMode
 import dev.nucleusframework.offlinetranslator.platform.Platform
+import dev.nucleusframework.offlinetranslator.platform.isDebugBuild
 import dev.nucleusframework.offlinetranslator.theme.EdgeTheme
 
+@TraceRecomposition(tag = "app")
 @Composable
 fun App(
     graph: AppGraph? = null,
@@ -28,6 +33,7 @@ fun App(
     onQuit: () -> Unit = {},
     forceOnboarding: Boolean = false,
 ) {
+    ComposeStabilityAnalyzer.setEnabled(isDebugBuild)
     val appGraph = graph ?: remember { createAppGraph() }
     val vm = provided ?: viewModel { appGraph.viewModelFactory.create(onQuit, forceOnboarding) }
     val state by vm.state.collectAsState()
@@ -52,6 +58,7 @@ fun App(
     }
 }
 
+@IgnoreStabilityReport
 @Preview
 @Composable
 private fun AppPreview() {

@@ -28,11 +28,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.app.AppIntent
-import dev.nucleusframework.offlinetranslator.app.AppState
-import dev.nucleusframework.offlinetranslator.app.visibleHistory
+import dev.nucleusframework.offlinetranslator.domain.AppData
 import dev.nucleusframework.offlinetranslator.domain.HistoryFilter
 import dev.nucleusframework.offlinetranslator.domain.HistoryItem
+import dev.nucleusframework.offlinetranslator.domain.filterHistory
+import dev.nucleusframework.offlinetranslator.platform.Platform
 import dev.nucleusframework.offlinetranslator.ui.Chip
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
@@ -55,15 +57,16 @@ import offlinetranslator.sharedui.generated.resources.history_stored
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
+@TraceRecomposition(tag = "history", threshold = 3)
 @Composable
-fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+fun HistoryScreen(data: AppData, query: String, filter: HistoryFilter, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
-    val rows = state.visibleHistory()
+    val rows = filterHistory(data.history, query, filter, Platform.now())
     Column(modifier.fillMaxSize().padding(horizontal = 32.dp, vertical = 24.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            HistoryFilters(state, onIntent)
+            HistoryFilters(filter, onIntent)
             Spacer(Modifier.weight(1f))
-            if (state.data.history.isNotEmpty()) {
+            if (data.history.isNotEmpty()) {
                 OutlinedPill(stringResource(Res.string.history_clear), onClick = { onIntent(AppIntent.ClearHistory) })
             }
             Row(
@@ -73,9 +76,9 @@ fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit, modifier: Modi
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 Icon(Icons.Outlined.Search, null, Modifier.size(18.dp), tint = c.onSurfaceVariant)
-                val placeholder = pluralStringResource(Res.plurals.history_search, state.data.history.size, state.data.history.size)
+                val placeholder = pluralStringResource(Res.plurals.history_search, data.history.size, data.history.size)
                 BasicTextField(
-                    value = state.historyQuery,
+                    value = query,
                     onValueChange = { onIntent(AppIntent.SetHistoryQuery(it)) },
                     singleLine = true,
                     textStyle = TextStyle(color = c.onSurface, fontSize = 14.sp),
@@ -83,7 +86,7 @@ fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit, modifier: Modi
                     modifier = Modifier.weight(1f),
                     decorationBox = { inner ->
                         Box(contentAlignment = Alignment.CenterStart) {
-                            if (state.historyQuery.isEmpty()) {
+                            if (query.isEmpty()) {
                                 Text(
                                     placeholder,
                                     color = c.onSurfaceVariant,
@@ -127,7 +130,7 @@ fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit, modifier: Modi
         }
         Spacer(Modifier.height(16.dp))
         Text(
-            pluralStringResource(Res.plurals.history_stored, state.data.history.size, state.data.history.size),
+            pluralStringResource(Res.plurals.history_stored, data.history.size, data.history.size),
             color = c.onSurfaceVariant,
             fontSize = 12.sp,
         )
@@ -135,7 +138,7 @@ fun HistoryScreen(state: AppState, onIntent: (AppIntent) -> Unit, modifier: Modi
 }
 
 @Composable
-private fun HistoryFilters(state: AppState, onIntent: (AppIntent) -> Unit) {
+private fun HistoryFilters(filter: HistoryFilter, onIntent: (AppIntent) -> Unit) {
     val filters = listOf(
         HistoryFilter.All to stringResource(Res.string.history_filter_all),
         HistoryFilter.Pinned to stringResource(Res.string.history_filter_pinned),
@@ -143,7 +146,7 @@ private fun HistoryFilters(state: AppState, onIntent: (AppIntent) -> Unit) {
     )
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
         filters.forEach { (f, label) ->
-            Chip(label, f == state.historyFilter, onClick = { onIntent(AppIntent.SetHistoryFilter(f)) })
+            Chip(label, f == filter, onClick = { onIntent(AppIntent.SetHistoryFilter(f)) })
         }
     }
 }

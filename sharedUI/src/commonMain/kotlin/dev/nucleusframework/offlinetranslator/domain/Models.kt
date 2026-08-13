@@ -1,5 +1,7 @@
 package dev.nucleusframework.offlinetranslator.domain
 
+import androidx.compose.runtime.Immutable
+
 enum class UiLanguage(val code: String, val rtl: Boolean = false) {
     Fr("fr"),
     En("en"),
@@ -61,6 +63,7 @@ enum class LangRole { Source, Target }
 
 enum class LangNameStyle { System, Native }
 
+@Immutable
 data class Language(
     val code: String,
     val nameFr: String,
@@ -76,6 +79,7 @@ data class Language(
     }
 }
 
+@Immutable
 data class HistoryItem(
     val id: String,
     val createdAt: Long,
@@ -86,6 +90,7 @@ data class HistoryItem(
     val pinned: Boolean = false,
 )
 
+@Immutable
 data class UserSettings(
     val uiLanguage: UiLanguage = UiLanguage.Fr,
     /** True while [uiLanguage] tracks the OS language instead of an explicit pick. */
@@ -104,6 +109,7 @@ data class UserSettings(
     val selectedVoices: Map<String, String> = emptyMap(),
 )
 
+@Immutable
 data class ModelInfo(
     val id: LlmModel = LlmModel.Fast,
     val installed: Boolean = false,
@@ -135,6 +141,7 @@ enum class DownloadPhase {
     }
 }
 
+@Immutable
 sealed interface DownloadError {
     data object Airplane : DownloadError
     data class DiskFull(val freeBytes: Long) : DownloadError
@@ -149,6 +156,7 @@ sealed interface DownloadError {
 
 class DownloadFailedException(val error: DownloadError) : Exception()
 
+@Immutable
 sealed interface DownloadLog {
     data object DiskOk : DownloadLog
     data class Mirror(val repo: String) : DownloadLog
@@ -158,6 +166,7 @@ sealed interface DownloadLog {
     data class ReceivedMb(val downloaded: Int, val total: Int) : DownloadLog
 }
 
+@Immutable
 data class DownloadState(
     val phase: DownloadPhase = DownloadPhase.DiskCheck,
     val bytesDownloaded: Long = 0,
@@ -172,6 +181,7 @@ data class DownloadState(
     val running: Boolean get() = !paused && phase != DownloadPhase.Done && phase != DownloadPhase.Cancelled && phase != DownloadPhase.Failed
 }
 
+@Immutable
 data class VoiceDownloadState(
     val lang: String? = null,
     val queue: List<String> = emptyList(),
@@ -186,6 +196,7 @@ data class VoiceDownloadState(
     val total: Int get() = finished.size + (if (lang != null) 1 else 0) + queue.size
 }
 
+@Immutable
 data class AppData(
     val installed: Boolean = false,
     val installStep: String = "Welcome",

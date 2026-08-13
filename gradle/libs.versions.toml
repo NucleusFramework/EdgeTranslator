@@ -27,6 +27,8 @@ detekt = "2.0.0-alpha.6"
 ktlint-gradle = "14.2.0"
 ktlint-cli = "1.8.0"
 compose-rules = "0.6.4"
+# Built against Kotlin 2.4.0; 2.4.10 is the same compiler family.
+stability-analyzer = "0.12.0"
 
 [libraries]
 
@@ -96,3 +98,4 @@ nucleus = { id = "dev.nucleusframework", version.ref = "nucleus" }
 structured-coroutines = { id = "io.github.santimattius.structured-coroutines", version.ref = "structured-coroutines" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
+stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version.ref = "stability-analyzer" }

@@ -24,8 +24,9 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.app.AppIntent
-import dev.nucleusframework.offlinetranslator.app.AppState
+import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.formatLatency
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
@@ -50,22 +51,28 @@ import org.jetbrains.compose.resources.stringResource
  * Correcteur d'orthographe : même disposition que [TranslationContent], sans sélecteur de
  * langue — le modèle corrige dans la langue du texte saisi.
  */
+@TraceRecomposition(tag = "proofread", threshold = 3)
 @Composable
-fun ProofreadContent(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+fun ProofreadContent(
+    proofread: ProofreadState,
+    uiLanguage: UiLanguage,
+    modelInstalled: Boolean,
+    onIntent: (AppIntent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        InputPanel(app, onIntent, Modifier.weight(1f))
-        ResultPanel(app, onIntent, Modifier.weight(1f))
+        InputPanel(proofread, onIntent, Modifier.weight(1f))
+        ResultPanel(proofread, uiLanguage, modelInstalled, onIntent, Modifier.weight(1f))
     }
 }
 
 @Composable
-private fun InputPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+private fun InputPanel(state: ProofreadState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.colorScheme
-    val state = app.proofread
     Column(modifier.fillMaxHeight().clip(RoundedCornerShape(20.dp)).border(1.dp, c.outlineVariant, RoundedCornerShape(20.dp))) {
         Box(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 20.dp), Alignment.CenterStart) {
             SectionLabel(stringResource(Res.string.proofread_header))
@@ -115,10 +122,14 @@ private fun InputPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: M
 }
 
 @Composable
-private fun ResultPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+private fun ResultPanel(
+    state: ProofreadState,
+    ui: UiLanguage,
+    modelInstalled: Boolean,
+    onIntent: (AppIntent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val c = MaterialTheme.colorScheme
-    val state = app.proofread
-    val ui = app.data.settings.uiLanguage
     Column(modifier.fillMaxHeight().clip(RoundedCornerShape(20.dp)).background(c.surfaceContainer)) {
         Row(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 20.dp), verticalAlignment = Alignment.CenterVertically) {
             SectionLabel(stringResource(Res.string.proofread_result_header))
@@ -130,11 +141,11 @@ private fun ResultPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
         }
         HorizontalDivider(color = c.surfaceContainerHighest)
 
-        val streaming = state.status == TranslationStatus.WaitingEngine && app.data.model.installed
+        val streaming = state.status == TranslationStatus.WaitingEngine && modelInstalled
         val body = when {
             state.text.isBlank() -> stringResource(Res.string.proofread_result_placeholder)
             state.status == TranslationStatus.Error -> state.error ?: stringResource(Res.string.translation_error)
-            !app.data.model.installed && state.result.isBlank() -> stringResource(Res.string.target_install_model)
+            !modelInstalled && state.result.isBlank() -> stringResource(Res.string.target_install_model)
             else -> null
         }
         if (body != null) {

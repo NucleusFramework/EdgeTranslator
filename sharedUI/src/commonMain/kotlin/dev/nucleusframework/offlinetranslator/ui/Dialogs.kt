@@ -33,10 +33,10 @@ import androidx.compose.ui.unit.sp
 import dev.nucleusframework.offlinetranslator.app.AppDialog
 import dev.nucleusframework.offlinetranslator.app.AppIntent
 import dev.nucleusframework.offlinetranslator.app.AppMessage
-import dev.nucleusframework.offlinetranslator.app.AppState
 import dev.nucleusframework.offlinetranslator.app.ConfirmAction
 import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
+import dev.nucleusframework.offlinetranslator.domain.UserSettings
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.ui.formatBytesUi
 import offlinetranslator.sharedui.generated.resources.Res
@@ -57,14 +57,13 @@ import offlinetranslator.sharedui.generated.resources.model_precise_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun AppDialogHost(state: AppState, onIntent: (AppIntent) -> Unit) {
-    when (val d = state.dialog) {
+fun AppDialogHost(dialog: AppDialog, speakLoading: Boolean, speakTarget: Boolean?, settings: UserSettings, onIntent: (AppIntent) -> Unit) {
+    when (val d = dialog) {
         AppDialog.Hidden -> Unit
         is AppDialog.Confirm -> ConfirmDialog(d, onIntent)
-        is AppDialog.InstallVoice -> InstallVoiceDialog(state, d, onIntent)
+        is AppDialog.InstallVoice -> InstallVoiceDialog(settings, d, onIntent)
     }
-    val speak = state.translation
-    if (speak.speakLoading) speak.speakTarget?.let { SpeakLoadingDialog(it, onIntent) }
+    if (speakLoading) speakTarget?.let { SpeakLoadingDialog(it, onIntent) }
 }
 
 /** Cold voice model: seconds of load + synthesis before any sound. Cancel = the speak toggle. */
@@ -113,9 +112,9 @@ private fun ConfirmDialog(d: AppDialog.Confirm, onIntent: (AppIntent) -> Unit) {
 }
 
 @Composable
-private fun InstallVoiceDialog(state: AppState, d: AppDialog.InstallVoice, onIntent: (AppIntent) -> Unit) {
-    val ui = state.data.settings.uiLanguage
-    val name = Languages.label(d.lang, state.data.settings)
+private fun InstallVoiceDialog(settings: UserSettings, d: AppDialog.InstallVoice, onIntent: (AppIntent) -> Unit) {
+    val ui = settings.uiLanguage
+    val name = Languages.label(d.lang, settings)
     val size = formatBytesUi(PiperVoices.of(d.lang)?.bytes ?: 0L, ui)
     Sheet(onDismiss = { onIntent(AppIntent.DismissDialog) }, title = stringResource(Res.string.dialog_install_voice)) {
         Text(

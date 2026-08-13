@@ -1080,6 +1080,9 @@ class AppViewModel(
                 scope.launch { finishRecording(transcribe = true) }
             }
 
+            // Tapping the loader aborts the opening line.
+            MicPhase.Starting -> cancelMic()
+
             MicPhase.Processing -> Unit
 
             MicPhase.Idle -> startRecording()
@@ -1108,11 +1111,14 @@ class AppViewModel(
         }
         if (!_state.value.data.model.installed) return
         recordJob?.cancel()
+        // The pane goes up before mic.start(): opening the line is slow cold (OS permission
+        // prompt, device wake-up), and a button that does nothing for a second reads as broken.
+        mutate { it.copy(translation = it.translation.copy(micPhase = MicPhase.Starting, micLevels = emptyList(), micElapsedMs = 0)) }
         recordJob = scope.launch {
             try {
                 mic.start()
             } catch (_: Exception) {
-                mutate { it.copy(message = AppMessage.MicFailed) }
+                mutate { it.copy(message = AppMessage.MicFailed, translation = it.translation.copy(micPhase = MicPhase.Idle)) }
                 return@launch
             }
             mutate {

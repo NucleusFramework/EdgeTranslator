@@ -91,12 +91,7 @@ fun SponsorButton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun TitleBarIconButton(
-    tooltip: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    icon: @Composable () -> Unit,
-) {
+private fun TitleBarIconButton(tooltip: String, onClick: () -> Unit, modifier: Modifier = Modifier, icon: @Composable () -> Unit) {
     TooltipBox(
         positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Below),
         tooltip = { PlainTooltip { Text(tooltip) } },

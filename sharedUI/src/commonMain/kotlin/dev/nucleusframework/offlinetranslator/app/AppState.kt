@@ -1,5 +1,6 @@
 package dev.nucleusframework.offlinetranslator.app
 
+import androidx.compose.runtime.Immutable
 import dev.nucleusframework.offlinetranslator.domain.AppData
 import dev.nucleusframework.offlinetranslator.domain.DownloadState
 import dev.nucleusframework.offlinetranslator.domain.HistoryFilter
@@ -10,12 +11,14 @@ import dev.nucleusframework.offlinetranslator.translation.TranslationState
 
 enum class InstallStep { Welcome, Download, Voices }
 
+@Immutable
 sealed interface AppDialog {
     data object Hidden : AppDialog
     data class Confirm(val action: ConfirmAction) : AppDialog
     data class InstallVoice(val lang: String) : AppDialog
 }
 
+@Immutable
 sealed interface ConfirmAction {
     data object PurgeHistory : ConfirmAction
     data class DeleteModel(val id: LlmModel) : ConfirmAction
@@ -23,6 +26,7 @@ sealed interface ConfirmAction {
     data object ResetApp : ConfirmAction
 }
 
+@Immutable
 data class AppState(
     val data: AppData = AppData(),
     val translation: TranslationState = TranslationState.Empty,

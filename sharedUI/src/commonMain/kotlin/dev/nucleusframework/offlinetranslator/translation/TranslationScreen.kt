@@ -45,10 +45,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.app.AppIntent
-import dev.nucleusframework.offlinetranslator.app.AppState
 import dev.nucleusframework.offlinetranslator.domain.LangRole
 import dev.nucleusframework.offlinetranslator.domain.Languages
+import dev.nucleusframework.offlinetranslator.domain.UserSettings
+import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
 import dev.nucleusframework.offlinetranslator.domain.formatLatency
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.translation.MicPhase
@@ -72,6 +74,7 @@ import offlinetranslator.sharedui.generated.resources.cd_speak_stop
 import offlinetranslator.sharedui.generated.resources.cd_swap_languages
 import offlinetranslator.sharedui.generated.resources.char_count
 import offlinetranslator.sharedui.generated.resources.latency_local
+import offlinetranslator.sharedui.generated.resources.mic_listening
 import offlinetranslator.sharedui.generated.resources.mic_speak_now
 import offlinetranslator.sharedui.generated.resources.mic_tap_stop
 import offlinetranslator.sharedui.generated.resources.mic_time
@@ -90,15 +93,23 @@ import org.jetbrains.compose.resources.stringResource
  * Content of design B1 — "Traduction" (expanded). Rendered inside the app shell:
  * two panels whose headers double as language pickers, swap button between them.
  */
+@TraceRecomposition(tag = "translate", threshold = 3, traceStates = true)
 @Composable
-fun TranslationContent(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+fun TranslationContent(
+    translation: TranslationState,
+    settings: UserSettings,
+    modelInstalled: Boolean,
+    voiceDownload: VoiceDownloadState,
+    onIntent: (AppIntent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val c = MaterialTheme.colorScheme
     Row(
         modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SourcePanel(app, onIntent, Modifier.weight(1f))
+        SourcePanel(translation, settings, voiceDownload, onIntent, Modifier.weight(1f))
         Surface(
             onClick = { onIntent(AppIntent.SwapLanguages) },
             color = c.primaryContainer,
@@ -110,17 +121,15 @@ fun TranslationContent(app: AppState, onIntent: (AppIntent) -> Unit, modifier: M
                 Icon(Icons.Outlined.SwapHoriz, stringResource(Res.string.cd_swap_languages), Modifier.size(20.dp))
             }
         }
-        TargetPanel(app, onIntent, Modifier.weight(1f))
+        TargetPanel(translation, settings, modelInstalled, voiceDownload, onIntent, Modifier.weight(1f))
     }
 }
 
 /** Panel header: the language name itself is the dropdown that picks it. */
 @Composable
-private fun LanguageHeader(app: AppState, role: LangRole, onIntent: (AppIntent) -> Unit) {
+private fun LanguageHeader(settings: UserSettings, code: String, role: LangRole, onIntent: (AppIntent) -> Unit) {
     val c = MaterialTheme.colorScheme
-    val settings = app.data.settings
     val source = role == LangRole.Source
-    val code = if (source) app.translation.sourceLang else app.translation.targetLang
     var open by remember { mutableStateOf(false) }
     Box {
         Row(
@@ -165,13 +174,17 @@ private fun LanguageHeader(app: AppState, role: LangRole, onIntent: (AppIntent) 
 }
 
 @Composable
-private fun SourcePanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+private fun SourcePanel(
+    state: TranslationState,
+    settings: UserSettings,
+    voiceDownload: VoiceDownloadState,
+    onIntent: (AppIntent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val c = MaterialTheme.colorScheme
-    val state = app.translation
-    val ui = app.data.settings.uiLanguage
     Column(modifier.fillMaxHeight().clip(RoundedCornerShape(20.dp)).border(1.dp, c.outlineVariant, RoundedCornerShape(20.dp))) {
         Box(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 14.dp), Alignment.CenterStart) {
-            LanguageHeader(app, LangRole.Source, onIntent)
+            LanguageHeader(settings, state.sourceLang, LangRole.Source, onIntent)
         }
         HorizontalDivider(color = c.surfaceContainerHighest)
         if (state.micPhase != MicPhase.Idle) {
@@ -228,7 +241,7 @@ private fun SourcePanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
                 Text(stringResource(Res.string.mic_time, clock), color = c.onSurfaceVariant, fontSize = 12.sp)
             }
             Spacer(Modifier.weight(1f))
-            SpeakIcon(app, target = false, onIntent = onIntent)
+            SpeakIcon(state, voiceDownload, target = false, onIntent = onIntent)
             val listening = state.micPhase == MicPhase.Listening
             val googleRed = Color(0xFFEA4335)
             Icon(
@@ -269,7 +282,13 @@ private fun ListeningPane(state: TranslationState, onIntent: (AppIntent) -> Unit
         }
         Spacer(Modifier.height(28.dp))
         Text(
-            stringResource(if (listening) Res.string.mic_speak_now else Res.string.mic_transcribing),
+            stringResource(
+                when (state.micPhase) {
+                    MicPhase.Listening -> Res.string.mic_speak_now
+                    MicPhase.Starting -> Res.string.mic_listening
+                    else -> Res.string.mic_transcribing
+                },
+            ),
             color = if (listening) GoogleMicRed else c.onSurfaceVariant,
             fontSize = 22.sp,
             fontWeight = FontWeight.Medium,
@@ -287,6 +306,9 @@ private fun ListeningPane(state: TranslationState, onIntent: (AppIntent) -> Unit
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(Icons.Outlined.Mic, stringResource(Res.string.cd_dictate), Modifier.size(32.dp))
+                    if (state.micPhase == MicPhase.Starting) {
+                        CircularProgressIndicator(Modifier.size(52.dp), strokeWidth = 2.dp, color = c.primary)
+                    }
                 }
             }
         }
@@ -305,13 +327,19 @@ private fun ListeningPane(state: TranslationState, onIntent: (AppIntent) -> Unit
 }
 
 @Composable
-private fun TargetPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+private fun TargetPanel(
+    state: TranslationState,
+    settings: UserSettings,
+    modelInstalled: Boolean,
+    voiceDownload: VoiceDownloadState,
+    onIntent: (AppIntent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val c = MaterialTheme.colorScheme
-    val state = app.translation
-    val ui = app.data.settings.uiLanguage
+    val ui = settings.uiLanguage
     Column(modifier.fillMaxHeight().clip(RoundedCornerShape(20.dp)).background(c.surfaceContainer)) {
         Row(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-            LanguageHeader(app, LangRole.Target, onIntent)
+            LanguageHeader(settings, state.targetLang, LangRole.Target, onIntent)
             Spacer(Modifier.weight(1f))
             val latency = formatLatency(state.latencyMs, ui)
             if (latency.isNotEmpty()) {
@@ -325,12 +353,12 @@ private fun TargetPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
         }
         HorizontalDivider(color = c.surfaceContainerHighest)
 
-        val streaming = state.status == TranslationStatus.WaitingEngine && app.data.model.installed
+        val streaming = state.status == TranslationStatus.WaitingEngine && modelInstalled
         val installModel = stringResource(Res.string.target_install_model)
         val body = when {
             state.sourceText.isBlank() -> stringResource(Res.string.target_placeholder)
             state.status == TranslationStatus.Error -> state.error ?: stringResource(Res.string.translation_error)
-            !app.data.model.installed && state.targetText.isBlank() -> installModel
+            !modelInstalled && state.targetText.isBlank() -> installModel
             else -> null
         }
         if (body != null) {
@@ -380,26 +408,25 @@ private fun TargetPanel(app: AppState, onIntent: (AppIntent) -> Unit, modifier: 
                 enabled = !state.saved,
             )
             Spacer(Modifier.weight(1f))
-            SpeakIcon(app, target = true, onIntent = onIntent)
+            SpeakIcon(state, voiceDownload, target = true, onIntent = onIntent)
         }
     }
 }
 
 @Composable
-private fun SpeakIcon(app: AppState, target: Boolean, onIntent: (AppIntent) -> Unit) {
-    val state = app.translation
+private fun SpeakIcon(state: TranslationState, voiceDownload: VoiceDownloadState, target: Boolean, onIntent: (AppIntent) -> Unit) {
     val lang = if (target) state.targetLang else state.sourceLang
     if (!state.ttsReady || !Languages.hasTts(lang)) return
     val installed = lang in state.installedVoices
     val text = if (target) state.targetText else state.sourceText
     val active = state.speakTarget == target
-    val downloading = app.voiceDownload.running && PiperVoices.covers(app.voiceDownload.lang, lang)
+    val downloading = voiceDownload.running && PiperVoices.covers(voiceDownload.lang, lang)
     val loading = (state.speakBusy && active) || downloading
     val c = MaterialTheme.colorScheme
     val indicator = Modifier.size(22.dp)
     when {
         loading && downloading -> CircularProgressIndicator(
-            progress = { app.voiceDownload.fraction.coerceIn(0f, 1f) },
+            progress = { voiceDownload.fraction.coerceIn(0f, 1f) },
             modifier = indicator,
             strokeWidth = 2.dp,
             color = c.primary,

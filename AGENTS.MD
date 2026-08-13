@@ -19,6 +19,8 @@ Platform modules (`androidApp`, `desktopApp`, `iosApp`, `webApp`) are thin wrapp
 | **Android** (debug APK) | `./gradlew :androidApp:assembleDebug` |
 | **Desktop** (run) | `./gradlew :desktopApp:run` |
 | **Desktop** (hot reload) | `./gradlew :desktopApp:hotRun --auto` |
+| **Compose stability dump** | `./gradlew :sharedUI:compileKotlinJvm :sharedUI:stabilityDump` |
+| **Compose stability check** | `./gradlew :sharedUI:compileKotlinJvm :sharedUI:stabilityCheck` |
 
 ## Build Verification Order
 

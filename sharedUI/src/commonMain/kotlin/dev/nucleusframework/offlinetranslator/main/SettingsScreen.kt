@@ -32,12 +32,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.skydoves.compose.stability.runtime.TraceRecomposition
 import dev.nucleusframework.offlinetranslator.app.AppIntent
-import dev.nucleusframework.offlinetranslator.app.AppState
+import dev.nucleusframework.offlinetranslator.domain.DownloadState
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
+import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
+import dev.nucleusframework.offlinetranslator.domain.UserSettings
+import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
 import dev.nucleusframework.offlinetranslator.domain.formatPercent
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
@@ -51,17 +55,28 @@ import dev.nucleusframework.offlinetranslator.ui.text
 import offlinetranslator.sharedui.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
+@TraceRecomposition(tag = "settings")
 @Composable
-fun SettingsScreen(state: AppState, onIntent: (AppIntent) -> Unit, modifier: Modifier = Modifier) {
+fun SettingsScreen(
+    settings: UserSettings,
+    model: ModelInfo,
+    download: DownloadState,
+    voiceDownload: VoiceDownloadState,
+    ttsReady: Boolean,
+    sourceLang: String,
+    targetLang: String,
+    onIntent: (AppIntent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 32.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(Modifier.widthIn(max = 920.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(28.dp)) {
-            DisplaySection(state, onIntent)
-            ModelSection(state, onIntent)
-            if (state.translation.ttsReady) VoicesSection(state, onIntent)
-            StorageSection(state.translation.ttsReady)
+            DisplaySection(settings, onIntent)
+            ModelSection(settings, model, download, onIntent)
+            if (ttsReady) VoicesSection(settings, voiceDownload, sourceLang, targetLang, onIntent)
+            StorageSection(ttsReady)
             ResetSection(onIntent)
         }
     }
@@ -70,8 +85,7 @@ fun SettingsScreen(state: AppState, onIntent: (AppIntent) -> Unit, modifier: Mod
 // ---------------------------------------------------------------- sections
 
 @Composable
-private fun DisplaySection(state: AppState, onIntent: (AppIntent) -> Unit) {
-    val settings = state.data.settings
+private fun DisplaySection(settings: UserSettings, onIntent: (AppIntent) -> Unit) {
     SettingsSection(stringResource(Res.string.settings_display)) {
         val auto = settings.uiLanguageAuto
         val nativeName = { lang: UiLanguage -> Languages.get(lang.code)?.native ?: lang.code }
@@ -112,25 +126,25 @@ private fun DisplaySection(state: AppState, onIntent: (AppIntent) -> Unit) {
 }
 
 @Composable
-private fun ModelSection(state: AppState, onIntent: (AppIntent) -> Unit) {
-    val ui = state.data.settings.uiLanguage
-    val selected = state.data.settings.selectedModel
+private fun ModelSection(settings: UserSettings, model: ModelInfo, download: DownloadState, onIntent: (AppIntent) -> Unit) {
+    val ui = settings.uiLanguage
+    val selected = settings.selectedModel
     SettingsSection(stringResource(Res.string.settings_model)) {
         Divided(GemmaModels.all) { catalog ->
-            val installed = catalog.isOnDisk() || (state.data.model.installed && state.data.model.id == catalog.id)
-            val downloading = catalog.id == selected && state.download.running
+            val installed = catalog.isOnDisk() || (model.installed && model.id == catalog.id)
+            val downloading = catalog.id == selected && download.running
             ChoiceRow(
                 title = catalog.title(),
                 body = catalog.body(formatBytesUi(catalog.bytes, ui)),
                 installed = installed,
-                selected = installed && state.data.model.installed && state.data.model.id == catalog.id,
-                progress = if (downloading) state.download.fraction else null,
+                selected = installed && model.installed && model.id == catalog.id,
+                progress = if (downloading) download.fraction else null,
                 progressLabel = if (downloading) {
-                    stringResource(Res.string.settings_model_downloading, formatPercent(state.download.fraction, ui))
+                    stringResource(Res.string.settings_model_downloading, formatPercent(download.fraction, ui))
                 } else {
                     null
                 },
-                error = if (catalog.id == selected) state.download.error?.text(ui) else null,
+                error = if (catalog.id == selected) download.error?.text(ui) else null,
                 onClick = { onIntent(AppIntent.SelectModel(catalog.id)) },
                 onDelete = if (installed && !downloading) {
                     { onIntent(AppIntent.DeleteModel(catalog.id)) }
@@ -148,8 +162,13 @@ private fun ModelSection(state: AppState, onIntent: (AppIntent) -> Unit) {
  * the "add a voice" picker at the bottom.
  */
 @Composable
-private fun VoicesSection(state: AppState, onIntent: (AppIntent) -> Unit) {
-    val settings = state.data.settings
+private fun VoicesSection(
+    settings: UserSettings,
+    voiceDownload: VoiceDownloadState,
+    sourceLang: String,
+    targetLang: String,
+    onIntent: (AppIntent) -> Unit,
+) {
     val ui = settings.uiLanguage
     var openCode by rememberSaveable { mutableStateOf<String?>(null) }
     val openLang = openCode?.let { Languages.get(it) }
@@ -158,8 +177,8 @@ private fun VoicesSection(state: AppState, onIntent: (AppIntent) -> Unit) {
         SettingsSection(languageLabel(openLang.code, settings.langNames), onBack = { openCode = null }) {
             Divided(PiperVoices.forLang(openLang.code)) { spec ->
                 val installed = spec.isOnDisk()
-                val downloading = state.voiceDownload.running &&
-                    (state.voiceDownload.lang == spec.id || state.voiceDownload.lang == spec.lang)
+                val downloading = voiceDownload.running &&
+                    (voiceDownload.lang == spec.id || voiceDownload.lang == spec.lang)
                 val active = settings.selectedVoices[spec.lang] == spec.id ||
                     (installed && settings.selectedVoices[spec.lang] == null && spec.id == PiperVoices.defaultFor(spec.lang)?.id)
                 ChoiceRow(
@@ -167,13 +186,13 @@ private fun VoicesSection(state: AppState, onIntent: (AppIntent) -> Unit) {
                     body = formatBytesUi(spec.bytes, ui),
                     installed = installed,
                     selected = installed && active,
-                    progress = if (downloading) state.voiceDownload.fraction else null,
+                    progress = if (downloading) voiceDownload.fraction else null,
                     progressLabel = if (downloading) {
-                        stringResource(Res.string.settings_model_downloading, formatPercent(state.voiceDownload.fraction, ui))
+                        stringResource(Res.string.settings_model_downloading, formatPercent(voiceDownload.fraction, ui))
                     } else {
                         null
                     },
-                    error = if (downloading) state.voiceDownload.error?.text(ui) else null,
+                    error = if (downloading) voiceDownload.error?.text(ui) else null,
                     onClick = {
                         if (installed) {
                             onIntent(AppIntent.SelectVoice(spec.id))
@@ -192,8 +211,8 @@ private fun VoicesSection(state: AppState, onIntent: (AppIntent) -> Unit) {
         return
     }
 
-    val busy = state.voiceDownload.lang.takeIf { state.voiceDownload.running }
-    val active = setOf(state.translation.sourceLang, state.translation.targetLang)
+    val busy = voiceDownload.lang.takeIf { voiceDownload.running }
+    val active = setOf(sourceLang, targetLang)
     val mine = PiperVoices.visibleLangs(active, busy, PiperVoices.installed())
     val rest = PiperVoices.langs.filterNot { it in mine }
 
@@ -204,7 +223,7 @@ private fun VoicesSection(state: AppState, onIntent: (AppIntent) -> Unit) {
             LinkRow(
                 title = languageLabel(code, settings.langNames),
                 body = stringResource(Res.string.settings_voices_summary, voices.size, voices.count { it.isOnDisk() }),
-                progress = if (downloading) state.voiceDownload.fraction else null,
+                progress = if (downloading) voiceDownload.fraction else null,
                 onClick = { openCode = code },
             )
         }

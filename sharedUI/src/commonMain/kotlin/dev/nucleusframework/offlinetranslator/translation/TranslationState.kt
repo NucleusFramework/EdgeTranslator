@@ -1,15 +1,19 @@
 package dev.nucleusframework.offlinetranslator.translation
 
+import androidx.compose.runtime.Immutable
 import dev.nucleusframework.offlinetranslator.domain.AUTO_LANG
 import dev.nucleusframework.offlinetranslator.domain.paragraphCount
 
+@Immutable
 data class Alternative(val term: String)
 
 enum class TranslationStatus { Idle, WaitingEngine, Ready, Error }
 
-enum class MicPhase { Idle, Listening, Processing }
+/** [Starting] = the audio line is opening (cold: OS permission prompt, device wake-up). */
+enum class MicPhase { Idle, Starting, Listening, Processing }
 
 /** Correcteur d'orthographe : même moteur que la traduction, un seul texte. */
+@Immutable
 data class ProofreadState(
     val text: String = "",
     val result: String = "",
@@ -23,6 +27,7 @@ data class ProofreadState(
     val copied: Boolean get() = copiedResult != null && result.trim() == copiedResult
 }
 
+@Immutable
 data class TranslationState(
     val sourceLang: String = AUTO_LANG,
     val targetLang: String = "en",

@@ -1,5 +1,6 @@
 package dev.nucleusframework.offlinetranslator.engine
 
+import androidx.compose.runtime.Immutable
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.MODEL_BYTES
 import dev.nucleusframework.offlinetranslator.domain.ModelInfo
@@ -11,6 +12,7 @@ import dev.nucleusframework.offlinetranslator.platform.joinPath
  * Fast: https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm
  * Precise: https://huggingface.co/litert-community/gemma-4-E4B-it-litert-lm
  */
+@Immutable
 data class CatalogModel(
     val id: LlmModel,
     val name: String,

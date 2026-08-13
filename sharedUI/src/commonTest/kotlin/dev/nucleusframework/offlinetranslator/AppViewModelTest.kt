@@ -595,6 +595,17 @@ class AppViewModelTest {
     }
 
     @Test
+    fun micShowsStartingBeforeTheLineOpens() {
+        val vm = vm(
+            store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
+            mic = FakeMic(ByteArray(0)),
+        )
+        vm.onIntent(AppIntent.ToggleMic)
+        // Nothing has run on the VM scope yet: the pane must already be up.
+        assertEquals(MicPhase.Starting, vm.state.value.translation.micPhase)
+    }
+
+    @Test
     @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     fun slowVoiceLoadShowsLoaderUntilAudioStarts() = runTest {
         val speaker = FakeTts().apply { loadMs = 2_000 }

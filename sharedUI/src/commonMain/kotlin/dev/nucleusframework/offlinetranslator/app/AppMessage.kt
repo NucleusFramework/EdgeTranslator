@@ -1,5 +1,8 @@
 package dev.nucleusframework.offlinetranslator.app
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 sealed interface AppMessage {
     data object NothingToSave : AppMessage
     data object HistoryDisabled : AppMessage

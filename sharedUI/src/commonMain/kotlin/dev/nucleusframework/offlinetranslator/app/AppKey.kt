@@ -1,6 +1,7 @@
 package dev.nucleusframework.offlinetranslator.app
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.navigation3.runtime.NavKey
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.nav_history
@@ -9,6 +10,7 @@ import offlinetranslator.sharedui.generated.resources.nav_settings
 import offlinetranslator.sharedui.generated.resources.nav_translate
 import org.jetbrains.compose.resources.stringResource
 
+@Immutable
 sealed interface AppKey : NavKey {
     data object Welcome : AppKey
     data object Download : AppKey
