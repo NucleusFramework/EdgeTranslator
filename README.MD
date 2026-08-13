@@ -1,10 +1,17 @@
 # Edge Translator
 
-Offline translator for **desktop** (macOS, Windows, Linux). An Android app is planned.
+Translate offline, without a word leaving this device.
 
-The model runs on the device. After install, text, speech, images, and favorites stay local — no outbound request.
+Desktop app for macOS, Windows, and Linux. The model runs on the machine. After install, text, speech, images, and favorites stay local — no outbound request. An Android app is planned.
 
 The interface is available in the same 35 languages as the catalog, including RTL (Arabic, Hebrew, Persian).
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/translate-dark.png">
+    <img src="docs/screenshots/translate-light.png" width="920" alt="Edge Translator translating the project license from English to French on-device, in 4.8 seconds.">
+  </picture>
+</p>
 
 ## Features
 
@@ -22,6 +29,33 @@ The interface is available in the same 35 languages as the catalog, including RT
 - Desktop auto-update from [GitHub Releases](https://github.com/NucleusFramework/EdgeTranslator/releases)
 - About screen with open-source licenses
 - Follows the system light / dark appearance
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/proofread-dark.png">
+        <img src="docs/screenshots/proofread-light.png" alt="Proofreading: messy phonetic English rewritten as clean prose, still on-device.">
+      </picture>
+      <p><strong>Proofreading.</strong> Same model, same machine. No grammar-checker account.</p>
+    </td>
+    <td width="50%" valign="top">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/favorites-dark.png">
+        <img src="docs/screenshots/favorites-light.png" alt="Favorites list with pinned translations in French, English, Japanese, Arabic, German, and more, stored locally.">
+      </picture>
+      <p><strong>Favorites.</strong> Contracts, tickets, a line of Arabic. Searchable, pinned, on disk.</p>
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/onboarding-dark.png">
+    <img src="docs/screenshots/onboarding-light.png" width="920" alt="First-launch screen: choose Fast or Precision, then download the model. After that, no connection is required.">
+  </picture>
+</p>
+<p align="center"><sub>One download. After that, the network cable can come out.</sub></p>
 
 ## Languages
 
