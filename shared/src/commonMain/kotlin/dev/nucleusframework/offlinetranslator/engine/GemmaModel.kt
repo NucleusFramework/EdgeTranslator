@@ -6,6 +6,7 @@ import dev.nucleusframework.offlinetranslator.domain.MODEL_BYTES
 import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.platform.Platform
 import dev.nucleusframework.offlinetranslator.platform.joinPath
+import dev.nucleusframework.offlinetranslator.platform.parentPath
 
 /**
  * Gemma 4 IT packaged for LiteRT-LM, same artifacts as Google AI Edge Gallery.
@@ -17,6 +18,8 @@ data class CatalogModel(
     val id: LlmModel,
     val name: String,
     val fileName: String,
+    /** LiteRT-LM CLI registry id (`litert-lm run gemma4-e2b`). */
+    val registryId: String,
     val repo: String,
     val bytes: Long,
     val sha256: String,
@@ -24,15 +27,33 @@ data class CatalogModel(
 ) {
     val url: String get() = "https://huggingface.co/$repo/resolve/main/$fileName"
 
-    fun destPath(): String = joinPath(GemmaModels.dir(), fileName)
+    fun aliases(): List<String> = listOf(registryId, fileName)
+
+    fun modelDir(): String = parentPath(destPath())
+
+    fun destPath(): String = resolvedDest() ?: joinPath(joinPath(GemmaModels.dir(), registryId), "model.litertlm")
 
     fun partialPath(): String = destPath() + ".partial"
 
+    fun ownerMarkerPath(): String = joinPath(modelDir(), ".edgetranslator")
+
+    private fun resolvedDest(): String? = aliases()
+        .map { joinPath(joinPath(GemmaModels.dir(), it), "model.litertlm") }
+        .firstOrNull { Platform.fileSize(it) == bytes }
+
     fun isOnDisk(): Boolean = Platform.fileSize(destPath()) == bytes
+
+    fun ownedByApp(): Boolean = Platform.exists(ownerMarkerPath())
+
+    fun markOwned() {
+        Platform.mkdir(modelDir())
+        Platform.writeText(ownerMarkerPath(), "")
+    }
 
     fun removeFromDisk() {
         Platform.delete(destPath())
         Platform.delete(partialPath())
+        Platform.deleteRecursively(modelDir())
     }
 
     fun toInfo(now: Long) = ModelInfo(
@@ -50,12 +71,13 @@ data class CatalogModel(
 }
 
 object GemmaModels {
-    fun dir(): String = joinPath(Platform.appDir(), "models")
+    fun dir(): String = Platform.modelsDir()
 
     val Fast = CatalogModel(
         id = LlmModel.Fast,
         name = "Gemma 4 E2B IT",
         fileName = "gemma-4-E2B-it.litertlm",
+        registryId = "gemma4-e2b",
         repo = "litert-community/gemma-4-E2B-it-litert-lm",
         bytes = MODEL_BYTES,
         sha256 = "181938105e0eefd105961417e8da75903eacda102c4fce9ce90f50b97139a63c",
@@ -64,6 +86,7 @@ object GemmaModels {
         id = LlmModel.Precise,
         name = "Gemma 4 E4B IT",
         fileName = "gemma-4-E4B-it.litertlm",
+        registryId = "gemma4-e4b",
         repo = "litert-community/gemma-4-E4B-it-litert-lm",
         bytes = 3_659_530_240L,
         sha256 = "0b2a8980ce155fd97673d8e820b4d29d9c7d99b8fa6806f425d969b145bd52e0",

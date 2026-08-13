@@ -112,7 +112,7 @@ class HuggingFaceModelDownloader(private val httpClient: HttpClient) : ModelDown
             if (!Platform.rename(partial, destPath)) {
                 throw DownloadFailedException(DownloadError.InstallFailed)
             }
-            return@withContext DownloadedModel(destPath, "", Platform.fileSize(destPath))
+            return@withContext DownloadedModel(destPath, "", Platform.fileSize(destPath), createdByApp = true)
         }
         val sha = Platform.sha256(partial) ?: throw DownloadFailedException(DownloadError.ShaCompute)
         if (!sha.equals(expectedSha256, ignoreCase = true)) {
@@ -123,7 +123,7 @@ class HuggingFaceModelDownloader(private val httpClient: HttpClient) : ModelDown
         if (!Platform.rename(partial, destPath)) {
             throw DownloadFailedException(DownloadError.InstallFailed)
         }
-        DownloadedModel(destPath, sha, Platform.fileSize(destPath))
+        DownloadedModel(destPath, sha, Platform.fileSize(destPath), createdByApp = true)
     }
 
     private fun httpError(status: Int): DownloadError = when (status) {

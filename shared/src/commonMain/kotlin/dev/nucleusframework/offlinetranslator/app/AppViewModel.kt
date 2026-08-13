@@ -83,12 +83,13 @@ class AppViewModel(
     private val imagePicker: ImagePicker = FileImagePicker,
     private val tts: TtsSpeaker = SilentTts,
     private val modelOnDisk: (CatalogModel) -> Boolean = { it.isOnDisk() },
+    private val modelOwnedByApp: (CatalogModel) -> Boolean = { it.ownedByApp() },
     private val deleteModelFiles: (CatalogModel) -> Unit = { it.removeFromDisk() },
     private val voicesOnDisk: () -> Set<String> = { PiperVoices.installed() },
     private val voiceOnDisk: (PiperVoiceSpec) -> Boolean = { it.isOnDisk() },
     private val deleteVoiceFiles: (String) -> Unit = { PiperVoices.of(it)?.removeFromDisk() },
     private val wipeDownloadDirs: () -> Unit = {
-        Platform.deleteRecursively(GemmaModels.dir())
+        Platform.deleteRecursively(PiperVoices.dir())
         Platform.deleteRecursively(PiperVoices.legacyDir())
     },
     private val migrateVoices: () -> Unit = { PiperVoices.migrateLegacy() },
@@ -734,7 +735,10 @@ class AppViewModel(
         scope.launch { runCatching { mic.stop() } }
         unloadEngine()
         LlmRuntime.preference = LlmBackend.Auto
-        GemmaModels.all.forEach(deleteModelFiles)
+        GemmaModels.all.forEach { catalog ->
+            if (modelOwnedByApp(catalog)) deleteModelFiles(catalog)
+            else Platform.delete(catalog.partialPath())
+        }
         PiperVoices.all().forEach { deleteVoiceFiles(it.id) }
         wipeDownloadDirs()
         historyStore.clear()
@@ -826,7 +830,7 @@ class AppViewModel(
             }
             val (dest, already, free) = withContext(ioDispatcher) {
                 val destPath = catalog.destPath()
-                val dir = GemmaModels.dir()
+                val dir = catalog.modelDir()
                 Platform.mkdir(dir)
                 val have = Platform.fileSize(destPath).let { if (it > 0) it else Platform.fileSize(catalog.partialPath()) }
                 Triple(destPath, have, Platform.freeSpace(dir))
@@ -865,6 +869,9 @@ class AppViewModel(
                     },
                 )
                 if (!isActive) return@launch
+                if (downloaded.createdByApp) {
+                    withContext(ioDispatcher) { catalog.markOwned() }
+                }
                 onIntent(AppIntent.DownloadPhase(DownloadPhase.Index))
                 if (keepModelReady()) {
                     try {
@@ -1010,7 +1017,7 @@ class AppViewModel(
                     tts.resume()
                     mutate { it.copy(translation = it.translation.copy(speakPaused = false)) }
                 }
-                else -> stopSpeak()
+                else -> Unit
             }
             return
         }
@@ -1036,26 +1043,15 @@ class AppViewModel(
                     translation = it.translation.copy(
                         speakTarget = target,
                         speakBusy = true,
-                        speakLoading = false,
+                        speakLoading = true,
                         speakPlaying = false,
                         speakPaused = false,
                     ),
                 )
             }
-            // A cold voice model takes seconds to load and synthesise before a sound comes out.
-            // ponytail: 250 ms de sursis avant d'afficher le loader — modèle déjà chargé, pas de clignotement.
-            val loader = launch {
-                delay(250)
-                mutate { it.copy(translation = it.translation.copy(speakLoading = true)) }
-            }
-            fun hideLoader() {
-                loader.cancel()
-                mutate { it.copy(translation = it.translation.copy(speakLoading = false)) }
-            }
             try {
                 withContext(ioDispatcher) {
                     tts.speak(text.trim(), lang, voiceId) {
-                        loader.cancel()
                         mutate {
                             it.copy(
                                 translation = it.translation.copy(
@@ -1067,14 +1063,11 @@ class AppViewModel(
                     }
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
-                hideLoader()
                 throw e
             } catch (_: Exception) {
-                hideLoader()
                 mutate { it.copy(message = AppMessage.TtsFailed, translation = it.translation.idleSpeak()) }
                 return@launch
             }
-            hideLoader()
             mutate { it.copy(translation = it.translation.idleSpeak()) }
         }
     }

@@ -81,7 +81,6 @@ internal fun decodeSnapshot(text: String): AppData {
     var modelInstalled = false
     var modelAt = 0L
     var modelSha = ""
-    var modelPath = ""
     var modelChecked = 0L
     var lastSourceLang = AUTO_LANG
     var lastTargetLang = "en"
@@ -147,7 +146,7 @@ internal fun decodeSnapshot(text: String): AppData {
 
             line.startsWith("model.sha=") -> modelSha = line.substringAfter("=")
 
-            line.startsWith("model.path=") -> modelPath = unb64(line.substringAfter("="))
+            line.startsWith("model.path=") -> Unit
 
             line.startsWith("model.checked=") -> modelChecked = line.substringAfter("=").toLongOrNull() ?: 0L
 
@@ -186,7 +185,7 @@ internal fun decodeSnapshot(text: String): AppData {
                 installed = modelInstalled,
                 installedAt = modelAt.takeIf { it > 0 },
                 sha256 = modelSha,
-                path = modelPath,
+                path = if (modelInstalled) catalog.destPath() else "",
                 lastChecked = modelChecked.takeIf { it > 0 },
                 name = catalog.name,
                 quantization = catalog.quantization,

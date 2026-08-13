@@ -20,6 +20,17 @@ internal fun ensureFileKit() {
     FileKit.init(appId = FILEKIT_APP_ID)
 }
 
+internal fun litertLmHome(): String {
+    val os = System.getProperty("os.name").orEmpty().lowercase()
+    return if (os.contains("win")) {
+        System.getenv("USERPROFILE")?.takeIf { it.isNotBlank() }
+            ?: System.getProperty("user.home").orEmpty()
+    } else {
+        System.getProperty("user.home")?.takeIf { it.isNotBlank() }
+            ?: System.getenv("HOME").orEmpty()
+    }
+}
+
 internal actual object Platform {
     actual val osLabel: String
         get() {
@@ -54,6 +65,8 @@ internal actual object Platform {
         ensureFileKit()
         return filekitDatabasesDir()
     }
+
+    actual fun modelsDir(): String = litertLmModelsDir(litertLmHome())
 
     actual fun readText(path: String): String? = filekitReadText(path)
 

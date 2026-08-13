@@ -82,6 +82,7 @@ class AppViewModelTest {
         pickImage: ImagePicker = ImagePicker { null },
         tts: TtsSpeaker = SilentTts,
         modelOnDisk: (CatalogModel) -> Boolean = { false },
+        modelOwnedByApp: (CatalogModel) -> Boolean = { false },
         deleteModelFiles: (CatalogModel) -> Unit = {},
         voicesOnDisk: () -> Set<String> = { emptySet() },
         voiceOnDisk: (dev.nucleusframework.offlinetranslator.engine.PiperVoiceSpec) -> Boolean = { false },
@@ -103,6 +104,7 @@ class AppViewModelTest {
         imagePicker = pickImage,
         tts = tts,
         modelOnDisk = modelOnDisk,
+        modelOwnedByApp = modelOwnedByApp,
         deleteModelFiles = deleteModelFiles,
         voicesOnDisk = voicesOnDisk,
         voiceOnDisk = voiceOnDisk,
@@ -987,9 +989,7 @@ class AppViewModelTest {
         vm.onIntent(AppIntent.SetSourceText("Bonjour"))
         testScheduler.advanceUntilIdle()
         vm.onIntent(AppIntent.ToggleSpeak(target = true))
-        testScheduler.advanceTimeBy(100)
-        assertFalse(vm.state.value.translation.speakLoading, "no loader before the grace delay")
-        testScheduler.advanceTimeBy(400)
+        testScheduler.runCurrent()
         assertTrue(vm.state.value.translation.speakLoading, "loader while the model loads")
         testScheduler.advanceUntilIdle()
         assertFalse(vm.state.value.translation.speakLoading, "loader gone once audio starts")
@@ -1050,6 +1050,35 @@ class AppViewModelTest {
         assertFalse(vm.state.value.translation.speakBusy)
         assertFalse(vm.state.value.translation.speakPlaying)
         assertFalse(vm.state.value.translation.speakPaused)
+        assertFalse(vm.state.value.translation.speakLoading)
+    }
+
+    @Test
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun toggleSpeakWhileLoadingDoesNotCancel() = runTest {
+        val speaker = FakeTts().apply { loadMs = 2_000; holdUntilStop = true }
+        val vm = vm(
+            store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
+            translator = Translator { TranslationResult.Ok("Hello") },
+            dispatcher = UnconfinedTestDispatcher(testScheduler),
+            translateDelayMs = 0,
+            tts = speaker,
+            voicesOnDisk = { setOf("en") },
+        )
+        vm.onIntent(AppIntent.SetSourceText("Bonjour"))
+        testScheduler.advanceUntilIdle()
+        vm.onIntent(AppIntent.ToggleSpeak(target = true))
+        testScheduler.advanceTimeBy(400)
+        assertTrue(vm.state.value.translation.speakLoading)
+        assertFalse(vm.state.value.translation.speakPlaying)
+
+        vm.onIntent(AppIntent.ToggleSpeak(target = true))
+        assertTrue(vm.state.value.translation.speakLoading)
+        assertEquals(true, vm.state.value.translation.speakTarget)
+
+        testScheduler.advanceTimeBy(2_000)
+        testScheduler.runCurrent()
+        assertTrue(vm.state.value.translation.speakPlaying)
         assertFalse(vm.state.value.translation.speakLoading)
     }
 
@@ -1187,6 +1216,7 @@ class AppViewModelTest {
             store = store,
             history = history,
             tts = FakeTts(),
+            modelOwnedByApp = { true },
             deleteModelFiles = { removedModels += it.id },
             voicesOnDisk = { setOf("fr") },
             deleteVoiceFiles = { removedVoices += it },
@@ -1214,6 +1244,22 @@ class AppViewModelTest {
         assertEquals(PiperVoices.all().map { it.id }.toSet(), removedVoices.toSet())
         assertTrue(wipedDirs)
         assertTrue(state.translation.ttsReady)
+    }
+
+    @Test
+    fun resetAppKeepsModelsNotInstalledByApp() {
+        val removedModels = mutableListOf<LlmModel>()
+        val vm = vm(
+            store = MemoryStore(seedData()),
+            modelOwnedByApp = { false },
+            deleteModelFiles = { removedModels += it.id },
+        )
+        vm.onIntent(AppIntent.CompleteDownload)
+        vm.onIntent(AppIntent.OpenApp)
+        vm.onIntent(AppIntent.ResetApp)
+        vm.onIntent(AppIntent.ConfirmDialog)
+        assertTrue(removedModels.isEmpty())
+        assertFalse(vm.state.value.data.installed)
     }
 }
 

@@ -41,7 +41,7 @@ data class PiperVoiceSpec(
 object PiperVoices {
     private var migratedLegacy = false
 
-    fun dir(): String = joinPath(GemmaModels.dir(), "voices")
+    fun dir(): String = joinPath(joinPath(Platform.appDir(), "models"), "voices")
 
     fun legacyDir(): String = joinPath(Platform.appDir(), "voices")
 

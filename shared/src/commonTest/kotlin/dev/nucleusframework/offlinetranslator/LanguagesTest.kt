@@ -6,6 +6,7 @@ import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
+import dev.nucleusframework.offlinetranslator.platform.litertLmModelsDir
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -55,9 +56,14 @@ class LanguagesTest {
         assertEquals("high", PiperVoices.defaultFor("de")?.quality)
         assertEquals(PiperVoices.all().size, PiperVoices.all().distinctBy { it.lang to it.name }.size)
         val voicesDir = PiperVoices.dir().replace('\\', '/')
-        val modelsDir = GemmaModels.dir().replace('\\', '/')
-        assertTrue(voicesDir.startsWith("$modelsDir/"))
         assertTrue(voicesDir.endsWith("/models/voices"))
+        val dest = GemmaModels.Fast.destPath().replace('\\', '/')
+        assertTrue(dest.endsWith("/model.litertlm"))
+        assertTrue(dest.contains("/${GemmaModels.Fast.registryId}/") || dest.contains("/${GemmaModels.Fast.fileName}/"))
+        assertTrue(GemmaModels.Fast.ownerMarkerPath().replace('\\', '/').endsWith("/.edgetranslator"))
+        assertEquals("/home/u/.litert-lm/models", litertLmModelsDir("/home/u"))
+        assertEquals("/Users/u/.litert-lm/models", litertLmModelsDir("/Users/u"))
+        assertEquals("C:\\Users\\u\\.litert-lm\\models", litertLmModelsDir("C:\\Users\\u"))
     }
 
     @Test

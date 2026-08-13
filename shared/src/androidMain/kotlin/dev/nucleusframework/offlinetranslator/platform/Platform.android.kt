@@ -53,6 +53,8 @@ internal actual object Platform {
 
     actual fun databasesDir(): String = filekitDatabasesDir()
 
+    actual fun modelsDir(): String = joinPath(appDir(), "models")
+
     actual fun readText(path: String): String? = filekitReadText(path)
 
     actual fun writeText(path: String, content: String) = filekitWriteText(path, content)
