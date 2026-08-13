@@ -9,20 +9,22 @@ import java.io.File
 // Same AWT transfer path as Nucleus tao-demo / compose-demo:
 // DragAndDropEvent.awtTransferable + javaFileListFlavor / stringFlavor.
 
+private val URI_LIST_FLAVOR = DataFlavor("text/uri-list;class=java.lang.String")
+
 @OptIn(ExperimentalComposeUiApi::class)
 internal actual fun readDropPayload(event: DragAndDropEvent): DropPayload {
     val transferable = runCatching { event.awtTransferable }.getOrNull() ?: return DropPayload()
-    val text = if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-        runCatching { transferable.getTransferData(DataFlavor.stringFlavor) as? String }.getOrNull()
+    val text = flavorString(transferable, DataFlavor.stringFlavor)
+    val uriList = flavorString(transferable, URI_LIST_FLAVOR)
+    val files = if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+        @Suppress("UNCHECKED_CAST")
+        runCatching { transferable.getTransferData(DataFlavor.javaFileListFlavor) as? List<File> }.getOrNull()
     } else {
         null
     }
-    val paths = if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-        @Suppress("UNCHECKED_CAST")
-        val files = runCatching { transferable.getTransferData(DataFlavor.javaFileListFlavor) as? List<File> }.getOrNull()
-        files.orEmpty().map { it.absolutePath }
-    } else {
-        emptyList()
+    val paths = buildList {
+        files.orEmpty().forEach { add(it.absolutePath) }
+        addAll(pathsFromText(uriList))
     }
     return when (val choice = resolveDrop(text, paths)) {
         is DropChoice.ImagePath -> {
@@ -37,4 +39,12 @@ internal actual fun readDropPayload(event: DragAndDropEvent): DropPayload {
         DropChoice.Unsupported -> DropPayload(unsupported = true)
         DropChoice.Empty -> DropPayload()
     }
+}
+
+private fun flavorString(
+    transferable: java.awt.datatransfer.Transferable,
+    flavor: DataFlavor,
+): String? {
+    if (!transferable.isDataFlavorSupported(flavor)) return null
+    return runCatching { transferable.getTransferData(flavor) as? String }.getOrNull()
 }

@@ -36,6 +36,27 @@ class DropPayloadTest {
     }
 
     @Test
+    fun linuxUriListIsAnImageFile() {
+        val choice = resolveDrop("file:///tmp/shot.png\r\n", emptyList())
+        assertIs<DropChoice.ImagePath>(choice)
+        assertEquals("/tmp/shot.png", choice.path)
+    }
+
+    @Test
+    fun linuxUriListDoesNotPasteThePath() {
+        val choice = resolveDrop("file:///tmp/notes.md", emptyList())
+        assertIs<DropChoice.TextPath>(choice)
+        assertEquals("/tmp/notes.md", choice.path)
+    }
+
+    @Test
+    fun fileUriDecodesSpaces() {
+        val choice = resolveDrop("file:///tmp/my%20shot.PNG", emptyList())
+        assertIs<DropChoice.ImagePath>(choice)
+        assertEquals("/tmp/my shot.PNG", choice.path)
+    }
+
+    @Test
     fun emptyWhenNothingReadable() {
         assertEquals(DropChoice.Empty, resolveDrop("   ", emptyList()))
         assertEquals(DropChoice.Empty, resolveDrop(null, emptyList()))
