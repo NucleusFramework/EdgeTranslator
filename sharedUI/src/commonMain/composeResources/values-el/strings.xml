@@ -35,6 +35,7 @@
     <string name="action_done">Έγινε</string>
     <string name="cd_swap_languages">Εναλλαγή γλωσσών</string>
     <string name="cd_dictate">Υπαγόρευση</string>
+    <string name="cd_pick_image">Μετάφραση εικόνας</string>
     <string name="cd_speak">Ανάγνωση</string>
     <string name="cd_speak_stop">Διακοπή ανάγνωσης</string>
     <string name="msg_tts_unavailable">Κατεβάστε αυτή τη φωνή στις Ρυθμίσεις.</string>

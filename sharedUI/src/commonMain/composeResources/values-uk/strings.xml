@@ -35,6 +35,7 @@
     <string name="action_done">Готово</string>
     <string name="cd_swap_languages">Поміняти мови</string>
     <string name="cd_dictate">Диктувати</string>
+    <string name="cd_pick_image">Перекласти зображення</string>
     <string name="cd_speak">Читати вголос</string>
     <string name="cd_speak_stop">Зупинити читання</string>
     <string name="msg_tts_unavailable">Завантажте цей голос у Налаштуваннях.</string>

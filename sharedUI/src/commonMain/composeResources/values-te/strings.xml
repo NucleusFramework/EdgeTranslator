@@ -35,6 +35,7 @@
     <string name="action_done">అయింది</string>
     <string name="cd_swap_languages">భాషలు మార్చు</string>
     <string name="cd_dictate">చెప్పి రాయించు</string>
+    <string name="cd_pick_image">చిత్రాన్ని అనువదించండి</string>
     <string name="cd_speak">బిగ్గరగా చదువు</string>
     <string name="cd_speak_stop">చదవడం ఆపు</string>
     <string name="msg_tts_unavailable">సెట్టింగ్‌లలో ఈ వాయిస్‌ను డౌన్‌లోడ్ చేయండి.</string>

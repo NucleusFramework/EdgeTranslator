@@ -37,6 +37,7 @@
     <string name="action_done">Klaar</string>
     <string name="cd_swap_languages">Talen wisselen</string>
     <string name="cd_dictate">Dicteren</string>
+    <string name="cd_pick_image">Afbeelding vertalen</string>
     <string name="cd_speak">Voorlezen</string>
     <string name="cd_speak_stop">Voorlezen stoppen</string>
     <string name="msg_tts_unavailable">Download deze stem in Instellingen.</string>

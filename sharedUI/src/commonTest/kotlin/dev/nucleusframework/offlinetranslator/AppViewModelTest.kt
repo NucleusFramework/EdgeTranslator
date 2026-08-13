@@ -25,6 +25,7 @@ import dev.nucleusframework.offlinetranslator.domain.paragraphCount
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
 import dev.nucleusframework.offlinetranslator.engine.DownloadedModel
 import dev.nucleusframework.offlinetranslator.engine.IdleDownloader
+import dev.nucleusframework.offlinetranslator.engine.ImagePicker
 import dev.nucleusframework.offlinetranslator.engine.MicRecorder
 import dev.nucleusframework.offlinetranslator.engine.ModelDownloader
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
@@ -37,6 +38,7 @@ import dev.nucleusframework.offlinetranslator.engine.TtsSpeaker
 import dev.nucleusframework.offlinetranslator.engine.UnavailableTranslator
 import dev.nucleusframework.offlinetranslator.engine.buildTranslationPrompt
 import dev.nucleusframework.offlinetranslator.engine.cleanModelOutput
+import dev.nucleusframework.offlinetranslator.engine.parseImageOutput
 import dev.nucleusframework.offlinetranslator.engine.parseSpeechOutput
 import dev.nucleusframework.offlinetranslator.engine.pcm16leToWav
 import dev.nucleusframework.offlinetranslator.engine.restoreBmpSafe
@@ -67,6 +69,7 @@ class AppViewModelTest {
         dispatcher: CoroutineDispatcher = Dispatchers.Default,
         translateDelayMs: Long = 350,
         mic: MicRecorder = SilentMic,
+        pickImage: ImagePicker = ImagePicker { null },
         tts: TtsSpeaker = SilentTts,
         modelOnDisk: (CatalogModel) -> Boolean = { false },
         deleteModelFiles: (CatalogModel) -> Unit = {},
@@ -85,6 +88,7 @@ class AppViewModelTest {
         clock = { now },
         translateDelayMs = translateDelayMs,
         mic = mic,
+        imagePicker = pickImage,
         tts = tts,
         modelOnDisk = modelOnDisk,
         deleteModelFiles = deleteModelFiles,
@@ -619,6 +623,59 @@ class AppViewModelTest {
         val (src, tgt) = parseSpeechOutput("Bonjour le monde\nEnglish: Hello world", "English")
         assertEquals("Bonjour le monde", src)
         assertEquals("Hello world", tgt)
+    }
+
+    @Test
+    fun parseImageKeepsMultilineTextWhenOnlyOcr() {
+        val (src, tgt) = parseImageOutput("Menu du jour\nSoupe à l'oignon\nEnglish: Soup of the day", "English")
+        assertEquals("Menu du jour\nSoupe à l'oignon", src)
+        assertEquals("Soup of the day", tgt)
+        // No marker: same source and target language, the model only read the image.
+        val (only, same) = parseImageOutput("Line one\nLine two", "English")
+        assertEquals("Line one\nLine two", only)
+        assertEquals(only, same)
+    }
+
+    @Test
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun translateImageFillsSourceAndTarget() = runTest {
+        var seen: ByteArray? = null
+        val translator = Translator { request ->
+            seen = request.image
+            TranslationResult.Ok(text = "Stop", transcription = "Arrêt")
+        }
+        val vm = vm(
+            store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
+            translator = translator,
+            dispatcher = UnconfinedTestDispatcher(testScheduler),
+            translateDelayMs = 0,
+            pickImage = { byteArrayOf(1, 2, 3) },
+        )
+        vm.onIntent(AppIntent.TranslateImage)
+        testScheduler.advanceUntilIdle()
+        assertEquals(listOf<Byte>(1, 2, 3), seen?.toList())
+        assertEquals("Arrêt", vm.state.value.translation.sourceText)
+        assertEquals("Stop", vm.state.value.translation.targetText)
+        assertEquals(MicPhase.Idle, vm.state.value.translation.micPhase)
+    }
+
+    @Test
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun cancelledImagePickerLeavesTheTextAlone() = runTest {
+        val vm = vm(
+            store = MemoryStore(seedData().copy(installed = true, model = seedData().model.copy(installed = true))),
+            translator = Translator { TranslationResult.Ok("Hello") },
+            dispatcher = UnconfinedTestDispatcher(testScheduler),
+            translateDelayMs = 0,
+            pickImage = { null },
+        )
+        vm.onIntent(AppIntent.SetSourceText("Bonjour"))
+        testScheduler.advanceUntilIdle()
+        vm.onIntent(AppIntent.TranslateImage)
+        testScheduler.advanceUntilIdle()
+        assertEquals("Bonjour", vm.state.value.translation.sourceText)
+        assertEquals("Hello", vm.state.value.translation.targetText)
+        assertEquals(MicPhase.Idle, vm.state.value.translation.micPhase)
     }
 
     @Test

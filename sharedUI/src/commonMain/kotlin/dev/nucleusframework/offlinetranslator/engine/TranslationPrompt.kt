@@ -30,6 +30,39 @@ fun buildAudioPrompt(request: TranslationRequest): TranslationPrompt {
     )
 }
 
+fun buildImagePrompt(request: TranslationRequest): TranslationPrompt {
+    val source = if (Languages.isAuto(request.sourceLang)) "its original language" else languageName(request.sourceLang)
+    val target = languageName(request.targetLang)
+    val same = !Languages.isAuto(request.sourceLang) && request.sourceLang == request.targetLang
+    val user = if (same) {
+        """
+        Read every piece of text in the image and write it out in $target.
+        Only output the text itself, keeping its original line breaks, with no commentary.
+        """.trimIndent()
+    } else {
+        """
+        Read every piece of text in the image, written in $source, then translate it into $target.
+        When formatting the answer, first output the text you read keeping its line breaks, then one newline, then the string '$target: ', then the translation in $target.
+        Only output text, with no commentary.
+        """.trimIndent()
+    }
+    return TranslationPrompt(
+        system = "You read the text in images and translate it. Follow the output format exactly.",
+        user = user,
+    )
+}
+
+// ponytail: pas de repli sur le premier saut de ligne comme l'audio — un OCR est multi-ligne,
+// sans le marqueur c'est que le modèle n'a rendu que le texte lu (même langue source et cible).
+fun parseImageOutput(raw: String, targetName: String): Pair<String, String> {
+    val text = cleanModelOutput(raw)
+    val idx = text.indexOf("$targetName:", ignoreCase = true)
+    if (idx < 0) return text to text
+    val src = text.substring(0, idx).trim()
+    val tgt = text.substring(idx + targetName.length + 1).trim()
+    return src to tgt.ifBlank { src }
+}
+
 fun parseSpeechOutput(raw: String, targetName: String): Pair<String, String> {
     val text = cleanModelOutput(raw)
     val marker = "$targetName:"

@@ -35,6 +35,7 @@
     <string name="action_done">Gotovo</string>
     <string name="cd_swap_languages">Zamijeni jezike</string>
     <string name="cd_dictate">Diktiraj</string>
+    <string name="cd_pick_image">Prevedi sliku</string>
     <string name="cd_speak">Pročitaj naglas</string>
     <string name="cd_speak_stop">Zaustavi čitanje</string>
     <string name="msg_tts_unavailable">Preuzmite ovaj glas u Postavkama.</string>

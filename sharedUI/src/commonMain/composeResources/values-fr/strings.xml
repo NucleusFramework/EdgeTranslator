@@ -37,6 +37,7 @@
     <string name="action_done">Terminé</string>
     <string name="cd_swap_languages">Inverser les langues</string>
     <string name="cd_dictate">Dicter</string>
+    <string name="cd_pick_image">Traduire une image</string>
     <string name="cd_speak">Lire à voix haute</string>
     <string name="cd_speak_stop">Arrêter la lecture</string>
     <string name="msg_tts_unavailable">Téléchargez cette voix dans les réglages.</string>

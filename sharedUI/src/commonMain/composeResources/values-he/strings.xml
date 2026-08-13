@@ -35,6 +35,7 @@
     <string name="action_done">סיום</string>
     <string name="cd_swap_languages">החלפת שפות</string>
     <string name="cd_dictate">הכתבה</string>
+    <string name="cd_pick_image">תרגום תמונה</string>
     <string name="cd_speak">הקראה</string>
     <string name="cd_speak_stop">עצירת הקראה</string>
     <string name="msg_tts_unavailable">הורידו את הקול הזה בהגדרות.</string>

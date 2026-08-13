@@ -37,6 +37,7 @@
     <string name="action_done">Fertig</string>
     <string name="cd_swap_languages">Sprachen tauschen</string>
     <string name="cd_dictate">Diktieren</string>
+    <string name="cd_pick_image">Bild übersetzen</string>
     <string name="cd_speak">Vorlesen</string>
     <string name="cd_speak_stop">Vorlesen beenden</string>
     <string name="msg_tts_unavailable">Laden Sie diese Stimme in den Einstellungen herunter.</string>

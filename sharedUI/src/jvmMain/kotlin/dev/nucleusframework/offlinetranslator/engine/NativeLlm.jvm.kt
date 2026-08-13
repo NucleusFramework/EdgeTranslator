@@ -35,6 +35,7 @@ internal actual class NativeLlm actual constructor() {
         systemInstruction: String,
         userMessage: String,
         audioWav: ByteArray?,
+        image: ByteArray?,
         onPartial: (String) -> Unit,
     ): String {
         val e = engine ?: error("Gemma 4 E2B n'est pas chargé.")
@@ -48,11 +49,13 @@ internal actual class NativeLlm actual constructor() {
             ),
         ).use { conversation ->
             val acc = StringBuilder()
-            val contents = if (audioWav == null || audioWav.isEmpty()) {
-                Contents.of(userMessage)
-            } else {
-                Contents.of(Content.Text(userMessage), Content.AudioBytes(audioWav))
-            }
+            val contents = Contents.of(
+                buildList {
+                    if (image != null && image.isNotEmpty()) add(Content.ImageBytes(image))
+                    add(Content.Text(userMessage))
+                    if (audioWav != null && audioWav.isNotEmpty()) add(Content.AudioBytes(audioWav))
+                },
+            )
             try {
                 conversation.sendMessageAsync(contents).collect { chunk ->
                     acc.append(chunk.toString())
@@ -80,6 +83,7 @@ private fun openEngine(modelPath: String, cacheDir: String, backend: Backend): E
         EngineConfig(
             modelPath = modelPath,
             backend = backend,
+            visionBackend = backend,
             audioBackend = Backend.CPU(),
             cacheDir = cacheDir,
             maxNumTokens = GemmaModel.MAX_NUM_TOKENS,

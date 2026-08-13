@@ -15,6 +15,8 @@ data class TranslationRequest(
     val targetLang: String,
     val modelPath: String = "",
     val audioWav: ByteArray? = null,
+    /** Encoded image (JPEG/PNG/BMP) — the vision tower reads the text in it. */
+    val image: ByteArray? = null,
     // ponytail: même moteur, autre prompt — un second Translator dupliquerait mutex + chargement du modèle.
     val mode: TranslationMode = TranslationMode.Translate,
     val onPartial: (String) -> Unit = {},

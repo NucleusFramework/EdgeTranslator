@@ -15,6 +15,7 @@ import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material.icons.outlined.SwapVert
@@ -77,6 +78,7 @@ import offlinetranslator.sharedui.generated.resources.action_save
 import offlinetranslator.sharedui.generated.resources.action_saved
 import offlinetranslator.sharedui.generated.resources.alternatives_header
 import offlinetranslator.sharedui.generated.resources.cd_dictate
+import offlinetranslator.sharedui.generated.resources.cd_pick_image
 import offlinetranslator.sharedui.generated.resources.cd_speak
 import offlinetranslator.sharedui.generated.resources.cd_speak_loading
 import offlinetranslator.sharedui.generated.resources.cd_speak_stop
@@ -270,6 +272,12 @@ private fun SourcePanel(
                 voiceDownload = voiceDownload,
                 target = false,
                 onIntent = onIntent,
+            )
+            Icon(
+                Icons.Outlined.Image,
+                stringResource(Res.string.cd_pick_image),
+                Modifier.size(22.dp).clip(CircleShape).clickable { onIntent(AppIntent.TranslateImage) },
+                tint = c.primary,
             )
             val listening = state.micPhase == MicPhase.Listening
             Icon(

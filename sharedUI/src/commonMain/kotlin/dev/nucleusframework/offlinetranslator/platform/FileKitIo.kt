@@ -5,11 +5,14 @@ import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.cacheDir
 import io.github.vinceglb.filekit.createDirectories
 import io.github.vinceglb.filekit.databasesDir
+import io.github.vinceglb.filekit.dialogs.FileKitType
+import io.github.vinceglb.filekit.dialogs.openFilePicker
 import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.filesDir
 import io.github.vinceglb.filekit.isRegularFile
 import io.github.vinceglb.filekit.parent
 import io.github.vinceglb.filekit.path
+import io.github.vinceglb.filekit.readBytes
 import io.github.vinceglb.filekit.sink
 import io.github.vinceglb.filekit.size
 import io.github.vinceglb.filekit.source
@@ -20,6 +23,9 @@ import kotlinx.io.readString
 import kotlinx.io.writeString
 
 internal fun filekitFilesDir(): String = FileKit.filesDir.path
+
+/** `null` when the user cancels the picker. */
+internal suspend fun filekitPickImage(): ByteArray? = FileKit.openFilePicker(FileKitType.Image)?.readBytes()
 
 internal fun filekitCacheDir(): String = FileKit.cacheDir.path
 

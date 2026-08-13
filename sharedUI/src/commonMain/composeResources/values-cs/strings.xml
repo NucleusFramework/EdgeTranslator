@@ -35,6 +35,7 @@
     <string name="action_done">Hotovo</string>
     <string name="cd_swap_languages">Prohodit jazyky</string>
     <string name="cd_dictate">Diktovat</string>
+    <string name="cd_pick_image">Přeložit obrázek</string>
     <string name="cd_speak">Číst nahlas</string>
     <string name="cd_speak_stop">Zastavit čtení</string>
     <string name="msg_tts_unavailable">Tento hlas stáhněte v Nastavení.</string>

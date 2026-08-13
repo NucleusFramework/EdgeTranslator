@@ -35,6 +35,7 @@
     <string name="action_done">हो गया</string>
     <string name="cd_swap_languages">भाषाएँ बदलें</string>
     <string name="cd_dictate">बोलकर लिखें</string>
+    <string name="cd_pick_image">छवि का अनुवाद करें</string>
     <string name="cd_speak">ज़ोर से पढ़ें</string>
     <string name="cd_speak_stop">पढ़ना बंद करें</string>
     <string name="msg_tts_unavailable">सेटिंग्स में यह आवाज़ डाउनलोड करें।</string>

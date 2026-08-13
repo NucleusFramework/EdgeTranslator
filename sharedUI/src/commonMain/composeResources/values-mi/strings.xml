@@ -35,6 +35,7 @@
     <string name="action_done">Kua oti</string>
     <string name="cd_swap_languages">Whakawhiti reo</string>
     <string name="cd_dictate">Kī</string>
+    <string name="cd_pick_image">Whakamāoritia he whakaahua</string>
     <string name="cd_speak">Pānui nui</string>
     <string name="cd_speak_stop">Aukati pānui</string>
     <string name="msg_tts_unavailable">Tikiake tēnei reo i ngā Tautuhinga.</string>

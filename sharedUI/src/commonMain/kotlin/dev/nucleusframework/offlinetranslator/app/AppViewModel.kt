@@ -21,9 +21,11 @@ import dev.nucleusframework.offlinetranslator.domain.newId
 import dev.nucleusframework.offlinetranslator.domain.replaceTerm
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
 import dev.nucleusframework.offlinetranslator.engine.DownloadedModel
+import dev.nucleusframework.offlinetranslator.engine.FileImagePicker
 import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
 import dev.nucleusframework.offlinetranslator.engine.GemmaTranslator
+import dev.nucleusframework.offlinetranslator.engine.ImagePicker
 import dev.nucleusframework.offlinetranslator.engine.MIC_MAX_MS
 import dev.nucleusframework.offlinetranslator.engine.MicRecorder
 import dev.nucleusframework.offlinetranslator.engine.ModelDownloader
@@ -72,6 +74,7 @@ class AppViewModel(
     @Assisted private val forceOnboarding: Boolean = false,
     private val translateDelayMs: Long = 350,
     private val mic: MicRecorder = SilentMic,
+    private val imagePicker: ImagePicker = FileImagePicker,
     private val tts: TtsSpeaker = SilentTts,
     private val modelOnDisk: (CatalogModel) -> Boolean = { it.isOnDisk() },
     private val deleteModelFiles: (CatalogModel) -> Unit = { it.removeFromDisk() },
@@ -171,6 +174,8 @@ class AppViewModel(
             AppIntent.ToggleMic -> toggleMic()
 
             AppIntent.CancelMic -> cancelMic()
+
+            AppIntent.TranslateImage -> translateImage()
 
             is AppIntent.ToggleSpeak -> toggleSpeak(intent.target)
 
@@ -527,6 +532,7 @@ class AppViewModel(
         AppIntent.CompleteDownload,
         AppIntent.ToggleMic,
         AppIntent.CancelMic,
+        AppIntent.TranslateImage,
         is AppIntent.ToggleSpeak,
         is AppIntent.DownloadVoices,
         AppIntent.PauseVoiceDownload,
@@ -1229,6 +1235,52 @@ class AppViewModel(
                 audioWav = wav,
             ),
         )
+        applyReadResult(result, failMessage = AppMessage.MicFailed)
+    }
+
+    // ponytail: réutilise le job et la phase du micro — même état « le modèle lit », un seul à la fois.
+    private fun translateImage() {
+        val s = _state.value
+        if (!s.data.model.installed || s.translation.micPhase != MicPhase.Idle) return
+        recordJob?.cancel()
+        recordJob = scope.launch {
+            val image: ByteArray? = try {
+                imagePicker.pick()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                null
+            }
+            if (image == null || image.isEmpty()) return@launch
+            mutate {
+                it.copy(
+                    translation = it.translation.copy(
+                        micPhase = MicPhase.Processing,
+                        sourceText = "",
+                        targetText = "",
+                        alternatives = emptyList(),
+                        status = TranslationStatus.WaitingEngine,
+                        error = null,
+                    ),
+                )
+            }
+            val current = _state.value
+            val result = translator.translate(
+                TranslationRequest(
+                    text = "",
+                    sourceLang = current.translation.sourceLang,
+                    targetLang = current.translation.targetLang,
+                    modelPath = current.data.model.path,
+                    image = image,
+                ),
+            )
+            // The target panel already shows the failure; a toast about the mic would be a lie.
+            applyReadResult(result, failMessage = null)
+        }
+    }
+
+    /** Dictation and image share the shape: the model returns the source text and its translation. */
+    private fun applyReadResult(result: TranslationResult, failMessage: AppMessage?) {
         mutate { current ->
             val t = current.translation.copy(micPhase = MicPhase.Idle)
             when (result) {
@@ -1238,7 +1290,7 @@ class AppViewModel(
 
                 is TranslationResult.Error -> current.copy(
                     translation = t.copy(status = TranslationStatus.Error, error = result.message),
-                    message = AppMessage.MicFailed,
+                    message = failMessage ?: current.message,
                 )
 
                 is TranslationResult.Ok -> current.copy(

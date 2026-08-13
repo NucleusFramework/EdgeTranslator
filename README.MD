@@ -11,6 +11,7 @@ The interface is available in the same 35 languages as the catalog, including RT
 - On-device streaming translation, via [Gemma 4](https://ai.google.dev/gemma) and [LiteRT-LM](https://github.com/google-ai-edge/LiteRT-LM)
 - 35 languages (CC3M-35L / PaliGemma catalog), with automatic source-language detection
 - Dictation: speak up to 30 seconds, transcribed and translated on-device (Gemma 4 FLEURS, 12 languages)
+- Image translation: pick a photo or a screenshot, the model reads its text and translates it on-device
 - Read aloud on desktop: [Piper](https://github.com/rhasspy/piper) voices, 30 languages, downloaded on demand
 - Two model profiles: **Fast** (E2B) or **Precision** (E4B)
 - GPU acceleration when available, otherwise CPU

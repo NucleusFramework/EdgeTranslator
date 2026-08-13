@@ -32,7 +32,18 @@ class GemmaTranslator(
                 val llm = ensureLoaded(path)
                 val start = now()
                 val audio = request.audioWav
-                if (audio != null && audio.isNotEmpty()) {
+                val image = request.image
+                if (image != null && image.isNotEmpty()) {
+                    val prompt = buildImagePrompt(request)
+                    val raw = llm.generate(prompt.system, prompt.user, image = image)
+                    val targetName = Languages.get(request.targetLang)?.nameEn ?: request.targetLang
+                    val (src, tgt) = parseImageOutput(raw, targetName)
+                    TranslationResult.Ok(
+                        text = tgt,
+                        transcription = src,
+                        latencyMs = now() - start,
+                    )
+                } else if (audio != null && audio.isNotEmpty()) {
                     val prompt = buildAudioPrompt(request)
                     val raw = llm.generate(prompt.system, prompt.user, audioWav = audio)
                     val targetName = Languages.get(request.targetLang)?.nameEn ?: request.targetLang

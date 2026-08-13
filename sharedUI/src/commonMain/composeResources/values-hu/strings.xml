@@ -35,6 +35,7 @@
     <string name="action_done">Kész</string>
     <string name="cd_swap_languages">Nyelvek cseréje</string>
     <string name="cd_dictate">Diktálás</string>
+    <string name="cd_pick_image">Kép fordítása</string>
     <string name="cd_speak">Felolvasás</string>
     <string name="cd_speak_stop">Felolvasás leállítása</string>
     <string name="msg_tts_unavailable">Töltse le ezt a hangot a Beállításokban.</string>

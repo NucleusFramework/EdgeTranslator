@@ -37,6 +37,7 @@
     <string name="action_done">完成</string>
     <string name="cd_swap_languages">交换语言</string>
     <string name="cd_dictate">口述</string>
+    <string name="cd_pick_image">翻译图片</string>
     <string name="cd_speak">朗读</string>
     <string name="cd_speak_stop">停止朗读</string>
     <string name="msg_tts_unavailable">请在设置中下载此语音。</string>

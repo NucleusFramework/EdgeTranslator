@@ -35,6 +35,7 @@
     <string name="action_done">সম্পন্ন</string>
     <string name="cd_swap_languages">ভাষা অদলবদল</string>
     <string name="cd_dictate">বলা</string>
+    <string name="cd_pick_image">ছবি অনুবাদ করুন</string>
     <string name="cd_speak">জোরে পড়ুন</string>
     <string name="cd_speak_stop">পড়া বন্ধ করুন</string>
     <string name="msg_tts_unavailable">সেটিংসে এই কণ্ঠ ডাউনলোড করুন।</string>

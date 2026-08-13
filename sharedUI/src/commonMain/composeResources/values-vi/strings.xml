@@ -35,6 +35,7 @@
     <string name="action_done">Xong</string>
     <string name="cd_swap_languages">Đổi ngôn ngữ</string>
     <string name="cd_dictate">Đọc chính tả</string>
+    <string name="cd_pick_image">Dịch hình ảnh</string>
     <string name="cd_speak">Đọc to</string>
     <string name="cd_speak_stop">Dừng đọc</string>
     <string name="msg_tts_unavailable">Tải giọng này trong Cài đặt.</string>

@@ -35,6 +35,7 @@
     <string name="action_done">Bitti</string>
     <string name="cd_swap_languages">Dilleri değiştir</string>
     <string name="cd_dictate">Dikte et</string>
+    <string name="cd_pick_image">Görseli çevir</string>
     <string name="cd_speak">Sesli oku</string>
     <string name="cd_speak_stop">Okumayı durdur</string>
     <string name="msg_tts_unavailable">Bu sesi Ayarlar’dan indirin.</string>

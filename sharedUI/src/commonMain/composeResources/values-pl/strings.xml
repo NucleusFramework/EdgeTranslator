@@ -37,6 +37,7 @@
     <string name="action_done">Gotowe</string>
     <string name="cd_swap_languages">Zamień języki</string>
     <string name="cd_dictate">Dyktuj</string>
+    <string name="cd_pick_image">Przetłumacz obraz</string>
     <string name="cd_speak">Czytaj na głos</string>
     <string name="cd_speak_stop">Zatrzymaj czytanie</string>
     <string name="msg_tts_unavailable">Pobierz ten głos w Ustawieniach.</string>

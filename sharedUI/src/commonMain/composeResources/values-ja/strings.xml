@@ -37,6 +37,7 @@
     <string name="action_done">完了</string>
     <string name="cd_swap_languages">言語を入れ替え</string>
     <string name="cd_dictate">音声入力</string>
+    <string name="cd_pick_image">画像を翻訳</string>
     <string name="cd_speak">読み上げ</string>
     <string name="cd_speak_stop">読み上げを停止</string>
     <string name="msg_tts_unavailable">設定からこの音声をダウンロードしてください。</string>

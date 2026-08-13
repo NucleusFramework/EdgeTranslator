@@ -35,6 +35,7 @@
     <string name="action_done">Færdig</string>
     <string name="cd_swap_languages">Byt sprog</string>
     <string name="cd_dictate">Dikter</string>
+    <string name="cd_pick_image">Oversæt et billede</string>
     <string name="cd_speak">Læs højt</string>
     <string name="cd_speak_stop">Stop oplæsning</string>
     <string name="msg_tts_unavailable">Download denne stemme i Indstillinger.</string>

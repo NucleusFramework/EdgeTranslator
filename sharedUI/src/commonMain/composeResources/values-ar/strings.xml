@@ -37,6 +37,7 @@
     <string name="action_done">تم</string>
     <string name="cd_swap_languages">تبديل اللغتين</string>
     <string name="cd_dictate">إملاء</string>
+    <string name="cd_pick_image">ترجمة صورة</string>
     <string name="cd_speak">قراءة بصوت عالٍ</string>
     <string name="cd_speak_stop">إيقاف القراءة</string>
     <string name="msg_tts_unavailable">نزّل هذا الصوت من الإعدادات.</string>

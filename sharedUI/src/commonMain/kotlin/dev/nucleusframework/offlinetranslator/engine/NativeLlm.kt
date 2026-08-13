@@ -8,6 +8,7 @@ internal expect class NativeLlm() {
         systemInstruction: String,
         userMessage: String,
         audioWav: ByteArray? = null,
+        image: ByteArray? = null,
         onPartial: (String) -> Unit = {},
     ): String
     fun close()
