@@ -27,6 +27,15 @@ dependencies {
     implementation(libs.nucleus.decorated.window.material3)
 }
 
+tasks.register<JavaExec>("generateProofreadPlaceholders") {
+    group = "codegen"
+    dependsOn("classes")
+    classpath = sourceSets.named("main").get().runtimeClasspath
+    mainClass.set("GenerateProofreadPlaceholdersKt")
+    workingDir = rootProject.projectDir
+    jvmArgs("-Xmx10g", "--enable-native-access=ALL-UNNAMED")
+}
+
 nucleus.application {
     mainClass = "MainKt"
 
