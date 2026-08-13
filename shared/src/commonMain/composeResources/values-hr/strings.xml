@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · brži</string>
     <string name="model_precise_title">Precizni</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · točniji</string>
+    <string name="model_ram_required">Treba %1$d GB RAM-a</string>
+    <string name="install_ram_too_low">Ovo računalo treba najmanje %1$d GB RAM-a.</string>
     <string name="install_feature_history_title">Lokalni favoriti</string>
     <string name="install_feature_history_body">Spremite i ponovno upotrijebite prijevode</string>
     <string name="install_feature_voices_title">Glasovi</string>

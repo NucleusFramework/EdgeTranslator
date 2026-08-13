@@ -38,6 +38,7 @@ data class AppState(
     val historyFilter: HistoryFilter = HistoryFilter.All,
     val dialog: AppDialog = AppDialog.Hidden,
     val message: AppMessage? = null,
+    val hostRamBytes: Long = 0L,
 ) {
     val offline: Boolean get() = data.settings.airplane
     val installed: Boolean get() = data.installed

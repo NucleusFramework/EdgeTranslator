@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · 더 빠름</string>
     <string name="model_precise_title">정밀</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · 더 정확</string>
+    <string name="model_ram_required">RAM %1$d GB 필요</string>
+    <string name="install_ram_too_low">이 컴퓨터에는 최소 %1$d GB RAM이 필요합니다.</string>
     <string name="install_feature_history_title">로컬 즐겨찾기</string>
     <string name="install_feature_history_body">번역을 저장해 다시 사용</string>
     <string name="install_feature_voices_title">음성</string>

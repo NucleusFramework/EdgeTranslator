@@ -76,6 +76,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · mais ágil</string>
     <string name="model_precise_title">Precisão</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · mais fiel</string>
+    <string name="model_ram_required">Requer %1$d GB de RAM</string>
+    <string name="install_ram_too_low">Este computador precisa de pelo menos %1$d GB de RAM.</string>
     <string name="install_feature_history_title">Favoritos locais</string>
     <string name="install_feature_history_body">Guarde e reutilize as suas traduções</string>
     <string name="install_feature_voices_title">Vozes</string>

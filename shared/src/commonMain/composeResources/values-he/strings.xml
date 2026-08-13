@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · מהיר יותר</string>
     <string name="model_precise_title">מדויק</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · מדויק יותר</string>
+    <string name="model_ram_required">דורש %1$d GB של RAM</string>
+    <string name="install_ram_too_low">המחשב הזה זקוק ל-%1$d GB RAM לפחות.</string>
     <string name="install_feature_history_title">מועדפים מקומיים</string>
     <string name="install_feature_history_body">שמרו תרגומים והשתמשו בהם שוב</string>
     <string name="install_feature_voices_title">קולות</string>

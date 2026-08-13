@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · gyorsabb</string>
     <string name="model_precise_title">Pontos</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · hűségesebb</string>
+    <string name="model_ram_required">%1$d GB RAM szükséges</string>
+    <string name="install_ram_too_low">Ehhez a géphez legalább %1$d GB RAM kell.</string>
     <string name="install_feature_history_title">Helyi kedvencek</string>
     <string name="install_feature_history_body">Mentse és használja újra a fordításokat</string>
     <string name="install_feature_voices_title">Hangok</string>

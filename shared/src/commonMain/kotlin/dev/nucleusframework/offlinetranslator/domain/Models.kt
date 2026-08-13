@@ -64,6 +64,29 @@ const val MODEL_IDLE_RELEASE_MS = 5 * 60 * 1000L
 
 enum class LlmModel { Fast, Precise }
 
+const val GIB_BYTES = 1_073_741_824L
+
+/** Advertised minimum for E2B. Real probes often report ~0.5–1 GiB less than the sticker. */
+const val MIN_RAM_GIB_FAST = 8
+
+/** Advertised minimum for E4B. */
+const val MIN_RAM_GIB_PRECISE = 16
+
+fun LlmModel.minRamGib(): Int = when (this) {
+    LlmModel.Fast -> MIN_RAM_GIB_FAST
+    LlmModel.Precise -> MIN_RAM_GIB_PRECISE
+}
+
+/**
+ * Whether this host can run [this] model.
+ * `totalRamBytes <= 0` means the probe failed — do not lock the user out.
+ * A 1 GiB slack accepts machines sold as 8/16 GB that report 7.x / 15.x.
+ */
+fun LlmModel.allowedOn(totalRamBytes: Long): Boolean {
+    if (totalRamBytes <= 0L) return true
+    return totalRamBytes >= (minRamGib() - 1L) * GIB_BYTES
+}
+
 enum class HistoryFilter { All, Pinned, Last7Days }
 
 enum class LangRole { Source, Target }

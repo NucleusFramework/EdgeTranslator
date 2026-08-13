@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · तेज़</string>
     <string name="model_precise_title">सटीक</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · अधिक सटीक</string>
+    <string name="model_ram_required">%1$d GB RAM आवश्यक</string>
+    <string name="install_ram_too_low">इस कंप्यूटर को कम से कम %1$d GB RAM चाहिए।</string>
     <string name="install_feature_history_title">स्थानीय पसंदीदा</string>
     <string name="install_feature_history_body">अनुवाद सहेजें और फिर उपयोग करें</string>
     <string name="install_feature_voices_title">आवाज़ें</string>

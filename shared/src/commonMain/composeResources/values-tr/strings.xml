@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · daha hızlı</string>
     <string name="model_precise_title">Hassas</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · daha doğru</string>
+    <string name="model_ram_required">%1$d GB RAM gerekir</string>
+    <string name="install_ram_too_low">Bu bilgisayar en az %1$d GB RAM gerektirir.</string>
     <string name="install_feature_history_title">Yerel favoriler</string>
     <string name="install_feature_history_body">Çevirilerinizi kaydedin ve yeniden kullanın</string>
     <string name="install_feature_voices_title">Sesler</string>

@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · snabbare</string>
     <string name="model_precise_title">Precision</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · mer exakt</string>
+    <string name="model_ram_required">Kräver %1$d GB RAM</string>
+    <string name="install_ram_too_low">Den här datorn behöver minst %1$d GB RAM.</string>
     <string name="install_feature_history_title">Lokala favoriter</string>
     <string name="install_feature_history_body">Spara och återanvänd dina översättningar</string>
     <string name="install_feature_voices_title">Röster</string>

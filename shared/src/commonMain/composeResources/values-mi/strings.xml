@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · tere ake</string>
     <string name="model_precise_title">Tika</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · tika ake</string>
+    <string name="model_ram_required">Me %1$d GB RAM</string>
+    <string name="install_ram_too_low">Me %1$d GB RAM i te iti rawa mō tēnei rorohiko.</string>
     <string name="install_feature_history_title">Ngā makau paetata</string>
     <string name="install_feature_history_body">Tiakina, whakamahia anō ō whakamāoritanga</string>
     <string name="install_feature_voices_title">Reo</string>

@@ -76,6 +76,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · より速い</string>
     <string name="model_precise_title">高精度</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · より正確</string>
+    <string name="model_ram_required">%1$d GBのRAMが必要です</string>
+    <string name="install_ram_too_low">このパソコンには%1$d GB以上のRAMが必要です。</string>
     <string name="install_feature_history_title">ローカルのお気に入り</string>
     <string name="install_feature_history_body">翻訳を保存して再利用</string>
     <string name="install_feature_voices_title">音声</string>

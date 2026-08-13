@@ -6,6 +6,7 @@ import dev.nucleusframework.offlinetranslator.data.AppStore
 import dev.nucleusframework.offlinetranslator.data.HistoryStore
 import dev.nucleusframework.offlinetranslator.data.seedData
 import dev.nucleusframework.offlinetranslator.di.Io
+import dev.nucleusframework.offlinetranslator.domain.AppData
 import dev.nucleusframework.offlinetranslator.domain.DownloadError
 import dev.nucleusframework.offlinetranslator.domain.DownloadFailedException
 import dev.nucleusframework.offlinetranslator.domain.DownloadLog
@@ -19,6 +20,7 @@ import dev.nucleusframework.offlinetranslator.domain.LlmKeepAlive
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.MODEL_IDLE_RELEASE_MS
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
+import dev.nucleusframework.offlinetranslator.domain.allowedOn
 import dev.nucleusframework.offlinetranslator.domain.filterHistory
 import dev.nucleusframework.offlinetranslator.domain.newId
 import dev.nucleusframework.offlinetranslator.domain.replaceTerm
@@ -90,6 +92,7 @@ class AppViewModel(
         Platform.deleteRecursively(PiperVoices.legacyDir())
     },
     private val migrateVoices: () -> Unit = { PiperVoices.migrateLegacy() },
+    private val hostRamBytes: () -> Long = { Platform.totalRamBytes() },
 ) : ViewModel() {
 
     @AssistedFactory
@@ -142,6 +145,7 @@ class AppViewModel(
     }
 
     fun onIntent(intent: AppIntent) {
+        if (!allowed(intent)) return
         when (intent) {
             AppIntent.Quit -> {
                 tts.close()
@@ -318,6 +322,8 @@ class AppViewModel(
                 data = data.copy(settings = data.settings.copy(selectedModel = fallback))
             }
         }
+        val ram = hostRamBytes()
+        data = coerceModelForRam(data, ram)
         LlmRuntime.preference = data.settings.backend
         val catalog = GemmaModels.of(data.settings.selectedModel)
         val download = if (modelOnDisk(catalog)) {
@@ -329,7 +335,13 @@ class AppViewModel(
             )
         }
         return Restored(
-            state = AppState(data = data, translation = translation, voicePicks = voicePicks, download = download),
+            state = AppState(
+                data = data,
+                translation = translation,
+                voicePicks = voicePicks,
+                download = download,
+                hostRamBytes = ram,
+            ),
             keys = keys,
         )
     }
@@ -579,7 +591,35 @@ class AppViewModel(
         -> s
     }
 
+    private fun allowed(intent: AppIntent): Boolean {
+        val ram = _state.value.hostRamBytes
+        return when (intent) {
+            AppIntent.StartInstall -> LlmModel.Fast.allowedOn(ram)
+            is AppIntent.SelectModel -> intent.id.allowedOn(ram)
+            is AppIntent.DownloadModel -> intent.id.allowedOn(ram) || modelOnDisk(GemmaModels.of(intent.id))
+            else -> true
+        }
+    }
+
+    /**
+     * Drop Precision if the host cannot run it, unless that model is already installed and selected.
+     * Onboarding always falls back to Fast so the picker never starts on a locked card.
+     */
+    private fun coerceModelForRam(data: AppData, ram: Long): AppData {
+        val id = data.settings.selectedModel
+        if (id.allowedOn(ram)) return data
+        if (data.installed && modelOnDisk(GemmaModels.of(id))) return data
+        val fallback = LlmModel.Fast
+        if (fallback == id) return data
+        val catalog = GemmaModels.of(fallback)
+        return data.copy(
+            settings = data.settings.copy(selectedModel = fallback),
+            model = if (modelOnDisk(catalog)) catalog.toInfo(clock()) else data.model,
+        )
+    }
+
     private fun selectModel(s: AppState, id: LlmModel): AppState {
+        if (!id.allowedOn(s.hostRamBytes)) return s
         val catalog = GemmaModels.of(id)
         val onDisk = modelOnDisk(catalog)
         if (!onDisk && s.data.installed) return s
@@ -599,6 +639,7 @@ class AppViewModel(
 
     private fun downloadModel(s: AppState, id: LlmModel): AppState {
         val catalog = GemmaModels.of(id)
+        if (!id.allowedOn(s.hostRamBytes) && !modelOnDisk(catalog)) return s
         if (modelOnDisk(catalog)) return selectModel(s, id)
         if (s.data.settings.selectedModel == id && (s.download.running || s.download.paused)) return s
         return s.updateSettings { it.copy(selectedModel = id) }
@@ -771,6 +812,7 @@ class AppViewModel(
     private fun startDownload() {
         if (downloadJob?.isActive == true) return
         val catalog = GemmaModels.of(_state.value.data.settings.selectedModel)
+        if (!catalog.id.allowedOn(_state.value.hostRamBytes) && !modelOnDisk(catalog)) return
         downloadJob = scope.launch {
             mutate {
                 it.copy(

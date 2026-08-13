@@ -52,8 +52,10 @@ import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.UserSettings
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
+import dev.nucleusframework.offlinetranslator.domain.allowedOn
 import dev.nucleusframework.offlinetranslator.domain.formatEta
 import dev.nucleusframework.offlinetranslator.domain.formatPercent
+import dev.nucleusframework.offlinetranslator.domain.minRamGib
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
 import dev.nucleusframework.offlinetranslator.engine.LlmRuntime
@@ -78,6 +80,7 @@ fun SettingsScreen(
     ttsReady: Boolean,
     sourceLang: String,
     targetLang: String,
+    hostRamBytes: Long,
     onIntent: (AppIntent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -89,7 +92,7 @@ fun SettingsScreen(
         ) {
             Column(Modifier.widthIn(max = 920.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(28.dp)) {
                 DisplaySection(settings, onIntent)
-                ModelSection(settings, model, download, onIntent)
+                ModelSection(settings, model, download, hostRamBytes, onIntent)
                 if (ttsReady) VoicesSection(settings, voiceDownload, sourceLang, targetLang, onIntent)
                 StorageSection(ttsReady)
                 ResetSection(onIntent)
@@ -143,7 +146,13 @@ private fun DisplaySection(settings: UserSettings, onIntent: (AppIntent) -> Unit
 }
 
 @Composable
-private fun ModelSection(settings: UserSettings, model: ModelInfo, download: DownloadState, onIntent: (AppIntent) -> Unit) {
+private fun ModelSection(
+    settings: UserSettings,
+    model: ModelInfo,
+    download: DownloadState,
+    hostRamBytes: Long,
+    onIntent: (AppIntent) -> Unit,
+) {
     val ui = settings.uiLanguage
     val selected = settings.selectedModel
     val gpuAvailable by LlmRuntime.gpuAvailable.collectAsState()
@@ -199,12 +208,20 @@ private fun ModelSection(settings: UserSettings, model: ModelInfo, download: Dow
             val paused = mine && download.paused
             val running = mine && download.running
             val inFlight = running || paused || failed
+            val allowed = catalog.id.allowedOn(hostRamBytes)
+            val current = installed && model.installed && model.id == catalog.id
+            val sizeBody = catalog.body(formatBytesUi(catalog.bytes, ui))
+            val body = if (allowed) {
+                sizeBody
+            } else {
+                "$sizeBody · ${stringResource(Res.string.model_ram_required, catalog.id.minRamGib())}"
+            }
             ChoiceRow(
                 title = catalog.title(),
-                body = catalog.body(formatBytesUi(catalog.bytes, ui)),
+                body = body,
                 installed = installed,
-                selected = installed && model.installed && model.id == catalog.id,
-                muted = !installed && !inFlight,
+                selected = current,
+                muted = (!installed && !inFlight) || (!allowed && !current),
                 progress = if (inFlight) download.fraction else null,
                 progressLabel = if (running || paused) {
                     downloadStats(download.fraction, download.bytesDownloaded, download.totalBytes, download.speedBps, ui)
@@ -212,7 +229,7 @@ private fun ModelSection(settings: UserSettings, model: ModelInfo, download: Dow
                     null
                 },
                 error = if (failed) download.error?.text(ui) else null,
-                onClick = if (installed) {
+                onClick = if (installed && allowed) {
                     { onIntent(AppIntent.SelectModel(catalog.id)) }
                 } else {
                     null
@@ -222,7 +239,7 @@ private fun ModelSection(settings: UserSettings, model: ModelInfo, download: Dow
                 } else {
                     null
                 },
-                onDownload = if (!installed && !inFlight) {
+                onDownload = if (!installed && !inFlight && allowed) {
                     { onIntent(AppIntent.DownloadModel(catalog.id)) }
                 } else {
                     null
@@ -487,7 +504,7 @@ private fun ChoiceRow(
             }
             if (selected) {
                 Icon(Icons.Outlined.Check, null, Modifier.size(20.dp), tint = c.primary)
-            } else if (!installed && onDownload == null && progress == null) {
+            } else if (!installed && onDownload == null && progress == null && !muted) {
                 Text(stringResource(Res.string.settings_model_missing), fontSize = 12.sp, color = c.onSurfaceVariant)
             }
         }

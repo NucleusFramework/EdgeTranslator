@@ -88,6 +88,7 @@ class AppViewModelTest {
         deleteVoiceFiles: (String) -> Unit = {},
         wipeDownloadDirs: () -> Unit = {},
         migrateVoices: () -> Unit = {},
+        hostRamBytes: () -> Long = { 32L * 1_073_741_824L },
     ): AppViewModel = AppViewModel(
         store = store,
         historyStore = history,
@@ -108,6 +109,7 @@ class AppViewModelTest {
         deleteVoiceFiles = deleteVoiceFiles,
         wipeDownloadDirs = wipeDownloadDirs,
         migrateVoices = migrateVoices,
+        hostRamBytes = hostRamBytes,
     )
 
     @Test
@@ -443,6 +445,78 @@ class AppViewModelTest {
         )
         assertFalse(vm.state.value.download.running)
         assertTrue(vm.state.value.download.done)
+    }
+
+    @Test
+    fun startInstallBlockedUnderEightGigabytes() {
+        val vm = vm(hostRamBytes = { 6L * 1_073_741_824L })
+        vm.onIntent(AppIntent.StartInstall)
+        assertEquals(AppKey.Welcome, vm.backStack.last())
+        assertEquals("Welcome", vm.state.value.data.installStep)
+    }
+
+    @Test
+    fun startInstallAllowedAtEightGigabytes() {
+        val vm = vm(hostRamBytes = { 8L * 1_073_741_824L })
+        vm.onIntent(AppIntent.StartInstall)
+        assertEquals(AppKey.Download, vm.backStack.last())
+    }
+
+    @Test
+    fun precisionSelectionBlockedUnderSixteenGigabytes() {
+        val vm = vm(hostRamBytes = { 12L * 1_073_741_824L })
+        vm.onIntent(AppIntent.SelectModel(LlmModel.Precise))
+        assertEquals(LlmModel.Fast, vm.state.value.data.settings.selectedModel)
+    }
+
+    @Test
+    fun precisionDownloadBlockedUnderSixteenGigabytes() {
+        val vm = vm(
+            store = MemoryStore(
+                seedData().copy(
+                    installed = true,
+                    model = seedData().model.copy(installed = true, id = LlmModel.Fast),
+                ),
+            ),
+            modelOnDisk = { it.id == LlmModel.Fast },
+            hostRamBytes = { 12L * 1_073_741_824L },
+        )
+        vm.onIntent(AppIntent.DownloadModel(LlmModel.Precise))
+        assertEquals(LlmModel.Fast, vm.state.value.data.settings.selectedModel)
+        assertFalse(vm.state.value.download.running)
+    }
+
+    @Test
+    fun onboardingDropsPrecisionWhenRamIsTooLow() {
+        val vm = vm(
+            store = MemoryStore(seedData().copy(settings = seedData().settings.copy(selectedModel = LlmModel.Precise))),
+            hostRamBytes = { 12L * 1_073_741_824L },
+        )
+        assertEquals(LlmModel.Fast, vm.state.value.data.settings.selectedModel)
+    }
+
+    @Test
+    fun installedPrecisionStaysSelectedWhenRamIsLow() {
+        val vm = vm(
+            store = MemoryStore(
+                seedData().copy(
+                    installed = true,
+                    model = seedData().model.copy(installed = true, id = LlmModel.Precise),
+                    settings = seedData().settings.copy(selectedModel = LlmModel.Precise),
+                ),
+            ),
+            modelOnDisk = { it.id == LlmModel.Precise },
+            hostRamBytes = { 12L * 1_073_741_824L },
+        )
+        assertEquals(LlmModel.Precise, vm.state.value.data.settings.selectedModel)
+        assertEquals(LlmModel.Precise, vm.state.value.data.model.id)
+    }
+
+    @Test
+    fun unknownRamDoesNotBlockPrecision() {
+        val vm = vm(hostRamBytes = { 0L })
+        vm.onIntent(AppIntent.SelectModel(LlmModel.Precise))
+        assertEquals(LlmModel.Precise, vm.state.value.data.settings.selectedModel)
     }
 
     @Test

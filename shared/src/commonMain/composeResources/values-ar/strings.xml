@@ -76,6 +76,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · أسرع</string>
     <string name="model_precise_title">دقيق</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · أدق</string>
+    <string name="model_ram_required">يتطلب %1$d غيغابايت من الذاكرة</string>
+    <string name="install_ram_too_low">يحتاج هذا الجهاز إلى %1$d غيغابايت من الذاكرة على الأقل.</string>
     <string name="install_feature_history_title">المفضلة المحلية</string>
     <string name="install_feature_history_body">احفظ ترجماتك وأعد استخدامها</string>
     <string name="install_feature_voices_title">أصوات</string>

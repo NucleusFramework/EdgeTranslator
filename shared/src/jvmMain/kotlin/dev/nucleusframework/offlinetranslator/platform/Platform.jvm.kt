@@ -1,6 +1,7 @@
 package dev.nucleusframework.offlinetranslator.platform
 
 import dev.nucleusframework.core.runtime.NucleusApp
+import dev.nucleusframework.systeminfo.SystemInfo
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.isRegularFile
@@ -34,6 +35,10 @@ internal actual object Platform {
         get() = NucleusApp.version.orEmpty()
 
     actual fun cpuCount(): Int = Runtime.getRuntime().availableProcessors().coerceAtLeast(1)
+
+    actual fun totalRamBytes(): Long = runCatching {
+        SystemInfo.memoryInfo()?.totalMemory ?: 0L
+    }.getOrDefault(0L)
 
     actual fun appDir(): String {
         ensureFileKit()

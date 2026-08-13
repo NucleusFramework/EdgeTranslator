@@ -118,6 +118,7 @@ private fun AppNavDisplay(backStack: NavBackStack<AppKey>, state: AppState, onIn
                     ttsReady = state.translation.ttsReady,
                     sourceLang = state.translation.sourceLang,
                     targetLang = state.translation.targetLang,
+                    hostRamBytes = state.hostRamBytes,
                     onIntent = onIntent,
                 )
             }
@@ -136,6 +137,7 @@ private fun InstallEntry(step: InstallStep, state: AppState, onIntent: (AppInten
         voicePicks = state.voicePicks,
         ttsReady = state.translation.ttsReady,
         installedVoices = state.translation.installedVoices,
+        hostRamBytes = state.hostRamBytes,
         onIntent = onIntent,
     )
 }

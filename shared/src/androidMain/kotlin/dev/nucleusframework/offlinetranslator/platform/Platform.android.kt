@@ -1,6 +1,7 @@
 package dev.nucleusframework.offlinetranslator.platform
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -37,6 +38,14 @@ internal actual object Platform {
         get() = ctx().packageManager.getPackageInfo(ctx().packageName, 0).versionName.orEmpty()
 
     actual fun cpuCount(): Int = Runtime.getRuntime().availableProcessors().coerceAtLeast(1)
+
+    actual fun totalRamBytes(): Long {
+        val context = appContext ?: return 0L
+        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager ?: return 0L
+        val info = ActivityManager.MemoryInfo()
+        am.getMemoryInfo(info)
+        return info.totalMem
+    }
 
     actual fun appDir(): String = filekitFilesDir()
 

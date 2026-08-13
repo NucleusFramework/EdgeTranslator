@@ -40,10 +40,13 @@ import dev.nucleusframework.offlinetranslator.domain.DownloadState
 import dev.nucleusframework.offlinetranslator.domain.LangNameStyle
 import dev.nucleusframework.offlinetranslator.domain.Languages
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
+import dev.nucleusframework.offlinetranslator.domain.MIN_RAM_GIB_FAST
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.UserSettings
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
+import dev.nucleusframework.offlinetranslator.domain.allowedOn
 import dev.nucleusframework.offlinetranslator.domain.formatPercent
+import dev.nucleusframework.offlinetranslator.domain.minRamGib
 import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
@@ -88,6 +91,7 @@ import offlinetranslator.shared.generated.resources.install_feature_model_title
 import offlinetranslator.shared.generated.resources.install_feature_voices_body
 import offlinetranslator.shared.generated.resources.install_feature_voices_title
 import offlinetranslator.shared.generated.resources.install_network_note
+import offlinetranslator.shared.generated.resources.install_ram_too_low
 import offlinetranslator.shared.generated.resources.install_spec_disk
 import offlinetranslator.shared.generated.resources.install_spec_langs
 import offlinetranslator.shared.generated.resources.install_spec_langs_value
@@ -107,6 +111,7 @@ import offlinetranslator.shared.generated.resources.model_fast_title
 import offlinetranslator.shared.generated.resources.model_pick_title
 import offlinetranslator.shared.generated.resources.model_precise_body
 import offlinetranslator.shared.generated.resources.model_precise_title
+import offlinetranslator.shared.generated.resources.model_ram_required
 import offlinetranslator.shared.generated.resources.settings_model_downloading
 import offlinetranslator.shared.generated.resources.settings_model_installed
 import offlinetranslator.shared.generated.resources.settings_ui_language
@@ -130,10 +135,11 @@ fun InstallScreen(
     voicePicks: Set<String>,
     ttsReady: Boolean,
     installedVoices: Set<String>,
+    hostRamBytes: Long,
     onIntent: (AppIntent) -> Unit,
 ) {
     when (step) {
-        InstallStep.Welcome -> WelcomeStep(settings, ttsReady, onIntent)
+        InstallStep.Welcome -> WelcomeStep(settings, ttsReady, hostRamBytes, onIntent)
         InstallStep.Download -> DownloadStep(settings, download, ttsReady, onIntent)
         InstallStep.Voices -> VoicesStep(settings, voiceDownload, voicePicks, installedVoices, ttsReady, onIntent)
     }
@@ -142,11 +148,13 @@ fun InstallScreen(
 // ── A1 · Bienvenue ────────────────────────────────────────────────────────────
 
 @Composable
-private fun WelcomeStep(settings: UserSettings, ttsReady: Boolean, onIntent: (AppIntent) -> Unit) {
+private fun WelcomeStep(settings: UserSettings, ttsReady: Boolean, hostRamBytes: Long, onIntent: (AppIntent) -> Unit) {
     val c = MaterialTheme.colorScheme
     val ui = settings.uiLanguage
     val selected = settings.selectedModel
     val catalog = GemmaModels.of(selected)
+    val canInstall = LlmModel.Fast.allowedOn(hostRamBytes)
+    val canPrecise = LlmModel.Precise.allowedOn(hostRamBytes)
     val stepCount = if (ttsReady) 3 else 2
     Row(Modifier.fillMaxSize()) {
         Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()).padding(56.dp)) {
@@ -217,16 +225,36 @@ private fun WelcomeStep(settings: UserSettings, ttsReady: Boolean, onIntent: (Ap
                 title = stringResource(Res.string.model_fast_title),
                 body = stringResource(Res.string.model_fast_body, formatBytesUi(GemmaModels.Fast.bytes, ui)),
                 selected = selected == LlmModel.Fast,
+                enabled = canInstall,
             ) { onIntent(AppIntent.SelectModel(LlmModel.Fast)) }
             Spacer(Modifier.height(8.dp))
+            val preciseBody = stringResource(Res.string.model_precise_body, formatBytesUi(GemmaModels.Precise.bytes, ui))
             ModelPickCard(
                 title = stringResource(Res.string.model_precise_title),
-                body = stringResource(Res.string.model_precise_body, formatBytesUi(GemmaModels.Precise.bytes, ui)),
+                body = if (canPrecise) {
+                    preciseBody
+                } else {
+                    "$preciseBody · ${stringResource(Res.string.model_ram_required, LlmModel.Precise.minRamGib())}"
+                },
                 selected = selected == LlmModel.Precise,
+                enabled = canPrecise,
             ) { onIntent(AppIntent.SelectModel(LlmModel.Precise)) }
             Spacer(Modifier.height(24.dp))
+            if (!canInstall) {
+                Text(
+                    stringResource(Res.string.install_ram_too_low, MIN_RAM_GIB_FAST),
+                    fontSize = 13.sp,
+                    lineHeight = 18.sp,
+                    color = c.error,
+                    modifier = Modifier.padding(bottom = 12.dp).widthIn(max = 460.dp),
+                )
+            }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilledPill(stringResource(Res.string.action_start), onClick = { onIntent(AppIntent.StartInstall) })
+                FilledPill(
+                    stringResource(Res.string.action_start),
+                    onClick = { onIntent(AppIntent.StartInstall) },
+                    enabled = canInstall,
+                )
                 OutlinedPill(stringResource(Res.string.action_quit), onClick = { onIntent(AppIntent.Quit) })
             }
         }
@@ -259,23 +287,44 @@ private fun WelcomeStep(settings: UserSettings, ttsReady: Boolean, onIntent: (Ap
 }
 
 @Composable
-private fun ModelPickCard(title: String, body: String, selected: Boolean, trailing: ImageVector? = null, onClick: () -> Unit) {
+private fun ModelPickCard(
+    title: String,
+    body: String,
+    selected: Boolean,
+    trailing: ImageVector? = null,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
     val c = MaterialTheme.colorScheme
+    val titleColor = when {
+        selected -> c.onPrimaryContainer
+        !enabled -> c.onSurface.copy(alpha = 0.45f)
+        else -> c.onSurface
+    }
+    val bodyColor = when {
+        selected -> c.onPrimaryContainer
+        !enabled -> c.onSurfaceVariant.copy(alpha = 0.45f)
+        else -> c.onSurfaceVariant
+    }
     Row(
         Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp))
             .background(if (selected) c.primaryContainer else c.surfaceContainer)
-            .clickable(onClick = onClick).padding(16.dp),
+            .clickable(enabled = enabled, onClick = onClick).padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Icon(
             if (selected) Icons.Outlined.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
             null,
-            tint = if (selected) c.onPrimaryContainer else c.outline,
+            tint = when {
+                selected -> c.onPrimaryContainer
+                !enabled -> c.outline.copy(alpha = 0.45f)
+                else -> c.outline
+            },
         )
         Column(Modifier.weight(1f)) {
-            Text(title, fontSize = 16.sp, color = if (selected) c.onPrimaryContainer else c.onSurface)
-            Text(body, fontSize = 14.sp, color = if (selected) c.onPrimaryContainer else c.onSurfaceVariant)
+            Text(title, fontSize = 16.sp, color = titleColor)
+            Text(body, fontSize = 14.sp, color = bodyColor)
         }
         if (trailing != null) {
             Icon(trailing, null, tint = if (selected) c.onPrimaryContainer else c.outline)

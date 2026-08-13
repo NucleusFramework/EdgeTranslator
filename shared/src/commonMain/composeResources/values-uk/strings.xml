@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · швидше</string>
     <string name="model_precise_title">Точна</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · точніше</string>
+    <string name="model_ram_required">Потрібно %1$d ГБ ОЗП</string>
+    <string name="install_ram_too_low">Цьому комп’ютеру потрібно щонайменше %1$d ГБ ОЗП.</string>
     <string name="install_feature_history_title">Локальне обране</string>
     <string name="install_feature_history_body">Зберігайте й повторно використовуйте переклади</string>
     <string name="install_feature_voices_title">Голоси</string>

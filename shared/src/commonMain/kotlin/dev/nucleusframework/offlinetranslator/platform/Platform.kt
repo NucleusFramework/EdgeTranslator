@@ -6,6 +6,7 @@ internal expect object Platform {
     val osLabel: String
     val appVersion: String
     fun cpuCount(): Int
+    fun totalRamBytes(): Long
     fun appDir(): String
     fun cacheDir(): String
     fun databasesDir(): String

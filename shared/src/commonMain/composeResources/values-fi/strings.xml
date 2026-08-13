@@ -73,6 +73,8 @@
     <string name="model_fast_body">Gemma 4 E2B · %1$s · nopeampi</string>
     <string name="model_precise_title">Tarkka</string>
     <string name="model_precise_body">Gemma 4 E4B · %1$s · tarkempi</string>
+    <string name="model_ram_required">Vaatii %1$d Gt RAM-muistia</string>
+    <string name="install_ram_too_low">Tässä tietokoneessa on oltava vähintään %1$d Gt RAM-muistia.</string>
     <string name="install_feature_history_title">Paikalliset suosikit</string>
     <string name="install_feature_history_body">Tallenna ja käytä käännöksiä uudelleen</string>
     <string name="install_feature_voices_title">Äänet</string>
