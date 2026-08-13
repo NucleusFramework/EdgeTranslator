@@ -189,11 +189,14 @@ data class VoiceDownloadState(
     val bytesDownloaded: Long = 0,
     val totalBytes: Long = 0,
     val running: Boolean = false,
+    val paused: Boolean = false,
+    val speedBps: Long = 0,
     val error: DownloadError? = null,
 ) {
     val fraction: Float get() = if (totalBytes == 0L) 0f else (bytesDownloaded.toFloat() / totalBytes).coerceIn(0f, 1f)
     val index: Int get() = finished.size + if (lang != null) 1 else 0
     val total: Int get() = finished.size + (if (lang != null) 1 else 0) + queue.size
+    val busy: Boolean get() = running || paused || error != null
 }
 
 @Immutable

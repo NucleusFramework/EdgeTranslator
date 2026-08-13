@@ -33,6 +33,8 @@ sealed interface AppIntent {
     data class SelectAllVoices(val lang: String? = null) : AppIntent
     data class ClearVoicePicks(val lang: String? = null) : AppIntent
     data class DownloadVoices(val langs: List<String>? = null) : AppIntent
+    data object PauseVoiceDownload : AppIntent
+    data object ResumeVoiceDownload : AppIntent
     data object CancelVoiceDownload : AppIntent
     data object RetryVoiceDownload : AppIntent
     data class DeleteVoice(val lang: String) : AppIntent

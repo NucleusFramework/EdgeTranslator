@@ -497,7 +497,7 @@ private fun SpeakIcon(
     onIntent: (AppIntent) -> Unit,
 ) {
     if (!ttsReady || !Languages.hasTts(lang)) return
-    val downloading = voiceDownload.running && PiperVoices.covers(voiceDownload.lang, lang)
+    val downloading = voiceDownload.busy && PiperVoices.covers(voiceDownload.lang, lang)
     val loading = busy || downloading
     val c = MaterialTheme.colorScheme
     val indicator = Modifier.size(22.dp)

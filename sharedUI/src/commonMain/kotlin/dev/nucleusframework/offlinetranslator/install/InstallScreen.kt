@@ -43,12 +43,12 @@ import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.UserSettings
 import dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState
-import dev.nucleusframework.offlinetranslator.domain.formatEta
 import dev.nucleusframework.offlinetranslator.domain.formatPercent
 import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
 import dev.nucleusframework.offlinetranslator.platform.Platform
+import dev.nucleusframework.offlinetranslator.ui.DownloadPanel
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
@@ -68,12 +68,6 @@ import offlinetranslator.sharedui.generated.resources.action_skip
 import offlinetranslator.sharedui.generated.resources.action_start
 import offlinetranslator.sharedui.generated.resources.app_name
 import offlinetranslator.sharedui.generated.resources.app_version
-import offlinetranslator.sharedui.generated.resources.download_auto_resume
-import offlinetranslator.sharedui.generated.resources.download_speed_per_s
-import offlinetranslator.sharedui.generated.resources.download_stat_ratio
-import offlinetranslator.sharedui.generated.resources.download_stat_remaining
-import offlinetranslator.sharedui.generated.resources.download_stat_segments
-import offlinetranslator.sharedui.generated.resources.download_stat_speed
 import offlinetranslator.sharedui.generated.resources.download_status_done
 import offlinetranslator.sharedui.generated.resources.download_status_pending
 import offlinetranslator.sharedui.generated.resources.download_status_running
@@ -426,8 +420,6 @@ private fun DownloadStep(settings: UserSettings, d: DownloadState, ttsReady: Boo
             done = phase == DownloadPhase.Done,
         ),
     )
-    val remaining = (d.totalBytes - d.bytesDownloaded).coerceAtLeast(0)
-    val filled = d.fraction.coerceIn(0.01f, 0.99f)
     Column(Modifier.fillMaxSize()) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(start = 56.dp, end = 56.dp, top = 32.dp)) {
             StepLabel(stringResource(Res.string.install_step, 2, stepCount))
@@ -441,83 +433,7 @@ private fun DownloadStep(settings: UserSettings, d: DownloadState, ttsReady: Boo
             )
             Spacer(Modifier.height(28.dp))
 
-            Column(
-                Modifier.fillMaxWidth().clip(
-                    RoundedCornerShape(28.dp),
-                ).background(c.primaryContainer).padding(horizontal = 32.dp, vertical = 24.dp),
-            ) {
-                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
-                    Row(Modifier.weight(1f), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text(formatPercent(d.fraction, ui), fontSize = 45.sp, color = c.onPrimaryContainer)
-                        Text(
-                            "${formatBytesUi(d.bytesDownloaded, ui)} / ${formatBytesUi(d.totalBytes, ui)}",
-                            fontSize = 16.sp,
-                            color = c.onPrimaryContainer,
-                            modifier = Modifier.padding(bottom = 8.dp),
-                        )
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(36.dp)) {
-                        MiniStat(
-                            stringResource(Res.string.download_stat_speed),
-                            if (d.speedBps >
-                                0
-                            ) {
-                                stringResource(Res.string.download_speed_per_s, formatBytesUi(d.speedBps, ui))
-                            } else {
-                                dash
-                            },
-                        )
-                        MiniStat(stringResource(Res.string.download_stat_remaining), formatEta(remaining, d.speedBps))
-                        MiniStat(
-                            stringResource(Res.string.download_stat_segments),
-                            stringResource(
-                                Res.string.download_stat_ratio,
-                                ((d.bytesDownloaded + 16_777_215) / 16_777_216).toInt(),
-                                ((d.totalBytes + 16_777_215) / 16_777_216).toInt().coerceAtLeast(1),
-                            ),
-                        )
-                    }
-                }
-                Spacer(Modifier.height(16.dp))
-                Row(Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp))) {
-                    Box(Modifier.weight(filled).fillMaxHeight().background(c.primary))
-                    Box(Modifier.weight((1f - filled).coerceAtLeast(0.01f)).fillMaxHeight().background(c.inversePrimary))
-                }
-                Spacer(Modifier.height(16.dp))
-                if (!d.done) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        when {
-                            d.paused || phase == DownloadPhase.Cancelled || phase == DownloadPhase.Failed ->
-                                FilledPill(
-                                    stringResource(Res.string.action_resume),
-                                    onClick = {
-                                        onIntent(
-                                            if (phase == DownloadPhase.Cancelled || phase == DownloadPhase.Failed) {
-                                                AppIntent.RetryDownload
-                                            } else {
-                                                AppIntent.ResumeDownload
-                                            },
-                                        )
-                                    },
-                                    icon = Icons.Outlined.PlayArrow,
-                                )
-
-                            else -> FilledPill(
-                                stringResource(Res.string.action_pause),
-                                onClick = { onIntent(AppIntent.PauseDownload) },
-                                icon = Icons.Outlined.Pause,
-                            )
-                        }
-                        OutlinedPill(stringResource(Res.string.action_cancel), onClick = { onIntent(AppIntent.CancelDownload) })
-                        Spacer(Modifier.weight(1f))
-                        Text(
-                            d.error?.text(ui) ?: stringResource(Res.string.download_auto_resume),
-                            fontSize = 12.sp,
-                            color = c.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
+            DownloadPanel(d, ui, onIntent)
             Spacer(Modifier.height(20.dp))
 
             Column {
@@ -617,7 +533,7 @@ private fun VoicesStep(
                 )
             }
             Spacer(Modifier.height(16.dp))
-            if (download.running || download.error != null || download.finished.isNotEmpty()) {
+            if (download.busy || download.finished.isNotEmpty()) {
                 val current = download.lang?.let { PiperVoices.of(it) }
                 val currentLabel = current?.let { "${languageLabel(it.lang, style)} · ${it.displayName}" }
                     ?: download.lang?.let { languageLabel(it, style) }.orEmpty()
@@ -639,7 +555,7 @@ private fun VoicesStep(
                             modifier = Modifier.padding(top = 4.dp),
                         )
                     }
-                    if (download.running) {
+                    if (download.running || download.paused) {
                         LinearProgressIndicator(
                             progress = { download.fraction.coerceIn(0f, 1f) },
                             modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
@@ -657,14 +573,34 @@ private fun VoicesStep(
                     Spacer(Modifier.height(12.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         when {
-                            download.running -> OutlinedPill(
-                                stringResource(Res.string.action_cancel),
-                                onClick = { onIntent(AppIntent.CancelVoiceDownload) },
-                            )
+                            download.running -> {
+                                OutlinedPill(
+                                    stringResource(Res.string.action_pause),
+                                    onClick = { onIntent(AppIntent.PauseVoiceDownload) },
+                                    icon = Icons.Outlined.Pause,
+                                )
+                                OutlinedPill(
+                                    stringResource(Res.string.action_cancel),
+                                    onClick = { onIntent(AppIntent.CancelVoiceDownload) },
+                                )
+                            }
+
+                            download.paused -> {
+                                FilledPill(
+                                    stringResource(Res.string.action_resume),
+                                    onClick = { onIntent(AppIntent.ResumeVoiceDownload) },
+                                    icon = Icons.Outlined.PlayArrow,
+                                )
+                                OutlinedPill(
+                                    stringResource(Res.string.action_cancel),
+                                    onClick = { onIntent(AppIntent.CancelVoiceDownload) },
+                                )
+                            }
 
                             download.error != null -> FilledPill(
                                 stringResource(Res.string.action_resume),
                                 onClick = { onIntent(AppIntent.RetryVoiceDownload) },
+                                icon = Icons.Outlined.PlayArrow,
                             )
                         }
                     }
@@ -696,7 +632,7 @@ private fun VoicesStep(
                         },
                         selected = selected,
                     ) {
-                        if (!installed && !download.running) onIntent(AppIntent.ToggleVoicePick(spec.id))
+                        if (!installed && !download.busy) onIntent(AppIntent.ToggleVoicePick(spec.id))
                     }
                     Spacer(Modifier.height(8.dp))
                 }
@@ -714,26 +650,17 @@ private fun VoicesStep(
             },
         ) {
             OutlinedPill(stringResource(Res.string.action_skip), onClick = { onIntent(AppIntent.OpenApp) })
-            val canDownload = missingPicks.isNotEmpty() && !download.running
+            val canDownload = missingPicks.isNotEmpty() && !download.busy
             if (canDownload) {
                 FilledPill(stringResource(Res.string.action_download), onClick = { onIntent(AppIntent.DownloadVoices()) })
             } else {
                 FilledPill(
                     stringResource(Res.string.action_finish),
                     onClick = { onIntent(AppIntent.OpenApp) },
-                    enabled = !download.running,
+                    enabled = !download.busy,
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun MiniStat(label: String, value: String) {
-    val c = MaterialTheme.colorScheme
-    Column(horizontalAlignment = Alignment.End) {
-        Text(label, fontSize = 12.sp, color = c.onSurfaceVariant)
-        Text(value, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = c.onPrimaryContainer)
     }
 }
 

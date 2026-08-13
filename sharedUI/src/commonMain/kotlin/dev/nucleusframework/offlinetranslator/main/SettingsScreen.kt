@@ -142,7 +142,6 @@ private fun DisplaySection(settings: UserSettings, onIntent: (AppIntent) -> Unit
 private fun ModelSection(settings: UserSettings, model: ModelInfo, download: DownloadState, onIntent: (AppIntent) -> Unit) {
     val ui = settings.uiLanguage
     val selected = settings.selectedModel
-    val dash = stringResource(Res.string.em_dash)
     SettingsSection(stringResource(Res.string.settings_model)) {
         Divided(GemmaModels.all) { catalog ->
             val installed = catalog.isOnDisk() || (model.installed && model.id == catalog.id)
@@ -151,17 +150,6 @@ private fun ModelSection(settings: UserSettings, model: ModelInfo, download: Dow
             val paused = mine && download.paused
             val running = mine && download.running
             val inFlight = running || paused || failed
-            val speed = if (download.speedBps > 0) {
-                stringResource(Res.string.download_speed_per_s, formatBytesUi(download.speedBps, ui))
-            } else {
-                dash
-            }
-            val stats = listOf(
-                formatPercent(download.fraction, ui),
-                "${formatBytesUi(download.bytesDownloaded, ui)} / ${formatBytesUi(download.totalBytes, ui)}",
-                speed,
-                formatEta((download.totalBytes - download.bytesDownloaded).coerceAtLeast(0), download.speedBps),
-            ).joinToString(" · ")
             ChoiceRow(
                 title = catalog.title(),
                 body = catalog.body(formatBytesUi(catalog.bytes, ui)),
@@ -169,7 +157,11 @@ private fun ModelSection(settings: UserSettings, model: ModelInfo, download: Dow
                 selected = installed && model.installed && model.id == catalog.id,
                 muted = !installed && !inFlight,
                 progress = if (inFlight) download.fraction else null,
-                progressLabel = if (running || paused) stats else null,
+                progressLabel = if (running || paused) {
+                    downloadStats(download.fraction, download.bytesDownloaded, download.totalBytes, download.speedBps, ui)
+                } else {
+                    null
+                },
                 error = if (failed) download.error?.text(ui) else null,
                 onClick = if (installed) {
                     { onIntent(AppIntent.SelectModel(catalog.id)) }
@@ -193,9 +185,7 @@ private fun ModelSection(settings: UserSettings, model: ModelInfo, download: Dow
                 },
                 onResume = if (paused || failed) {
                     {
-                        onIntent(
-                            if (failed) AppIntent.DownloadModel(catalog.id) else AppIntent.ResumeDownload,
-                        )
+                        onIntent(if (failed) AppIntent.DownloadModel(catalog.id) else AppIntent.ResumeDownload)
                     }
                 } else {
                     null
@@ -231,8 +221,11 @@ private fun VoicesSection(
         SettingsSection(languageLabel(openLang.code, settings.langNames), onBack = { openCode = null }) {
             Divided(PiperVoices.forLang(openLang.code)) { spec ->
                 val installed = spec.isOnDisk()
-                val downloading = voiceDownload.running &&
-                    (voiceDownload.lang == spec.id || voiceDownload.lang == spec.lang)
+                val mine = voiceDownload.lang == spec.id || voiceDownload.lang == spec.lang
+                val failed = mine && voiceDownload.error != null
+                val paused = mine && voiceDownload.paused
+                val running = mine && voiceDownload.running
+                val inFlight = running || paused || failed
                 val active = settings.selectedVoices[spec.lang] == spec.id ||
                     (installed && settings.selectedVoices[spec.lang] == null && spec.id == PiperVoices.defaultFor(spec.lang)?.id)
                 ChoiceRow(
@@ -240,22 +233,51 @@ private fun VoicesSection(
                     body = formatBytesUi(spec.bytes, ui),
                     installed = installed,
                     selected = installed && active,
-                    progress = if (downloading) voiceDownload.fraction else null,
-                    progressLabel = if (downloading) {
-                        stringResource(Res.string.settings_model_downloading, formatPercent(voiceDownload.fraction, ui))
+                    muted = !installed && !inFlight,
+                    progress = if (inFlight) voiceDownload.fraction else null,
+                    progressLabel = if (running || paused) {
+                        downloadStats(
+                            voiceDownload.fraction,
+                            voiceDownload.bytesDownloaded,
+                            voiceDownload.totalBytes,
+                            voiceDownload.speedBps,
+                            ui,
+                        )
                     } else {
                         null
                     },
-                    error = if (downloading) voiceDownload.error?.text(ui) else null,
-                    onClick = {
-                        if (installed) {
-                            onIntent(AppIntent.SelectVoice(spec.id))
-                        } else {
-                            onIntent(AppIntent.DownloadVoices(listOf(spec.id)))
-                        }
+                    error = if (failed) voiceDownload.error.text(ui) else null,
+                    onClick = if (installed) {
+                        { onIntent(AppIntent.SelectVoice(spec.id)) }
+                    } else {
+                        null
                     },
-                    onDelete = if (installed && !downloading) {
+                    onDelete = if (installed && !inFlight) {
                         { onIntent(AppIntent.DeleteVoice(spec.id)) }
+                    } else {
+                        null
+                    },
+                    onDownload = if (!installed && !inFlight) {
+                        { onIntent(AppIntent.DownloadVoices(listOf(spec.id))) }
+                    } else {
+                        null
+                    },
+                    onPause = if (running) {
+                        { onIntent(AppIntent.PauseVoiceDownload) }
+                    } else {
+                        null
+                    },
+                    onResume = if (paused || failed) {
+                        {
+                            onIntent(
+                                if (failed) AppIntent.DownloadVoices(listOf(spec.id)) else AppIntent.ResumeVoiceDownload,
+                            )
+                        }
+                    } else {
+                        null
+                    },
+                    onCancel = if (running || paused) {
+                        { onIntent(AppIntent.CancelVoiceDownload) }
                     } else {
                         null
                     },
@@ -265,7 +287,7 @@ private fun VoicesSection(
         return
     }
 
-    val busy = voiceDownload.lang.takeIf { voiceDownload.running }
+    val busy = voiceDownload.lang.takeIf { voiceDownload.busy }
     val active = setOf(sourceLang, targetLang)
     val mine = PiperVoices.visibleLangs(active, busy, PiperVoices.installed())
     val rest = PiperVoices.langs.filterNot { it in mine }
@@ -343,6 +365,21 @@ private fun SettingsSection(title: String, onBack: (() -> Unit)? = null, content
         }
         Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surfaceContainer), content = content)
     }
+}
+
+@Composable
+private fun downloadStats(fraction: Float, downloaded: Long, total: Long, speedBps: Long, ui: UiLanguage): String {
+    val speed = if (speedBps > 0) {
+        stringResource(Res.string.download_speed_per_s, formatBytesUi(speedBps, ui))
+    } else {
+        stringResource(Res.string.em_dash)
+    }
+    return listOf(
+        formatPercent(fraction, ui),
+        "${formatBytesUi(downloaded, ui)} / ${formatBytesUi(total, ui)}",
+        speed,
+        formatEta((total - downloaded).coerceAtLeast(0), speedBps),
+    ).joinToString(" · ")
 }
 
 /** Title + description + one status line, with delete behind an icon instead of a standing red link. */

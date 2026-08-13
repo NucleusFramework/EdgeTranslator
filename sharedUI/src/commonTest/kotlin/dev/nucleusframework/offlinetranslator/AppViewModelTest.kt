@@ -356,6 +356,7 @@ class AppViewModelTest {
     }
 
     @Test
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     fun pauseAndCancelDownloadFromSettings() {
         val vm = vm(
             store = MemoryStore(
@@ -375,9 +376,30 @@ class AppViewModelTest {
         vm.onIntent(AppIntent.ResumeDownload)
         assertTrue(vm.state.value.download.running)
         vm.onIntent(AppIntent.CancelDownload)
-        assertEquals(DownloadPhase.Cancelled, vm.state.value.download.phase)
+        assertEquals(DownloadPhase.Done, vm.state.value.download.phase)
         assertFalse(vm.state.value.download.running)
+        assertFalse(vm.state.value.download.paused)
         assertEquals(LlmModel.Fast, vm.state.value.data.model.id)
+        assertEquals(LlmModel.Fast, vm.state.value.data.settings.selectedModel)
+    }
+
+    @Test
+    fun restoringCancelledSettingsDownloadIsIdle() {
+        val vm = vm(
+            store = MemoryStore(
+                seedData().copy(
+                    installed = true,
+                    model = seedData().model.copy(installed = true, id = LlmModel.Fast),
+                    settings = seedData().settings.copy(selectedModel = LlmModel.Precise),
+                ),
+            ),
+            modelOnDisk = { it.id == LlmModel.Fast },
+        )
+        val state = vm.state.value
+        assertEquals(LlmModel.Fast, state.data.settings.selectedModel)
+        assertFalse(state.download.running)
+        assertFalse(state.download.paused)
+        assertTrue(state.download.done)
     }
 
     @Test
@@ -736,6 +758,41 @@ class AppViewModelTest {
         assertEquals(AppKey.Voices, vm.backStack.last())
         assertTrue(vm.state.value.voicePicks.any { PiperVoices.covers(it, "en") })
         assertTrue(vm.state.value.voicePicks.any { PiperVoices.covers(it, "fr") })
+    }
+
+    @Test
+    fun selectingMissingVoiceDoesNotStartDownload() {
+        val vm = vm(tts = FakeTts())
+        vm.onIntent(AppIntent.SelectVoice("fr"))
+        assertFalse(vm.state.value.voiceDownload.running)
+        assertTrue(vm.state.value.data.settings.selectedVoices.isEmpty())
+    }
+
+    @Test
+    fun downloadVoiceStartsDownload() {
+        val vm = vm(tts = FakeTts(), dispatcher = Dispatchers.Unconfined)
+        vm.onIntent(AppIntent.DownloadVoices(listOf("fr")))
+        assertTrue(vm.state.value.voiceDownload.running)
+        assertTrue(PiperVoices.covers(vm.state.value.voiceDownload.lang, "fr"))
+    }
+
+    @Test
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun pauseAndCancelVoiceDownloadFromSettings() {
+        val vm = vm(tts = FakeTts(), dispatcher = UnconfinedTestDispatcher())
+        vm.onIntent(AppIntent.DownloadVoices(listOf("fr")))
+        assertTrue(vm.state.value.voiceDownload.running)
+        vm.onIntent(AppIntent.PauseVoiceDownload)
+        assertTrue(vm.state.value.voiceDownload.paused)
+        assertFalse(vm.state.value.voiceDownload.running)
+        vm.onIntent(AppIntent.ResumeVoiceDownload)
+        assertTrue(vm.state.value.voiceDownload.running)
+        assertFalse(vm.state.value.voiceDownload.paused)
+        vm.onIntent(AppIntent.CancelVoiceDownload)
+        assertFalse(vm.state.value.voiceDownload.running)
+        assertFalse(vm.state.value.voiceDownload.paused)
+        assertFalse(vm.state.value.voiceDownload.busy)
+        assertEquals(null, vm.state.value.voiceDownload.lang)
     }
 
     @Test

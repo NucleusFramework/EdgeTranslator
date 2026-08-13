@@ -176,9 +176,11 @@ class AppViewModel(
 
             is AppIntent.DownloadVoices -> startVoiceDownload(intent.langs)
 
-            AppIntent.CancelVoiceDownload -> cancelVoiceDownload()
+            AppIntent.PauseVoiceDownload -> pauseVoiceDownload()
 
-            AppIntent.RetryVoiceDownload -> startVoiceDownload(null)
+            AppIntent.ResumeVoiceDownload, AppIntent.RetryVoiceDownload -> resumeVoiceDownload()
+
+            AppIntent.CancelVoiceDownload -> cancelVoiceDownload()
 
             else -> {
                 applyNavigation(intent)
@@ -283,11 +285,21 @@ class AppViewModel(
         } else {
             emptySet()
         }
+        if (data.installed && !modelOnDisk(GemmaModels.of(data.settings.selectedModel))) {
+            val fallback = data.model.id.takeIf { data.model.installed && modelOnDisk(GemmaModels.of(it)) }
+                ?: GemmaModels.all.firstOrNull { modelOnDisk(it) }?.id
+            if (fallback != null) {
+                data = data.copy(settings = data.settings.copy(selectedModel = fallback))
+            }
+        }
         val catalog = GemmaModels.of(data.settings.selectedModel)
         val download = if (modelOnDisk(catalog)) {
             DownloadState(phase = DownloadPhase.Done, bytesDownloaded = catalog.bytes, totalBytes = catalog.bytes)
         } else {
-            DownloadState(totalBytes = catalog.bytes)
+            DownloadState(
+                phase = if (data.installed) DownloadPhase.Cancelled else DownloadPhase.DiskCheck,
+                totalBytes = catalog.bytes,
+            )
         }
         return Restored(
             state = AppState(data = data, translation = translation, voicePicks = voicePicks, download = download),
@@ -453,6 +465,7 @@ class AppViewModel(
 
         is AppIntent.SelectVoice -> {
             val spec = PiperVoices.of(intent.id) ?: return s
+            if (!voiceOnDisk(spec)) return s
             s.updateSettings { it.copy(selectedVoices = it.selectedVoices + (spec.lang to spec.id)) }
         }
 
@@ -516,6 +529,8 @@ class AppViewModel(
         AppIntent.CancelMic,
         is AppIntent.ToggleSpeak,
         is AppIntent.DownloadVoices,
+        AppIntent.PauseVoiceDownload,
+        AppIntent.ResumeVoiceDownload,
         AppIntent.CancelVoiceDownload,
         AppIntent.RetryVoiceDownload,
         -> s
@@ -802,9 +817,19 @@ class AppViewModel(
         downloadJob?.cancel()
         downloadJob = null
         val catalog = GemmaModels.of(_state.value.data.settings.selectedModel)
-        val partial = catalog.partialPath()
-        scope.launch { withContext(ioDispatcher) { Platform.delete(partial) } }
-        mutate { it.copy(download = DownloadState(phase = DownloadPhase.Cancelled, totalBytes = catalog.bytes)) }
+        scope.launch { withContext(ioDispatcher) { Platform.delete(catalog.partialPath()) } }
+        mutate { s ->
+            val fallback = s.data.model.id.takeIf { s.data.installed && s.data.model.installed }
+            val next = if (fallback != null) s.updateSettings { it.copy(selectedModel = fallback) } else s
+            val download = if (fallback != null) {
+                val installed = GemmaModels.of(fallback)
+                DownloadState(phase = DownloadPhase.Done, bytesDownloaded = installed.bytes, totalBytes = installed.bytes)
+            } else {
+                DownloadState(phase = DownloadPhase.Cancelled, totalBytes = catalog.bytes)
+            }
+            next.copy(download = download)
+        }
+        persist(now = true)
     }
 
     private fun completeDownload() {
@@ -873,7 +898,7 @@ class AppViewModel(
         }
         if (lang !in t.installedVoices) {
             val dl = _state.value.voiceDownload
-            if (dl.running && downloadCovers(dl, lang)) return
+            if (dl.busy && downloadCovers(dl, lang)) return
             mutate { it.copy(dialog = AppDialog.InstallVoice(lang)) }
             return
         }
@@ -977,12 +1002,13 @@ class AppViewModel(
                             expectedBytes = spec.onnxBytes,
                             onConnect = {},
                             onVerify = {},
-                            onProgress = { bytes, _, _, _ ->
+                            onProgress = { bytes, _, speed, _ ->
                                 mutate {
                                     it.copy(
                                         voiceDownload = it.voiceDownload.copy(
                                             bytesDownloaded = bytes,
                                             totalBytes = spec.bytes,
+                                            speedBps = speed,
                                         ),
                                     )
                                 }
@@ -995,12 +1021,13 @@ class AppViewModel(
                             expectedBytes = spec.jsonBytes,
                             onConnect = {},
                             onVerify = {},
-                            onProgress = { bytes, _, _, _ ->
+                            onProgress = { bytes, _, speed, _ ->
                                 mutate {
                                     it.copy(
                                         voiceDownload = it.voiceDownload.copy(
                                             bytesDownloaded = spec.onnxBytes + bytes,
                                             totalBytes = spec.bytes,
+                                            speedBps = speed,
                                         ),
                                     )
                                 }
@@ -1008,7 +1035,6 @@ class AppViewModel(
                         )
                     }
                 } catch (e: kotlinx.coroutines.CancellationException) {
-                    mutate { it.copy(voiceDownload = it.voiceDownload.copy(running = false, lang = lang)) }
                     throw e
                 } catch (e: Exception) {
                     val error = (e as? DownloadFailedException)?.error
@@ -1041,6 +1067,18 @@ class AppViewModel(
         }
     }
 
+    private fun pauseVoiceDownload() {
+        if (!_state.value.voiceDownload.running) return
+        voiceJob?.cancel()
+        voiceJob = null
+        mutate { it.copy(voiceDownload = it.voiceDownload.copy(running = false, paused = true)) }
+    }
+
+    private fun resumeVoiceDownload() {
+        val dl = _state.value.voiceDownload
+        startVoiceDownload((listOfNotNull(dl.lang) + dl.queue).ifEmpty { null })
+    }
+
     private fun cancelVoiceDownload() {
         voiceJob?.cancel()
         voiceJob = null
@@ -1056,14 +1094,14 @@ class AppViewModel(
                 }
             }
         }
-        mutate { it.copy(voiceDownload = it.voiceDownload.copy(running = false)) }
+        mutate { it.copy(voiceDownload = VoiceDownloadState()) }
     }
 
     private fun deleteVoice(token: String) {
         val spec = PiperVoices.of(token)
         val lang = spec?.lang ?: token
         val dl = _state.value.voiceDownload
-        if (dl.running && downloadCovers(dl, lang)) {
+        if (dl.busy && downloadCovers(dl, lang)) {
             cancelVoiceDownload()
         }
         deleteVoiceFiles(token)
