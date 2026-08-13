@@ -1,0 +1,130 @@
+package dev.nucleusframework.offlinetranslator.main
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.outlined.WifiOff
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import dev.nucleusframework.offlinetranslator.app.AppIntent
+import dev.nucleusframework.offlinetranslator.app.AppKey
+import dev.nucleusframework.offlinetranslator.app.AppState
+import dev.nucleusframework.offlinetranslator.app.MainDestinations
+import dev.nucleusframework.offlinetranslator.app.label
+import dev.nucleusframework.offlinetranslator.engine.GemmaModels
+import offlinetranslator.sharedui.generated.resources.Res
+import offlinetranslator.sharedui.generated.resources.app_name
+import offlinetranslator.sharedui.generated.resources.nav_backend
+import offlinetranslator.sharedui.generated.resources.offline
+import org.jetbrains.compose.resources.stringResource
+
+/**
+ * The running app (design section B): offline strip + extended navigation rail,
+ * with the content area supplied by Nav3.
+ */
+@Composable
+fun MainShell(
+    destination: AppKey,
+    state: AppState,
+    onIntent: (AppIntent) -> Unit,
+    content: @Composable () -> Unit,
+) {
+    Column(Modifier.fillMaxSize()) {
+        // On desktop the brand + screen chrome live in the window title bar.
+        if (!LocalHostHasTitleBar.current) OfflineBar(state.offline)
+        Row(Modifier.fillMaxSize()) {
+            NavRail(destination, state, onIntent)
+            Box(Modifier.weight(1f).fillMaxHeight()) { content() }
+        }
+    }
+}
+
+@Composable
+private fun OfflineBar(offline: Boolean) {
+    val c = MaterialTheme.colorScheme
+    Row(
+        Modifier.fillMaxWidth().height(48.dp).background(c.surfaceContainer).padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(stringResource(Res.string.app_name), Modifier.weight(1f), color = c.onSurfaceVariant, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+        LlmAcceleratorBadge(Modifier.padding(end = 12.dp))
+        if (offline) Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            Icon(Icons.Outlined.WifiOff, null, Modifier.size(16.dp), tint = c.onSurfaceVariant)
+            Text(stringResource(Res.string.offline), color = c.onSurfaceVariant, fontSize = 12.sp)
+        }
+    }
+}
+
+@Composable
+private fun NavRail(selected: AppKey, state: AppState, onIntent: (AppIntent) -> Unit) {
+    val c = MaterialTheme.colorScheme
+    Column(
+        Modifier.width(220.dp).fillMaxHeight().background(c.surfaceContainer)
+            // Desktop: the rail's own surface moves the window, macOS-style.
+            // The items are clickable, so they claim their presses and stay out.
+            .then(LocalWindowDrag.current)
+            .padding(horizontal = 12.dp, vertical = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        // The app identity lives in the window chrome, not here.
+        MainDestinations.forEach { dest ->
+            NavRailItem(dest, dest == selected) { onIntent(AppIntent.Navigate(dest)) }
+        }
+
+        Spacer(Modifier.weight(1f))
+        HorizontalDivider(color = c.outlineVariant)
+        Column(
+            Modifier.padding(start = 4.dp, end = 4.dp, top = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            LocalSystemMeters.current?.invoke(Modifier)
+            Text(
+                stringResource(Res.string.nav_backend, acceleratorLabel()),
+                color = c.onSurfaceVariant, fontSize = 11.sp,
+            )
+            Text(
+                GemmaModels.of(state.data.model.id).name,
+                color = c.onSurfaceVariant, fontSize = 11.sp, lineHeight = 15.sp,
+            )
+        }
+    }
+}
+
+@Composable
+private fun NavRailItem(dest: AppKey, selected: Boolean, onClick: () -> Unit) {
+    val c = MaterialTheme.colorScheme
+    val bg = if (selected) c.primaryContainer else c.surfaceContainer
+    val fg = if (selected) c.onPrimaryContainer else c.onSurfaceVariant
+    Row(
+        Modifier.fillMaxWidth().height(56.dp).clip(RoundedCornerShape(28.dp)).background(bg)
+            .clickable(onClick = onClick).padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Icon(dest.icon(), null, tint = fg)
+        Text(dest.label(), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = fg)
+    }
+}
+
+private fun AppKey.icon(): ImageVector = when (this) {
+    AppKey.Translate -> Icons.Outlined.Translate
+    AppKey.History -> Icons.Outlined.History
+    AppKey.Settings -> Icons.Outlined.Settings
+    else -> Icons.Outlined.Translate
+}

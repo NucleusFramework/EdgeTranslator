@@ -1,0 +1,97 @@
+{
+    "reflection": [
+        {
+            "type": "com.google.ai.edge.litertlm.Conversation$JniMessageCallbackImpl",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "onDone",
+                    "parameterTypes": [
+                        
+                    ]
+                },
+                {
+                    "name": "onError",
+                    "parameterTypes": [
+                        "int",
+                        "java.lang.String"
+                    ]
+                },
+                {
+                    "name": "onMessage",
+                    "parameterTypes": [
+                        "java.lang.String"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.google.ai.edge.litertlm.SamplerConfig",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "getSeed",
+                    "parameterTypes": [
+                        
+                    ]
+                },
+                {
+                    "name": "getTemperature",
+                    "parameterTypes": [
+                        
+                    ]
+                },
+                {
+                    "name": "getTopK",
+                    "parameterTypes": [
+                        
+                    ]
+                },
+                {
+                    "name": "getTopP",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.google.ai.edge.litertlm.ThinkingConfig",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "getEnableThinking",
+                    "parameterTypes": [
+                        
+                    ]
+                },
+                {
+                    "name": "getThinkingTokenBudget",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "dev.nucleusframework.window.tao.event.TaoSyntheticKeyKt$SyntheticAwtKeyEventSource$1"
+        },
+        {
+            "type": "io.ktor.client.plugins.HttpTimeoutConfig"
+        },
+        {
+            "type": "io.ktor.util.Attributes"
+        },
+        {
+            "type": "kotlin.Any"
+        },
+        {
+            "type": "kotlin.Boolean"
+        }
+    ],
+    "resources": [
+        {
+            "glob": "com/google/ai/edge/litertlm/jni/liblitertlm_jni.so"
+        }
+    ]
+}

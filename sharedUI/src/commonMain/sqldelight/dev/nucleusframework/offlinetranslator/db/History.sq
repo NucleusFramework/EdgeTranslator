@@ -1,0 +1,50 @@
+CREATE TABLE history (
+  id TEXT NOT NULL PRIMARY KEY,
+  createdAt INTEGER NOT NULL,
+  sourceLang TEXT NOT NULL,
+  targetLang TEXT NOT NULL,
+  sourceText TEXT NOT NULL,
+  targetText TEXT NOT NULL,
+  pinned INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX history_createdAt ON history(createdAt);
+CREATE INDEX history_pinned ON history(pinned);
+
+insert:
+INSERT OR IGNORE INTO history(id, createdAt, sourceLang, targetLang, sourceText, targetText, pinned)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+selectAll:
+SELECT *
+FROM history
+ORDER BY pinned DESC, createdAt DESC;
+
+selectById:
+SELECT *
+FROM history
+WHERE id = ?;
+
+togglePin:
+UPDATE history
+SET pinned = CASE WHEN pinned = 0 THEN 1 ELSE 0 END
+WHERE id = ?;
+
+deleteById:
+DELETE FROM history
+WHERE id = ?;
+
+deleteUnpinned:
+DELETE FROM history
+WHERE pinned = 0;
+
+deleteAll:
+DELETE FROM history;
+
+purgeOlderThan:
+DELETE FROM history
+WHERE pinned = 0 AND createdAt < ?;
+
+count:
+SELECT count(*)
+FROM history;

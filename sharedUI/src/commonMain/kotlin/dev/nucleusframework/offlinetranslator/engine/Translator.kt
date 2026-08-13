@@ -1,0 +1,36 @@
+package dev.nucleusframework.offlinetranslator.engine
+
+import dev.nucleusframework.offlinetranslator.translation.Alternative
+
+/** On-device translation engine. Production uses Gemma 4 E2B via LiteRT-LM. */
+fun interface Translator {
+    suspend fun translate(request: TranslationRequest): TranslationResult
+}
+
+data class TranslationRequest(
+    val text: String,
+    val sourceLang: String,
+    val targetLang: String,
+    val modelPath: String = "",
+    val audioWav: ByteArray? = null,
+    val onPartial: (String) -> Unit = {},
+)
+
+sealed interface TranslationResult {
+    data class Ok(
+        val text: String,
+        val transcription: String = "",
+        val alternatives: List<Alternative> = emptyList(),
+        val highlight: String = "",
+        val latencyMs: Long = 0,
+    ) : TranslationResult
+
+    data object Unavailable : TranslationResult
+
+    data class Error(val message: String? = null) : TranslationResult
+}
+
+object UnavailableTranslator : Translator {
+    override suspend fun translate(request: TranslationRequest): TranslationResult =
+        TranslationResult.Unavailable
+}
