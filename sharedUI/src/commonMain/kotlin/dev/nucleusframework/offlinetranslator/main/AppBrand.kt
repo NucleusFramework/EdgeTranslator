@@ -1,8 +1,11 @@
 package dev.nucleusframework.offlinetranslator.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material3.Icon
@@ -12,12 +15,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import offlinetranslator.sharedui.generated.resources.Res
 import offlinetranslator.sharedui.generated.resources.app_name
+import offlinetranslator.sharedui.generated.resources.ic_github
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+
+private const val GITHUB_REPO = "https://github.com/kdroidFilter/OfflineTranslator"
 
 /**
  * True when the platform host shows the app identity in its own window chrome
@@ -47,5 +56,18 @@ fun BrandLabel(modifier: Modifier = Modifier) {
     Row(modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         Icon(Icons.Outlined.Translate, null, Modifier.size(18.dp), tint = c.primary)
         Text(stringResource(Res.string.app_name), color = c.onSurface, fontSize = 13.sp, fontWeight = FontWeight.Medium)
+    }
+}
+
+/** Opens the project repository. Used at the trailing edge of the desktop title bar. */
+@Composable
+fun GitHubButton(modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
+    val c = MaterialTheme.colorScheme
+    Box(
+        modifier.size(40.dp).clip(CircleShape).clickable { uriHandler.openUri(GITHUB_REPO) },
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(painterResource(Res.drawable.ic_github), "GitHub", Modifier.size(18.dp), tint = c.onSurfaceVariant)
     }
 }

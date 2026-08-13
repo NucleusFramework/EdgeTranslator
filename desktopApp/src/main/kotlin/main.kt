@@ -1,6 +1,7 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,7 @@ import dev.nucleusframework.application.nucleusApplication
 import dev.nucleusframework.core.runtime.Platform
 import dev.nucleusframework.offlinetranslator.App
 import dev.nucleusframework.offlinetranslator.main.BrandLabel
+import dev.nucleusframework.offlinetranslator.main.GitHubButton
 import dev.nucleusframework.offlinetranslator.main.LocalHostHasTitleBar
 import dev.nucleusframework.offlinetranslator.main.LocalSystemMeters
 import dev.nucleusframework.offlinetranslator.main.LocalWindowDrag
@@ -122,8 +124,8 @@ fun main(args: Array<String>) {
 }
 
 /**
- * Window chrome: the app title, and nothing else. Navigation, the meters and
- * each screen's own strip live in the app body.
+ * Window chrome: the app title and a GitHub link at the trailing edge.
+ * Navigation, the meters and each screen's own strip live in the app body.
  *
  * The whole strip is the drag surface — `WindowScaffold` makes nothing implicit.
  */
@@ -158,10 +160,18 @@ private fun DecoratedWindowScope.AppChrome() {
                 )
                 .padding(start = 12.dp),
         )
-        // macOS draws real traffic-lights; every other platform is fully
-        // undecorated, so the window would have no controls at all.
-        if (Platform.Current != Platform.MacOS) {
-            WindowControls(Modifier.align(Alignment.CenterEnd).fillMaxHeight())
+        // Trailing edge: GitHub, then the caption buttons. macOS draws real
+        // traffic-lights, so only the link sits there (padded off the frame).
+        val mac = Platform.Current == Platform.MacOS
+        Row(
+            Modifier
+                .align(Alignment.CenterEnd)
+                .fillMaxHeight()
+                .padding(end = if (mac) 10.dp else 0.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            GitHubButton()
+            if (!mac) WindowControls(Modifier.fillMaxHeight())
         }
     }
 }
