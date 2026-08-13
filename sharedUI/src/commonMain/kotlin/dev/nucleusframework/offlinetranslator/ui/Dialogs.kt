@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -173,10 +174,16 @@ fun MessageBar(message: AppMessage?, onDismiss: () -> Unit, modifier: Modifier =
     if (message == null) return
     val c = MaterialTheme.colorScheme
     Row(
-        modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp)
-            .clip(RoundedCornerShape(12.dp)).background(c.inverseSurface)
-            .clickable(onClick = onDismiss).padding(horizontal = 16.dp, vertical = 10.dp),
+        modifier
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .widthIn(max = 900.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(c.inverseSurface)
+            .clickable(onClick = onDismiss)
+            .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(message.text(), color = c.inverseOnSurface, fontSize = 13.sp, modifier = Modifier.weight(1f))
         Text(stringResource(Res.string.action_ok), color = c.inversePrimary, fontSize = 13.sp)
