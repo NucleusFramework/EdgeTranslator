@@ -165,6 +165,7 @@ val resolveLinuxGpuLibs = tasks.register("resolveLinuxGpuLibs") {
         // LiteRT dlopens the unversioned name. Distros only ship libOpenCL.so.1.
         val openclSrc = listOf(
             "/usr/lib/x86_64-linux-gnu/libOpenCL.so.1",
+            "/usr/lib/aarch64-linux-gnu/libOpenCL.so.1",
             "/usr/lib/libOpenCL.so.1",
         ).map(::File).firstOrNull { it.isFile }
         checkNotNull(openclSrc) { "libOpenCL.so.1 not found (ocl-icd-libopencl1)" }

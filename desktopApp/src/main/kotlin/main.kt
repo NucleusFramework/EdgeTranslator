@@ -53,6 +53,7 @@ import dev.nucleusframework.window.WindowScaffold
 import dev.nucleusframework.window.macOSLargeCornerRadius
 import dev.nucleusframework.window.material.MaterialDecoratedWindow
 import dev.nucleusframework.window.windowDragArea
+import dev.nucleusframework.offlinetranslator.engine.runGpuWorker
 import io.github.vinceglb.filekit.FileKit
 
 private const val DESKTOP_DENSITY_SCALE = 0.75f
@@ -60,6 +61,10 @@ private val CHROME_HEIGHT = 48.dp
 
 fun main(args: Array<String>) {
     FileKit.init(appId = "EdgeTranslator")
+    if ("--gpu-worker" in args) {
+        runGpuWorker(args.filter { it != "--gpu-worker" }.toTypedArray())
+        return
+    }
     val forceOnboarding = "--onboarding" in args
     nucleusApplication(args) {
         // The chrome sits outside App's own EdgeTheme, so the app's theme setting

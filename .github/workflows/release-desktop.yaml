@@ -58,6 +58,12 @@ jobs:
           tag="$(git describe --tags --abbrev=0)"
           echo "RELEASE_VERSION=$tag" >> "$GITHUB_ENV"
 
+      - name: Linux GPU package deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc patchelf ocl-icd-libopencl1
+
       - name: Setup Nucleus (GraalVM)
         uses: NucleusFramework/Nucleus/.github/actions/setup-nucleus@v2.4.2
         with:

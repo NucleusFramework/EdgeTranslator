@@ -38,6 +38,6 @@ internal fun pickBackend(
     return BackendPick(LlmAccelerator.Cpu, false)
 }
 
-/** NVIDIA WebGPU teardown SIGILL after a GPU turn — keep the conversation alive. */
-internal fun linuxGpuTeardownUnsafe(osName: String): Boolean =
-    osName.contains("linux", ignoreCase = true)
+/** NVIDIA WebGPU SIGILL after a GPU turn. ARM without NVIDIA stays in-process. */
+internal fun linuxGpuTeardownUnsafe(osName: String, nvidiaPresent: Boolean): Boolean =
+    osName.contains("linux", ignoreCase = true) && nvidiaPresent

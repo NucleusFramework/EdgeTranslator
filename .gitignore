@@ -19,3 +19,6 @@ Pods/
 shared/src/commonMain/composeResources/files/aboutlibraries.json
 /desktopApp/resources/windows-x64/*.dll
 /desktopApp/resources/linux-x64/*.so
+hs_err_pid*.log
+replay_pid*.log
+core.*

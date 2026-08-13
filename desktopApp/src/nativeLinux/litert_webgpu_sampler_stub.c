@@ -68,6 +68,34 @@ int LiteRtTopKWebGpuSampler_HandlesInput(void *sampler) {
     return 0;
 }
 
+/* litertlm-jvm 0.14 looks up this name; newer trees use SetInferenceFuncAndInputTensors. */
+int LiteRtTopKWebGpuSampler_SetInputTensorsAndInferenceFunc(
+    void *sampler,
+    int (*run_inference)(void *),
+    void *arg,
+    void *ids,
+    void *prev_input_positions,
+    void *input_positions,
+    void *prev_mask,
+    void *mask,
+    void *prev_param,
+    void *param,
+    char **error_msg
+) {
+    (void)sampler;
+    (void)run_inference;
+    (void)arg;
+    (void)ids;
+    (void)prev_input_positions;
+    (void)input_positions;
+    (void)prev_mask;
+    (void)mask;
+    (void)prev_param;
+    (void)param;
+    if (error_msg) *error_msg = 0;
+    return kUnavailable;
+}
+
 int LiteRtTopKWebGpuSampler_SetInferenceFuncAndInputTensors(
     void *sampler,
     int (*run_inference)(void *),

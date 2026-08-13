@@ -20,9 +20,42 @@ internal actual class NativeLlm actual constructor() {
     private var engine: Engine? = null
     private var conversation: Conversation? = null
     private var conversationSystem: String? = null
+    private var worker: LinuxGpuWorkerProcess? = null
+    private var loadedModelPath: String? = null
+    private var loadedCacheDir: String? = null
+    private var loadedThreads: Int = 0
 
     actual fun load(modelPath: String, cacheDir: String, threads: Int, backend: LlmBackend): LlmAccelerator {
         close()
+        loadedModelPath = modelPath
+        loadedCacheDir = cacheDir
+        loadedThreads = threads
+        loadGpuNativeLibs()
+        if (backend != LlmBackend.Cpu && linuxNativeTeardownUnsafe() && !inGpuWorkerProcess()) {
+            val started = LinuxGpuWorkerProcess.start(modelPath, cacheSubdir(cacheDir, "gpu"), threads)
+            if (started != null) {
+                worker = started
+                LlmRuntime.reportGpuAvailable(true)
+                return LlmAccelerator.Gpu
+            }
+            // Never open WebGPU in the UI JVM — that process SIGILL's on generate.
+            engine = openEngine(
+                modelPath,
+                cacheSubdir(cacheDir, "cpu"),
+                Backend.CPU(threadCount = threads.takeIf { it > 0 }),
+            )
+            LlmRuntime.reportGpuAvailable(false)
+            return LlmAccelerator.Cpu
+        }
+        return loadInProcess(modelPath, cacheDir, threads, backend)
+    }
+
+    internal fun loadInProcess(
+        modelPath: String,
+        cacheDir: String,
+        threads: Int,
+        backend: LlmBackend,
+    ): LlmAccelerator {
         loadGpuNativeLibs()
         val pick = pickBackend(backend, LlmRuntime.gpuAvailable.value) {
             val gpu = runCatching { openEngine(modelPath, cacheSubdir(cacheDir, "gpu"), Backend.GPU()) }.getOrNull()
@@ -51,6 +84,28 @@ internal actual class NativeLlm actual constructor() {
         image: ByteArray?,
         onPartial: (String) -> Unit,
     ): String {
+        val child = worker
+        if (child != null && (audioWav == null || audioWav.isEmpty()) && (image == null || image.isEmpty())) {
+            try {
+                return child.generate(systemInstruction, userMessage, onPartial)
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (_: Throwable) {
+                worker = null
+                runCatching { child.destroy() }
+                ensureCpuEngine()
+            }
+        }
+        return generateInProcess(systemInstruction, userMessage, audioWav, image, onPartial)
+    }
+
+    internal suspend fun generateInProcess(
+        systemInstruction: String,
+        userMessage: String,
+        audioWav: ByteArray? = null,
+        image: ByteArray? = null,
+        onPartial: (String) -> Unit = {},
+    ): String {
         val e = engine ?: error("Gemma 4 E2B n'est pas chargé.")
         val conv = conversation?.takeIf { conversationSystem == systemInstruction }
             ?: openConversation(e, systemInstruction)
@@ -67,6 +122,9 @@ internal actual class NativeLlm actual constructor() {
                 acc.append(chunk.toString())
                 onPartial(acc.toString())
             }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            if (!linuxNativeTeardownUnsafe()) runCatching { conv.cancelProcess() }
+            throw e
         } catch (t: Throwable) {
             if (!linuxNativeTeardownUnsafe()) runCatching { conv.cancelProcess() }
             throw t
@@ -75,6 +133,8 @@ internal actual class NativeLlm actual constructor() {
     }
 
     actual fun close() {
+        worker?.destroy()
+        worker = null
         releaseConversation()
         if (!linuxNativeTeardownUnsafe()) {
             try {
@@ -83,6 +143,17 @@ internal actual class NativeLlm actual constructor() {
             }
         }
         engine = null
+    }
+
+    private fun ensureCpuEngine() {
+        if (engine != null) return
+        val path = loadedModelPath ?: return
+        val dir = loadedCacheDir ?: return
+        engine = openEngine(
+            path,
+            cacheSubdir(dir, "cpu"),
+            Backend.CPU(threadCount = loadedThreads.takeIf { it > 0 }),
+        )
     }
 
     private fun openConversation(engine: Engine, systemInstruction: String): Conversation {
@@ -120,7 +191,8 @@ private fun openEngine(modelPath: String, cacheDir: String, backend: Backend): E
         EngineConfig(
             modelPath = modelPath,
             backend = backend,
-            visionBackend = backend,
+            // Vision WebGPU kernels also hit nvidia-gpucomp SIGILL on Blackwell.
+            visionBackend = if (backend is Backend.GPU) Backend.CPU() else backend,
             audioBackend = Backend.CPU(),
             cacheDir = cacheDir,
             maxNumTokens = GemmaModel.MAX_NUM_TOKENS,
@@ -129,6 +201,8 @@ private fun openEngine(modelPath: String, cacheDir: String, backend: Backend): E
     try {
         created.initialize()
         return created
+    } catch (e: kotlinx.coroutines.CancellationException) {
+        throw e
     } catch (t: Throwable) {
         if (!linuxNativeTeardownUnsafe()) runCatching { created.close() }
         throw t
@@ -146,10 +220,7 @@ private fun loadGpuNativeLibs() {
     val os = System.getProperty("os.name").orEmpty()
     val names = when {
         os.contains("win", ignoreCase = true) -> listOf("dxil.dll", "dxcompiler.dll")
-        os.contains("linux", ignoreCase = true) -> listOf(
-            "libOpenCL.so",
-            "libLiteRtTopKWebGpuSampler.so",
-        )
+        os.contains("linux", ignoreCase = true) -> linuxGpuCompanionLibs()
         else -> return
     }
     val dir = appResourcesDir() ?: return
@@ -160,7 +231,20 @@ private fun loadGpuNativeLibs() {
 }
 
 private fun linuxNativeTeardownUnsafe(): Boolean =
-    linuxGpuTeardownUnsafe(System.getProperty("os.name").orEmpty())
+    linuxGpuTeardownUnsafe(System.getProperty("os.name").orEmpty(), linuxNvidiaPresent())
+
+internal fun linuxNvidiaPresent(): Boolean =
+    sequenceOf("/dev/nvidiactl", "/dev/nvidia0", "/proc/driver/nvidia/version")
+        .any { java.io.File(it).exists() }
+
+internal fun linuxGpuCompanionLibs(): List<String> = listOf(
+    "libOpenCL.so",
+    "libLiteRtTopKWebGpuSampler.so",
+)
+
+internal fun inGpuWorkerProcess(): Boolean =
+    System.getProperty("edgetranslator.gpu.worker") == "1" ||
+        System.getenv("EDGE_TRANSLATOR_GPU_WORKER") == "1"
 
 private fun appResourcesDir(): java.io.File? =
     System.getProperty("compose.application.resources.dir")?.let { java.io.File(it) }
