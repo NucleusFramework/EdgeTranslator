@@ -244,4 +244,5 @@
     <string name="month_oct">अक्टू</string>
     <string name="month_nov">नव</string>
     <string name="month_dec">दिस</string>
+    <string name="proofread_placeholder">हैलो सबको मे अपना नया प्रोजेक्ट पेश करना चाहता हु ये पुरी तरह आफलाइन अनुवादक शोधक है जैसा आप देख रहे हो मे गलतियो से भरा टेक्स्ट लिख रहा हु फिर भी वो पुरी तरह सुधार के आता है। वरना kotlin और compose ही जिंदगी है nucleus भी\nलाइक अगर पसंद आया</string>
 </resources>

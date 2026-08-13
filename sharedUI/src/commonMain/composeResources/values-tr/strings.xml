@@ -244,4 +244,5 @@
     <string name="month_oct">Eki</string>
     <string name="month_nov">Kas</string>
     <string name="month_dec">Ara</string>
+    <string name="proofread_placeholder">herkese merhaba, size yeni projemi tanitmak istiyorum, tamamen ofline bir cevirmen duzeltici, gordugunuz gibi yazim hatalariyla dolu bir metin yaziyorum ama yine de tamamen duzeltilmis olarak geri geliyor. yoksa kotlin ve compose hayat, nucleus de!\nlike begendiysen</string>
 </resources>

@@ -255,4 +255,5 @@
     <string name="month_oct">okt.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
+    <string name="proofread_placeholder">hey iedereen, ik wil jullie mn nw project voorstellen, t is een volledig ofline vertaler corrector, zoals je ziet schrijf ik een tekst vol spellingsfouten en toch komt ie helemaal gecorrigeerd terug. anders kotlin en compose is het leven, nucleus ok!\nlike als je t leuk vond</string>
 </resources>

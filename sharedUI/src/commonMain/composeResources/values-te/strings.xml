@@ -239,4 +239,5 @@
     <string name="month_oct">అక్టో</string>
     <string name="month_nov">నవ</string>
     <string name="month_dec">డిసె</string>
+    <string name="proofread_placeholder">అందరికి హలో నా కొత్త ప్రాజెక్ట్ ని పరిచయం చెయాలనుకుంటున్న ఇది పూర్తిగా ఆఫ్లైన్ అనువాదకుడు సరదూకర్త మీరు చూస్తున్నట్టు నేను తప్పులతో నిండిన టెక్స్ట్ రాస్తున్న కానీ అది పూర్తిగా సరిదిద్దబడి వస్తుంది. లేకపోతే kotlin మరియు compose జీవితం nucleus కూడా\nలైక్ ఇస్తే నచ్చితే</string>
 </resources>

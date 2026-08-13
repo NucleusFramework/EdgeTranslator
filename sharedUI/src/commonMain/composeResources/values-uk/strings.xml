@@ -252,4 +252,5 @@
     <string name="month_oct">жовт.</string>
     <string name="month_nov">лист.</string>
     <string name="month_dec">груд.</string>
+    <string name="proofread_placeholder">привiт усiм, хотiв би представити свiй новы проект, це повнiстю офлайн перекладач коректор, як бачите я пишу текст повний орфографiчних помилок i тим неменш вiн повертается повнiстю виправленим. iнакше kotlin i compose це життя, nucleus теж!\nлайк якщо сподобалось</string>
 </resources>

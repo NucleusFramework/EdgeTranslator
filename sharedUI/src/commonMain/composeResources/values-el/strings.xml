@@ -239,4 +239,5 @@
     <string name="month_oct">Οκτ</string>
     <string name="month_nov">Νοε</string>
     <string name="month_dec">Δεκ</string>
+    <string name="proofread_placeholder">γεια σας ολους, θα ηθελα να σας παρουσιασω το νεο μου προτζεκτ, ειναι ενας πληρως οφλαιν μεταφραστης διορθωτης, οπως βλεπετε γραφω ενα κειμενο γεματο ορθογραφικα λαθη κι ομως επιστρεφει εντελως διορθωμενο. αλλιως kotlin και compose ειναι η ζωη, nucleus επισης!\nλαικ αν σου αρεσε</string>
 </resources>

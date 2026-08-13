@@ -240,4 +240,5 @@
     <string name="month_oct">10월</string>
     <string name="month_nov">11월</string>
     <string name="month_dec">12월</string>
+    <string name="proofread_placeholder">안녕하세여 제 새 프로젝트를 소개하고십어요 완전 오프라인 번역 교정기에요 보시다싶이 맞춤법 틀린글 썻는데도 완전 고쳐져서 돌아와요 그리고 kotlin이랑 compose는 인생 nucleus도요\n좋으면 좋아요</string>
 </resources>

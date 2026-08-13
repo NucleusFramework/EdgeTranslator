@@ -244,4 +244,5 @@
     <string name="month_oct">okt.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
+    <string name="proofread_placeholder">hej allihopa, jag skulle vilja presentera mitt nya projekt, det är en helt ofline översättare korrekturläsare, som ni ser skriver jag en text full av stavfel och ändå kommer den helt rättad tillbaka. annars kotlin och compose är livet, nucleus också!\nlike om du gillade det</string>
 </resources>

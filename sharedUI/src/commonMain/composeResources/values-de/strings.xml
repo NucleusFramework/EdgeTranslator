@@ -255,4 +255,5 @@
     <string name="month_oct">Okt.</string>
     <string name="month_nov">Nov.</string>
     <string name="month_dec">Dez.</string>
+    <string name="proofread_placeholder">hallo tsmn, ich würd euch gern mein neus projekt vorstellen, es handelt sich um n komplett ofline übersetzer korrekturprogramm, wie ihr seht schreib ich n text voler rechtschreibfeeler und trotzdem kommt er komplett korrigirt zurück. ansonsten kotlin und compose is das leben, nucleus auch!\nlike wenn dirs gefaln hat</string>
 </resources>

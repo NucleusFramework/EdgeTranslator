@@ -239,4 +239,5 @@
     <string name="month_oct">অক্টো</string>
     <string name="month_nov">নভে</string>
     <string name="month_dec">ডিসে</string>
+    <string name="proofread_placeholder">সবাইকে হ্যালো আমি আমার নতুন প্রজেক্ট পরিচয় করাতে চাই এটা সম্পুর্ন অফলাইন অনুবাদক শুদ্ধিকারক আপনারা দেখছেন আমি ভুলে ভরা লেখা লিখছি তবুও সেটা সম্পুর্ন শুদ্ধ হয়ে ফিরে আসে। নাহলে kotlin আর compose ই জীবন nucleus ও\nলাইক দিও যদি ভালো লাগে</string>
 </resources>

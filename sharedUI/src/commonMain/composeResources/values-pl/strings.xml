@@ -263,4 +263,5 @@
     <string name="month_oct">paź</string>
     <string name="month_nov">lis</string>
     <string name="month_dec">gru</string>
+    <string name="proofread_placeholder">czesc wszyscy, chcialbym wam przedstawic moj nowy projekt, to calkowicie ofline tlumacz korektor, jak widzicie pisze tekst pelen bledow ortograficznych a jednak wraca calkowicie poprawiony. poza tym kotlin i compose to zycie, nucleus tez!\nlike jesli ci sie podobalo</string>
 </resources>

@@ -240,4 +240,5 @@
     <string name="month_oct">okt.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
+    <string name="proofread_placeholder">szia mindenkinek, szeretnem bemutatni az uj projektemet, ez egy teljesen ofline fordiito helyesiras ellenorzo, ahogy latjatok tele irasi hibakkal teli szoveget irok es megis teljesen javitva jon vissza. kulonben kotlin es compose az elet, nucleus is!\nlike ha tetszett</string>
 </resources>

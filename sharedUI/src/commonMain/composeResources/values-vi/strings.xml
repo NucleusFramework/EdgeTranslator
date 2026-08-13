@@ -240,4 +240,5 @@
     <string name="month_oct">Th10</string>
     <string name="month_nov">Th11</string>
     <string name="month_dec">Th12</string>
+    <string name="proofread_placeholder">chao moi nguoi, minh muon gioi thieu du an moi, day la trinh dich va sua loi hoan toan ofline, nhu cac ban thay minh viet mot doan day loi chinh ta vay ma no tro ve duoc sua hoan toan. con lai kotlin va compose la cuoc song, nucleus nua!\nlike neu ban thich</string>
 </resources>

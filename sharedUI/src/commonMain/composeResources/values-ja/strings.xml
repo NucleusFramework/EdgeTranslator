@@ -251,4 +251,5 @@
     <string name="month_oct">10月</string>
     <string name="month_nov">11月</string>
     <string name="month_dec">12月</string>
+    <string name="proofread_placeholder">みなさんこんちは、あたらしいぷろじぇくとをしょうかいしたいんです、これ完全オフラインのほんやく・こうせいツールです、みてわかるとおりおれいスペルミスだらけのぶんをかいてるのに完全になおってかえってきます。あとkotlinとcomposeはじんせい、nucleusも！\nいいねしてね</string>
 </resources>

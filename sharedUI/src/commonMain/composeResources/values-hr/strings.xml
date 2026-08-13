@@ -244,4 +244,5 @@
     <string name="month_oct">lis</string>
     <string name="month_nov">stu</string>
     <string name="month_dec">pro</string>
+    <string name="proofread_placeholder">bok svima, htio bih vam predstaviti svoj novi projekt, radi se o potpuno ofline prevoditelju korektoru, kao sto vidite pisem tekst pun pravopisnih gresaka a ipak se vrati potpuno ispravljen. inace kotlin i compose su zivot, nucleus takodjer!\nlike ako ti se svidjelo</string>
 </resources>

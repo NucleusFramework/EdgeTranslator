@@ -240,4 +240,5 @@
     <string name="month_oct">اکتبر</string>
     <string name="month_nov">نوامبر</string>
     <string name="month_dec">دسامبر</string>
+    <string name="proofread_placeholder">سلام بهمه دوست دارم پروژه جدیدمو بهتون معرفی کنم یه مترجم ویراستار کاملا افلاینه همونطور که میبینید یه متن پر از غلط املای مینویسم ولی کامل تصحیح شده برمیگرده. وگرنه kotlin و compose زندگینه nucleus هم\nلایک اگر خوشتون اومد</string>
 </resources>

@@ -255,4 +255,5 @@
     <string name="month_oct">oct.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dic.</string>
+    <string name="proofread_placeholder">ola a tds, me gustaria presentaros mi nvo proyecto, se trata de un traductor corrector completamnte fuera de linea, como veis escribo un txt lleno de faltas de ortografia y aun asi vuelve enteramnte corregido. si no kotlin y compose son la vida, nucleus tbn!\nlike si te ha gustado</string>
 </resources>

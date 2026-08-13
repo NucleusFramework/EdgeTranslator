@@ -252,4 +252,5 @@
     <string name="month_oct">říj</string>
     <string name="month_nov">lis</string>
     <string name="month_dec">pro</string>
+    <string name="proofread_placeholder">ahoj vsichni, chtel bych vam predstavit muj novy projekt, je to uplne ofline prekladac korektor, jak vidite pisu text plny pravopisnych chyb a presto se vrati uplne opraveny. jinak kotlin a compose je zivot, nucleus taky!\nlike pokud se ti to libilo</string>
 </resources>

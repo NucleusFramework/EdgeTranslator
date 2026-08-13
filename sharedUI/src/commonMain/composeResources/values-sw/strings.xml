@@ -239,4 +239,5 @@
     <string name="month_oct">Okt</string>
     <string name="month_nov">Nov</string>
     <string name="month_dec">Des</string>
+    <string name="proofread_placeholder">habari nyote, ningependa kuwaletea mradi wangu mpya, ni mtafsiri msahihishaji wa ofline kabisa, kama mnavyoona naandika maandishi yaliyojaa makosa ya tahajia lakini yanarudi yamesahihishwa kabisa. sivyo kotlin na compose ndiyo maisha, nucleus pia!\nlike kama umependa</string>
 </resources>
