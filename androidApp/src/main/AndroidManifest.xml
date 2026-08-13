@@ -8,7 +8,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="OfflineTranslator"
+        android:label="Edge Translator"
         android:largeHeap="true"
         android:theme="@android:style/Theme.Material.NoActionBar">
         <uses-native-library android:name="libvndksupport.so" android:required="false" />

@@ -1,4 +1,4 @@
-rootProject.name = "OfflineTranslator"
+rootProject.name = "EdgeTranslator"
 
 pluginManagement {
     repositories {

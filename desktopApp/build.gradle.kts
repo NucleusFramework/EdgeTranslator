@@ -49,7 +49,7 @@ nucleus.application {
         isEnabled = true
         javaLanguageVersion = 25
         jvmVendor = JvmVendorSpec.ORACLE
-        imageName = "OfflineTranslator"
+        imageName = "EdgeTranslator"
         // -O3 and PGO only exist on Oracle GraalVM. Community would silently stay on -O2.
         toolchain {
             distribution = GraalvmDistribution.ORACLE
@@ -66,7 +66,7 @@ nucleus.application {
         targetFormats(TargetFormat.Dmg, TargetFormat.Zip, TargetFormat.Nsis, TargetFormat.Deb)
         // https://kotlinlang.org/docs/multiplatform/compose-native-distribution.html#managing-resources
         appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
-        packageName = "OfflineTranslator"
+        packageName = "Edge Translator"
         packageVersion = releaseVersion
         cleanupNativeLibs = true
         compressionLevel = CompressionLevel.Ultra
