@@ -326,6 +326,7 @@ class AppViewModelTest {
                     model = seedData().model.copy(installed = true, id = LlmModel.Fast),
                 ),
             ),
+            modelOnDisk = { it.id == LlmModel.Fast },
         )
         vm.onIntent(AppIntent.SelectModel(LlmModel.Precise))
         val state = vm.state.value
@@ -344,6 +345,7 @@ class AppViewModelTest {
                     model = seedData().model.copy(installed = true, id = LlmModel.Fast),
                 ),
             ),
+            modelOnDisk = { it.id == LlmModel.Fast },
         )
         vm.onIntent(AppIntent.DownloadModel(LlmModel.Precise))
         val state = vm.state.value
@@ -363,6 +365,7 @@ class AppViewModelTest {
                 ),
             ),
             dispatcher = UnconfinedTestDispatcher(),
+            modelOnDisk = { it.id == LlmModel.Fast },
         )
         vm.onIntent(AppIntent.DownloadModel(LlmModel.Precise))
         assertTrue(vm.state.value.download.running)
