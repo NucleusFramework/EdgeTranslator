@@ -245,6 +245,4 @@
     <string name="month_oct">loka</string>
     <string name="month_nov">marras</string>
     <string name="month_dec">joulu</string>
-    <string name="proofread_placeholder">moi kaikille, haluaisin esitellä uuden projektini, se on täysin ofline kääntäjä oikolukija, kuten näette kirjoitan tekstin täynnä kirjoitusvirheitä ja silti se palaa kokonaan korjattuna. muuten kotlin ja compose on elämä, nucleus myös!\nlike jos tykkäsit</string>
-    <string name="proofread_result_placeholder">Moi kaikille, haluaisin esitellä uuden projektini, se on täysin offline kääntäjäoikolukija, kuten näette, kirjoitan tekstin täynnä kirjoitusvirheitä ja silti se palaa kokonaan korjattuna. Muuten Kotlin ja Compose ovat elämä, Nucleus myös!nLike jos tykkäsit.</string>
 </resources>

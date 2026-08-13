@@ -245,6 +245,4 @@
     <string name="month_oct">okt.</string>
     <string name="month_nov">nov.</string>
     <string name="month_dec">dec.</string>
-    <string name="proofread_placeholder">hej allesm, jeg vil gerne præsentere mit nye projekt, det er en helt ofline oversætter korrekturlæser, som i kan se skriver jeg en tekst fuld af stavefejl og alligevel kommer den helt rettet tilbage. ellers kotlin og compose er livet, nucleus også!\nlike hvis du kunne lide det</string>
-    <string name="proofread_result_placeholder">Hej allesammen, jeg vil gerne præsentere mit nye projekt. Det er en helt offline oversætter/korrekturlæser, som I kan se, skriver jeg en tekst fuld af stavefejl, og alligevel kommer den helt rettet tilbage. Ellers er Kotlin og Compose livet, Nucleus også!nLike hvis du kunne lide det.</string>
 </resources>

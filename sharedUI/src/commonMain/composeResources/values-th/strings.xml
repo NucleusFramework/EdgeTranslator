@@ -241,5 +241,4 @@
     <string name="month_oct">ต.ค.</string>
     <string name="month_nov">พ.ย.</string>
     <string name="month_dec">ธ.ค.</string>
-    <string name="proofread_placeholder">สวัสดีทุกคน อยากแนะนำโปรเจคใหม่ของฉัน นี่คือตัวแปลและตรวจคำที่ออฟไลน์ทั้งหมด อย่างที่เห็นฉันเขียนข้อความเต็มไปดวยคำผิด แต่กลับมาถูกแก้หมดแล้ว ไม่งั้น kotlin กับ compose คือชีวิต nucleus ด้วย\nไลค์ถ้าชอบ</string>
 </resources>

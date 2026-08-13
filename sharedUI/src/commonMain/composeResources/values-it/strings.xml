@@ -256,5 +256,4 @@
     <string name="month_oct">ott</string>
     <string name="month_nov">nov</string>
     <string name="month_dec">dic</string>
-    <string name="proofread_placeholder">ciao a tti, vorrei presentarvi il mio nvo progetto, si tratta di un traduttore correttore completamnte offline, come vedete scrivo un testo pieno di errori di ortografia eppure torna interamnte corretto. sennò kotlin e compose sono la vita, nucleus tmb!\nlike se ti è piaciuto</string>
 </resources>

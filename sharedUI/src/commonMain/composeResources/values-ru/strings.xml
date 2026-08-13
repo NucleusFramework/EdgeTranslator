@@ -264,5 +264,4 @@
     <string name="month_oct">окт.</string>
     <string name="month_nov">нояб.</string>
     <string name="month_dec">дек.</string>
-    <string name="proofread_placeholder">привет всм, хотел бы представить свой новы проект, ето полностю офлайн переводчик коректор, как видите я пишу текст полны орфографических ошибак и тем неменее он возврашается полностю исправленым. иначе kotlin и compose ето жизн, nucleus тоже!\nлайк если понравилось</string>
 </resources>

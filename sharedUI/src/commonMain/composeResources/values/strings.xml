@@ -259,7 +259,7 @@
     <string name="month_dec">Dec</string>
     <string name="proofread_header">Text</string>
     <string name="proofread_result_header">Correction</string>
-    <string name="proofread_placeholder">hi evryone, id like to present my new projet, its a fully ofline translatr n proofreder, as u can see i write a txt full of speling mistaks n yet it comes bak complety corectd. also kotlin n compose r life, nucleus 2!\nlike if u liked it</string>
-    <string name="proofread_result_placeholder">Hi everyone, I'd like to present my new project. It's a fully offline translator and proofreader. As you can see, I wrote a text full of spelling mistakes, and yet it comes back completely corrected. Also, Kotlin and Compose are life, nucleus 2!nLike if you liked it.</string>
+    <string name="proofread_placeholder">Enter the text to proofread…</string>
+    <string name="proofread_result_placeholder">The corrected text will appear here.</string>
     <string name="action_apply">Apply</string>
 </resources>
