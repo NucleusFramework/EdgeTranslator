@@ -27,7 +27,7 @@ java {
 }
 
 dependencies {
-    implementation(project(":sharedUI"))
+    implementation(project(":shared"))
     implementation(compose.desktop.currentOs)
     implementation(libs.nucleus.application)
     implementation(libs.nucleus.decorated.window.tao)
@@ -68,6 +68,7 @@ nucleus.application {
         appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
         packageName = "Edge Translator"
         packageVersion = releaseVersion
+        vendor = "Elie Gambache"
         cleanupNativeLibs = true
         compressionLevel = CompressionLevel.Ultra
         homepage = "https://github.com/kdroidFilter/OfflineTranslator"
@@ -86,6 +87,8 @@ nucleus.application {
             iconFile.set(project.file("appIcons/LinuxIcon.png"))
             modules("jdk.security.auth")
             debPackageVersion = releaseVersion
+            // electron-builder refuses .deb without a maintainer email.
+            debMaintainer = "Elie Gambache <elyahou.hadass@gmail.com>"
         }
         windows {
             iconFile.set(project.file("appIcons/WindowsIcon.ico"))

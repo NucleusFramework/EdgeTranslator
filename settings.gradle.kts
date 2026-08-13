@@ -30,7 +30,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-include(":sharedUI")
+include(":shared")
 include(":androidApp")
 include(":desktopApp")
 

@@ -3,11 +3,11 @@
 ## Project Structure
 
 ```
-├── sharedUI/          # ← ALL: business logic, UI, utilities, data
+├── shared/            # ← ALL: business logic, UI, utilities, data
 └── *App/              # ← thin wrapper: entry point
 ```
 
-**Rule:** All project code — business logic, UI, navigation, data, utilities — goes in the `sharedUI` module.  
+**Rule:** All project code — business logic, UI, navigation, data, utilities — goes in the `shared` module.  
 Platform modules (`androidApp`, `desktopApp`, `iosApp`, `webApp`) are thin wrappers containing only an entry point (`main()` / `Application` / `Activity`).
 
 **Source sets:** common JS and Wasm code must be written in the `webMain` source set.
@@ -19,8 +19,8 @@ Platform modules (`androidApp`, `desktopApp`, `iosApp`, `webApp`) are thin wrapp
 | **Android** (debug APK) | `./gradlew :androidApp:assembleDebug` |
 | **Desktop** (run) | `./gradlew :desktopApp:run` |
 | **Desktop** (hot reload) | `./gradlew :desktopApp:hotRun --auto` |
-| **Compose stability dump** | `./gradlew :sharedUI:compileKotlinJvm :sharedUI:stabilityDump` |
-| **Compose stability check** | `./gradlew :sharedUI:compileKotlinJvm :sharedUI:stabilityCheck` |
+| **Compose stability dump** | `./gradlew :shared:compileKotlinJvm :shared:stabilityDump` |
+| **Compose stability check** | `./gradlew :shared:compileKotlinJvm :shared:stabilityCheck` |
 
 ## Build Verification Order
 

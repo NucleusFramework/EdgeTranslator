@@ -84,11 +84,11 @@ Pushing a `v*` tag builds these packages for Linux (x64, ARM64), macOS (Intel, A
 ## Layout
 
 ```
-sharedUI/     logic, Compose UI, translation engine, data
+shared/       logic, Compose UI, translation engine, data
 desktopApp/   desktop entry point (Nucleus)
 ```
 
-All application code lives in `sharedUI`. The desktop module only starts the UI.
+All application code lives in `shared`. The desktop module only starts the UI.
 
 Android is planned: the shared UI is already Compose Multiplatform, but there is no shipping Android app yet.
 

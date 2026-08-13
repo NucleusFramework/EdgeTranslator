@@ -16,5 +16,5 @@ Pods/
 *.gpg
 *yarn.lock
 /com/
-sharedUI/src/commonMain/composeResources/files/aboutlibraries.json
+shared/src/commonMain/composeResources/files/aboutlibraries.json
 /desktopApp/resources/windows-x64/*.dll
