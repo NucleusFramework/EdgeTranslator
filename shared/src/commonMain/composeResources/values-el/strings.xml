@@ -55,6 +55,7 @@
     <string name="cd_pin">Καρφίτσωμα</string>
     <string name="cd_unpin">Ξεκαρφίτσωμα</string>
     <string name="cd_delete">Διαγραφή</string>
+    <string name="cd_clear_text">Διαγραφή κειμένου</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Υποστηρίξτε το έργο</string>
     <string name="update_available">Μια ενημέρωση θα εγκατασταθεί αυτόματα μετά την επανεκκίνηση της εφαρμογής.</string>

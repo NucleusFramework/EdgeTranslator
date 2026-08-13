@@ -57,6 +57,7 @@
     <string name="cd_pin">Pin</string>
     <string name="cd_unpin">Unpin</string>
     <string name="cd_delete">Delete</string>
+    <string name="cd_clear_text">Clear text</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Support the project</string>
     <string name="update_available">An update will be installed automatically after you restart the app.</string>

@@ -57,6 +57,7 @@
     <string name="cd_pin">Przypnij</string>
     <string name="cd_unpin">Odepnij</string>
     <string name="cd_delete">Usuń</string>
+    <string name="cd_clear_text">Wyczyść tekst</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Wesprzyj projekt</string>
     <string name="update_available">Aktualizacja zostanie zainstalowana automatycznie po ponownym uruchomieniu aplikacji.</string>

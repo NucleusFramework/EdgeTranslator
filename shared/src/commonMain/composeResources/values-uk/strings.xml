@@ -55,6 +55,7 @@
     <string name="cd_pin">Закріпити</string>
     <string name="cd_unpin">Відкріпити</string>
     <string name="cd_delete">Видалити</string>
+    <string name="cd_clear_text">Очистити текст</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Підтримати проєкт</string>
     <string name="update_available">Оновлення встановиться автоматично після перезапуску програми.</string>

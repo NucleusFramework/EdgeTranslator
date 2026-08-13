@@ -55,6 +55,7 @@
     <string name="cd_pin">পিন</string>
     <string name="cd_unpin">পিন খুলুন</string>
     <string name="cd_delete">মুছুন</string>
+    <string name="cd_clear_text">টেক্সট মুছুন</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">প্রকল্পটিকে সমর্থন করুন</string>
     <string name="update_available">আপনি অ্যাপটি পুনরায় চালু করার পরে আপডেটটি স্বয়ংক্রিয়ভাবে ইনস্টল হবে।</string>

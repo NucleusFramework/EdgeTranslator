@@ -57,6 +57,7 @@
     <string name="cd_pin">Vastzetten</string>
     <string name="cd_unpin">Losmaken</string>
     <string name="cd_delete">Verwijderen</string>
+    <string name="cd_clear_text">Tekst wissen</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Steun het project</string>
     <string name="update_available">Een update wordt automatisch geïnstalleerd nadat je de app opnieuw start.</string>

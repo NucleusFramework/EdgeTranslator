@@ -57,6 +57,7 @@
     <string name="cd_pin">Fissa</string>
     <string name="cd_unpin">Sblocca</string>
     <string name="cd_delete">Elimina</string>
+    <string name="cd_clear_text">Cancella testo</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Sostieni il progetto</string>
     <string name="update_available">Un aggiornamento verrà installato automaticamente al riavvio dell&apos;app.</string>

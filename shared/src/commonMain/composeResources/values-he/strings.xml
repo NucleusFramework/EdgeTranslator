@@ -55,6 +55,7 @@
     <string name="cd_pin">נעיצה</string>
     <string name="cd_unpin">ביטול נעיצה</string>
     <string name="cd_delete">מחיקה</string>
+    <string name="cd_clear_text">נקה טקסט</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">תמיכה בפרויקט</string>
     <string name="update_available">עדכון יותקן אוטומטית אחרי הפעלה מחדש של האפליקציה.</string>

@@ -55,6 +55,7 @@
     <string name="cd_pin">Fastgør</string>
     <string name="cd_unpin">Frigør</string>
     <string name="cd_delete">Slet</string>
+    <string name="cd_clear_text">Ryd tekst</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Støt projektet</string>
     <string name="update_available">En opdatering installeres automatisk, når du genstarter appen.</string>

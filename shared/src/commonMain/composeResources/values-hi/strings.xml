@@ -55,6 +55,7 @@
     <string name="cd_pin">पिन करें</string>
     <string name="cd_unpin">पिन हटाएँ</string>
     <string name="cd_delete">हटाएँ</string>
+    <string name="cd_clear_text">पाठ साफ़ करें</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">परियोजना का समर्थन करें</string>
     <string name="update_available">ऐप को फिर से शुरू करने के बाद अपडेट अपने आप इंस्टॉल हो जाएगा।</string>

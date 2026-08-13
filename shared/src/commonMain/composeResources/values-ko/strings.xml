@@ -55,6 +55,7 @@
     <string name="cd_pin">고정</string>
     <string name="cd_unpin">고정 해제</string>
     <string name="cd_delete">삭제</string>
+    <string name="cd_clear_text">텍스트 지우기</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">프로젝트 후원</string>
     <string name="update_available">앱을 다시 시작하면 업데이트가 자동으로 설치됩니다.</string>

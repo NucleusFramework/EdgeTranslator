@@ -55,6 +55,7 @@
     <string name="cd_pin">ปักหมุด</string>
     <string name="cd_unpin">เลิกปักหมุด</string>
     <string name="cd_delete">ลบ</string>
+    <string name="cd_clear_text">ล้างข้อความ</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">สนับสนุนโปรเจกต์</string>
     <string name="update_available">การอัปเดตจะติดตั้งโดยอัตโนมัติหลังจากคุณรีสตาร์ทแอป</string>

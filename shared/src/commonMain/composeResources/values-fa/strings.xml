@@ -55,6 +55,7 @@
     <string name="cd_pin">سنجاق</string>
     <string name="cd_unpin">برداشتن سنجاق</string>
     <string name="cd_delete">حذف</string>
+    <string name="cd_clear_text">پاک کردن متن</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">حمایت از پروژه</string>
     <string name="update_available">پس از راه‌اندازی مجدد برنامه، به‌روزرسانی به‌طور خودکار نصب می‌شود.</string>

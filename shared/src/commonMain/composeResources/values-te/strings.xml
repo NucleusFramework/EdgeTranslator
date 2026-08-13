@@ -55,6 +55,7 @@
     <string name="cd_pin">పిన్</string>
     <string name="cd_unpin">పిన్ తీయి</string>
     <string name="cd_delete">తొలగించు</string>
+    <string name="cd_clear_text">వచనాన్ని తొలగించు</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">ప్రాజెక్ట్‌కు మద్దతు ఇవ్వండి</string>
     <string name="update_available">యాప్‌ను మళ్లీ ప్రారంభించిన తర్వాత అప్‌డేట్ స్వయంచాలకంగా ఇన్‌స్టాల్ అవుతుంది.</string>

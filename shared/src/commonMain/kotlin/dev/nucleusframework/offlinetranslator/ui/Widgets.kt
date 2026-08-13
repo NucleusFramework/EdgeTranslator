@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,11 +21,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import offlinetranslator.shared.generated.resources.Res
+import offlinetranslator.shared.generated.resources.cd_clear_text
+import org.jetbrains.compose.resources.stringResource
 
 /** Uppercase, letter-spaced section caption used throughout the design. */
 @Composable
@@ -89,6 +95,21 @@ fun Chip(label: String, selected: Boolean, onClick: () -> Unit, modifier: Modifi
     ) {
         Text(label, fontSize = 14.sp, color = fg, fontWeight = if (selected) FontWeight.Medium else FontWeight.Normal)
     }
+}
+
+/** Trailing clear control for a multi-line input. Not focusable, so the caret stays in the field. */
+@Composable
+fun ClearTextButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Icon(
+        Icons.Outlined.Close,
+        stringResource(Res.string.cd_clear_text),
+        modifier
+            .size(22.dp)
+            .clip(CircleShape)
+            .focusProperties { canFocus = false }
+            .clickable(onClick = onClick),
+        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 }
 
 /** Circular icon-only button. */

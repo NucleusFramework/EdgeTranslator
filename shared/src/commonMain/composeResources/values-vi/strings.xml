@@ -55,6 +55,7 @@
     <string name="cd_pin">Ghim</string>
     <string name="cd_unpin">Bỏ ghim</string>
     <string name="cd_delete">Xóa</string>
+    <string name="cd_clear_text">Xóa văn bản</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Ủng hộ dự án</string>
     <string name="update_available">Bản cập nhật sẽ được cài đặt tự động sau khi bạn khởi động lại ứng dụng.</string>

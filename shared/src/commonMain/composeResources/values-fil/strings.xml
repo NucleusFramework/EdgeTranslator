@@ -55,6 +55,7 @@
     <string name="cd_pin">I-pin</string>
     <string name="cd_unpin">I-unpin</string>
     <string name="cd_delete">Tanggalin</string>
+    <string name="cd_clear_text">I-clear ang teksto</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Suportahan ang proyekto</string>
     <string name="update_available">Isang update ang awtomatikong mai-install pagkatapos mong i-restart ang app.</string>

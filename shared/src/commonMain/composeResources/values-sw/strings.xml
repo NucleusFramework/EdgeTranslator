@@ -55,6 +55,7 @@
     <string name="cd_pin">Bandika</string>
     <string name="cd_unpin">Ondoa bandiko</string>
     <string name="cd_delete">Futa</string>
+    <string name="cd_clear_text">Futa maandishi</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Saidia mradi</string>
     <string name="update_available">Sasisho litasakinishwa kiotomatiki baada ya kuanzisha tena programu.</string>

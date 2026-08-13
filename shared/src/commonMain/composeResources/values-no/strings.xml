@@ -55,6 +55,7 @@
     <string name="cd_pin">Fest</string>
     <string name="cd_unpin">Løsne</string>
     <string name="cd_delete">Slett</string>
+    <string name="cd_clear_text">Tøm tekst</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Støtt prosjektet</string>
     <string name="update_available">En oppdatering installeres automatisk når du starter appen på nytt.</string>

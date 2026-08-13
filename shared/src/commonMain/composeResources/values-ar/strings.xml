@@ -57,6 +57,7 @@
     <string name="cd_pin">تثبيت</string>
     <string name="cd_unpin">إلغاء التثبيت</string>
     <string name="cd_delete">حذف</string>
+    <string name="cd_clear_text">مسح النص</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">دعم المشروع</string>
     <string name="update_available">سيتم تثبيت التحديث تلقائيًا بعد إعادة تشغيل التطبيق.</string>

@@ -55,6 +55,7 @@
     <string name="cd_pin">Sabitle</string>
     <string name="cd_unpin">Sabitlemeyi kaldır</string>
     <string name="cd_delete">Sil</string>
+    <string name="cd_clear_text">Metni temizle</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Projeyi destekle</string>
     <string name="update_available">Uygulamayı yeniden başlattığınızda güncelleme otomatik olarak yüklenecek.</string>

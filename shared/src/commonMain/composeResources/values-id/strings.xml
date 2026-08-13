@@ -55,6 +55,7 @@
     <string name="cd_pin">Sematkan</string>
     <string name="cd_unpin">Lepas sematan</string>
     <string name="cd_delete">Hapus</string>
+    <string name="cd_clear_text">Hapus teks</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Dukung proyek</string>
     <string name="update_available">Pembaruan akan dipasang otomatis setelah Anda memulai ulang aplikasi.</string>

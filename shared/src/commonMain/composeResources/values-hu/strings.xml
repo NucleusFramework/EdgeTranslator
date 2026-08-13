@@ -55,6 +55,7 @@
     <string name="cd_pin">Rögzítés</string>
     <string name="cd_unpin">Rögzítés feloldása</string>
     <string name="cd_delete">Törlés</string>
+    <string name="cd_clear_text">Szöveg törlése</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">A projekt támogatása</string>
     <string name="update_available">A frissítés automatikusan települ az alkalmazás újraindítása után.</string>

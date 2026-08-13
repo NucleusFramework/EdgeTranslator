@@ -55,6 +55,7 @@
     <string name="cd_pin">Titi</string>
     <string name="cd_unpin">Wetewete</string>
     <string name="cd_delete">Muku</string>
+    <string name="cd_clear_text">Ūkui tuhinga</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Tautokona te kaupapa</string>
     <string name="update_available">Ka tāutahia aunoatia te whakahōu i muri i tō tīmata anō i te taupānga.</string>

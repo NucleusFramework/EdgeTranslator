@@ -55,6 +55,7 @@
     <string name="cd_pin">Fixează</string>
     <string name="cd_unpin">Anulează fixarea</string>
     <string name="cd_delete">Șterge</string>
+    <string name="cd_clear_text">Șterge textul</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Susține proiectul</string>
     <string name="update_available">O actualizare va fi instalată automat după repornirea aplicației.</string>

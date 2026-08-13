@@ -29,6 +29,7 @@ import dev.nucleusframework.offlinetranslator.app.AppIntent
 import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.formatLatency
+import dev.nucleusframework.offlinetranslator.ui.ClearTextButton
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
@@ -82,6 +83,7 @@ private fun InputPanel(state: ProofreadState, onIntent: (AppIntent) -> Unit, mod
         val scroll = rememberScrollState()
         LaunchedEffect(Unit) { focusRequester.requestFocus() }
         Box(Modifier.weight(1f).fillMaxWidth()) {
+            val hasText = state.text.isNotEmpty()
             BasicTextField(
                 value = state.text,
                 onValueChange = { onIntent(AppIntent.SetProofreadText(it)) },
@@ -90,7 +92,12 @@ private fun InputPanel(state: ProofreadState, onIntent: (AppIntent) -> Unit, mod
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(scroll)
-                    .padding(20.dp)
+                    .padding(
+                        start = 20.dp,
+                        top = 20.dp,
+                        end = if (hasText) 48.dp else 20.dp,
+                        bottom = 20.dp,
+                    )
                     .focusRequester(focusRequester),
                 decorationBox = { inner ->
                     Box {
@@ -106,6 +113,12 @@ private fun InputPanel(state: ProofreadState, onIntent: (AppIntent) -> Unit, mod
                     }
                 },
             )
+            if (hasText) {
+                ClearTextButton(
+                    onClick = { onIntent(AppIntent.SetProofreadText("")) },
+                    modifier = Modifier.align(Alignment.TopEnd).padding(10.dp),
+                )
+            }
             VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
         }
         HorizontalDivider(color = c.surfaceContainerHighest)

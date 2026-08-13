@@ -57,6 +57,7 @@
     <string name="cd_pin">ピン留め</string>
     <string name="cd_unpin">ピンを外す</string>
     <string name="cd_delete">削除</string>
+    <string name="cd_clear_text">テキストを消去</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">プロジェクトを支援</string>
     <string name="update_available">アプリを再起動すると、アップデートが自動的にインストールされます。</string>

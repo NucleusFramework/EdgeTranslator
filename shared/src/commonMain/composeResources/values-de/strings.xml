@@ -57,6 +57,7 @@
     <string name="cd_pin">Anheften</string>
     <string name="cd_unpin">Lösen</string>
     <string name="cd_delete">Löschen</string>
+    <string name="cd_clear_text">Text löschen</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Das Projekt unterstützen</string>
     <string name="update_available">Ein Update wird nach dem Neustart der App automatisch installiert.</string>

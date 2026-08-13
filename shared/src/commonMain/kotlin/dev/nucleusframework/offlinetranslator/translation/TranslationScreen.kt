@@ -75,6 +75,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import dev.nucleusframework.offlinetranslator.ui.Chip
+import dev.nucleusframework.offlinetranslator.ui.ClearTextButton
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
@@ -280,6 +281,7 @@ private fun SourcePanel(
             val scroll = rememberScrollState()
             LaunchedEffect(Unit) { focusRequester.requestFocus() }
             Box(Modifier.weight(1f).fillMaxWidth()) {
+                val hasText = state.text.isNotEmpty()
                 BasicTextField(
                     value = state.text,
                     onValueChange = { onIntent(AppIntent.SetSourceText(it)) },
@@ -288,7 +290,12 @@ private fun SourcePanel(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(scroll)
-                        .padding(20.dp)
+                        .padding(
+                            start = 20.dp,
+                            top = 20.dp,
+                            end = if (hasText) 48.dp else 20.dp,
+                            bottom = 20.dp,
+                        )
                         .focusRequester(focusRequester),
                     decorationBox = { inner ->
                         Box {
@@ -304,6 +311,12 @@ private fun SourcePanel(
                         }
                     },
                 )
+                if (hasText) {
+                    ClearTextButton(
+                        onClick = { onIntent(AppIntent.SetSourceText("")) },
+                        modifier = Modifier.align(Alignment.TopEnd).padding(10.dp),
+                    )
+                }
                 VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
             }
         }

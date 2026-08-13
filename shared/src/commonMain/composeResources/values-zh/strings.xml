@@ -57,6 +57,7 @@
     <string name="cd_pin">固定</string>
     <string name="cd_unpin">取消固定</string>
     <string name="cd_delete">删除</string>
+    <string name="cd_clear_text">清除文本</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">支持这个项目</string>
     <string name="update_available">重新启动应用后将自动安装更新。</string>

@@ -55,6 +55,7 @@
     <string name="cd_pin">Připnout</string>
     <string name="cd_unpin">Odepnout</string>
     <string name="cd_delete">Smazat</string>
+    <string name="cd_clear_text">Vymazat text</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Podpořit projekt</string>
     <string name="update_available">Aktualizace se po restartu aplikace nainstaluje automaticky.</string>

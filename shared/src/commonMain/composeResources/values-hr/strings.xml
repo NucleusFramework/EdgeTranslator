@@ -55,6 +55,7 @@
     <string name="cd_pin">Prikvači</string>
     <string name="cd_unpin">Otkvači</string>
     <string name="cd_delete">Izbriši</string>
+    <string name="cd_clear_text">Obriši tekst</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Podrži projekt</string>
     <string name="update_available">Ažuriranje će se automatski instalirati nakon ponovnog pokretanja aplikacije.</string>

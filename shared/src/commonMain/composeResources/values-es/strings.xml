@@ -57,6 +57,7 @@
     <string name="cd_pin">Fijar</string>
     <string name="cd_unpin">Desfijar</string>
     <string name="cd_delete">Eliminar</string>
+    <string name="cd_clear_text">Borrar texto</string>
     <string name="tooltip_github">GitHub</string>
     <string name="tooltip_sponsor">Apoyar el proyecto</string>
     <string name="update_available">Una actualización se instalará automáticamente al reiniciar la aplicación.</string>
