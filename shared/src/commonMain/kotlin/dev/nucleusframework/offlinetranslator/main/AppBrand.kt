@@ -36,7 +36,7 @@ import offlinetranslator.shared.generated.resources.tooltip_sponsor
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-private const val GITHUB_REPO = "https://github.com/kdroidFilter/OfflineTranslator"
+private const val GITHUB_REPO = "https://github.com/NucleusFramework/EdgeTranslator"
 private const val SPONSOR_URL = "https://ko-fi.com/lomityaesh"
 
 /**

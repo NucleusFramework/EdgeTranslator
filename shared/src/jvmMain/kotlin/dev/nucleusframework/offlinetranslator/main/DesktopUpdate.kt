@@ -53,8 +53,8 @@ import offlinetranslator.shared.generated.resources.update_restart_title
 import org.jetbrains.compose.resources.stringResource
 import java.io.File
 
-private const val UPDATE_OWNER = "kdroidFilter"
-private const val UPDATE_REPO = "OfflineTranslator"
+private const val UPDATE_OWNER = "NucleusFramework"
+private const val UPDATE_REPO = "EdgeTranslator"
 
 class DesktopUpdate internal constructor(
     val ready: Boolean,

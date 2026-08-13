@@ -68,16 +68,16 @@ nucleus.application {
         appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
         packageName = "Edge Translator"
         packageVersion = releaseVersion
-        vendor = "Elie Gambache"
+        vendor = "NucleusFramework"
         cleanupNativeLibs = true
         compressionLevel = CompressionLevel.Ultra
-        homepage = "https://github.com/kdroidFilter/OfflineTranslator"
+        homepage = "https://github.com/NucleusFramework/EdgeTranslator"
 
         publish {
             github {
                 enabled = true
-                owner = "kdroidFilter"
-                repo = "OfflineTranslator"
+                owner = "NucleusFramework"
+                repo = "EdgeTranslator"
                 channel = ReleaseChannel.Latest
                 releaseType = ReleaseType.Release
             }

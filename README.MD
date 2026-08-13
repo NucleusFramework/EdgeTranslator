@@ -19,7 +19,7 @@ The interface is available in the same 35 languages as the catalog, including RT
 - Local favorites (search, pinning, filters)
 - Model and voice downloads you control: start, pause, resume, or cancel — Settings never starts a download on its own
 - First launch: resumable download, then SHA-256 verification; optional voice install
-- Desktop auto-update from [GitHub Releases](https://github.com/kdroidFilter/OfflineTranslator/releases)
+- Desktop auto-update from [GitHub Releases](https://github.com/NucleusFramework/EdgeTranslator/releases)
 - About screen with open-source licenses
 - Follows the system light / dark appearance
 
@@ -54,7 +54,7 @@ Gemma models are covered by Google’s [Gemma license](https://ai.google.dev/gem
 
 ## Install
 
-Prebuilt packages (DMG, NSIS, Deb) are published on [GitHub Releases](https://github.com/kdroidFilter/OfflineTranslator/releases). Packaged builds update themselves from there.
+Prebuilt packages (DMG, NSIS, Deb) are published on [GitHub Releases](https://github.com/NucleusFramework/EdgeTranslator/releases). Packaged builds update themselves from there.
 
 ## Running from source
 
