@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">ఎప్పుడూ సిద్ధం</string>
     <string name="settings_model_on_demand_body">మొదటి అనువాదంలో లోడ్ అవుతుంది, 5 నిమిషాల నిష్క్రియం తర్వాత విడుదలవుతుంది.</string>
     <string name="settings_model_always_on_body">అనువాదాలు వెంటనే మొదలయ్యేలా లోడ్‌లో ఉంటుంది.</string>
+    <string name="settings_mtp">మల్టీ-టోకెన్ అంచనా (ప్రయోగాత్మకం)</string>
+    <string name="settings_mtp_off">ఆఫ్</string>
+    <string name="settings_mtp_on">ఆన్</string>
+    <string name="settings_mtp_body">ప్రయోగాత్మకం. ఒకేసారి పలు టోకెన్లను అంచనా వేస్తుంది. GPUపై దాదాపు రెండు రెట్లు వేగం.</string>
     <string name="settings_model_installed">ఇన్‌స్టాల్ అయింది</string>
     <string name="settings_model_missing">ఇన్‌స్టాల్ లేదు</string>
     <string name="settings_model_downloading">డౌన్‌లోడ్ అవుతోంది… %1$s</string>

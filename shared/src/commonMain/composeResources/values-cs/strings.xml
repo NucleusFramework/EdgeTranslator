@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Vždy připraven</string>
     <string name="settings_model_on_demand_body">Načte se při prvním překladu a uvolní se po 5 minutách nečinnosti.</string>
     <string name="settings_model_always_on_body">Zůstane načtený, aby překlady začínaly okamžitě.</string>
+    <string name="settings_mtp">Predikce více tokenů (experimentální)</string>
+    <string name="settings_mtp_off">Vypnuto</string>
+    <string name="settings_mtp_on">Zapnuto</string>
+    <string name="settings_mtp_body">Experimentální. Předpovídá několik tokenů najednou. Na GPU zhruba dvakrát rychlejší.</string>
     <string name="settings_model_installed">Nainstalováno</string>
     <string name="settings_model_missing">Nenainstalováno</string>
     <string name="settings_model_downloading">Stahování… %1$s</string>

@@ -52,6 +52,7 @@ sealed interface AppIntent {
     data class SetLangNameStyle(val style: LangNameStyle) : AppIntent
     data class SetLlmBackend(val backend: LlmBackend) : AppIntent
     data class SetLlmKeepAlive(val mode: LlmKeepAlive) : AppIntent
+    data class SetMtp(val on: Boolean) : AppIntent
 
     data object PauseDownload : AppIntent
     data object ResumeDownload : AppIntent

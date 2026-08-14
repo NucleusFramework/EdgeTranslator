@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">항상 준비</string>
     <string name="settings_model_on_demand_body">첫 번역 때 로드되고 5분 동안 사용하지 않으면 해제됩니다.</string>
     <string name="settings_model_always_on_body">즉시 번역되도록 로드된 상태를 유지합니다.</string>
+    <string name="settings_mtp">멀티 토큰 예측 (실험적)</string>
+    <string name="settings_mtp_off">끔</string>
+    <string name="settings_mtp_on">켬</string>
+    <string name="settings_mtp_body">실험적 기능입니다. 여러 토큰을 한 번에 예측합니다. GPU에서 약 두 배 빠릅니다.</string>
     <string name="settings_model_installed">설치됨</string>
     <string name="settings_model_missing">설치되지 않음</string>
     <string name="settings_model_downloading">다운로드 중… %1$s</string>

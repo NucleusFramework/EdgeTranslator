@@ -159,6 +159,10 @@
     <string name="settings_model_always_on">جاهز دائمًا</string>
     <string name="settings_model_on_demand_body">يُحمَّل عند أول ترجمة ويُفرَّغ بعد 5 دقائق من الخمول.</string>
     <string name="settings_model_always_on_body">يبقى محمّلًا لتبدأ الترجمات فورًا.</string>
+    <string name="settings_mtp">التنبؤ متعدد الرموز (تجريبي)</string>
+    <string name="settings_mtp_off">إيقاف</string>
+    <string name="settings_mtp_on">تشغيل</string>
+    <string name="settings_mtp_body">تجريبي. يتنبأ بعدة رموز دفعة واحدة. أسرع بنحو الضعف على وحدة الرسوم.</string>
     <string name="settings_model_installed">مثبّت</string>
     <string name="settings_model_missing">غير مثبّت</string>
     <string name="settings_model_downloading">جارٍ التنزيل… %1$s</string>

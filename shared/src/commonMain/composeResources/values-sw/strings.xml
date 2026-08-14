@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Tayari daima</string>
     <string name="settings_model_on_demand_body">Inapakia kwenye tafsiri ya kwanza na kuachilia baada ya dakika 5 bila matumizi.</string>
     <string name="settings_model_always_on_body">Inabaki imepakiwa ili tafsiri zianze mara moja.</string>
+    <string name="settings_mtp">Utabiri wa tokeni nyingi (majaribio)</string>
+    <string name="settings_mtp_off">Imezimwa</string>
+    <string name="settings_mtp_on">Imewashwa</string>
+    <string name="settings_mtp_body">Majaribio. Hutabiri tokeni kadhaa kwa pamoja. Takriban mara mbili haraka kwenye GPU.</string>
     <string name="settings_model_installed">Imesakinishwa</string>
     <string name="settings_model_missing">Haijasakinishwa</string>
     <string name="settings_model_downloading">Inapakua… %1$s</string>

@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Mindig kész</string>
     <string name="settings_model_on_demand_body">Az első fordításkor töltődik be, és 5 perc tétlenség után felszabadul.</string>
     <string name="settings_model_always_on_body">Betöltve marad, hogy a fordítások azonnal induljanak.</string>
+    <string name="settings_mtp">Többtokenes előrejelzés (kísérleti)</string>
+    <string name="settings_mtp_off">Ki</string>
+    <string name="settings_mtp_on">Be</string>
+    <string name="settings_mtp_body">Kísérleti. Több tokent jósol egyszerre. GPU-n körülbelül kétszer gyorsabb.</string>
     <string name="settings_model_installed">Telepítve</string>
     <string name="settings_model_missing">Nincs telepítve</string>
     <string name="settings_model_downloading">Letöltés… %1$s</string>

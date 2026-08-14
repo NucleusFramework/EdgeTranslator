@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">همیشه آماده</string>
     <string name="settings_model_on_demand_body">در نخستین ترجمه بارگذاری می‌شود و پس از ۵ دقیقه بی‌فعالیتی آزاد می‌گردد.</string>
     <string name="settings_model_always_on_body">بارگذاری‌شده می‌ماند تا ترجمه فوری آغاز شود.</string>
+    <string name="settings_mtp">پیش‌بینی چندتوکنی (آزمایشی)</string>
+    <string name="settings_mtp_off">خاموش</string>
+    <string name="settings_mtp_on">روشن</string>
+    <string name="settings_mtp_body">آزمایشی. چند توکن را یکجا پیش‌بینی می‌کند. روی GPU حدود دو برابر سریع‌تر است.</string>
     <string name="settings_model_installed">نصب‌شده</string>
     <string name="settings_model_missing">نصب نشده</string>
     <string name="settings_model_downloading">در حال دانلود… %1$s</string>

@@ -159,6 +159,10 @@
     <string name="settings_model_always_on">Altijd klaar</string>
     <string name="settings_model_on_demand_body">Laadt bij de eerste vertaling en ontlaadt na 5 minuten inactiviteit.</string>
     <string name="settings_model_always_on_body">Blijft geladen zodat vertalingen meteen starten.</string>
+    <string name="settings_mtp">Multi-tokenvoorspelling (experimenteel)</string>
+    <string name="settings_mtp_off">Uit</string>
+    <string name="settings_mtp_on">Aan</string>
+    <string name="settings_mtp_body">Experimenteel. Voorspelt meerdere tokens tegelijk. Ongeveer twee keer zo snel op GPU.</string>
     <string name="settings_model_installed">Geïnstalleerd</string>
     <string name="settings_model_missing">Niet geïnstalleerd</string>
     <string name="settings_model_downloading">Downloaden… %1$s</string>

@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Mereu gata</string>
     <string name="settings_model_on_demand_body">Se încarcă la prima traducere și se eliberează după 5 minute de inactivitate.</string>
     <string name="settings_model_always_on_body">Rămâne încărcat ca traducerile să pornească instant.</string>
+    <string name="settings_mtp">Predicție multi-token (experimental)</string>
+    <string name="settings_mtp_off">Dezactivată</string>
+    <string name="settings_mtp_on">Activată</string>
+    <string name="settings_mtp_body">Experimental. Prezice mai mulți tokeni deodată. De aproximativ două ori mai rapidă pe GPU.</string>
     <string name="settings_model_installed">Instalat</string>
     <string name="settings_model_missing">Neinstalat</string>
     <string name="settings_model_downloading">Se descarcă… %1$s</string>

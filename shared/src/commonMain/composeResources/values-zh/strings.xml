@@ -159,6 +159,10 @@
     <string name="settings_model_always_on">始终就绪</string>
     <string name="settings_model_on_demand_body">首次翻译时加载，空闲 5 分钟后卸载。</string>
     <string name="settings_model_always_on_body">保持加载以便立即开始翻译。</string>
+    <string name="settings_mtp">多词元预测（实验性）</string>
+    <string name="settings_mtp_off">关</string>
+    <string name="settings_mtp_on">开</string>
+    <string name="settings_mtp_body">实验性功能。一次预测多个词元。在 GPU 上大约快一倍。</string>
     <string name="settings_model_installed">已安装</string>
     <string name="settings_model_missing">未安装</string>
     <string name="settings_model_downloading">正在下载… %1$s</string>

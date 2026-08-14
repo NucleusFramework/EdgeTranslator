@@ -11,6 +11,10 @@ object LlmRuntime {
     @Volatile
     var preference: LlmBackend = LlmBackend.Auto
 
+    /** Gemma 4 MTP. Read when a new Engine is created. */
+    @Volatile
+    var mtp: Boolean = false
+
     private val _accelerator = MutableStateFlow(LlmAccelerator.None)
     val accelerator: StateFlow<LlmAccelerator> = _accelerator.asStateFlow()
 

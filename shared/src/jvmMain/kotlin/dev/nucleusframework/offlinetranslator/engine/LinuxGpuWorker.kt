@@ -107,7 +107,10 @@ internal class LinuxGpuWorkerProcess(
             val command = workerCommand(modelPath, cacheDir, threads) ?: return null
             val process = ProcessBuilder(command)
                 .redirectError(ProcessBuilder.Redirect.INHERIT)
-                .apply { environment()["EDGE_TRANSLATOR_GPU_WORKER"] = "1" }
+                .apply {
+                    environment()["EDGE_TRANSLATOR_GPU_WORKER"] = "1"
+                    environment()["EDGE_TRANSLATOR_MTP"] = if (LlmRuntime.mtp) "1" else "0"
+                }
                 .start()
             val reader = process.inputStream.bufferedReader()
             val writer = process.outputStream.bufferedWriter()
@@ -137,6 +140,7 @@ fun runGpuWorker(args: Array<String>) {
     val threads = args.getOrNull(2)?.toIntOrNull() ?: 0
     val llm = NativeLlm()
     try {
+        LlmRuntime.mtp = System.getenv("EDGE_TRANSLATOR_MTP") == "1"
         llm.loadInProcess(modelPath, cacheDir, threads, LlmBackend.Gpu)
         println("READY")
         System.out.flush()

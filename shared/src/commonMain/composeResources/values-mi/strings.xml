@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Kua rite tonu</string>
     <string name="settings_model_on_demand_body">Ka utaina i te whakamāori tuatahi, ka tukuna i muri i te 5 meneti kāore e mahi.</string>
     <string name="settings_model_always_on_body">Ka noho utaina kia tīmata wawe ngā whakamāori.</string>
+    <string name="settings_mtp">Matapae tohu-maha (whakamātau)</string>
+    <string name="settings_mtp_off">Weto</string>
+    <string name="settings_mtp_on">Kā</string>
+    <string name="settings_mtp_body">Whakamātau. Ka matapae ētahi tohu i te wā kotahi. Tata rua te tere i te GPU.</string>
     <string name="settings_model_installed">Kua tāuta</string>
     <string name="settings_model_missing">Kāore i tāutaina</string>
     <string name="settings_model_downloading">E tikiake ana… %1$s</string>

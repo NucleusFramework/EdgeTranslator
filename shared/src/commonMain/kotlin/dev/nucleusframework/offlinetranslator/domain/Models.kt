@@ -135,6 +135,8 @@ data class UserSettings(
     val selectedModel: LlmModel = LlmModel.Fast,
     val backend: LlmBackend = LlmBackend.Auto,
     val keepAlive: LlmKeepAlive = LlmKeepAlive.OnDemand,
+    /** Gemma 4 multi-token prediction. Off by default — opt in from Settings. */
+    val mtp: Boolean = false,
     val langNames: LangNameStyle = LangNameStyle.System,
     val selectedVoices: Map<String, String> = emptyMap(),
 )

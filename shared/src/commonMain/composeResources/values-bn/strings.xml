@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">সবসময় প্রস্তুত</string>
     <string name="settings_model_on_demand_body">প্রথম অনুবাদে লোড হয় এবং ৫ মিনিট নিষ্ক্রিয় থাকলে ছেড়ে দেয়।</string>
     <string name="settings_model_always_on_body">তাৎক্ষণিক অনুবাদের জন্য লোড থাকে।</string>
+    <string name="settings_mtp">মাল্টি-টোকেন পূর্বাভাস (পরীক্ষামূলক)</string>
+    <string name="settings_mtp_off">বন্ধ</string>
+    <string name="settings_mtp_on">চালু</string>
+    <string name="settings_mtp_body">পরীক্ষামূলক। একসাথে কয়েকটি টোকেন অনুমান করে। GPU-তে প্রায় দ্বিগুণ দ্রুত।</string>
     <string name="settings_model_installed">ইনস্টল আছে</string>
     <string name="settings_model_missing">ইনস্টল নেই</string>
     <string name="settings_model_downloading">ডাউনলোড হচ্ছে… %1$s</string>

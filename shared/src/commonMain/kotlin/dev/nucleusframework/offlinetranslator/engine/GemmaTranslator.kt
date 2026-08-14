@@ -25,6 +25,7 @@ class GemmaTranslator(
     private var session: NativeLlm? = null
     private var loadedPath: String? = null
     private var loadedBackend: LlmBackend? = null
+    private var loadedMtp: Boolean? = null
 
     override suspend fun translate(request: TranslationRequest): TranslationResult {
         val path = request.modelPath
@@ -94,17 +95,20 @@ class GemmaTranslator(
         session = null
         loadedPath = null
         loadedBackend = null
+        loadedMtp = null
         LlmRuntime.report(LlmAccelerator.None)
     }
 
     private fun ensureLoaded(path: String): NativeLlm {
         val pref = LlmRuntime.preference
+        val mtp = LlmRuntime.mtp
         val current = session
-        if (current != null && loadedPath == path && loadedBackend == pref) return current
+        if (current != null && loadedPath == path && loadedBackend == pref && loadedMtp == mtp) return current
         current?.close()
         session = null
         loadedPath = null
         loadedBackend = null
+        loadedMtp = null
         val dir = cacheDir()
         Platform.mkdir(dir)
         val next = sessionFactory()
@@ -113,6 +117,7 @@ class GemmaTranslator(
             session = next
             loadedPath = path
             loadedBackend = pref
+            loadedMtp = mtp
             LlmRuntime.report(used)
             return next
         } catch (t: Throwable) {

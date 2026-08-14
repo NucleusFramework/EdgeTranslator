@@ -159,6 +159,10 @@
     <string name="settings_model_always_on">Toujours actif</string>
     <string name="settings_model_on_demand_body">Chargé au premier message, libéré après 5 min d'inactivité.</string>
     <string name="settings_model_always_on_body">Reste chargé pour des traductions instantanées.</string>
+    <string name="settings_mtp">Prédiction multi-jetons (expérimental)</string>
+    <string name="settings_mtp_off">Désactivée</string>
+    <string name="settings_mtp_on">Activée</string>
+    <string name="settings_mtp_body">Expérimental. Prédit plusieurs jetons à la fois. Environ deux fois plus rapide sur GPU.</string>
     <string name="settings_model_installed">Installé</string>
     <string name="settings_model_missing">Non installé</string>
     <string name="settings_model_downloading">Téléchargement… %1$s</string>

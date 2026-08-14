@@ -159,6 +159,10 @@
     <string name="settings_model_always_on">Always ready</string>
     <string name="settings_model_on_demand_body">Loads on the first translation and unloads after 5 minutes idle.</string>
     <string name="settings_model_always_on_body">Stays loaded so translations start instantly.</string>
+    <string name="settings_mtp">Multi-token prediction (experimental)</string>
+    <string name="settings_mtp_off">Off</string>
+    <string name="settings_mtp_on">On</string>
+    <string name="settings_mtp_body">Experimental. Predicts several tokens at once. About twice as fast on GPU.</string>
     <string name="settings_model_installed">Installed</string>
     <string name="settings_model_missing">Not installed</string>
     <string name="settings_model_downloading">Downloading… %1$s</string>
