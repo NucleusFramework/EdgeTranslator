@@ -39,6 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.nucleusframework.nativehttp.NativeHttpClient
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
 import dev.nucleusframework.offlinetranslator.ui.OutlinedPill
 import dev.nucleusframework.updater.NucleusUpdater
@@ -70,6 +71,7 @@ fun rememberDesktopUpdate(): DesktopUpdate {
     val updater = remember {
         NucleusUpdater {
             provider = GitHubProvider(owner = UPDATE_OWNER, repo = UPDATE_REPO)
+            httpClient = NativeHttpClient.create()
         }
     }
     var file by remember { mutableStateOf<File?>(null) }
