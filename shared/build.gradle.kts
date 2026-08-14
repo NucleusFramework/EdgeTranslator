@@ -79,6 +79,7 @@ kotlin {
             implementation(libs.nucleus.decorated.window.tao)
             implementation(libs.nucleus.system.color)
             implementation(libs.nucleus.system.info)
+            implementation(libs.nucleus.native.http)
             implementation(libs.nucleus.native.http.ktor)
             implementation(libs.nucleus.updater.runtime)
             implementation(libs.litertlm.jvm)
