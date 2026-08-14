@@ -1288,6 +1288,56 @@ class AppViewModelTest {
         assertTrue(removedModels.isEmpty())
         assertFalse(vm.state.value.data.installed)
     }
+
+    @Test
+    fun restoreAdoptsModelAlreadyOnDisk() {
+        val store = MemoryStore(
+            seedData().copy(
+                installed = true,
+                settings = seedData().settings.copy(selectedModel = LlmModel.Precise),
+                model = seedData().model.copy(id = LlmModel.Precise, installed = false, path = ""),
+            ),
+        )
+        val vm = vm(store = store, now = 42L, modelOnDisk = { it.id == LlmModel.Precise })
+        val model = vm.state.value.data.model
+        assertTrue(model.installed)
+        assertEquals(LlmModel.Precise, model.id)
+        assertEquals(42L, model.installedAt)
+        assertTrue(model.path.endsWith("model.litertlm"))
+        assertTrue(vm.state.value.download.done)
+        assertTrue(store.load().model.installed)
+    }
+
+    @Test
+    fun openAppAdoptsModelAlreadyOnDisk() {
+        val vm = vm(
+            store = MemoryStore(seedData().copy(settings = seedData().settings.copy(selectedModel = LlmModel.Precise))),
+            modelOnDisk = { it.id == LlmModel.Precise },
+        )
+        assertTrue(vm.state.value.data.model.installed)
+        vm.onIntent(AppIntent.OpenApp)
+        assertTrue(vm.state.value.data.installed)
+        assertTrue(vm.state.value.data.model.installed)
+        assertEquals(LlmModel.Precise, vm.state.value.data.model.id)
+    }
+
+    @Test
+    fun selectAlreadyChosenOnDiskModelMarksInstalled() {
+        val vm = vm(
+            store = MemoryStore(
+                seedData().copy(
+                    installed = true,
+                    settings = seedData().settings.copy(selectedModel = LlmModel.Precise),
+                    model = seedData().model.copy(id = LlmModel.Precise, installed = false, path = ""),
+                ),
+            ),
+            modelOnDisk = { it.id == LlmModel.Precise },
+        )
+        assertTrue(vm.state.value.data.model.installed)
+        vm.onIntent(AppIntent.SelectModel(LlmModel.Precise))
+        assertTrue(vm.state.value.data.model.installed)
+        assertEquals(LlmModel.Precise, vm.state.value.data.model.id)
+    }
 }
 
 private fun installedModel(keepAlive: LlmKeepAlive = LlmKeepAlive.OnDemand) = seedData().copy(
