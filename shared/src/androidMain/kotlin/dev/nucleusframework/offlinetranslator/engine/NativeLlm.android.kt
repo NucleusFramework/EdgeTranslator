@@ -10,24 +10,29 @@ import com.google.ai.edge.litertlm.SamplerConfig
 // litertlm-android 0.14.0 has no ThinkingConfig / maxOutputToken (added in 0.15+).
 // import com.google.ai.edge.litertlm.ThinkingConfig
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
+import dev.nucleusframework.offlinetranslator.platform.androidContext
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
 
 internal actual class NativeLlm actual constructor() {
     private var engine: Engine? = null
+    private var npuSampler: Boolean = false
 
     actual fun load(modelPath: String, cacheDir: String, threads: Int, backend: LlmBackend): LlmAccelerator {
         close()
-        val pick = pickBackend(backend, LlmRuntime.gpuAvailable.value) {
-            val gpu = runCatching { openEngine(modelPath, cacheSubdir(cacheDir, "gpu"), Backend.GPU()) }.getOrNull()
-            if (gpu != null) {
-                engine = gpu
-                true
-            } else {
-                false
-            }
-        }
+        val nativeLibDir = androidContext().applicationInfo.nativeLibraryDir
+        val pick = pickBackend(
+            preference = backend,
+            gpuKnown = LlmRuntime.gpuAvailable.value,
+            npuKnown = LlmRuntime.npuAvailable.value,
+            npuWorks = {
+                tryOpen(modelPath, cacheSubdir(cacheDir, "npu"), Backend.NPU(nativeLibraryDir = nativeLibDir))
+            },
+            gpuWorks = {
+                tryOpen(modelPath, cacheSubdir(cacheDir, "gpu"), Backend.GPU())
+            },
+        )
         if (engine == null) {
             engine = openEngine(
                 modelPath,
@@ -35,8 +40,19 @@ internal actual class NativeLlm actual constructor() {
                 Backend.CPU(threadCount = threads.takeIf { it > 0 }),
             )
         }
+        npuSampler = pick.accelerator == LlmAccelerator.Npu
         pick.gpuAvailable?.let(LlmRuntime::reportGpuAvailable)
+        pick.npuAvailable?.let(LlmRuntime::reportNpuAvailable)
         return pick.accelerator
+    }
+
+    private fun tryOpen(modelPath: String, cacheDir: String, backend: Backend): Boolean {
+        val opened = runCatching { openEngine(modelPath, cacheDir, backend) }.getOrNull()
+        if (opened != null) {
+            engine = opened
+            return true
+        }
+        return false
     }
 
     actual suspend fun generate(
@@ -50,7 +66,8 @@ internal actual class NativeLlm actual constructor() {
         e.createConversation(
             ConversationConfig(
                 systemInstruction = Contents.of(systemInstruction),
-                samplerConfig = SamplerConfig(topK = 1, topP = 1.0, temperature = 0.2),
+                // NPU rejects custom sampler configs (see Google AI Edge Gallery).
+                samplerConfig = if (npuSampler) null else SamplerConfig(topK = 1, topP = 1.0, temperature = 0.2),
                 // 0.14.0 ConversationConfig: thinkingConfig / maxOutputToken do not exist yet.
                 // thinkingConfig = ThinkingConfig(enableThinking = false),
                 channels = emptyList(),
@@ -84,6 +101,7 @@ internal actual class NativeLlm actual constructor() {
         } catch (_: Exception) {
         }
         engine = null
+        npuSampler = false
     }
 }
 

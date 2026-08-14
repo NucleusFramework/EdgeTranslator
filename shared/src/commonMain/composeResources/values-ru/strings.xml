@@ -15,6 +15,7 @@
     <string name="about_version">Версия</string>
     <string name="offline">Офлайн</string>
     <string name="engine_gpu">GPU</string>
+    <string name="engine_npu">NPU</string>
     <string name="engine_cpu">CPU</string>
     <string name="engine_auto">Авто</string>
     <string name="nav_backend">Бэкенд: %1$s</string>

@@ -14,6 +14,7 @@
     <string name="about_version">Έκδοση</string>
     <string name="offline">Εκτός σύνδεσης</string>
     <string name="engine_gpu">GPU</string>
+    <string name="engine_npu">NPU</string>
     <string name="engine_cpu">CPU</string>
     <string name="engine_auto">Αυτόματα</string>
     <string name="nav_backend">Υπόβαθρο: %1$s</string>

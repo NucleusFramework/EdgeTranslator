@@ -15,6 +15,7 @@
     <string name="about_version">バージョン</string>
     <string name="offline">オフライン</string>
     <string name="engine_gpu">GPU</string>
+    <string name="engine_npu">NPU</string>
     <string name="engine_cpu">CPU</string>
     <string name="engine_auto">自動</string>
     <string name="nav_backend">バックエンド: %1$s</string>

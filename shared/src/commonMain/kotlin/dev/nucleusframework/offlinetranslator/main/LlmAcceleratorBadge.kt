@@ -16,21 +16,24 @@ import offlinetranslator.shared.generated.resources.em_dash
 import offlinetranslator.shared.generated.resources.engine_auto
 import offlinetranslator.shared.generated.resources.engine_cpu
 import offlinetranslator.shared.generated.resources.engine_gpu
+import offlinetranslator.shared.generated.resources.engine_npu
 import org.jetbrains.compose.resources.stringResource
 
-/** The backend chosen in Settings: Auto, GPU, or CPU. */
+/** The backend chosen in Settings: Auto, NPU, GPU, or CPU. */
 @Composable
 fun backendLabel(backend: LlmBackend): String = when (backend) {
     LlmBackend.Auto -> stringResource(Res.string.engine_auto)
+    LlmBackend.Npu -> stringResource(Res.string.engine_npu)
     LlmBackend.Gpu -> stringResource(Res.string.engine_gpu)
     LlmBackend.Cpu -> stringResource(Res.string.engine_cpu)
 }
 
-/** The backend the LLM is actually running on: GPU, CPU, or not loaded yet. */
+/** The backend the LLM is actually running on: NPU, GPU, CPU, or not loaded yet. */
 @Composable
 fun acceleratorLabel(): String {
     val accelerator by LlmRuntime.accelerator.collectAsState()
     return when (accelerator) {
+        LlmAccelerator.Npu -> stringResource(Res.string.engine_npu)
         LlmAccelerator.Gpu -> stringResource(Res.string.engine_gpu)
         LlmAccelerator.Cpu -> stringResource(Res.string.engine_cpu)
         LlmAccelerator.None -> stringResource(Res.string.em_dash)

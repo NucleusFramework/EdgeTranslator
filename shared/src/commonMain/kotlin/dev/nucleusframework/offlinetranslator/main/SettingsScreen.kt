@@ -60,6 +60,7 @@ import dev.nucleusframework.offlinetranslator.engine.CatalogModel
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
 import dev.nucleusframework.offlinetranslator.engine.LlmRuntime
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
+import dev.nucleusframework.offlinetranslator.platform.Platform
 import dev.nucleusframework.offlinetranslator.platform.systemUiLanguage
 import dev.nucleusframework.offlinetranslator.ui.Chip
 import dev.nucleusframework.offlinetranslator.ui.SectionLabel
@@ -156,6 +157,7 @@ private fun ModelSection(
     val ui = settings.uiLanguage
     val selected = settings.selectedModel
     val gpuAvailable by LlmRuntime.gpuAvailable.collectAsState()
+    val npuAvailable by LlmRuntime.npuAvailable.collectAsState()
     SettingsSection(stringResource(Res.string.settings_model)) {
         ChipsRow(stringResource(Res.string.settings_backend)) {
             Chip(
@@ -163,6 +165,14 @@ private fun ModelSection(
                 selected = settings.backend == LlmBackend.Auto,
                 onClick = { onIntent(AppIntent.SetLlmBackend(LlmBackend.Auto)) },
             )
+            if (Platform.osLabel == "Android") {
+                Chip(
+                    stringResource(Res.string.engine_npu),
+                    selected = settings.backend == LlmBackend.Npu,
+                    onClick = { onIntent(AppIntent.SetLlmBackend(LlmBackend.Npu)) },
+                    enabled = npuAvailable != false,
+                )
+            }
             Chip(
                 stringResource(Res.string.engine_gpu),
                 selected = settings.backend == LlmBackend.Gpu,
