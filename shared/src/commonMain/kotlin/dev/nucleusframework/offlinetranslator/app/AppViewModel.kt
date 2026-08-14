@@ -843,7 +843,11 @@ class AppViewModel(
     }
 
     private fun copyTranslation() {
-        val text = _state.value.translation.targetText
+        val t = _state.value.translation
+        // On error the panel shows `error`, not `targetText` (TranslationScreen.kt's target body) —
+        // copy whichever the user is actually looking at, so Copy never silently no-ops on a blank
+        // targetText or grabs stale partial text left over from a stream that failed mid-way.
+        val text = if (t.status == TranslationStatus.Error) t.error.orEmpty() else t.targetText
         if (text.isBlank()) return
         Platform.copyToClipboard(text)
         mutate { it.copy(translation = it.translation.copy(copiedTarget = text.trim())) }
