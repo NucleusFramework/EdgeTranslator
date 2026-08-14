@@ -14,6 +14,7 @@
     <string name="about_version">Sürüm</string>
     <string name="offline">Çevrimdışı</string>
     <string name="engine_gpu">GPU</string>
+    <string name="engine_npu">NPU</string>
     <string name="engine_cpu">CPU</string>
     <string name="engine_auto">Otomatik</string>
     <string name="nav_backend">Arka uç: %1$s</string>

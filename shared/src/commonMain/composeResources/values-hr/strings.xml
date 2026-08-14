@@ -14,6 +14,7 @@
     <string name="about_version">Verzija</string>
     <string name="offline">Izvan mreže</string>
     <string name="engine_gpu">GPU</string>
+    <string name="engine_npu">NPU</string>
     <string name="engine_cpu">CPU</string>
     <string name="engine_auto">Auto</string>
     <string name="nav_backend">Pozadina: %1$s</string>

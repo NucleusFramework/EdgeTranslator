@@ -699,6 +699,9 @@ class AppViewModelTest {
         val gpu = seedData().let { it.copy(settings = it.settings.copy(backend = LlmBackend.Gpu)) }
         assertEquals(LlmBackend.Gpu, decodeSnapshot(encodeSnapshot(gpu)).settings.backend)
 
+        val npu = seedData().let { it.copy(settings = it.settings.copy(backend = LlmBackend.Npu)) }
+        assertEquals(LlmBackend.Npu, decodeSnapshot(encodeSnapshot(npu)).settings.backend)
+
         val legacy = encodeSnapshot(gpu).lineSequence().filterNot { it.startsWith("backend=") }.joinToString("\n")
         assertEquals(LlmBackend.Auto, decodeSnapshot(legacy).settings.backend)
     }

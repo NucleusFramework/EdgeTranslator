@@ -57,7 +57,11 @@ internal actual class NativeLlm actual constructor() {
         backend: LlmBackend,
     ): LlmAccelerator {
         loadGpuNativeLibs()
-        val pick = pickBackend(backend, LlmRuntime.gpuAvailable.value) {
+        val pick = pickBackend(
+            preference = backend,
+            gpuKnown = LlmRuntime.gpuAvailable.value,
+            npuKnown = false,
+        ) {
             val gpu = runCatching { openEngine(modelPath, cacheSubdir(cacheDir, "gpu"), Backend.GPU()) }.getOrNull()
             if (gpu != null) {
                 engine = gpu

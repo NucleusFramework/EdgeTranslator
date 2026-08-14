@@ -55,7 +55,7 @@ private val COMMA_DECIMAL = setOf(
 
 enum class ThemeMode { System, Light, Dark }
 
-enum class LlmBackend { Auto, Gpu, Cpu }
+enum class LlmBackend { Auto, Npu, Gpu, Cpu }
 
 /** When the LLM stays in RAM. OnDemand loads on first use and unloads after idle. */
 enum class LlmKeepAlive { OnDemand, AlwaysOn }

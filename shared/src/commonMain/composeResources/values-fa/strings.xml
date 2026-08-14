@@ -14,6 +14,7 @@
     <string name="about_version">نسخه</string>
     <string name="offline">آفلاین</string>
     <string name="engine_gpu">GPU</string>
+    <string name="engine_npu">NPU</string>
     <string name="engine_cpu">CPU</string>
     <string name="engine_auto">خودکار</string>
     <string name="nav_backend">پشتیبان: %1$s</string>

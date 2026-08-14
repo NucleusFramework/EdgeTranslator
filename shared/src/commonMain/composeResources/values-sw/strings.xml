@@ -14,6 +14,7 @@
     <string name="about_version">Toleo</string>
     <string name="offline">Nje ya mtandao</string>
     <string name="engine_gpu">GPU</string>
+    <string name="engine_npu">NPU</string>
     <string name="engine_cpu">CPU</string>
     <string name="engine_auto">Otomatiki</string>
     <string name="nav_backend">Nyuma: %1$s</string>

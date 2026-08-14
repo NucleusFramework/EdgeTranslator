@@ -14,6 +14,7 @@
     <string name="about_version">Phiên bản</string>
     <string name="offline">Ngoại tuyến</string>
     <string name="engine_gpu">GPU</string>
+    <string name="engine_npu">NPU</string>
     <string name="engine_cpu">CPU</string>
     <string name="engine_auto">Tự động</string>
     <string name="nav_backend">Phần phụ trợ: %1$s</string>

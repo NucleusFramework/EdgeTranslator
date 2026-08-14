@@ -14,6 +14,7 @@
     <string name="about_version">버전</string>
     <string name="offline">오프라인</string>
     <string name="engine_gpu">GPU</string>
+    <string name="engine_npu">NPU</string>
     <string name="engine_cpu">CPU</string>
     <string name="engine_auto">자동</string>
     <string name="nav_backend">백엔드: %1$s</string>
