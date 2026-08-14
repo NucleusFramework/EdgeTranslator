@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
@@ -38,6 +39,8 @@ import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import dev.nucleusframework.offlinetranslator.domain.LlmModel
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.engine.GemmaModels
+import dev.nucleusframework.offlinetranslator.engine.LlmAccelerator
+import dev.nucleusframework.offlinetranslator.engine.LlmRuntime
 import dev.nucleusframework.offlinetranslator.platform.Platform
 import offlinetranslator.shared.generated.resources.Res
 import offlinetranslator.shared.generated.resources.app_name
@@ -124,8 +127,12 @@ private fun NavRail(selected: AppKey, modelId: LlmModel, backend: LlmBackend, on
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             LocalSystemMeters.current?.invoke(Modifier)
+            val resolved by LlmRuntime.accelerator.collectAsState()
             Text(
-                stringResource(Res.string.nav_backend, backendLabel(backend)),
+                stringResource(
+                    Res.string.nav_backend,
+                    if (resolved == LlmAccelerator.None) backendLabel(backend) else acceleratorLabel(),
+                ),
                 color = c.onSurfaceVariant,
                 fontSize = 11.sp,
             )
