@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Laging handa</string>
     <string name="settings_model_on_demand_body">Naglo-load sa unang pagsasalin at nagre-release pagkatapos ng 5 minutong walang galaw.</string>
     <string name="settings_model_always_on_body">Nanatiling naka-load para agad magsimula ang pagsasalin.</string>
+    <string name="settings_mtp">Multi-token prediction (eksperimento)</string>
+    <string name="settings_mtp_off">Naka-off</string>
+    <string name="settings_mtp_on">Naka-on</string>
+    <string name="settings_mtp_body">Eksperimento. Humuhula ng ilang token nang sabay. Mga doble ang bilis sa GPU.</string>
     <string name="settings_model_installed">Naka-install</string>
     <string name="settings_model_missing">Hindi naka-install</string>
     <string name="settings_model_downloading">Dina-download… %1$s</string>

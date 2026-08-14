@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Πάντα έτοιμο</string>
     <string name="settings_model_on_demand_body">Φορτώνεται στην πρώτη μετάφραση και αποφορτώνεται μετά από 5 λεπτά αδράνειας.</string>
     <string name="settings_model_always_on_body">Παραμένει φορτωμένο ώστε οι μεταφράσεις να ξεκινούν αμέσως.</string>
+    <string name="settings_mtp">Πρόβλεψη πολλαπλών token (πειραματικό)</string>
+    <string name="settings_mtp_off">Ανενεργή</string>
+    <string name="settings_mtp_on">Ενεργή</string>
+    <string name="settings_mtp_body">Πειραματικό. Προβλέπει πολλά token μαζί. Περίπου δύο φορές ταχύτερη σε GPU.</string>
     <string name="settings_model_installed">Εγκατεστημένο</string>
     <string name="settings_model_missing">Δεν έχει εγκατασταθεί</string>
     <string name="settings_model_downloading">Λήψη… %1$s</string>

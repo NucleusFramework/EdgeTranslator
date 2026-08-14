@@ -159,6 +159,10 @@
     <string name="settings_model_always_on">常時準備</string>
     <string name="settings_model_on_demand_body">最初の翻訳で読み込み、5分間操作がなければ解放します。</string>
     <string name="settings_model_always_on_body">読み込んだままにして翻訳をすぐ開始します。</string>
+    <string name="settings_mtp">マルチトークン予測（実験的）</string>
+    <string name="settings_mtp_off">オフ</string>
+    <string name="settings_mtp_on">オン</string>
+    <string name="settings_mtp_body">実験的機能です。複数のトークンを一度に予測します。GPUでは約2倍速くなります。</string>
     <string name="settings_model_installed">インストール済み</string>
     <string name="settings_model_missing">未インストール</string>
     <string name="settings_model_downloading">ダウンロード中… %1$s</string>

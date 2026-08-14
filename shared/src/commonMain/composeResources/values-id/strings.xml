@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Selalu siap</string>
     <string name="settings_model_on_demand_body">Dimuat pada terjemahan pertama dan dilepas setelah 5 menit tidak aktif.</string>
     <string name="settings_model_always_on_body">Tetap dimuat agar terjemahan langsung dimulai.</string>
+    <string name="settings_mtp">Prediksi multi-token (eksperimental)</string>
+    <string name="settings_mtp_off">Nonaktif</string>
+    <string name="settings_mtp_on">Aktif</string>
+    <string name="settings_mtp_body">Eksperimental. Memprediksi beberapa token sekaligus. Sekitar dua kali lebih cepat di GPU.</string>
     <string name="settings_model_installed">Terpasang</string>
     <string name="settings_model_missing">Belum terpasang</string>
     <string name="settings_model_downloading">Mengunduh… %1$s</string>

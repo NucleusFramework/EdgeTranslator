@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Altid klar</string>
     <string name="settings_model_on_demand_body">Indlæses ved den første oversættelse og frigøres efter 5 minutters inaktivitet.</string>
     <string name="settings_model_always_on_body">Forbliver indlæst, så oversættelser starter med det samme.</string>
+    <string name="settings_mtp">Multi-token-forudsigelse (eksperimentel)</string>
+    <string name="settings_mtp_off">Fra</string>
+    <string name="settings_mtp_on">Til</string>
+    <string name="settings_mtp_body">Eksperimentel. Forudsiger flere tokens på én gang. Omkring dobbelt så hurtig på GPU.</string>
     <string name="settings_model_installed">Installeret</string>
     <string name="settings_model_missing">Ikke installeret</string>
     <string name="settings_model_downloading">Downloader… %1$s</string>

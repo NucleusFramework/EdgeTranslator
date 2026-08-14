@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Завжди готовий</string>
     <string name="settings_model_on_demand_body">Завантажується під час першого перекладу і вивантажується після 5 хвилин простою.</string>
     <string name="settings_model_always_on_body">Залишається завантаженою, щоб переклади починалися одразу.</string>
+    <string name="settings_mtp">Мультитокенне передбачення (експериментально)</string>
+    <string name="settings_mtp_off">Вимк.</string>
+    <string name="settings_mtp_on">Увімк.</string>
+    <string name="settings_mtp_body">Експериментально. Передбачає кілька токенів одразу. На GPU приблизно вдвічі швидше.</string>
     <string name="settings_model_installed">Встановлено</string>
     <string name="settings_model_missing">Не встановлено</string>
     <string name="settings_model_downloading">Завантаження… %1$s</string>

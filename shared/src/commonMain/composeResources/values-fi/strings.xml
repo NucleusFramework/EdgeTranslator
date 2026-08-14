@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Aina valmiina</string>
     <string name="settings_model_on_demand_body">Ladataan ensimmäisessä käännöksessä ja vapautetaan 5 minuutin käyttämättömyyden jälkeen.</string>
     <string name="settings_model_always_on_body">Pysyy ladattuna, jotta käännökset alkavat heti.</string>
+    <string name="settings_mtp">Monitoken-ennustus (kokeellinen)</string>
+    <string name="settings_mtp_off">Pois</string>
+    <string name="settings_mtp_on">Päällä</string>
+    <string name="settings_mtp_body">Kokeellinen. Ennustaa useita tokeneita kerralla. GPU:lla noin kaksi kertaa nopeampi.</string>
     <string name="settings_model_installed">Asennettu</string>
     <string name="settings_model_missing">Ei asennettu</string>
     <string name="settings_model_downloading">Ladataan… %1$s</string>

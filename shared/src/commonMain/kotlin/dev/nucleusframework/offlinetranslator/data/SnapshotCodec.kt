@@ -37,6 +37,7 @@ internal fun encodeSnapshot(data: AppData): String = buildString {
     appendLine("selectedModel=${s.selectedModel.name}")
     appendLine("backend=${s.backend.name}")
     appendLine("keepAlive=${s.keepAlive.name}")
+    appendLine("mtp=${s.mtp}")
     appendLine("langNames=${s.langNames.name}")
     appendLine("selectedVoices=${s.selectedVoices.entries.joinToString(",") { "${it.key}=${it.value}" }}")
     val m = data.model
@@ -75,6 +76,7 @@ internal fun decodeSnapshot(text: String): AppData {
     var selectedModel = LlmModel.Fast
     var backend = LlmBackend.Auto
     var keepAlive = LlmKeepAlive.OnDemand
+    var mtp = false
     var langNames = LangNameStyle.System
     var selectedVoices = emptyMap<String, String>()
     var modelId = LlmModel.Fast
@@ -127,6 +129,8 @@ internal fun decodeSnapshot(text: String): AppData {
                 keepAlive =
                     runCatching { LlmKeepAlive.valueOf(line.substringAfter("=")) }.getOrDefault(LlmKeepAlive.OnDemand)
 
+            line.startsWith("mtp=") -> mtp = line.substringAfter("=").toBoolean()
+
             line.startsWith("langNames=") ->
                 langNames =
                     runCatching { LangNameStyle.valueOf(line.substringAfter("=")) }.getOrDefault(LangNameStyle.System)
@@ -174,6 +178,7 @@ internal fun decodeSnapshot(text: String): AppData {
             selectedModel = selectedModel,
             backend = backend,
             keepAlive = keepAlive,
+            mtp = mtp,
             langNames = langNames,
             selectedVoices = selectedVoices,
         ),

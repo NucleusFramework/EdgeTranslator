@@ -159,6 +159,10 @@
     <string name="settings_model_always_on">Sempre pronto</string>
     <string name="settings_model_on_demand_body">Carrega na primeira tradução e descarrega após 5 minutos de inatividade.</string>
     <string name="settings_model_always_on_body">Permanece carregado para traduções instantâneas.</string>
+    <string name="settings_mtp">Predição multi-token (experimental)</string>
+    <string name="settings_mtp_off">Desativada</string>
+    <string name="settings_mtp_on">Ativada</string>
+    <string name="settings_mtp_body">Experimental. Prevê vários tokens de uma vez. Cerca de duas vezes mais rápida na GPU.</string>
     <string name="settings_model_installed">Instalado</string>
     <string name="settings_model_missing">Não instalado</string>
     <string name="settings_model_downloading">A descarregar… %1$s</string>

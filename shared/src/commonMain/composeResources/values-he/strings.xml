@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">תמיד מוכן</string>
     <string name="settings_model_on_demand_body">נטען בתרגום הראשון ומשתחרר אחרי 5 דקות ללא פעילות.</string>
     <string name="settings_model_always_on_body">נשאר טעון כדי שהתרגומים יתחילו מיד.</string>
+    <string name="settings_mtp">חיזוי רב-אסימונים (ניסיוני)</string>
+    <string name="settings_mtp_off">כבוי</string>
+    <string name="settings_mtp_on">פעיל</string>
+    <string name="settings_mtp_body">ניסיוני. חוזה כמה אסימונים בבת אחת. מהיר פי שניים בערך ב-GPU.</string>
     <string name="settings_model_installed">מותקן</string>
     <string name="settings_model_missing">לא מותקן</string>
     <string name="settings_model_downloading">מוריד… %1$s</string>

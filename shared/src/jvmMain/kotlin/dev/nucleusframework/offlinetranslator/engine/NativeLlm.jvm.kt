@@ -7,6 +7,8 @@ import com.google.ai.edge.litertlm.Conversation
 import com.google.ai.edge.litertlm.ConversationConfig
 import com.google.ai.edge.litertlm.Engine
 import com.google.ai.edge.litertlm.EngineConfig
+import com.google.ai.edge.litertlm.ExperimentalApi
+import com.google.ai.edge.litertlm.ExperimentalFlags
 import com.google.ai.edge.litertlm.SamplerConfig
 // litertlm-jvm 0.14.0 has no ThinkingConfig / maxOutputToken (added in 0.15+).
 // import com.google.ai.edge.litertlm.ThinkingConfig
@@ -194,7 +196,9 @@ internal actual class NativeLlm actual constructor() {
     }
 }
 
+@OptIn(ExperimentalApi::class)
 private fun openEngine(modelPath: String, cacheDir: String, backend: Backend): Engine {
+    ExperimentalFlags.enableSpeculativeDecoding = LlmRuntime.mtp
     val created = Engine(
         EngineConfig(
             modelPath = modelPath,

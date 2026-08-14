@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Her zaman hazır</string>
     <string name="settings_model_on_demand_body">İlk çeviride yüklenir ve 5 dakika hareketsizlikten sonra bellekten çıkar.</string>
     <string name="settings_model_always_on_body">Çevirilerin anında başlaması için yüklü kalır.</string>
+    <string name="settings_mtp">Çoklu jeton tahmini (deneysel)</string>
+    <string name="settings_mtp_off">Kapalı</string>
+    <string name="settings_mtp_on">Açık</string>
+    <string name="settings_mtp_body">Deneysel. Birden fazla jetonu bir anda tahmin eder. GPU'da yaklaşık iki kat hızlıdır.</string>
     <string name="settings_model_installed">Kurulu</string>
     <string name="settings_model_missing">Kurulu değil</string>
     <string name="settings_model_downloading">İndiriliyor… %1$s</string>

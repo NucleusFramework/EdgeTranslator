@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">Uvijek spreman</string>
     <string name="settings_model_on_demand_body">Učitava se pri prvom prijevodu i oslobađa nakon 5 minuta neaktivnosti.</string>
     <string name="settings_model_always_on_body">Ostaje učitan kako bi prijevodi krenuli odmah.</string>
+    <string name="settings_mtp">Predikcija više tokena (eksperimentalno)</string>
+    <string name="settings_mtp_off">Isključeno</string>
+    <string name="settings_mtp_on">Uključeno</string>
+    <string name="settings_mtp_body">Eksperimentalno. Predviđa nekoliko tokena odjednom. Na GPU-u otprilike dvostruko brže.</string>
     <string name="settings_model_installed">Instalirano</string>
     <string name="settings_model_missing">Nije instalirano</string>
     <string name="settings_model_downloading">Preuzimanje… %1$s</string>

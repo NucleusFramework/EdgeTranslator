@@ -234,6 +234,12 @@ class AppViewModel(
                 preloadIfKeptReady(_state.value.data.model.path)
             }
 
+            is AppIntent.SetMtp -> {
+                LlmRuntime.mtp = intent.on
+                persist(now = true)
+                preloadIfKeptReady(_state.value.data.model.path)
+            }
+
             is AppIntent.SetLlmKeepAlive -> {
                 persist(now = true)
                 if (intent.mode == LlmKeepAlive.AlwaysOn) {
@@ -333,6 +339,7 @@ class AppViewModel(
         val ram = hostRamBytes()
         data = coerceModelForRam(data, ram)
         LlmRuntime.preference = data.settings.backend
+        LlmRuntime.mtp = data.settings.mtp
         val catalog = GemmaModels.of(data.settings.selectedModel)
         if (modelOnDisk(catalog) && (!data.model.installed || data.model.id != catalog.id)) {
             data = data.copy(model = catalog.toInfo(clock()))
@@ -493,6 +500,8 @@ class AppViewModel(
         is AppIntent.SetLlmBackend -> s.updateSettings { it.copy(backend = intent.backend) }
 
         is AppIntent.SetLlmKeepAlive -> s.updateSettings { it.copy(keepAlive = intent.mode) }
+
+        is AppIntent.SetMtp -> s.updateSettings { it.copy(mtp = intent.on) }
 
         is AppIntent.DownloadTick -> s.copy(
             download = s.download.copy(
@@ -764,6 +773,7 @@ class AppViewModel(
         scope.launch { runCatching { mic.stop() } }
         unloadEngine()
         LlmRuntime.preference = LlmBackend.Auto
+        LlmRuntime.mtp = false
         GemmaModels.all.forEach { catalog ->
             if (modelOwnedByApp(catalog)) deleteModelFiles(catalog)
             else Platform.delete(catalog.partialPath())

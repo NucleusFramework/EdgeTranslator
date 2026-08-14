@@ -153,6 +153,10 @@
     <string name="settings_model_always_on">พร้อมเสมอ</string>
     <string name="settings_model_on_demand_body">โหลดเมื่อแปลครั้งแรก และปล่อยหลังไม่ใช้งาน 5 นาที</string>
     <string name="settings_model_always_on_body">คงโหลดไว้เพื่อให้แปลได้ทันที</string>
+    <string name="settings_mtp">การทำนายหลายโทเคน (ทดลอง)</string>
+    <string name="settings_mtp_off">ปิด</string>
+    <string name="settings_mtp_on">เปิด</string>
+    <string name="settings_mtp_body">ฟีเจอร์ทดลอง ทำนายหลายโทเคนพร้อมกัน บน GPU เร็วขึ้นประมาณสองเท่า</string>
     <string name="settings_model_installed">ติดตั้งแล้ว</string>
     <string name="settings_model_missing">ยังไม่ติดตั้ง</string>
     <string name="settings_model_downloading">กำลังดาวน์โหลด… %1$s</string>
