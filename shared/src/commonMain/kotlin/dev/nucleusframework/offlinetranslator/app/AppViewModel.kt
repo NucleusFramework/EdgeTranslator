@@ -334,6 +334,10 @@ class AppViewModel(
         data = coerceModelForRam(data, ram)
         LlmRuntime.preference = data.settings.backend
         val catalog = GemmaModels.of(data.settings.selectedModel)
+        if (modelOnDisk(catalog) && (!data.model.installed || data.model.id != catalog.id)) {
+            data = data.copy(model = catalog.toInfo(clock()))
+            store.save(data.copy(history = emptyList()))
+        }
         val download = if (modelOnDisk(catalog)) {
             DownloadState(phase = DownloadPhase.Done, bytesDownloaded = catalog.bytes, totalBytes = catalog.bytes)
         } else {
@@ -386,9 +390,16 @@ class AppViewModel(
 
         AppIntent.InstallBack -> s.gotoInstall(s.installStep().previous())
 
-        AppIntent.OpenApp -> s.copy(
-            data = s.data.copy(installed = true, installStep = InstallStep.Download.name),
-        )
+        AppIntent.OpenApp -> {
+            val catalog = GemmaModels.of(s.data.settings.selectedModel)
+            s.copy(
+                data = s.data.copy(
+                    installed = true,
+                    installStep = InstallStep.Download.name,
+                    model = if (modelOnDisk(catalog)) catalog.toInfo(clock()) else s.data.model,
+                ),
+            )
+        }
 
         is AppIntent.GoToStep -> {
             val next = s.gotoInstall(intent.step)
@@ -632,7 +643,18 @@ class AppViewModel(
         val onDisk = modelOnDisk(catalog)
         if (!onDisk && s.data.installed) return s
         if (s.data.settings.selectedModel == id && (onDisk || s.download.running || !s.data.installed)) {
-            return s
+            return if (onDisk && (!s.data.model.installed || s.data.model.id != id)) {
+                s.copy(
+                    data = s.data.copy(model = catalog.toInfo(clock())),
+                    download = DownloadState(
+                        phase = DownloadPhase.Done,
+                        bytesDownloaded = catalog.bytes,
+                        totalBytes = catalog.bytes,
+                    ),
+                )
+            } else {
+                s
+            }
         }
         val next = s.updateSettings { it.copy(selectedModel = id) }
         return if (onDisk) {
