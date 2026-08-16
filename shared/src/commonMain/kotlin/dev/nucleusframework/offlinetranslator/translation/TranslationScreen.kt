@@ -1,7 +1,7 @@
 package dev.nucleusframework.offlinetranslator.translation
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -50,8 +50,12 @@ import androidx.compose.ui.draganddrop.DragAndDropTarget
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -467,17 +471,24 @@ private fun ListeningPane(phase: MicPhase, onIntent: (AppIntent) -> Unit, modifi
 
 @Composable
 private fun MicLevelBars(listening: Boolean) {
-    val levels by LocalMicLevels.current.collectAsState()
-    val bars = levels.ifEmpty { IdleMicBars }
-    val c = MaterialTheme.colorScheme
-    Row(Modifier.fillMaxWidth().height(48.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
+    val levels = LocalMicLevels.current.collectAsState()
+    val color = if (listening) GoogleMicRed else MaterialTheme.colorScheme.outline
+    Canvas(Modifier.fillMaxWidth().height(48.dp)) {
+        val bars = levels.value.ifEmpty { IdleMicBars }
+        val barWidth = 3.dp.toPx()
+        val gap = 3.dp.toPx()
+        val total = bars.size * (barWidth + gap) - gap
+        var x = (size.width - total) / 2f
+        val radius = CornerRadius(2.dp.toPx())
         bars.forEach { level ->
-            val h = animateFloatAsState(4f + level * 40f, label = "bar").value
-            Box(
-                Modifier.padding(horizontal = 1.5.dp).width(3.dp).height(h.dp)
-                    .clip(RoundedCornerShape(2.dp))
-                    .background(if (listening) GoogleMicRed else c.outline),
+            val h = 4.dp.toPx() + level * 40.dp.toPx()
+            drawRoundRect(
+                color = color,
+                topLeft = Offset(x, size.height - h),
+                size = Size(barWidth, h),
+                cornerRadius = radius,
             )
+            x += barWidth + gap
         }
     }
 }
@@ -485,11 +496,20 @@ private fun MicLevelBars(listening: Boolean) {
 @Composable
 private fun MicPulseButton(phase: MicPhase, onIntent: (AppIntent) -> Unit) {
     val listening = phase == MicPhase.Listening
-    val levels by LocalMicLevels.current.collectAsState()
-    val pulse = animateFloatAsState(if (listening) 1f + (levels.lastOrNull() ?: 0f) * 0.25f else 1f, label = "pulse").value
+    val levels = LocalMicLevels.current.collectAsState()
     val c = MaterialTheme.colorScheme
     Box(contentAlignment = Alignment.Center) {
-        Box(Modifier.size((88 * pulse).dp).clip(CircleShape).background(GoogleMicRed.copy(alpha = 0.16f)))
+        Box(
+            Modifier
+                .size(88.dp)
+                .graphicsLayer {
+                    val scale = if (listening) 1f + (levels.value.lastOrNull() ?: 0f) * 0.25f else 1f
+                    scaleX = scale
+                    scaleY = scale
+                }
+                .clip(CircleShape)
+                .background(GoogleMicRed.copy(alpha = 0.16f)),
+        )
         Surface(
             onClick = { onIntent(AppIntent.ToggleMic) },
             color = if (listening) GoogleMicRed else c.surfaceContainerHighest,
