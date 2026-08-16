@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+REPO="NucleusFramework/EdgeTranslator"
+API_URL="https://api.github.com/repos/${REPO}/releases/latest"
+
+# Display name of the installed bundle. Matches compose `packageName`.
+app_name="Edge Translator"
+# Zip / GraalVM image and the former project name; still removed on upgrade.
+legacy_app_names=("EdgeTranslator" "OfflineTranslator")
+
+# Map the host architecture to the published asset suffix (arm64 / x64).
+arch="$(uname -m)"
+case "$arch" in
+  arm64)  mac_arch="arm64" ;;
+  x86_64) mac_arch="x64" ;;
+  *)
+    echo "Unsupported CPU architecture: $arch"
+    exit 1
+    ;;
+esac
+
+# Resolve the versioned .zip asset (e.g. edgetranslator-1.1.0-mac-arm64.zip)
+# from the latest release. The trailing `$` keeps us from matching the
+# companion `.zip.blockmap`.
+echo "Querying latest release metadata from GitHub..."
+release_json="$(curl -fsSL "${API_URL}")"
+
+echo "Looking for macOS .zip asset for architecture: ${mac_arch}..."
+mac_zip_url="$(printf '%s\n' "${release_json}" \
+  | grep -Eo "https://github\.com/${REPO}/releases/download/[^\"]+" \
+  | grep -E -- "-mac-${mac_arch}\.zip$" \
+  | head -n 1 || true)"
+
+if [ -z "${mac_zip_url}" ]; then
+  echo "Could not find a macOS .zip asset for ${mac_arch} in the latest release."
+  exit 1
+fi
+
+tmpdir="$(mktemp -d -t edgetranslator)"
+tmpfile="$tmpdir/app.zip"
+
+cleanup() {
+  cd "$HOME" || true
+  rm -rf "$tmpdir" 2>/dev/null || true
+}
+trap cleanup EXIT
+
+echo "Downloading $app_name ..."
+curl -fL --output "$tmpfile" --progress-bar "$mac_zip_url"
+
+# Quit any running instance (current and legacy names) before replacing it.
+echo "Quitting any running instance ..."
+for name in "$app_name" "${legacy_app_names[@]}"; do
+  osascript -e "quit app \"${name}\"" 2>/dev/null || true
+  pkill -x "${name}" 2>/dev/null || true
+done
+
+# Remove any previous installation (current and legacy names) from both standard locations.
+for name in "$app_name" "${legacy_app_names[@]}"; do
+  for prev in "/Applications/${name}.app" "$HOME/Applications/${name}.app"; do
+    if [ -d "$prev" ]; then
+      echo "Removing previous version: $prev"
+      rm -rf "$prev"
+    fi
+  done
+done
+
+if [ -w /Applications ]; then
+  install_dir="/Applications"
+else
+  mkdir -p "$HOME/Applications"
+  install_dir="$HOME/Applications"
+fi
+
+# The .zip may wrap the bundle under the GraalVM image name (EdgeTranslator.app)
+# while the .dmg ships it as Edge Translator.app. Extract, then install under
+# the canonical package name so both paths produce the same bundle.
+extract_dir="$tmpdir/extract"
+mkdir -p "$extract_dir"
+echo "Extracting ..."
+ditto -x -k "$tmpfile" "$extract_dir"
+
+src_app="$(find "$extract_dir" -maxdepth 1 -name '*.app' -type d | head -n 1)"
+if [ -z "$src_app" ]; then
+  echo "No .app bundle found in the downloaded archive."
+  exit 1
+fi
+
+dest_app="${install_dir}/${app_name}.app"
+echo "Installing to $dest_app ..."
+rm -rf "$dest_app"
+mv "$src_app" "$dest_app"
+
+# Quarantine bits are not set by curl in current macOS versions,
+# but this may change in the future.
+if command -v xattr >/dev/null 2>&1; then
+  xattr -r -d com.apple.quarantine "$dest_app" 2>/dev/null || true
+fi
+
+open "$dest_app"
+
+exit 0

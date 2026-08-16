@@ -88,7 +88,19 @@ Gemma models are covered by Google’s [Gemma license](https://ai.google.dev/gem
 
 ## Install
 
-Prebuilt packages (DMG, NSIS, Deb) are published on [GitHub Releases](https://github.com/NucleusFramework/EdgeTranslator/releases). Packaged builds update themselves from there.
+macOS:
+
+```bash
+curl -L https://raw.githubusercontent.com/NucleusFramework/EdgeTranslator/main/download/launch.mac | bash
+```
+
+Linux (Debian / Ubuntu):
+
+```bash
+curl -L https://raw.githubusercontent.com/NucleusFramework/EdgeTranslator/main/download/launch.linux | bash
+```
+
+Prebuilt packages (DMG, NSIS, Deb) are also on [GitHub Releases](https://github.com/NucleusFramework/EdgeTranslator/releases). Packaged builds update themselves from there.
 
 ## Running from source
 
