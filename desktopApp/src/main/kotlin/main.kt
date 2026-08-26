@@ -95,6 +95,7 @@ fun main(args: Array<String>) {
                 title = "Edge Translator",
                 icon = if (Platform.Current == Platform.Windows) windowIconPainter() else null,
                 minimumSize = DpSize(500.dp, 450.dp),
+                nativeContextMenu = true,
             ) {
                 val windowScope = this
                 // The colour behind everything Compose does not paint (live
