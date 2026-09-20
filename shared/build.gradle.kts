@@ -109,6 +109,14 @@ compose.resources {
     packageOfResClass = "offlinetranslator.shared.generated.resources"
 }
 
+// LiteRtWindowsSmokeTest needs a real .litertlm. Forward the path to the test
+// JVM so -Dlitertlm.test.model works from the command line, not just the env var.
+val litertTestModel = providers.systemProperty("litertlm.test.model")
+
+tasks.withType<Test>().configureEach {
+    litertTestModel.orNull?.let { systemProperty("litertlm.test.model", it) }
+}
+
 val stabilityConfig = rootProject.layout.projectDirectory.file("config/stability-config.conf")
 
 composeCompiler {
