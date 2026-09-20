@@ -169,7 +169,7 @@ internal actual class NativeLlm actual constructor() {
                 samplerConfig = SamplerConfig(topK = 1, topP = 1.0, temperature = 0.2),
                 thinkingConfig = ThinkingConfig(enableThinking = false),
                 channels = emptyList(),
-                maxOutputToken = 1024,
+                maxOutputToken = GemmaModel.MAX_OUTPUT_TOKENS,
             ),
         )
         conversation = next
