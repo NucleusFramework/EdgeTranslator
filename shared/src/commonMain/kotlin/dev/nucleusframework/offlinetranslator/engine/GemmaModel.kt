@@ -105,11 +105,16 @@ object GemmaModel {
     const val CONTEXT_TOKENS = 32_768
     const val MAX_NUM_TOKENS = CONTEXT_TOKENS / 2 - 5_000
 
-    /**
-     * 0.14 ConversationConfig has no maxOutputToken, so the source field must leave
-     * room for the system prompt and unbounded decode inside [MAX_NUM_TOKENS].
-     */
+    /** The source field has to leave room for the system prompt and the decode inside [MAX_NUM_TOKENS]. */
     const val MAX_INPUT_CHARS = 8_000
+
+    /**
+     * A translation runs about as long as its source, so the output gets the same
+     * budget as the input. A token is never shorter than a character, so capping at
+     * [MAX_INPUT_CHARS] tokens cannot truncate a translation of a capped input, and
+     * still fits inside [MAX_NUM_TOKENS] alongside the prompt.
+     */
+    const val MAX_OUTPUT_TOKENS = MAX_INPUT_CHARS
 
     fun capInput(text: String): String = if (text.length <= MAX_INPUT_CHARS) text else text.take(MAX_INPUT_CHARS)
 

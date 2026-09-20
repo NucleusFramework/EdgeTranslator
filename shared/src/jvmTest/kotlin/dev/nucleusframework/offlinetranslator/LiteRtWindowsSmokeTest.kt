@@ -92,7 +92,6 @@ class LiteRtWindowsSmokeTest {
         samplerConfig = SamplerConfig(topK = 1, topP = 1.0, temperature = 0.2),
         thinkingConfig = ThinkingConfig(enableThinking = false),
         channels = emptyList(),
-        maxOutputToken = 1024,
     )
 
     /** LiteRT's Windows GPU path dlopens the DXC pair the desktop app ships. */
