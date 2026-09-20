@@ -773,10 +773,13 @@ class AppViewModel(
         scope.launch { runCatching { mic.stop() } }
         unloadEngine()
         LlmRuntime.preference = LlmBackend.Auto
-        LlmRuntime.mtp = false
+        LlmRuntime.mtp = true
         GemmaModels.all.forEach { catalog ->
-            if (modelOwnedByApp(catalog)) deleteModelFiles(catalog)
-            else Platform.delete(catalog.partialPath())
+            if (modelOwnedByApp(catalog)) {
+                deleteModelFiles(catalog)
+            } else {
+                Platform.delete(catalog.partialPath())
+            }
         }
         PiperVoices.all().forEach { deleteVoiceFiles(it.id) }
         wipeDownloadDirs()
@@ -1070,10 +1073,12 @@ class AppViewModel(
                     tts.pause()
                     mutate { it.copy(translation = it.translation.copy(speakPaused = true)) }
                 }
+
                 t.speakPaused -> {
                     tts.resume()
                     mutate { it.copy(translation = it.translation.copy(speakPaused = false)) }
                 }
+
                 else -> stopSpeak()
             }
             return
@@ -1564,8 +1569,9 @@ class AppViewModel(
         val s = _state.value
         if (!sameTranslateInput(s.translation, text, from, to)) return
         mutate {
-            if (!sameTranslateInput(it.translation, text, from, to)) it
-            else {
+            if (!sameTranslateInput(it.translation, text, from, to)) {
+                it
+            } else {
                 it.copy(
                     translation = it.translation.copy(
                         targetText = "",
@@ -1588,8 +1594,9 @@ class AppViewModel(
                 modelPath = s.data.model.path,
                 onPartial = { partial ->
                     mutate { current ->
-                        if (!sameTranslateInput(current.translation, text, from, to)) current
-                        else {
+                        if (!sameTranslateInput(current.translation, text, from, to)) {
+                            current
+                        } else {
                             current.copy(
                                 translation = current.translation.copy(
                                     targetText = partial,
@@ -1604,8 +1611,9 @@ class AppViewModel(
         )
         mutate { current ->
             val t = current.translation
-            if (!sameTranslateInput(t, text, from, to)) current
-            else {
+            if (!sameTranslateInput(t, text, from, to)) {
+                current
+            } else {
                 when (result) {
                     TranslationResult.Unavailable -> t.copy(
                         status = TranslationStatus.WaitingEngine,
@@ -1669,8 +1677,13 @@ class AppViewModel(
         val s = _state.value
         if (s.proofread.text != text) return
         mutate {
-            if (it.proofread.text != text) it
-            else it.copy(proofread = it.proofread.copy(result = "", status = TranslationStatus.WaitingEngine, error = null, latencyMs = null))
+            if (it.proofread.text != text) {
+                it
+            } else {
+                it.copy(
+                    proofread = it.proofread.copy(result = "", status = TranslationStatus.WaitingEngine, error = null, latencyMs = null),
+                )
+            }
         }
         val result = translator.translate(
             TranslationRequest(
@@ -1681,16 +1694,20 @@ class AppViewModel(
                 mode = TranslationMode.Proofread,
                 onPartial = { partial ->
                     mutate {
-                        if (it.proofread.text != text) it
-                        else it.copy(proofread = it.proofread.copy(result = partial, status = TranslationStatus.WaitingEngine, error = null))
+                        if (it.proofread.text != text) {
+                            it
+                        } else {
+                            it.copy(proofread = it.proofread.copy(result = partial, status = TranslationStatus.WaitingEngine, error = null))
+                        }
                     }
                 },
             ),
         )
         mutate { current ->
             val p = current.proofread
-            if (p.text != text) current
-            else {
+            if (p.text != text) {
+                current
+            } else {
                 when (result) {
                     TranslationResult.Unavailable -> p.copy(
                         status = TranslationStatus.WaitingEngine,

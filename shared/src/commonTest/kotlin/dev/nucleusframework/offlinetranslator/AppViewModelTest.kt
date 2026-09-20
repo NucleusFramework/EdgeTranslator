@@ -27,8 +27,8 @@ import dev.nucleusframework.offlinetranslator.domain.ModelInfo
 import dev.nucleusframework.offlinetranslator.domain.UiLanguage
 import dev.nucleusframework.offlinetranslator.domain.paragraphCount
 import dev.nucleusframework.offlinetranslator.engine.CatalogModel
-import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.DownloadedModel
+import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.IdleDownloader
 import dev.nucleusframework.offlinetranslator.engine.ImagePicker
 import dev.nucleusframework.offlinetranslator.engine.MicRecorder
@@ -295,15 +295,15 @@ class AppViewModelTest {
         vm.onIntent(AppIntent.SetLangNameStyle(LangNameStyle.Native))
         vm.onIntent(AppIntent.SetLlmBackend(LlmBackend.Cpu))
         vm.onIntent(AppIntent.SetLlmKeepAlive(LlmKeepAlive.AlwaysOn))
-        vm.onIntent(AppIntent.SetMtp(true))
+        vm.onIntent(AppIntent.SetMtp(false))
         val loaded = store.load()
         assertEquals(LlmModel.Precise, loaded.settings.selectedModel)
         assertEquals(UiLanguage.En, loaded.settings.uiLanguage)
         assertEquals(LangNameStyle.Native, loaded.settings.langNames)
         assertEquals(LlmBackend.Cpu, loaded.settings.backend)
         assertEquals(LlmKeepAlive.AlwaysOn, loaded.settings.keepAlive)
-        assertTrue(loaded.settings.mtp)
-        vm.onIntent(AppIntent.SetMtp(false))
+        assertFalse(loaded.settings.mtp)
+        vm.onIntent(AppIntent.SetMtp(true))
     }
 
     @Test
@@ -721,12 +721,12 @@ class AppViewModelTest {
     }
 
     @Test
-    fun mtpSurvivesRoundTripAndDefaultsOffForOlderSnapshots() {
-        val on = seedData().let { it.copy(settings = it.settings.copy(mtp = true)) }
-        assertTrue(decodeSnapshot(encodeSnapshot(on)).settings.mtp)
+    fun mtpSurvivesRoundTripAndDefaultsOnForOlderSnapshots() {
+        val off = seedData().let { it.copy(settings = it.settings.copy(mtp = false)) }
+        assertFalse(decodeSnapshot(encodeSnapshot(off)).settings.mtp)
 
-        val legacy = encodeSnapshot(on).lineSequence().filterNot { it.startsWith("mtp=") }.joinToString("\n")
-        assertFalse(decodeSnapshot(legacy).settings.mtp)
+        val legacy = encodeSnapshot(off).lineSequence().filterNot { it.startsWith("mtp=") }.joinToString("\n")
+        assertTrue(decodeSnapshot(legacy).settings.mtp)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

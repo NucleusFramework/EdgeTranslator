@@ -13,7 +13,7 @@ object LlmRuntime {
 
     /** Gemma 4 MTP. Read when a new Engine is created. */
     @Volatile
-    var mtp: Boolean = false
+    var mtp: Boolean = true
 
     private val _accelerator = MutableStateFlow(LlmAccelerator.None)
     val accelerator: StateFlow<LlmAccelerator> = _accelerator.asStateFlow()
@@ -37,11 +37,7 @@ object LlmRuntime {
     }
 }
 
-internal data class BackendPick(
-    val accelerator: LlmAccelerator,
-    val gpuAvailable: Boolean?,
-    val npuAvailable: Boolean? = null,
-)
+internal data class BackendPick(val accelerator: LlmAccelerator, val gpuAvailable: Boolean?, val npuAvailable: Boolean? = null)
 
 internal fun pickBackend(
     preference: LlmBackend,
