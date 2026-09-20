@@ -18,11 +18,9 @@ internal sealed class WorkerEvent {
     data object Ready : WorkerEvent()
 }
 
-internal fun encodeWorkerField(text: String): String =
-    Base64.getEncoder().encodeToString(text.toByteArray(Charsets.UTF_8))
+internal fun encodeWorkerField(text: String): String = Base64.getEncoder().encodeToString(text.toByteArray(Charsets.UTF_8))
 
-internal fun decodeWorkerField(b64: String): String =
-    String(Base64.getDecoder().decode(b64), Charsets.UTF_8)
+internal fun decodeWorkerField(b64: String): String = String(Base64.getDecoder().decode(b64), Charsets.UTF_8)
 
 internal fun parseWorkerLine(line: String): WorkerEvent? {
     val trimmed = line.trimEnd('\r')
@@ -44,11 +42,7 @@ internal class LinuxGpuWorkerProcess(
     private val reader: BufferedReader,
     private val writer: BufferedWriter,
 ) {
-    suspend fun generate(
-        systemInstruction: String,
-        userMessage: String,
-        onPartial: (String) -> Unit,
-    ): String = withContext(IoDispatcher) {
+    suspend fun generate(systemInstruction: String, userMessage: String, onPartial: (String) -> Unit): String = withContext(IoDispatcher) {
         writer.write("GEN\n")
         writer.write("SYSTEM ${encodeWorkerField(systemInstruction)}\n")
         writer.write("USER ${encodeWorkerField(userMessage)}\n")
@@ -63,8 +57,11 @@ internal class LinuxGpuWorkerProcess(
                     last = event.text
                     onPartial(last)
                 }
+
                 is WorkerEvent.Done -> return@withContext event.text
+
                 is WorkerEvent.Failed -> error(event.message)
+
                 else -> Unit
             }
         }
@@ -73,7 +70,10 @@ internal class LinuxGpuWorkerProcess(
     }
 
     fun destroy() {
-        runCatching { writer.write("QUIT\n"); writer.flush() }
+        runCatching {
+            writer.write("QUIT\n")
+            writer.flush()
+        }
         process.destroy()
     }
 
@@ -148,6 +148,7 @@ fun runGpuWorker(args: Array<String>) {
         while (true) {
             when (input.readLine() ?: break) {
                 "QUIT" -> break
+
                 "GEN" -> {
                     var system = ""
                     var user = ""

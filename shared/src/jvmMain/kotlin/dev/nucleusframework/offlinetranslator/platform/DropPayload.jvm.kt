@@ -31,20 +31,21 @@ internal actual fun readDropPayload(event: DragAndDropEvent): DropPayload {
             val bytes = runCatching { File(choice.path).readBytes() }.getOrNull()
             if (bytes == null || bytes.isEmpty()) DropPayload(unsupported = true) else DropPayload(image = bytes)
         }
+
         is DropChoice.TextPath -> {
             val body = Platform.readText(choice.path)
             if (body.isNullOrBlank()) DropPayload(unsupported = true) else DropPayload(text = body)
         }
+
         is DropChoice.Clipboard -> DropPayload(text = choice.text)
+
         DropChoice.Unsupported -> DropPayload(unsupported = true)
+
         DropChoice.Empty -> DropPayload()
     }
 }
 
-private fun flavorString(
-    transferable: java.awt.datatransfer.Transferable,
-    flavor: DataFlavor,
-): String? {
+private fun flavorString(transferable: java.awt.datatransfer.Transferable, flavor: DataFlavor): String? {
     if (!transferable.isDataFlavorSupported(flavor)) return null
     return runCatching { transferable.getTransferData(flavor) as? String }.getOrNull()
 }

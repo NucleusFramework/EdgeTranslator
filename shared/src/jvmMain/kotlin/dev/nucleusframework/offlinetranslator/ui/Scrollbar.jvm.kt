@@ -21,7 +21,7 @@ internal actual fun VerticalContentScrollbar(state: ScrollState, modifier: Modif
 }
 
 @Composable
-private fun ThemedScrollbar(adapter: ScrollbarAdapter, modifier: Modifier) {
+private fun ThemedScrollbar(adapter: ScrollbarAdapter, modifier: Modifier = Modifier) {
     val onSurface = MaterialTheme.colorScheme.onSurface
     VerticalScrollbar(
         adapter = adapter,

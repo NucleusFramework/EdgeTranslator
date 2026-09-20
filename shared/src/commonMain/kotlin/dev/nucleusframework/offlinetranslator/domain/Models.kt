@@ -82,8 +82,7 @@ fun LlmModel.minRamGib(): Int = when (this) {
  * `totalRamBytes <= 0` means the probe failed — do not lock the user out.
  * A 1 GiB slack accepts machines sold as 8/16 GB that report 7.x / 15.x.
  */
-fun LlmModel.allowedOn(totalRamBytes: Long): Boolean =
-    totalRamBytes <= 0L || totalRamBytes >= (minRamGib() - 1L) * GIB_BYTES
+fun LlmModel.allowedOn(totalRamBytes: Long): Boolean = totalRamBytes <= 0L || totalRamBytes >= (minRamGib() - 1L) * GIB_BYTES
 
 enum class HistoryFilter { All, Pinned, Last7Days }
 
@@ -135,8 +134,8 @@ data class UserSettings(
     val selectedModel: LlmModel = LlmModel.Fast,
     val backend: LlmBackend = LlmBackend.Auto,
     val keepAlive: LlmKeepAlive = LlmKeepAlive.OnDemand,
-    /** Gemma 4 multi-token prediction. Off by default — opt in from Settings. */
-    val mtp: Boolean = false,
+    /** Gemma 4 multi-token prediction. On by default — opt out from Settings. */
+    val mtp: Boolean = true,
     val langNames: LangNameStyle = LangNameStyle.System,
     val selectedVoices: Map<String, String> = emptyMap(),
 )

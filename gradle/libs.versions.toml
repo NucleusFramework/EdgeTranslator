@@ -1,35 +1,35 @@
 [versions]
 
-kotlin = "2.4.10"
+kotlin = "2.4.20"
 compose-multiplatform = "1.12.0"
 material3 = "1.12.0-alpha03"
 agp = "9.1.1"
-androidx-activityCompose = "1.12.0"
+androidx-activityCompose = "1.13.0"
 kotlinx-coroutines = "1.11.0"
-ktor = "3.5.2"
+ktor = "3.6.0"
 androidx-lifecycle = "2.11.0"
 androidx-nav3 = "1.2.0-alpha02"
 nav3-browser = "1.1.0"
-metro = "1.4.2"
+metro = "1.4.4"
 multiplatformSettings = "1.3.0"
 kotlinx-datetime = "0.8.0"
-sqlDelight = "2.3.2"
-materialKolor = "5.0.0"
-nucleus = "2.5.7"
-# 0.15.0+ litertlm-jvm aborts the JVM on Windows CPU generate (0xC0000409 in
-# litertlm_jni.dll nativeGenerateContent / sendMessage). 0.14.0 is the last
-# good desktop JNI. https://github.com/google-ai-edge/LiteRT-LM/issues/3230
-litertlm = "0.14.0"
-filekit = "0.15.0"
+sqlDelight = "2.4.0"
+materialKolor = "5.0.1"
+nucleus = "2.6.0-dev-202609200546"
+# 0.15.0/0.16.x litertlm-jvm aborted the JVM on Windows CPU generate (0xC0000409
+# in litertlm_jni.dll nativeGenerateContent / sendMessage).
+# https://github.com/google-ai-edge/LiteRT-LM/issues/3230
+litertlm = "0.17.1"
+filekit = "0.16.0"
 structured-coroutines = "1.1.1"
 piper-jni = "1.4.2"
 detekt = "2.0.0-alpha.6"
 ktlint-gradle = "14.2.0"
 ktlint-cli = "1.8.0"
-compose-rules = "0.6.4"
+compose-rules = "0.6.6"
 # Built against Kotlin 2.4.0; 2.4.10 is the same compiler family.
-stability-analyzer = "0.12.0"
-aboutLibraries = "15.0.4"
+stability-analyzer = "0.14.0"
+aboutLibraries = "15.2.0"
 
 [libraries]
 

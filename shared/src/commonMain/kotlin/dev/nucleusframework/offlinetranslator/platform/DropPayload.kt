@@ -2,11 +2,7 @@ package dev.nucleusframework.offlinetranslator.platform
 
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 
-internal data class DropPayload(
-    val text: String? = null,
-    val image: ByteArray? = null,
-    val unsupported: Boolean = false,
-)
+internal data class DropPayload(val text: String? = null, val image: ByteArray? = null, val unsupported: Boolean = false)
 
 internal sealed interface DropChoice {
     data class ImagePath(val path: String) : DropChoice

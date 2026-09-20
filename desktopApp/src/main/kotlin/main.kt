@@ -29,6 +29,7 @@ import androidx.compose.ui.window.rememberWindowState
 import dev.nucleusframework.application.nucleusApplication
 import dev.nucleusframework.core.runtime.Platform
 import dev.nucleusframework.offlinetranslator.App
+import dev.nucleusframework.offlinetranslator.engine.runGpuWorker
 import dev.nucleusframework.offlinetranslator.main.BrandLabel
 import dev.nucleusframework.offlinetranslator.main.DesktopUpdate
 import dev.nucleusframework.offlinetranslator.main.GitHubButton
@@ -41,6 +42,7 @@ import dev.nucleusframework.offlinetranslator.main.UpdateButton
 import dev.nucleusframework.offlinetranslator.main.UpdateRestartDialog
 import dev.nucleusframework.offlinetranslator.main.rememberDesktopUpdate
 import dev.nucleusframework.offlinetranslator.main.windowIconPainter
+import dev.nucleusframework.offlinetranslator.platform.InstallDesktopFilePicker
 import dev.nucleusframework.offlinetranslator.theme.rememberEdgeColorScheme
 import dev.nucleusframework.window.ControlButtonsDirection
 import dev.nucleusframework.window.DecoratedWindowScope
@@ -53,8 +55,6 @@ import dev.nucleusframework.window.WindowScaffold
 import dev.nucleusframework.window.macOSLargeCornerRadius
 import dev.nucleusframework.window.material.MaterialDecoratedWindow
 import dev.nucleusframework.window.windowDragArea
-import dev.nucleusframework.offlinetranslator.engine.runGpuWorker
-import dev.nucleusframework.offlinetranslator.platform.InstallDesktopFilePicker
 import io.github.vinceglb.filekit.FileKit
 
 private const val DESKTOP_DENSITY_SCALE = 0.75f

@@ -211,9 +211,12 @@ val resolveLinuxGpuLibs = tasks.register("resolveLinuxGpuLibs") {
         // (nvidia-gpucomp SIGILL) and uses CPU sampling on a GPU engine.
         val sampler = out.resolve("libLiteRtTopKWebGpuSampler.so")
         val gcc = ProcessBuilder(
-            "gcc", "-shared", "-fPIC",
+            "gcc",
+            "-shared",
+            "-fPIC",
             "-Wl,-soname,libLiteRtTopKWebGpuSampler.so",
-            "-o", sampler.absolutePath,
+            "-o",
+            sampler.absolutePath,
             stub.asFile.absolutePath,
         ).inheritIO().start().waitFor()
         check(gcc == 0 && sampler.isFile) { "gcc failed to build WebGPU sampler stub" }

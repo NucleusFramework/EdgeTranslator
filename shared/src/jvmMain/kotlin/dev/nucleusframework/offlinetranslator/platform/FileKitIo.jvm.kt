@@ -10,6 +10,7 @@ import io.github.vinceglb.filekit.dialogs.FileKitDialogSettings
 import io.github.vinceglb.filekit.dialogs.FileKitType
 import io.github.vinceglb.filekit.dialogs.openFilePicker
 import io.github.vinceglb.filekit.readBytes
+import dev.nucleusframework.core.runtime.Platform as NucleusPlatform
 
 /**
  * Tao is not an AWT window. On Linux the XDG portal file chooser stays blank
@@ -41,33 +42,33 @@ internal actual suspend fun filekitPickImage(): ByteArray? {
     }
 }
 
-private class OwnedFileKitDialog(
-    val settings: FileKitDialogSettings,
-    private val closer: AutoCloseable?,
-) : AutoCloseable {
+private class OwnedFileKitDialog(val settings: FileKitDialogSettings, private val closer: AutoCloseable?) : AutoCloseable {
     override fun close() {
         closer?.close()
     }
 }
 
 private fun NucleusWindow.fileKitDialog(): OwnedFileKitDialog {
-    val tao = unsafe.taoWindow
-    if (tao != null) {
-        when (val parent = tao.xdgPortalParent()) {
-            is XdgPortalParent.X11 -> return OwnedFileKitDialog(
-                FileKitDialogSettings(parent = FileKitDialogParent.x11(parent.xid)),
-                closer = null,
-            )
-            is XdgPortalParent.Wayland -> return OwnedFileKitDialog(
-                FileKitDialogSettings(parent = FileKitDialogParent.wayland(parent.handle)),
-                closer = parent,
-            )
-            null -> Unit
-        }
+    // Nucleus 2.6 retired the AWT backend: unsafe only exposes the Tao window.
+    val tao = unsafe.taoWindow ?: return OwnedFileKitDialog(FileKitDialogSettings(), closer = null)
+    when (val parent = tao.xdgPortalParent()) {
+        is XdgPortalParent.X11 -> return OwnedFileKitDialog(
+            FileKitDialogSettings(parent = FileKitDialogParent.x11(parent.xid)),
+            closer = null,
+        )
+
+        is XdgPortalParent.Wayland -> return OwnedFileKitDialog(
+            FileKitDialogSettings(parent = FileKitDialogParent.wayland(parent.handle)),
+            closer = parent,
+        )
+
+        null -> Unit
     }
-    unsafe.awtWindow?.let { awt ->
+    // Windows: TaoWindow.nativeHandle is the HWND. macOS has no FileKit parent yet
+    // (nsWindowHandle is an NSWindow*, FileKit has no macos() factory).
+    tao.nativeHandle.takeIf { NucleusPlatform.Current == NucleusPlatform.Windows && it != 0L }?.let { hwnd ->
         return OwnedFileKitDialog(
-            FileKitDialogSettings(parent = FileKitDialogParent.awt(awt)),
+            FileKitDialogSettings(parent = FileKitDialogParent.windows(hwnd)),
             closer = null,
         )
     }

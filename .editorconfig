@@ -21,5 +21,5 @@ ktlint_standard_filename = disabled
 max_line_length = 140
 
 # compose-rules (https://mrmans0n.github.io/compose-rules)
-compose_allowed_composition_locals = LocalHostHasTitleBar,LocalWindowDrag,LocalSystemMeters,LocalThemeIsDark
+compose_allowed_composition_locals = LocalHostHasTitleBar,LocalWindowDrag,LocalSystemMeters,LocalThemeIsDark,LocalMicLevels
 compose_check_modifiers_for_visibility = only_public

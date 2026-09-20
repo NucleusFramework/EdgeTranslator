@@ -21,11 +21,11 @@ import offlinetranslator.shared.generated.resources.download_log_huggingface
 import offlinetranslator.shared.generated.resources.download_log_ready
 import offlinetranslator.shared.generated.resources.download_log_received
 import offlinetranslator.shared.generated.resources.download_log_transfer
+import offlinetranslator.shared.generated.resources.msg_drop_unsupported
 import offlinetranslator.shared.generated.resources.msg_history_disabled
 import offlinetranslator.shared.generated.resources.msg_mic_failed
 import offlinetranslator.shared.generated.resources.msg_mic_unavailable
 import offlinetranslator.shared.generated.resources.msg_nothing_to_save
-import offlinetranslator.shared.generated.resources.msg_drop_unsupported
 import offlinetranslator.shared.generated.resources.msg_tts_failed
 import offlinetranslator.shared.generated.resources.msg_tts_unavailable
 import org.jetbrains.compose.resources.stringResource

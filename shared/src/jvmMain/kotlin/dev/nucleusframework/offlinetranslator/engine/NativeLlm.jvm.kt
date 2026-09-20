@@ -10,8 +10,7 @@ import com.google.ai.edge.litertlm.EngineConfig
 import com.google.ai.edge.litertlm.ExperimentalApi
 import com.google.ai.edge.litertlm.ExperimentalFlags
 import com.google.ai.edge.litertlm.SamplerConfig
-// litertlm-jvm 0.14.0 has no ThinkingConfig / maxOutputToken (added in 0.15+).
-// import com.google.ai.edge.litertlm.ThinkingConfig
+import com.google.ai.edge.litertlm.ThinkingConfig
 import dev.nucleusframework.nativehttp.ktor.installNativeSsl
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
 import io.ktor.client.HttpClient
@@ -51,12 +50,7 @@ internal actual class NativeLlm actual constructor() {
         return loadInProcess(modelPath, cacheDir, threads, backend)
     }
 
-    internal fun loadInProcess(
-        modelPath: String,
-        cacheDir: String,
-        threads: Int,
-        backend: LlmBackend,
-    ): LlmAccelerator {
+    internal fun loadInProcess(modelPath: String, cacheDir: String, threads: Int, backend: LlmBackend): LlmAccelerator {
         loadGpuNativeLibs()
         val pick = pickBackend(
             preference = backend,
@@ -173,10 +167,9 @@ internal actual class NativeLlm actual constructor() {
             ConversationConfig(
                 systemInstruction = Contents.of(systemInstruction),
                 samplerConfig = SamplerConfig(topK = 1, topP = 1.0, temperature = 0.2),
-                // 0.14.0 ConversationConfig: thinkingConfig / maxOutputToken do not exist yet.
-                // thinkingConfig = ThinkingConfig(enableThinking = false),
+                thinkingConfig = ThinkingConfig(enableThinking = false),
                 channels = emptyList(),
-                // maxOutputToken = 1024,
+                maxOutputToken = 1024,
             ),
         )
         conversation = next
@@ -241,27 +234,23 @@ private fun loadGpuNativeLibs() {
     }
 }
 
-private fun linuxNativeTeardownUnsafe(): Boolean =
-    linuxGpuTeardownUnsafe(System.getProperty("os.name").orEmpty(), linuxNvidiaPresent())
+private fun linuxNativeTeardownUnsafe(): Boolean = linuxGpuTeardownUnsafe(System.getProperty("os.name").orEmpty(), linuxNvidiaPresent())
 
-internal fun linuxNvidiaPresent(): Boolean =
-    sequenceOf("/dev/nvidiactl", "/dev/nvidia0", "/proc/driver/nvidia/version")
-        .any { java.io.File(it).exists() }
+internal fun linuxNvidiaPresent(): Boolean = sequenceOf("/dev/nvidiactl", "/dev/nvidia0", "/proc/driver/nvidia/version")
+    .any { java.io.File(it).exists() }
 
 internal fun linuxGpuCompanionLibs(): List<String> = listOf(
     "libOpenCL.so",
     "libLiteRtTopKWebGpuSampler.so",
 )
 
-internal fun inGpuWorkerProcess(): Boolean =
-    System.getProperty("edgetranslator.gpu.worker") == "1" ||
-        System.getenv("EDGE_TRANSLATOR_GPU_WORKER") == "1"
+internal fun inGpuWorkerProcess(): Boolean = System.getProperty("edgetranslator.gpu.worker") == "1" ||
+    System.getenv("EDGE_TRANSLATOR_GPU_WORKER") == "1"
 
 internal fun hasMultimodalPayload(audioWav: ByteArray?, image: ByteArray?): Boolean =
     (audioWav != null && audioWav.isNotEmpty()) || (image != null && image.isNotEmpty())
 
-private fun appResourcesDir(): java.io.File? =
-    System.getProperty("compose.application.resources.dir")?.let { java.io.File(it) }
+private fun appResourcesDir(): java.io.File? = System.getProperty("compose.application.resources.dir")?.let { java.io.File(it) }
 
 internal actual fun createHttpClient(): HttpClient = HttpClient(OkHttp) {
     followRedirects = true

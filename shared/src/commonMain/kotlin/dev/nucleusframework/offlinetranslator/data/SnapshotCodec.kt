@@ -76,7 +76,7 @@ internal fun decodeSnapshot(text: String): AppData {
     var selectedModel = LlmModel.Fast
     var backend = LlmBackend.Auto
     var keepAlive = LlmKeepAlive.OnDemand
-    var mtp = false
+    var mtp = true
     var langNames = LangNameStyle.System
     var selectedVoices = emptyMap<String, String>()
     var modelId = LlmModel.Fast

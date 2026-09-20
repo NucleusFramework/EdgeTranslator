@@ -74,10 +74,8 @@ import dev.nucleusframework.offlinetranslator.domain.paragraphCount
 import dev.nucleusframework.offlinetranslator.engine.GemmaModel
 import dev.nucleusframework.offlinetranslator.engine.MIC_BARS
 import dev.nucleusframework.offlinetranslator.engine.PiperVoices
+import dev.nucleusframework.offlinetranslator.platform.Spellchecked
 import dev.nucleusframework.offlinetranslator.platform.readDropPayload
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import dev.nucleusframework.offlinetranslator.ui.Chip
 import dev.nucleusframework.offlinetranslator.ui.ClearTextButton
 import dev.nucleusframework.offlinetranslator.ui.FilledPill
@@ -86,6 +84,9 @@ import dev.nucleusframework.offlinetranslator.ui.SectionLabel
 import dev.nucleusframework.offlinetranslator.ui.TwoPane
 import dev.nucleusframework.offlinetranslator.ui.VerticalContentScrollbar
 import dev.nucleusframework.offlinetranslator.ui.languageLabel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import offlinetranslator.shared.generated.resources.Res
 import offlinetranslator.shared.generated.resources.action_cancel
 import offlinetranslator.shared.generated.resources.action_copied
@@ -97,13 +98,13 @@ import offlinetranslator.shared.generated.resources.action_saved
 import offlinetranslator.shared.generated.resources.alternatives_header
 import offlinetranslator.shared.generated.resources.cd_dictate
 import offlinetranslator.shared.generated.resources.cd_pick_image
-import offlinetranslator.shared.generated.resources.drop_text_or_image
-import offlinetranslator.shared.generated.resources.image_reading
 import offlinetranslator.shared.generated.resources.cd_speak
 import offlinetranslator.shared.generated.resources.cd_speak_loading
 import offlinetranslator.shared.generated.resources.cd_speak_stop
 import offlinetranslator.shared.generated.resources.cd_swap_languages
 import offlinetranslator.shared.generated.resources.char_count
+import offlinetranslator.shared.generated.resources.drop_text_or_image
+import offlinetranslator.shared.generated.resources.image_reading
 import offlinetranslator.shared.generated.resources.latency_local
 import offlinetranslator.shared.generated.resources.mic_listening
 import offlinetranslator.shared.generated.resources.mic_speak_now
@@ -250,14 +251,17 @@ private fun SourcePanel(
                         onIntent(AppIntent.DropUnsupported)
                         true
                     }
+
                     image != null && image.isNotEmpty() -> {
                         onIntent(AppIntent.TranslateDroppedImage(image))
                         true
                     }
+
                     !text.isNullOrBlank() -> {
                         onIntent(AppIntent.SetSourceText(text))
                         true
                     }
+
                     else -> false
                 }
             }
@@ -272,110 +276,117 @@ private fun SourcePanel(
             .dragAndDropTarget(shouldStartDragAndDrop = { acceptDrop }, target = dropTarget),
     ) {
         Column(Modifier.fillMaxSize()) {
-        Box(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 14.dp), Alignment.CenterStart) {
-            LanguageHeader(settings, state.lang, LangRole.Source, onIntent)
-        }
-        HorizontalDivider(color = c.surfaceContainerHighest)
-        if (state.imageBusy) {
-            ScanningPane(Modifier.weight(1f).fillMaxWidth())
-        } else if (state.micPhase != MicPhase.Idle) {
-            ListeningPane(state.micPhase, onIntent, Modifier.weight(1f).fillMaxWidth())
-        } else {
-            val focusRequester = remember { FocusRequester() }
-            val scroll = rememberScrollState()
-            LaunchedEffect(Unit) { focusRequester.requestFocus() }
-            Box(Modifier.weight(1f).fillMaxWidth()) {
-                val hasText = state.text.isNotEmpty()
-                BasicTextField(
-                    value = state.text,
-                    onValueChange = { onIntent(AppIntent.SetSourceText(it)) },
-                    textStyle = TextStyle(color = c.onSurface, fontSize = 18.sp, lineHeight = 28.sp),
-                    cursorBrush = SolidColor(c.primary),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(scroll)
-                        .padding(
-                            start = 20.dp,
-                            top = 20.dp,
-                            end = if (hasText) 48.dp else 20.dp,
-                            bottom = 20.dp,
-                        )
-                        .focusRequester(focusRequester),
-                    decorationBox = { inner ->
-                        Box {
-                            if (state.text.isEmpty()) {
-                                Text(
-                                    stringResource(Res.string.source_placeholder),
-                                    color = c.onSurfaceVariant,
-                                    fontSize = 18.sp,
-                                    lineHeight = 28.sp,
+            Box(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 14.dp), Alignment.CenterStart) {
+                LanguageHeader(settings, state.lang, LangRole.Source, onIntent)
+            }
+            HorizontalDivider(color = c.surfaceContainerHighest)
+            if (state.imageBusy) {
+                ScanningPane(Modifier.weight(1f).fillMaxWidth())
+            } else if (state.micPhase != MicPhase.Idle) {
+                ListeningPane(state.micPhase, onIntent, Modifier.weight(1f).fillMaxWidth())
+            } else {
+                val focusRequester = remember { FocusRequester() }
+                val scroll = rememberScrollState()
+                LaunchedEffect(Unit) { focusRequester.requestFocus() }
+                Box(Modifier.weight(1f).fillMaxWidth()) {
+                    val hasText = state.text.isNotEmpty()
+                    Spellchecked(
+                        text = state.text,
+                        onTextChange = { onIntent(AppIntent.SetSourceText(it)) },
+                        // Auto-detect has no dictionary to pick; fall back to the process locale.
+                        languageTag = state.lang.takeUnless { Languages.isAuto(it) },
+                    ) {
+                        BasicTextField(
+                            value = state.text,
+                            onValueChange = { onIntent(AppIntent.SetSourceText(it)) },
+                            textStyle = TextStyle(color = c.onSurface, fontSize = 18.sp, lineHeight = 28.sp),
+                            cursorBrush = SolidColor(c.primary),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(scroll)
+                                .padding(
+                                    start = 20.dp,
+                                    top = 20.dp,
+                                    end = if (hasText) 48.dp else 20.dp,
+                                    bottom = 20.dp,
                                 )
-                            }
-                            inner()
-                        }
+                                .focusRequester(focusRequester),
+                            decorationBox = { inner ->
+                                Box {
+                                    if (state.text.isEmpty()) {
+                                        Text(
+                                            stringResource(Res.string.source_placeholder),
+                                            color = c.onSurfaceVariant,
+                                            fontSize = 18.sp,
+                                            lineHeight = 28.sp,
+                                        )
+                                    }
+                                    inner()
+                                }
+                            },
+                        )
+                    }
+                    if (hasText) {
+                        ClearTextButton(
+                            onClick = { onIntent(AppIntent.SetSourceText("")) },
+                            modifier = Modifier.align(Alignment.TopEnd).padding(10.dp),
+                        )
+                    }
+                    VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
+                }
+            }
+            HorizontalDivider(color = c.surfaceContainerHighest)
+            Row(
+                Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                if (!state.imageBusy && state.micPhase == MicPhase.Idle) {
+                    Text(
+                        "${pluralStringResource(Res.plurals.char_count, chars, chars)} / ${GemmaModel.MAX_INPUT_CHARS}",
+                        color = if (chars >= GemmaModel.MAX_INPUT_CHARS) c.error else c.onSurfaceVariant,
+                        fontSize = 12.sp,
+                    )
+                    Text(
+                        pluralStringResource(Res.plurals.paragraph_count, paragraphs, paragraphs),
+                        color = c.onSurfaceVariant,
+                        fontSize = 12.sp,
+                    )
+                } else if (!state.imageBusy) {
+                    MicClock()
+                }
+                Spacer(Modifier.weight(1f))
+                SpeakControls(
+                    lang = state.lang,
+                    textBlank = state.text.isBlank(),
+                    ttsReady = state.ttsReady,
+                    installed = state.voiceInstalled,
+                    active = state.speakActive,
+                    loading = state.speakLoading,
+                    playing = state.speakPlaying,
+                    paused = state.speakPaused,
+                    voiceDownload = voiceDownload,
+                    target = false,
+                    onIntent = onIntent,
+                )
+                Icon(
+                    Icons.Outlined.Image,
+                    stringResource(Res.string.cd_pick_image),
+                    Modifier.size(22.dp).clip(CircleShape).clickable { onIntent(AppIntent.TranslateImage) },
+                    tint = c.primary,
+                )
+                val listening = state.micPhase == MicPhase.Listening
+                Icon(
+                    Icons.Outlined.Mic,
+                    stringResource(Res.string.cd_dictate),
+                    Modifier.size(22.dp).clip(CircleShape).clickable { onIntent(AppIntent.ToggleMic) },
+                    tint = when {
+                        listening -> GoogleMicRed
+                        Languages.hasAudio(state.lang) -> c.primary
+                        else -> c.outline
                     },
                 )
-                if (hasText) {
-                    ClearTextButton(
-                        onClick = { onIntent(AppIntent.SetSourceText("")) },
-                        modifier = Modifier.align(Alignment.TopEnd).padding(10.dp),
-                    )
-                }
-                VerticalContentScrollbar(scroll, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
             }
-        }
-        HorizontalDivider(color = c.surfaceContainerHighest)
-        Row(
-            Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            if (!state.imageBusy && state.micPhase == MicPhase.Idle) {
-                Text(
-                    "${pluralStringResource(Res.plurals.char_count, chars, chars)} / ${GemmaModel.MAX_INPUT_CHARS}",
-                    color = if (chars >= GemmaModel.MAX_INPUT_CHARS) c.error else c.onSurfaceVariant,
-                    fontSize = 12.sp,
-                )
-                Text(
-                    pluralStringResource(Res.plurals.paragraph_count, paragraphs, paragraphs),
-                    color = c.onSurfaceVariant,
-                    fontSize = 12.sp,
-                )
-            } else if (!state.imageBusy) {
-                MicClock()
-            }
-            Spacer(Modifier.weight(1f))
-            SpeakControls(
-                lang = state.lang,
-                textBlank = state.text.isBlank(),
-                ttsReady = state.ttsReady,
-                installed = state.voiceInstalled,
-                active = state.speakActive,
-                loading = state.speakLoading,
-                playing = state.speakPlaying,
-                paused = state.speakPaused,
-                voiceDownload = voiceDownload,
-                target = false,
-                onIntent = onIntent,
-            )
-            Icon(
-                Icons.Outlined.Image,
-                stringResource(Res.string.cd_pick_image),
-                Modifier.size(22.dp).clip(CircleShape).clickable { onIntent(AppIntent.TranslateImage) },
-                tint = c.primary,
-            )
-            val listening = state.micPhase == MicPhase.Listening
-            Icon(
-                Icons.Outlined.Mic,
-                stringResource(Res.string.cd_dictate),
-                Modifier.size(22.dp).clip(CircleShape).clickable { onIntent(AppIntent.ToggleMic) },
-                tint = when {
-                    listening -> GoogleMicRed
-                    Languages.hasAudio(state.lang) -> c.primary
-                    else -> c.outline
-                },
-            )
-        }
         }
         if (hovering) {
             Box(

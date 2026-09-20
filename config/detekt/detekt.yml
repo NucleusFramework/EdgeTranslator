@@ -7,7 +7,7 @@ Compose:
     active: true
   CompositionLocalAllowlist:
     active: true
-    allowedCompositionLocals: LocalHostHasTitleBar,LocalWindowDrag,LocalSystemMeters,LocalThemeIsDark
+    allowedCompositionLocals: LocalHostHasTitleBar,LocalWindowDrag,LocalSystemMeters,LocalThemeIsDark,LocalMicLevels
   CompositionLocalNaming:
     active: true
   ConditionHoist:
