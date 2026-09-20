@@ -140,6 +140,15 @@ tasks.matching {
     dependsOn("exportLibraryDefinitions")
 }
 
+// stability-analyzer 0.14.0 gives every Kotlin compile task its own
+// build/stability/<task> directory, which the check/dump tasks then read as a
+// whole. Gradle sees that as an undeclared dependency as soon as a compile task
+// shares the graph (./gradlew stabilityCheck jvmTest). Ordering is all these
+// tasks need — they only read whatever the compilation already produced.
+tasks.matching { it.name == "stabilityCheck" || it.name == "stabilityDump" }.configureEach {
+    mustRunAfter(tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java))
+}
+
 composeStabilityAnalyzer {
     stabilityConfigurationFiles.add(stabilityConfig)
     traceAll {
