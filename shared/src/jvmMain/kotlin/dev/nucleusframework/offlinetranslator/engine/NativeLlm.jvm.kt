@@ -9,6 +9,7 @@ import com.google.ai.edge.litertlm.Engine
 import com.google.ai.edge.litertlm.EngineConfig
 import com.google.ai.edge.litertlm.ExperimentalApi
 import com.google.ai.edge.litertlm.ExperimentalFlags
+import com.google.ai.edge.litertlm.LogSeverity
 import com.google.ai.edge.litertlm.SamplerConfig
 import com.google.ai.edge.litertlm.ThinkingConfig
 import dev.nucleusframework.nativehttp.ktor.installNativeSsl
@@ -188,8 +189,30 @@ internal actual class NativeLlm actual constructor() {
     }
 }
 
+private val nativeLogsConfigured = java.util.concurrent.atomic.AtomicBoolean(false)
+
+/**
+ * LiteRT narrates every model load and accelerator teardown at INFO, and warns
+ * about an optional WebGPU sampler that ships in no JVM artifact. A packaged
+ * desktop app has nowhere useful to put that, so keep ERROR and above.
+ *
+ * To get them back, set EDGE_TRANSLATOR_LITERT_LOG=INFO — the env var reaches
+ * the app through `gradlew run`, which forks its own JVM, while a -D on the
+ * Gradle command line stops at the daemon. The system property works when
+ * passed to the app JVM directly.
+ */
+private fun quietNativeLogs() {
+    if (!nativeLogsConfigured.compareAndSet(false, true)) return
+    val requested = System.getProperty("edgetranslator.litert.log")
+        ?: System.getenv("EDGE_TRANSLATOR_LITERT_LOG")
+    val severity = LogSeverity.entries.firstOrNull { it.name.equals(requested, ignoreCase = true) }
+        ?: LogSeverity.ERROR
+    runCatching { Engine.setNativeMinLogSeverity(severity) }
+}
+
 @OptIn(ExperimentalApi::class)
 private fun openEngine(modelPath: String, cacheDir: String, backend: Backend): Engine {
+    quietNativeLogs()
     ExperimentalFlags.enableSpeculativeDecoding = LlmRuntime.mtp
     val created = Engine(
         EngineConfig(

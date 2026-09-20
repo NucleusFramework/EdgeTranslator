@@ -8,6 +8,7 @@ import com.google.ai.edge.litertlm.Engine
 import com.google.ai.edge.litertlm.EngineConfig
 import com.google.ai.edge.litertlm.ExperimentalApi
 import com.google.ai.edge.litertlm.ExperimentalFlags
+import com.google.ai.edge.litertlm.LogSeverity
 import com.google.ai.edge.litertlm.SamplerConfig
 import com.google.ai.edge.litertlm.ThinkingConfig
 import dev.nucleusframework.offlinetranslator.domain.LlmBackend
@@ -105,8 +106,21 @@ internal actual class NativeLlm actual constructor() {
     }
 }
 
+private val nativeLogsConfigured = java.util.concurrent.atomic.AtomicBoolean(false)
+
+/**
+ * LiteRT narrates every model load and accelerator teardown at INFO, and warns
+ * about an optional WebGPU sampler that ships in no artifact. Keep ERROR and
+ * above; logcat already has its own filters for the rest.
+ */
+private fun quietNativeLogs() {
+    if (!nativeLogsConfigured.compareAndSet(false, true)) return
+    runCatching { Engine.setNativeMinLogSeverity(LogSeverity.ERROR) }
+}
+
 @OptIn(ExperimentalApi::class)
 private fun openEngine(modelPath: String, cacheDir: String, backend: Backend): Engine {
+    quietNativeLogs()
     ExperimentalFlags.enableSpeculativeDecoding = LlmRuntime.mtp
     val created = Engine(
         EngineConfig(
