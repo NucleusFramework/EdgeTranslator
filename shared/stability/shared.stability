@@ -6,7 +6,7 @@
 
 @Composable
 public fun dev.nucleusframework.offlinetranslator.App(graph: dev.nucleusframework.offlinetranslator.di.AppGraph?, provided: dev.nucleusframework.offlinetranslator.app.AppViewModel?, onThemeChange: @[Composable] androidx.compose.runtime.internal.ComposableFunction1<@[ParameterName(name = \, onLayoutDirectionChange: @[Composable] androidx.compose.runtime.internal.ComposableFunction1<@[ParameterName(name = \, onQuit: kotlin.Function0<kotlin.Unit>, forceOnboarding: kotlin.Boolean): kotlin.Unit
-  skippable: false
+  skippable: true
   restartable: true
   params:
     - graph: UNKNOWN (interface or non-final class; concrete implementation unknown)
@@ -77,8 +77,8 @@ private fun dev.nucleusframework.offlinetranslator.install.FeatureCard(icon: and
     - subtitle: STABLE (String is immutable)
 
 @Composable
-public fun dev.nucleusframework.offlinetranslator.install.InstallScreen(step: dev.nucleusframework.offlinetranslator.app.InstallStep, settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, download: dev.nucleusframework.offlinetranslator.domain.DownloadState, voiceDownload: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, voicePicks: kotlin.collections.Set<kotlin.String>, ttsReady: kotlin.Boolean, installedVoices: kotlin.collections.Set<kotlin.String>, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
-  skippable: false
+public fun dev.nucleusframework.offlinetranslator.install.InstallScreen(step: dev.nucleusframework.offlinetranslator.app.InstallStep, settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, download: dev.nucleusframework.offlinetranslator.domain.DownloadState, voiceDownload: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, voicePicks: kotlin.collections.Set<kotlin.String>, ttsReady: kotlin.Boolean, installedVoices: kotlin.collections.Set<kotlin.String>, hostRamBytes: kotlin.Long, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
+  skippable: true
   restartable: true
   params:
     - step: STABLE (class with no mutable properties)
@@ -88,18 +88,11 @@ public fun dev.nucleusframework.offlinetranslator.install.InstallScreen(step: de
     - voicePicks: RUNTIME (requires runtime check)
     - ttsReady: STABLE (primitive type)
     - installedVoices: RUNTIME (requires runtime check)
+    - hostRamBytes: STABLE (primitive type)
     - onIntent: STABLE (function type)
 
 @Composable
-private fun dev.nucleusframework.offlinetranslator.install.MiniStat(label: kotlin.String, value: kotlin.String): kotlin.Unit
-  skippable: true
-  restartable: true
-  params:
-    - label: STABLE (String is immutable)
-    - value: STABLE (String is immutable)
-
-@Composable
-private fun dev.nucleusframework.offlinetranslator.install.ModelPickCard(title: kotlin.String, body: kotlin.String, selected: kotlin.Boolean, trailing: androidx.compose.ui.graphics.vector.ImageVector?, onClick: kotlin.Function0<kotlin.Unit>): kotlin.Unit
+private fun dev.nucleusframework.offlinetranslator.install.ModelPickCard(title: kotlin.String, body: kotlin.String, selected: kotlin.Boolean, trailing: androidx.compose.ui.graphics.vector.ImageVector?, enabled: kotlin.Boolean, onClick: kotlin.Function0<kotlin.Unit>): kotlin.Unit
   skippable: true
   restartable: true
   params:
@@ -107,6 +100,7 @@ private fun dev.nucleusframework.offlinetranslator.install.ModelPickCard(title: 
     - body: STABLE (String is immutable)
     - selected: STABLE (primitive type)
     - trailing: STABLE (marked @Stable or @Immutable)
+    - enabled: STABLE (primitive type)
     - onClick: STABLE (function type)
 
 @Composable
@@ -137,7 +131,7 @@ private fun dev.nucleusframework.offlinetranslator.install.UiLanguagePicker(ui: 
 
 @Composable
 private fun dev.nucleusframework.offlinetranslator.install.VoicesStep(settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, download: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, voicePicks: kotlin.collections.Set<kotlin.String>, installedVoices: kotlin.collections.Set<kotlin.String>, ttsReady: kotlin.Boolean, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
-  skippable: false
+  skippable: true
   restartable: true
   params:
     - settings: STABLE (marked @Stable or @Immutable)
@@ -148,12 +142,13 @@ private fun dev.nucleusframework.offlinetranslator.install.VoicesStep(settings: 
     - onIntent: STABLE (function type)
 
 @Composable
-private fun dev.nucleusframework.offlinetranslator.install.WelcomeStep(settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, ttsReady: kotlin.Boolean, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
+private fun dev.nucleusframework.offlinetranslator.install.WelcomeStep(settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, ttsReady: kotlin.Boolean, hostRamBytes: kotlin.Long, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
   skippable: true
   restartable: true
   params:
     - settings: STABLE (marked @Stable or @Immutable)
     - ttsReady: STABLE (primitive type)
+    - hostRamBytes: STABLE (primitive type)
     - onIntent: STABLE (function type)
 
 @Composable
@@ -204,7 +199,7 @@ private fun dev.nucleusframework.offlinetranslator.main.ChipsRow(title: kotlin.S
     - chips: STABLE (composable function type)
 
 @Composable
-private fun dev.nucleusframework.offlinetranslator.main.ChoiceRow(title: kotlin.String, body: kotlin.String, installed: kotlin.Boolean, selected: kotlin.Boolean, progress: kotlin.Float?, progressLabel: kotlin.String?, error: kotlin.String?, onClick: kotlin.Function0<kotlin.Unit>, onDelete: kotlin.Function0<kotlin.Unit>?): kotlin.Unit
+private fun dev.nucleusframework.offlinetranslator.main.ChoiceRow(title: kotlin.String, body: kotlin.String, installed: kotlin.Boolean, selected: kotlin.Boolean, progress: kotlin.Float?, progressLabel: kotlin.String?, error: kotlin.String?, onClick: kotlin.Function0<kotlin.Unit>?, onDelete: kotlin.Function0<kotlin.Unit>?, muted: kotlin.Boolean, onDownload: kotlin.Function0<kotlin.Unit>?, onPause: kotlin.Function0<kotlin.Unit>?, onResume: kotlin.Function0<kotlin.Unit>?, onCancel: kotlin.Function0<kotlin.Unit>?): kotlin.Unit
   skippable: true
   restartable: true
   params:
@@ -217,6 +212,11 @@ private fun dev.nucleusframework.offlinetranslator.main.ChoiceRow(title: kotlin.
     - error: STABLE (class with no mutable properties)
     - onClick: STABLE (function type)
     - onDelete: STABLE (function type)
+    - muted: STABLE (primitive type)
+    - onDownload: STABLE (function type)
+    - onPause: STABLE (function type)
+    - onResume: STABLE (function type)
+    - onCancel: STABLE (function type)
 
 @Composable
 private fun dev.nucleusframework.offlinetranslator.main.DisplaySection(settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
@@ -228,7 +228,7 @@ private fun dev.nucleusframework.offlinetranslator.main.DisplaySection(settings:
 
 @Composable
 private fun dev.nucleusframework.offlinetranslator.main.Divided(items: kotlin.collections.List<T of dev.nucleusframework.offlinetranslator.main.Divided>, row: @[Composable] androidx.compose.runtime.internal.ComposableFunction1<T of dev.nucleusframework.offlinetranslator.main.Divided, kotlin.Unit>): kotlin.Unit
-  skippable: false
+  skippable: true
   restartable: true
   params:
     - items: RUNTIME (requires runtime check)
@@ -316,7 +316,7 @@ public fun dev.nucleusframework.offlinetranslator.main.LlmAcceleratorBadge(modif
     - modifier: STABLE (marked @Stable or @Immutable)
 
 @Composable
-public fun dev.nucleusframework.offlinetranslator.main.MainShell(destination: dev.nucleusframework.offlinetranslator.app.AppKey, uiLanguage: dev.nucleusframework.offlinetranslator.domain.UiLanguage, offline: kotlin.Boolean, modelId: dev.nucleusframework.offlinetranslator.domain.LlmModel, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>, modifier: androidx.compose.ui.Modifier, content: @[Composable] androidx.compose.runtime.internal.ComposableFunction0<kotlin.Unit>): kotlin.Unit
+public fun dev.nucleusframework.offlinetranslator.main.MainShell(destination: dev.nucleusframework.offlinetranslator.app.AppKey, uiLanguage: dev.nucleusframework.offlinetranslator.domain.UiLanguage, offline: kotlin.Boolean, modelId: dev.nucleusframework.offlinetranslator.domain.LlmModel, backend: dev.nucleusframework.offlinetranslator.domain.LlmBackend, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>, modifier: androidx.compose.ui.Modifier, content: @[Composable] androidx.compose.runtime.internal.ComposableFunction0<kotlin.Unit>): kotlin.Unit
   skippable: true
   restartable: true
   params:
@@ -324,6 +324,7 @@ public fun dev.nucleusframework.offlinetranslator.main.MainShell(destination: de
     - uiLanguage: STABLE (class with no mutable properties)
     - offline: STABLE (primitive type)
     - modelId: STABLE (class with no mutable properties)
+    - backend: STABLE (class with no mutable properties)
     - onIntent: STABLE (function type)
     - modifier: STABLE (marked @Stable or @Immutable)
     - content: STABLE (composable function type)
@@ -339,31 +340,24 @@ private fun dev.nucleusframework.offlinetranslator.main.MenuChoice(label: kotlin
     - onClick: STABLE (function type)
 
 @Composable
-private fun dev.nucleusframework.offlinetranslator.main.Meter(label: kotlin.String, value: kotlin.String, fraction: kotlin.Float): kotlin.Unit
-  skippable: true
-  restartable: true
-  params:
-    - label: STABLE (String is immutable)
-    - value: STABLE (String is immutable)
-    - fraction: STABLE (primitive type)
-
-@Composable
-private fun dev.nucleusframework.offlinetranslator.main.ModelSection(settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, model: dev.nucleusframework.offlinetranslator.domain.ModelInfo, download: dev.nucleusframework.offlinetranslator.domain.DownloadState, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
+private fun dev.nucleusframework.offlinetranslator.main.ModelSection(settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, model: dev.nucleusframework.offlinetranslator.domain.ModelInfo, download: dev.nucleusframework.offlinetranslator.domain.DownloadState, hostRamBytes: kotlin.Long, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
   skippable: true
   restartable: true
   params:
     - settings: STABLE (marked @Stable or @Immutable)
     - model: STABLE (marked @Stable or @Immutable)
     - download: STABLE (marked @Stable or @Immutable)
+    - hostRamBytes: STABLE (primitive type)
     - onIntent: STABLE (function type)
 
 @Composable
-private fun dev.nucleusframework.offlinetranslator.main.NavRail(selected: dev.nucleusframework.offlinetranslator.app.AppKey, modelId: dev.nucleusframework.offlinetranslator.domain.LlmModel, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
+private fun dev.nucleusframework.offlinetranslator.main.NavRail(selected: dev.nucleusframework.offlinetranslator.app.AppKey, modelId: dev.nucleusframework.offlinetranslator.domain.LlmModel, backend: dev.nucleusframework.offlinetranslator.domain.LlmBackend, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
   skippable: true
   restartable: true
   params:
     - selected: STABLE (marked @Stable or @Immutable)
     - modelId: STABLE (class with no mutable properties)
+    - backend: STABLE (class with no mutable properties)
     - onIntent: STABLE (function type)
 
 @Composable
@@ -399,7 +393,17 @@ private fun dev.nucleusframework.offlinetranslator.main.ResetSection(onIntent: k
     - onIntent: STABLE (function type)
 
 @Composable
-public fun dev.nucleusframework.offlinetranslator.main.SettingsScreen(settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, model: dev.nucleusframework.offlinetranslator.domain.ModelInfo, download: dev.nucleusframework.offlinetranslator.domain.DownloadState, voiceDownload: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, ttsReady: kotlin.Boolean, sourceLang: kotlin.String, targetLang: kotlin.String, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>, modifier: androidx.compose.ui.Modifier): kotlin.Unit
+private fun dev.nucleusframework.offlinetranslator.main.RowAction(icon: androidx.compose.ui.graphics.vector.ImageVector, label: kotlin.String, onClick: kotlin.Function0<kotlin.Unit>, tint: androidx.compose.ui.graphics.Color): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - icon: STABLE (marked @Stable or @Immutable)
+    - label: STABLE (String is immutable)
+    - onClick: STABLE (function type)
+    - tint: STABLE (marked @Stable or @Immutable)
+
+@Composable
+public fun dev.nucleusframework.offlinetranslator.main.SettingsScreen(settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, model: dev.nucleusframework.offlinetranslator.domain.ModelInfo, download: dev.nucleusframework.offlinetranslator.domain.DownloadState, voiceDownload: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, ttsReady: kotlin.Boolean, sourceLang: kotlin.String, targetLang: kotlin.String, hostRamBytes: kotlin.Long, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>, modifier: androidx.compose.ui.Modifier): kotlin.Unit
   skippable: true
   restartable: true
   params:
@@ -410,6 +414,7 @@ public fun dev.nucleusframework.offlinetranslator.main.SettingsScreen(settings: 
     - ttsReady: STABLE (primitive type)
     - sourceLang: STABLE (String is immutable)
     - targetLang: STABLE (String is immutable)
+    - hostRamBytes: STABLE (primitive type)
     - onIntent: STABLE (function type)
     - modifier: STABLE (marked @Stable or @Immutable)
 
@@ -437,13 +442,6 @@ private fun dev.nucleusframework.offlinetranslator.main.StorageSection(tts: kotl
     - tts: STABLE (primitive type)
 
 @Composable
-public fun dev.nucleusframework.offlinetranslator.main.SystemMeters(modifier: androidx.compose.ui.Modifier): kotlin.Unit
-  skippable: true
-  restartable: true
-  params:
-    - modifier: STABLE (marked @Stable or @Immutable)
-
-@Composable
 private fun dev.nucleusframework.offlinetranslator.main.TitleBarIconButton(tooltip: kotlin.String, onClick: kotlin.Function0<kotlin.Unit>, modifier: androidx.compose.ui.Modifier, icon: @[Composable] androidx.compose.runtime.internal.ComposableFunction0<kotlin.Unit>): kotlin.Unit
   skippable: true
   restartable: true
@@ -452,30 +450,6 @@ private fun dev.nucleusframework.offlinetranslator.main.TitleBarIconButton(toolt
     - onClick: STABLE (function type)
     - modifier: STABLE (marked @Stable or @Immutable)
     - icon: STABLE (composable function type)
-
-@Composable
-public fun dev.nucleusframework.offlinetranslator.main.UpdateButton(update: dev.nucleusframework.offlinetranslator.main.DesktopUpdate, modifier: androidx.compose.ui.Modifier): kotlin.Unit
-  skippable: true
-  restartable: true
-  params:
-    - update: STABLE (class with no mutable properties)
-    - modifier: STABLE (marked @Stable or @Immutable)
-
-@Composable
-public fun dev.nucleusframework.offlinetranslator.main.UpdateRestartDialog(update: dev.nucleusframework.offlinetranslator.main.DesktopUpdate, modifier: androidx.compose.ui.Modifier): kotlin.Unit
-  skippable: true
-  restartable: true
-  params:
-    - update: STABLE (class with no mutable properties)
-    - modifier: STABLE (marked @Stable or @Immutable)
-
-@Composable
-private fun dev.nucleusframework.offlinetranslator.main.ValueRow(label: kotlin.String, value: kotlin.String): kotlin.Unit
-  skippable: true
-  restartable: true
-  params:
-    - label: STABLE (String is immutable)
-    - value: STABLE (String is immutable)
 
 @Composable
 private fun dev.nucleusframework.offlinetranslator.main.VoicesSection(settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, voiceDownload: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, sourceLang: kotlin.String, targetLang: kotlin.String, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
@@ -495,6 +469,13 @@ public fun dev.nucleusframework.offlinetranslator.main.acceleratorLabel(): kotli
   params:
 
 @Composable
+public fun dev.nucleusframework.offlinetranslator.main.backendLabel(backend: dev.nucleusframework.offlinetranslator.domain.LlmBackend): kotlin.String
+  skippable: false
+  restartable: false
+  params:
+    - backend: STABLE (class with no mutable properties)
+
+@Composable
 private fun dev.nucleusframework.offlinetranslator.main.body(size: kotlin.String): kotlin.String
   skippable: false
   restartable: false
@@ -502,16 +483,37 @@ private fun dev.nucleusframework.offlinetranslator.main.body(size: kotlin.String
     - size: STABLE (String is immutable)
 
 @Composable
-public fun dev.nucleusframework.offlinetranslator.main.rememberDesktopUpdate(): dev.nucleusframework.offlinetranslator.main.DesktopUpdate
+private fun dev.nucleusframework.offlinetranslator.main.downloadStats(fraction: kotlin.Float, downloaded: kotlin.Long, total: kotlin.Long, speedBps: kotlin.Long, ui: dev.nucleusframework.offlinetranslator.domain.UiLanguage): kotlin.String
   skippable: false
   restartable: false
   params:
+    - fraction: STABLE (primitive type)
+    - downloaded: STABLE (primitive type)
+    - total: STABLE (primitive type)
+    - speedBps: STABLE (primitive type)
+    - ui: STABLE (class with no mutable properties)
 
 @Composable
 private fun dev.nucleusframework.offlinetranslator.main.title(): kotlin.String
   skippable: false
   restartable: false
   params:
+
+@Composable
+public fun dev.nucleusframework.offlinetranslator.main.windowIconPainter(): androidx.compose.ui.graphics.painter.Painter
+  skippable: false
+  restartable: false
+  params:
+
+@Composable
+internal fun dev.nucleusframework.offlinetranslator.platform.Spellchecked(text: kotlin.String, onTextChange: kotlin.Function1<kotlin.String, kotlin.Unit>, languageTag: kotlin.String?, content: @[Composable] androidx.compose.runtime.internal.ComposableFunction0<kotlin.Unit>): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - text: STABLE (String is immutable)
+    - onTextChange: STABLE (function type)
+    - languageTag: STABLE (class with no mutable properties)
+    - content: STABLE (composable function type)
 
 @Composable
 internal fun dev.nucleusframework.offlinetranslator.theme.AppTheme(onThemeChange: @[Composable] androidx.compose.runtime.internal.ComposableFunction1<@[ParameterName(name = \, content: @[Composable] androidx.compose.runtime.internal.ComposableFunction0<kotlin.Unit>): kotlin.Unit
@@ -615,6 +617,13 @@ private fun dev.nucleusframework.offlinetranslator.translation.ResultPanel(state
     - modifier: STABLE (marked @Stable or @Immutable)
 
 @Composable
+private fun dev.nucleusframework.offlinetranslator.translation.ScanningPane(modifier: androidx.compose.ui.Modifier): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - modifier: STABLE (marked @Stable or @Immutable)
+
+@Composable
 private fun dev.nucleusframework.offlinetranslator.translation.SourcePanel(state: dev.nucleusframework.offlinetranslator.translation.SourcePanelState, settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, voiceDownload: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>, modifier: androidx.compose.ui.Modifier): kotlin.Unit
   skippable: true
   restartable: true
@@ -626,7 +635,7 @@ private fun dev.nucleusframework.offlinetranslator.translation.SourcePanel(state
     - modifier: STABLE (marked @Stable or @Immutable)
 
 @Composable
-private fun dev.nucleusframework.offlinetranslator.translation.SpeakIcon(lang: kotlin.String, textBlank: kotlin.Boolean, ttsReady: kotlin.Boolean, installed: kotlin.Boolean, active: kotlin.Boolean, busy: kotlin.Boolean, voiceDownload: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, target: kotlin.Boolean, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
+private fun dev.nucleusframework.offlinetranslator.translation.SpeakControls(lang: kotlin.String, textBlank: kotlin.Boolean, ttsReady: kotlin.Boolean, installed: kotlin.Boolean, active: kotlin.Boolean, loading: kotlin.Boolean, playing: kotlin.Boolean, paused: kotlin.Boolean, voiceDownload: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, target: kotlin.Boolean, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>, modifier: androidx.compose.ui.Modifier): kotlin.Unit
   skippable: true
   restartable: true
   params:
@@ -635,10 +644,13 @@ private fun dev.nucleusframework.offlinetranslator.translation.SpeakIcon(lang: k
     - ttsReady: STABLE (primitive type)
     - installed: STABLE (primitive type)
     - active: STABLE (primitive type)
-    - busy: STABLE (primitive type)
+    - loading: STABLE (primitive type)
+    - playing: STABLE (primitive type)
+    - paused: STABLE (primitive type)
     - voiceDownload: STABLE (marked @Stable or @Immutable)
     - target: STABLE (primitive type)
     - onIntent: STABLE (function type)
+    - modifier: STABLE (marked @Stable or @Immutable)
 
 @Composable
 private fun dev.nucleusframework.offlinetranslator.translation.TargetPanel(state: dev.nucleusframework.offlinetranslator.translation.TargetPanelState, settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, modelInstalled: kotlin.Boolean, voiceDownload: dev.nucleusframework.offlinetranslator.domain.VoiceDownloadState, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>, modifier: androidx.compose.ui.Modifier): kotlin.Unit
@@ -665,23 +677,30 @@ public fun dev.nucleusframework.offlinetranslator.translation.TranslationContent
     - modifier: STABLE (marked @Stable or @Immutable)
 
 @Composable
-public fun dev.nucleusframework.offlinetranslator.ui.AppDialogHost(dialog: dev.nucleusframework.offlinetranslator.app.AppDialog, speakLoading: kotlin.Boolean, speakTarget: kotlin.Boolean?, settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
+public fun dev.nucleusframework.offlinetranslator.ui.AppDialogHost(dialog: dev.nucleusframework.offlinetranslator.app.AppDialog, settings: dev.nucleusframework.offlinetranslator.domain.UserSettings, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
   skippable: true
   restartable: true
   params:
     - dialog: STABLE (marked @Stable or @Immutable)
-    - speakLoading: STABLE (primitive type)
-    - speakTarget: STABLE (class with no mutable properties)
     - settings: STABLE (marked @Stable or @Immutable)
     - onIntent: STABLE (function type)
 
 @Composable
-public fun dev.nucleusframework.offlinetranslator.ui.Chip(label: kotlin.String, selected: kotlin.Boolean, onClick: kotlin.Function0<kotlin.Unit>, modifier: androidx.compose.ui.Modifier): kotlin.Unit
+public fun dev.nucleusframework.offlinetranslator.ui.Chip(label: kotlin.String, selected: kotlin.Boolean, onClick: kotlin.Function0<kotlin.Unit>, modifier: androidx.compose.ui.Modifier, enabled: kotlin.Boolean): kotlin.Unit
   skippable: true
   restartable: true
   params:
     - label: STABLE (String is immutable)
     - selected: STABLE (primitive type)
+    - onClick: STABLE (function type)
+    - modifier: STABLE (marked @Stable or @Immutable)
+    - enabled: STABLE (primitive type)
+
+@Composable
+public fun dev.nucleusframework.offlinetranslator.ui.ClearTextButton(onClick: kotlin.Function0<kotlin.Unit>, modifier: androidx.compose.ui.Modifier): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
     - onClick: STABLE (function type)
     - modifier: STABLE (marked @Stable or @Immutable)
 
@@ -690,8 +709,19 @@ private fun dev.nucleusframework.offlinetranslator.ui.ConfirmDialog(d: dev.nucle
   skippable: true
   restartable: true
   params:
-    - d: STABLE (class with no mutable properties)
+    - d: STABLE (marked @Stable or @Immutable)
     - onIntent: STABLE (function type)
+
+@Composable
+public fun dev.nucleusframework.offlinetranslator.ui.DownloadPanel(download: dev.nucleusframework.offlinetranslator.domain.DownloadState, ui: dev.nucleusframework.offlinetranslator.domain.UiLanguage, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>, modifier: androidx.compose.ui.Modifier, title: kotlin.String?): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - download: STABLE (marked @Stable or @Immutable)
+    - ui: STABLE (class with no mutable properties)
+    - onIntent: STABLE (function type)
+    - modifier: STABLE (marked @Stable or @Immutable)
+    - title: STABLE (class with no mutable properties)
 
 @Composable
 public fun dev.nucleusframework.offlinetranslator.ui.FilledPill(label: kotlin.String, onClick: kotlin.Function0<kotlin.Unit>, modifier: androidx.compose.ui.Modifier, icon: androidx.compose.ui.graphics.vector.ImageVector?, enabled: kotlin.Boolean): kotlin.Unit
@@ -721,7 +751,7 @@ private fun dev.nucleusframework.offlinetranslator.ui.InstallVoiceDialog(setting
   restartable: true
   params:
     - settings: STABLE (marked @Stable or @Immutable)
-    - d: STABLE (class with no mutable properties)
+    - d: STABLE (marked @Stable or @Immutable)
     - onIntent: STABLE (function type)
 
 @Composable
@@ -732,6 +762,14 @@ public fun dev.nucleusframework.offlinetranslator.ui.MessageBar(message: dev.nuc
     - message: STABLE (marked @Stable or @Immutable)
     - onDismiss: STABLE (function type)
     - modifier: STABLE (marked @Stable or @Immutable)
+
+@Composable
+private fun dev.nucleusframework.offlinetranslator.ui.MiniStat(label: kotlin.String, value: kotlin.String): kotlin.Unit
+  skippable: true
+  restartable: true
+  params:
+    - label: STABLE (String is immutable)
+    - value: STABLE (String is immutable)
 
 @Composable
 public fun dev.nucleusframework.offlinetranslator.ui.OutlinedPill(label: kotlin.String, onClick: kotlin.Function0<kotlin.Unit>, modifier: androidx.compose.ui.Modifier, icon: androidx.compose.ui.graphics.vector.ImageVector?, enabled: kotlin.Boolean): kotlin.Unit
@@ -761,22 +799,6 @@ private fun dev.nucleusframework.offlinetranslator.ui.Sheet(onDismiss: kotlin.Fu
     - onDismiss: STABLE (function type)
     - title: STABLE (String is immutable)
     - content: STABLE (composable function type)
-
-@Composable
-private fun dev.nucleusframework.offlinetranslator.ui.SpeakLoadingDialog(target: kotlin.Boolean, onIntent: kotlin.Function1<dev.nucleusframework.offlinetranslator.app.AppIntent, kotlin.Unit>): kotlin.Unit
-  skippable: true
-  restartable: true
-  params:
-    - target: STABLE (primitive type)
-    - onIntent: STABLE (function type)
-
-@Composable
-private fun dev.nucleusframework.offlinetranslator.ui.ThemedScrollbar(adapter: androidx.compose.foundation.v2.ScrollbarAdapter, modifier: androidx.compose.ui.Modifier): kotlin.Unit
-  skippable: false
-  restartable: true
-  params:
-    - adapter: UNKNOWN (interface or non-final class; concrete implementation unknown)
-    - modifier: STABLE (marked @Stable or @Immutable)
 
 @Composable
 public fun dev.nucleusframework.offlinetranslator.ui.TwoPane(first: @[Composable] androidx.compose.runtime.internal.ComposableFunction1<androidx.compose.ui.Modifier, kotlin.Unit>, second: @[Composable] androidx.compose.runtime.internal.ComposableFunction1<androidx.compose.ui.Modifier, kotlin.Unit>, modifier: androidx.compose.ui.Modifier, between: @[Composable] androidx.compose.runtime.internal.ComposableFunction1<@[ParameterName(name = \): kotlin.Unit
