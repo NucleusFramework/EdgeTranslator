@@ -1,9 +1,9 @@
 package dev.nucleusframework.offlinetranslator
 
+import dev.nucleusframework.offlinetranslator.engine.LinuxGpuWorkerProcess
 import dev.nucleusframework.offlinetranslator.engine.WorkerEvent
 import dev.nucleusframework.offlinetranslator.engine.decodeWorkerField
 import dev.nucleusframework.offlinetranslator.engine.encodeWorkerField
-import dev.nucleusframework.offlinetranslator.engine.LinuxGpuWorkerProcess
 import dev.nucleusframework.offlinetranslator.engine.hasMultimodalPayload
 import dev.nucleusframework.offlinetranslator.engine.linuxGpuCompanionLibs
 import dev.nucleusframework.offlinetranslator.engine.linuxGpuTeardownUnsafe

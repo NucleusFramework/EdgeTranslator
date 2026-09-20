@@ -14,7 +14,10 @@ class LlmBackendTest {
     @Test
     fun cpuNeverProbesGpu() {
         var probed = false
-        val pick = pickBackend(LlmBackend.Cpu, gpuKnown = null) { probed = true; true }
+        val pick = pickBackend(LlmBackend.Cpu, gpuKnown = null) {
+            probed = true
+            true
+        }
         assertEquals(LlmAccelerator.Cpu, pick.accelerator)
         assertNull(pick.gpuAvailable)
         assertFalse(probed)
@@ -39,7 +42,10 @@ class LlmBackendTest {
     @Test
     fun knownMissingGpuSkipsProbe() {
         var probed = false
-        val pick = pickBackend(LlmBackend.Gpu, gpuKnown = false) { probed = true; true }
+        val pick = pickBackend(LlmBackend.Gpu, gpuKnown = false) {
+            probed = true
+            true
+        }
         assertEquals(LlmAccelerator.Cpu, pick.accelerator)
         assertEquals(false, pick.gpuAvailable)
         assertFalse(probed)
@@ -48,7 +54,10 @@ class LlmBackendTest {
     @Test
     fun knownGpuIsStillTriedWhenAsked() {
         var probed = false
-        val pick = pickBackend(LlmBackend.Gpu, gpuKnown = true) { probed = true; true }
+        val pick = pickBackend(LlmBackend.Gpu, gpuKnown = true) {
+            probed = true
+            true
+        }
         assertEquals(LlmAccelerator.Gpu, pick.accelerator)
         assertTrue(probed)
     }
@@ -59,7 +68,10 @@ class LlmBackendTest {
         val pick = pickBackend(
             preference = LlmBackend.Auto,
             gpuKnown = null,
-            gpuWorks = { gpuProbed = true; true },
+            gpuWorks = {
+                gpuProbed = true
+                true
+            },
             npuKnown = null,
             npuWorks = { true },
         )
@@ -90,7 +102,10 @@ class LlmBackendTest {
             gpuKnown = null,
             gpuWorks = { true },
             npuKnown = null,
-            npuWorks = { npuProbed = true; true },
+            npuWorks = {
+                npuProbed = true
+                true
+            },
         )
         assertEquals(LlmAccelerator.Gpu, pick.accelerator)
         assertNull(pick.npuAvailable)
@@ -105,7 +120,10 @@ class LlmBackendTest {
             gpuKnown = null,
             gpuWorks = { true },
             npuKnown = false,
-            npuWorks = { npuProbed = true; true },
+            npuWorks = {
+                npuProbed = true
+                true
+            },
         )
         assertEquals(LlmAccelerator.Gpu, pick.accelerator)
         assertEquals(false, pick.npuAvailable)
@@ -134,7 +152,10 @@ class LlmBackendTest {
             gpuKnown = null,
             gpuWorks = { true },
             npuKnown = null,
-            npuWorks = { npuProbed = true; true },
+            npuWorks = {
+                npuProbed = true
+                true
+            },
         )
         assertEquals(LlmAccelerator.Cpu, pick.accelerator)
         assertNull(pick.npuAvailable)

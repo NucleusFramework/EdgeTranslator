@@ -111,8 +111,7 @@ object GemmaModel {
      */
     const val MAX_INPUT_CHARS = 8_000
 
-    fun capInput(text: String): String =
-        if (text.length <= MAX_INPUT_CHARS) text else text.take(MAX_INPUT_CHARS)
+    fun capInput(text: String): String = if (text.length <= MAX_INPUT_CHARS) text else text.take(MAX_INPUT_CHARS)
 
     fun cacheDir(): String = Platform.cacheDir()
 }

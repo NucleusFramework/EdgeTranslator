@@ -10,6 +10,7 @@ internal expect object Platform {
     fun appDir(): String
     fun cacheDir(): String
     fun databasesDir(): String
+
     /** Shared LiteRT-LM registry on desktop; app sandbox on Android. */
     fun modelsDir(): String
     fun readText(path: String): String?
@@ -37,8 +38,7 @@ internal expect object Platform {
 
 internal fun systemUiLanguage(): UiLanguage = UiLanguage.fromCode(Platform.systemLanguage())
 
-internal fun pathSeparator(path: String): Char =
-    if (path.contains('\\') && !path.contains('/')) '\\' else '/'
+internal fun pathSeparator(path: String): Char = if (path.contains('\\') && !path.contains('/')) '\\' else '/'
 
 internal fun joinPath(dir: String, name: String): String {
     val sep = pathSeparator(dir)
@@ -52,5 +52,4 @@ internal fun parentPath(path: String): String {
 }
 
 /** LiteRT-LM CLI registry: `{home}/.litert-lm/models` on Windows, Linux, and macOS. */
-internal fun litertLmModelsDir(home: String): String =
-    joinPath(joinPath(home, ".litert-lm"), "models")
+internal fun litertLmModelsDir(home: String): String = joinPath(joinPath(home, ".litert-lm"), "models")
